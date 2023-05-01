@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    @*    <title>電影後台系統</title>*@
+    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <link href="~/theme/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <b class="logo-abbr"> </b>
+                    <span class="brand-title" style="color:white">
+                        電影後台系統
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li><a class="navbar-brand" asp-area="" asp-controller="Movie" asp-action="Index">電影編輯</a></li>
+                    <li><a class="navbar-brand" asp-area="" asp-controller="Session" asp-action="Index">場次編輯</a></li>
+                    <li><a class="navbar-brand" asp-area="" asp-controller="Comment" asp-action="Index">電影編輯</a></li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-graph menu-icon"></i><span class="nav-text">統計數據</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a class="navbar-brand" asp-area="" asp-controller="Statics" asp-action="statics1">總票房報表</a></li>
+                            <li><a class="navbar-brand" asp-area="" asp-controller="Statics" asp-action="statics1">Register</a></li>
+                            <li><a class="navbar-brand" asp-area="" asp-controller="Statics" asp-action="statics1">Lock Screen</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="~/theme/plugins/common/common.min.js"></script>
+    <script src="~/theme/js/custom.min.js"></script>
+    <script src="~/theme/js/settings.js"></script>
+    <script src="~/theme/js/gleek.js"></script>
+    <script src="~/theme/js/styleSwitcher.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
