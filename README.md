@@ -6,7 +6,7 @@ Controller命名原則
 ex：
 <ul>
 <li>movieFrontController</li>
-<li>movieBackController<li>
+<li>movieBackController</li>
 </ul>
 
 ---
