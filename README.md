@@ -4,9 +4,10 @@
 Controller命名原則
 
 ex：
-movieFrontController
-movieBackController
-
+<ul>
+<li>movieFrontController</li>
+<li>movieBackController<li>
+</ul>
 
 ---
 老師期中建議重點
