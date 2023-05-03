@@ -1,6 +1,14 @@
 # MovieHolic
 軟體測試工程師養成班期末專題
 ---
+Controller命名原則
+
+ex：
+movieFrontController
+movieBackController
+
+
+---
 老師期中建議重點
 
 核心
