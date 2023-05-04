@@ -4,35 +4,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - prjMovieHolic</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/prjMovieHolic.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/reset.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/css/layout.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/css/myStyle.css" type="text/css" media="all">
+   
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">prjMovieHolic</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="test" asp-action="Test">Test</a>
-                        </li>
-                    </ul>
+   
+        <div id="page2">
+            <div class="body1">
+                <div class="body2">
+                    <div class="body3">
+                        <div class="main">
+                        <header>
+                                <div class="wrapper">
+                                    <!-- 帶有超連結的Logo-->
+                                    <h1><a href="index.html" id="logo"></a></h1>
+                                    <!-- 會員登入 Login-->
+                                    <form id="search" method="post">
+                                        <div class="delete">
+                                        </div>
+                                    </form>
+                                    <!-- 上面選單 Menu-->
+                                    <nav>
+                                        <ul id="menu">
+                                            <li id="active"><a href="StartOrder.html">快速訂票</a></li>
+                                            <li><a href="#">最新消息</a></li>
+                                            <li><a href="Services.html">電影資訊</a></li>
+                                            <li><a href="Member.html">會員登入</a></li>
+                                            <li class="end"><a href="Contact.html">聯絡我們</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                        </header>
+                            <div class="ic">
+                                More Website Templates at <a href="https://www.webmoban.net"></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+ 
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -40,13 +56,99 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - prjMovieHolic - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+        <div class="homePagebottom">
+            <div class="bottomLinkbox">
+                <h3>電影</h3>
+                <ul>
+                    <li>現正熱映</li>
+                    <li>即將上映</li>
+                </ul>
+            </div>
+            <div class="bottomLinkbox">
+                <h3>影城資訊</h3>
+                <ul>
+                    <li>影城介紹</li>
+                    <li>特殊影廳</li>
+                    <li>票價說明</li>
+                    <li>最新消息</li>
+                    <li>信用卡優惠</li>
+                    <li>團票包廳</li>
+                </ul>
+            </div>
+            <div class="bottomLinkbox">
+                <h3>會員專區</h3>
+                <ul>
+                    <li>加入會員</li>
+                    <li>個人專區</li>
+                    <li>我的票夾</li>
+                    <li>會員權益</li>
+                </ul>
+            </div>
+            <div class="bottomLinkbox">
+                <h3>幫助中心</h3>
+
+                <ul>
+                    <li>常見問題</li>
+                    <li>聯絡我們</li>
+                    <li>購票須知</li>
+                    <li>行動支付服務條款</li>
+                    <li></li>
+                </ul>
+            </div>
         </div>
+        <!-- / content -->
+        <div class="main">
+            <!-- footer -->
+
+            <div class="wrapper">
+                <span class="left">
+                    <a href="https://google.com.tw" target="_blank">MovieHolic</a> <br>More Movie
+                    <a href="https://google.com.tw" target="_blank" title="瘋電影">MovieHolic瘋電影</a>
+                </span>
+                <ul id="icons">
+                    <li><a href="#" class="normaltip" title="Facebook"><img src="images/icon1.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Delicious"><img src="images/icon2.png" alt=""></a></li>
+                    <li>
+                        <a href="#" class="normaltip" title="Stumble Upon"><img src="images/icon3.png" alt=""></a>
+                    </li>
+                    <li><a href="#" class="normaltip" title="Twitter"><img src="images/icon4.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Linkedin"><img src="images/icon5.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Reddit"><img src="images/icon6.png" alt=""></a></li>
+                </ul>
+            </div>
+            <!-- {%FOOTER_LINK} -->
+            <!-- / footer -->
+        </div>
+
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+ @*   <script type="text/javascript" src="~/js/jquery-1.5.2.js"></script>*@
+    <script type="text/javascript" src="~/js/cufon-yui.js"></script>
+    <script type="text/javascript" src="~/js/cufon-replace.js"></script>
+    <script type="text/javascript" src="~/js/Terminal_Dosis_300.font.js"></script>
+    <script type="text/javascript" src="~/js/atooltip.jquery.js"></script>
+    <script src="~/js/roundabout.js" type="text/javascript"></script>
+    <script src="~/js/roundabout_shapes.js" type="text/javascript"></script>
+    <script src="~/js/jquery.easing.1.2.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/js/script.js"></script>
+    <script type="text/javascript">Cufon.now();</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myRoundabout').roundabout({
+                shape: 'square',
+                minScale: 0.93, // tiny!
+                maxScale: 1, // tiny!
+                easing: 'easeOutExpo',
+                clickToFocus: 'true',
+                focusBearing: '0',
+                duration: 800,
+                reflect: true
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

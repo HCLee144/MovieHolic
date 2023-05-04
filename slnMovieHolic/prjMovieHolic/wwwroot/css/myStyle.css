@@ -1,0 +1,240 @@
+@font-face{
+    /*香菜體*/
+    font-family: font1;
+    src: url(../fonts/Iansui094-Regular.woff)format("woff"),
+    url(../fonts/Iansui094-Regular.eot)format("embedded-opentype"),
+    url(../fonts/Iansui094-Regular.ttf)format("truetype");
+}
+.fon1{
+    font-family: font1;
+}
+
+.delete {
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bolder;
+    width: 186px;
+    float: right;
+    text-align: center;
+    padding-top: 25px;
+}
+.delete a{
+    text-decoration: none;
+}
+
+.myBr{
+    height: 25px;
+}
+.hotMoviePlaceLine {
+    height: 45px;
+    background-color: #3a3939;
+}
+
+.hotMoviePlaceLineMenu {
+    padding: 13px 10px 0px 10px;
+    color: rgb(250, 248, 248);
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+.wrapper2{
+    display: flex;
+    justify-content: space-between;
+}
+.movieCard h3 {
+    font-size: 22px;
+    margin-bottom:px;
+}
+
+.movieCard li {
+    font-size: 18px;
+}
+
+.buyNow {
+    display: inline-block;
+    color: #fff;
+    line-height: 28px;
+    text-decoration: none;
+    padding: 0 14px;
+    background:#10a5d6;
+    margin-top: 15px;
+    margin-left: 94px;
+}    
+.buyNow:hover {
+    background: #373737
+}
+.notYetMoviePlaceLine {
+    height: 45px;
+    background-color: #3a3939;
+}
+
+.notYetMoviePlaceLineMenu {
+    padding: 13px 10px 0px 10px;
+    color: rgb(250, 248, 248);
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+.homePagebottom{
+    /*background: #363636;*/
+    /*background-color: rgb(19, 32, 49);*/
+    height: 160px;
+    width: 1016px;
+    margin: 0 auto;
+    padding:60px;
+    display: flex;
+    justify-content:space-around;
+}
+.bottomLinkbox{
+    color: #237d9b;
+}
+.bottomLinkbox h3{
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-left: 8px;
+}
+.bottomLinkbox li{
+    font-size: 14px;
+    margin: 10px;
+}
+
+/*第二頁的東西*/
+/*流程圓圈在這裡*/
+.orderStep{
+    margin-bottom: 30px;
+}
+.orderStep a{
+    text-decoration: none;
+}
+.orderStep ul{
+    display: flex;
+    justify-content: space-around;
+}
+.orderStep img{
+    margin-top: 40px;
+    width: 20px;
+}
+.liInOrderstep{
+    background-color:#10a5d6;
+    color: #fff;
+    display: block;
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;    
+    font-size: 20px;
+    line-height: 100px;
+    text-align: center;
+}
+.liInOrderstephere{
+    background-color: rgb(182, 182, 182);
+    color: #10a5d6;
+    display: block;
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;    
+    font-size: 20px;
+    line-height: 100px;
+    text-align: center;
+}
+/*流程圓圈到此結束*/
+.orderBox{    
+    display: flex;
+}
+.orderMovieImage{
+    width: 350px;
+}
+.pick{
+    margin-left: 80px;
+}
+.pickDate{
+    display: flex;
+    border-bottom: 1px solid silver;
+    margin-left: 30px;
+}
+.pickDate li{
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 5px;
+    font-size: 20px;
+}
+.pickDate a{
+    text-decoration: none;
+}
+.pickDate a:hover{
+    color: #3a3939;
+}
+.pickCinemaAndTime h3{
+    font-size: 18px;
+    margin: 30px;
+}
+.pickCinemaAndTime ul{
+    display: flex;
+    margin: 30px;
+    font-size: 16px;
+}
+.pickCinemaAndTime li{
+    margin-right: 25px;
+    border: 1px solid silver;
+    padding: 3px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.chooseTime{
+    border-bottom: 1px solid silver;
+}
+.toRight{
+    background-color: #10a5d6;
+    float: right;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 22px;
+}
+/*會員開始*/
+.memCut{
+    display: flex;
+    justify-content: space-around;
+}
+/*會員選單*/
+.memberMenu{
+    width: 240px;
+}
+/*會員資料顯示區塊*/
+.memberInformation{
+    width: 550px;
+}
+.memberInformation p{
+    text-align: right;
+    font-size: 16px;
+}
+.memberTable{
+    width: 550px;
+}
+.memberTable tr{    
+    font-size: 20px;
+    line-height: 80px;
+}
+.memberTable th{
+    border-bottom: 1px solid silver;
+}
+.memberTable td{
+    border-bottom: 1px solid silver;
+    text-align:right;
+}
+.memberTable input{
+    border: 1px solid silver;
+    border-radius: 5px;    
+}
+.MemberEditSubmit{
+    text-align: right;
+}
+
+/*會員密碼修改盒子*/
+.MemberPasswordChangeform{
+    padding-top: 90px;
+    padding-right: 50px;
+}
+.MemberPasswordChangeform form{
+    border-bottom:1px solid silver ;
+}
