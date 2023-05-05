@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Modernize Free</title>
+    <title>MovieHolic後臺管理系統</title>
     <link rel="stylesheet" href="~/BackTheme/assets/css/styles.min.css" />
 </head>
 
@@ -37,7 +37,7 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Session" asp-action="List">
+                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="MovieSession" asp-action="ViewSession">
                                 <span>
                                     <i class="ti ti-brand-netflix"></i>   @*<==========這是放Icon*@
                                 </span>
@@ -118,6 +118,7 @@
     <script src="~/BackTheme/assets/js/sidebarmenu.js"></script>
     <script src="~/BackTheme/assets/js/app.min.js"></script>
     <script src="~/BackTheme/assets/libs/simplebar/dist/simplebar.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
-@await RenderSectionAsync("Scripts", required: false)
+
 </html>

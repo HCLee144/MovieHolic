@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "ViewSession";
+    Layout = "~/Views/Shared/BackLayout.cshtml";
+}
+
+<h1>ViewSession</h1>
+
+<select id="selectDate" class="form-select"></select>
+
+
+
+
+@section Scripts{
+    
+    <script>  //生成連續21天日期list
+        
+        const selectDate = document.querySelector('#selectDate');
+        const NowYear = new Date().getFullYear();
+        const NowMonth = new Date().getMonth()+1;
+        const NowDate = new Date().getDate();
+        for(var i=0;i<21;i++){
+            let date = `${NowYear}-${NowMonth}-${NowDate+i}`
+            let dateString = `<option value="${date}" >${date}</option>`;
+            selectDate.innerHTML += dateString;
+        }
+
+    </script>
+}
+
