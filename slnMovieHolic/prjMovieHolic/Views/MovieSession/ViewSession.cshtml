@@ -6,25 +6,39 @@
 
 <h1>ViewSession</h1>
 
-<select id="selectDate" class="form-select"></select>
+<select id="selectDate" class="form-select" width =20px></select>
+
+<span id="test"></span>
 
 
 
 
 @section Scripts{
-    
-    <script>  //生成連續21天日期list
         
+    <script>
+
         const selectDate = document.querySelector('#selectDate');
+        const test = document.querySelector('#test');
+
+        //生成連續21天日期list
         const NowYear = new Date().getFullYear();
         const NowMonth = new Date().getMonth()+1;
         const NowDate = new Date().getDate();
         for(var i=0;i<21;i++){
             let date = `${NowYear}-${NowMonth}-${NowDate+i}`
-            let dateString = `<option value="${date}" >${date}</option>`;
+            let dateString = `<option value="${date}" name="queryDate" id="optionDate">${date}</option>`;
             selectDate.innerHTML += dateString;
         }
 
+        //list在選擇後可以收到選擇日期的session list
+        //javascript 沒有針對option的select事件
+        //在select上 使用onchange事件
+        selectDate.addEventListener('change',async (event)=>{
+           let date = selectDate.options[selectDate.selectedIndex].value;
+           const response = await fetch(`@Url.Content("~/MovieSession/querySessionByDate")?queryDate=${date}`)
+           const datas = await Json.Parse(response.text());
+           test.innerHTML=datas;
+        })
     </script>
 }
 
