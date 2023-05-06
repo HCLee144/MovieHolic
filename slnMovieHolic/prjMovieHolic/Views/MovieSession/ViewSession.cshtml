@@ -36,7 +36,7 @@
         selectDate.addEventListener('change',async (event)=>{
            let date = selectDate.options[selectDate.selectedIndex].value;
            const response = await fetch(`@Url.Content("~/MovieSession/querySessionByDate")?queryDate=${date}`)
-           const datas = await Json.Parse(response.text());
+           const datas = await response.text();
            test.innerHTML=datas;
         })
     </script>

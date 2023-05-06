@@ -1,7 +1,16 @@
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMvc().AddJsonOptions(options =>
+{
+    //允許基本拉丁英文及中日韓文字維持原字元
+    options.JsonSerializerOptions.Encoder =
+        JavaScriptEncoder.Create(UnicodeRanges.All);
+});
 
 var app = builder.Build();
 
