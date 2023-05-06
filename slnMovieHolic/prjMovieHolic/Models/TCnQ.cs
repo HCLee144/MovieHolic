@@ -17,7 +17,7 @@ public partial class TCnQ
 
     public virtual TCnQtype FCnQtype { get; set; } = null!;
 
-    public virtual Member FMember { get; set; } = null!;
+    public virtual TMember FMember { get; set; } = null!;
 
     public virtual ICollection<TCnQlog> TCnQlogs { get; set; } = new List<TCnQlog>();
 }

@@ -23,9 +23,9 @@ public partial class TMovieCmt
 
     public bool? FVisible { get; set; }
 
-    public virtual Member FMember { get; set; } = null!;
+    public virtual TMember FMember { get; set; } = null!;
 
-    public virtual TmMovie FMovie { get; set; } = null!;
+    public virtual TMovie FMovie { get; set; } = null!;
 
     public virtual ICollection<TCmtImage> TCmtImages { get; set; } = new List<TCmtImage>();
 }

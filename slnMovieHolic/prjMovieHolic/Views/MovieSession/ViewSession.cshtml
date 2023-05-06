@@ -7,6 +7,7 @@
 <h1>ViewSession</h1>
 
 <select id="selectDate" class="form-select" width =20px></select>
+<div id="chart"></div>
 
 <span id="test"></span>
 
@@ -14,7 +15,8 @@
 
 
 @section Scripts{
-        
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <script>
 
         const selectDate = document.querySelector('#selectDate');
@@ -36,9 +38,29 @@
         selectDate.addEventListener('change',async (event)=>{
            let date = selectDate.options[selectDate.selectedIndex].value;
            const response = await fetch(`@Url.Content("~/MovieSession/querySessionByDate")?queryDate=${date}`)
-           const datas = await response.text();
-           test.innerHTML=datas;
+            console.log(response);
+           test.innerHTML= await response.text();
         })
+
+        //var options = {
+        //    chart: {
+        //        type: 'line'
+        //    },
+        //    series: [{
+        //        name: 'sales',
+        //        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+        //    }],
+        //    xaxis: {
+        //        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+        //    }
+        //}
+
+
+        //var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+        //chart.render();
+
+
     </script>
 }
 

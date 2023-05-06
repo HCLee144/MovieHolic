@@ -15,49 +15,13 @@ public partial class MovieContext : DbContext
     {
     }
 
-    public virtual DbSet<ActionType> ActionTypes { get; set; }
+    public virtual DbSet<TActionType> TActionTypes { get; set; }
 
-    public virtual DbSet<Category> Categories { get; set; }
+    public virtual DbSet<TActor> TActors { get; set; }
 
-    public virtual DbSet<CouponList> CouponLists { get; set; }
+    public virtual DbSet<TActorList> TActorLists { get; set; }
 
-    public virtual DbSet<CouponType> CouponTypes { get; set; }
-
-    public virtual DbSet<CreditCardType> CreditCardTypes { get; set; }
-
-    public virtual DbSet<Employee> Employees { get; set; }
-
-    public virtual DbSet<Gender> Genders { get; set; }
-
-    public virtual DbSet<Member> Members { get; set; }
-
-    public virtual DbSet<MemberAction> MemberActions { get; set; }
-
-    public virtual DbSet<Membership> Memberships { get; set; }
-
-    public virtual DbSet<MembershipChangeLog> MembershipChangeLogs { get; set; }
-
-    public virtual DbSet<Order> Orders { get; set; }
-
-    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-
-    public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
-
-    public virtual DbSet<OrderStatusLog> OrderStatusLogs { get; set; }
-
-    public virtual DbSet<PayType> PayTypes { get; set; }
-
-    public virtual DbSet<Product> Products { get; set; }
-
-    public virtual DbSet<Receipt> Receipts { get; set; }
-
-    public virtual DbSet<ReceiptDetail> ReceiptDetails { get; set; }
-
-    public virtual DbSet<Seat> Seats { get; set; }
-
-    public virtual DbSet<SeatStatus> SeatStatuses { get; set; }
-
-    public virtual DbSet<Session> Sessions { get; set; }
+    public virtual DbSet<TCategory> TCategories { get; set; }
 
     public virtual DbSet<TCmtImage> TCmtImages { get; set; }
 
@@ -67,51 +31,87 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TCnQtype> TCnQtypes { get; set; }
 
+    public virtual DbSet<TCountry> TCountries { get; set; }
+
+    public virtual DbSet<TCountryList> TCountryLists { get; set; }
+
+    public virtual DbSet<TCouponList> TCouponLists { get; set; }
+
+    public virtual DbSet<TCouponType> TCouponTypes { get; set; }
+
+    public virtual DbSet<TCreditCardType> TCreditCardTypes { get; set; }
+
+    public virtual DbSet<TDirector> TDirectors { get; set; }
+
+    public virtual DbSet<TDirectorList> TDirectorLists { get; set; }
+
+    public virtual DbSet<TEmployee> TEmployees { get; set; }
+
     public virtual DbSet<TFaq> TFaqs { get; set; }
 
+    public virtual DbSet<TGender> TGenders { get; set; }
+
     public virtual DbSet<THashtag> THashtags { get; set; }
+
+    public virtual DbSet<TImage> TImages { get; set; }
+
+    public virtual DbSet<TImageList> TImageLists { get; set; }
+
+    public virtual DbSet<TLanguage> TLanguages { get; set; }
+
+    public virtual DbSet<TLanguageList> TLanguageLists { get; set; }
+
+    public virtual DbSet<TMember> TMembers { get; set; }
+
+    public virtual DbSet<TMemberAction> TMemberActions { get; set; }
+
+    public virtual DbSet<TMembership> TMemberships { get; set; }
+
+    public virtual DbSet<TMembershipChangeLog> TMembershipChangeLogs { get; set; }
+
+    public virtual DbSet<TMovie> TMovies { get; set; }
 
     public virtual DbSet<TMovieCmt> TMovieCmts { get; set; }
 
     public virtual DbSet<TMovieCmtHash> TMovieCmtHashes { get; set; }
 
+    public virtual DbSet<TOrder> TOrders { get; set; }
+
+    public virtual DbSet<TOrderDetail> TOrderDetails { get; set; }
+
+    public virtual DbSet<TOrderStatus> TOrderStatuses { get; set; }
+
+    public virtual DbSet<TOrderStatusLog> TOrderStatusLogs { get; set; }
+
+    public virtual DbSet<TPayType> TPayTypes { get; set; }
+
+    public virtual DbSet<TProduct> TProducts { get; set; }
+
+    public virtual DbSet<TReceipt> TReceipts { get; set; }
+
+    public virtual DbSet<TReceiptDetail> TReceiptDetails { get; set; }
+
     public virtual DbSet<TReply> TReplies { get; set; }
+
+    public virtual DbSet<TSeat> TSeats { get; set; }
+
+    public virtual DbSet<TSeatStatus> TSeatStatuses { get; set; }
+
+    public virtual DbSet<TSeries> TSeries { get; set; }
+
+    public virtual DbSet<TSession> TSessions { get; set; }
 
     public virtual DbSet<TStatusType> TStatusTypes { get; set; }
 
-    public virtual DbSet<Theater> Theaters { get; set; }
+    public virtual DbSet<TTheater> TTheaters { get; set; }
 
-    public virtual DbSet<TheaterClass> TheaterClasses { get; set; }
+    public virtual DbSet<TTheaterClass> TTheaterClasses { get; set; }
 
-    public virtual DbSet<TicketClass> TicketClasses { get; set; }
+    public virtual DbSet<TTicketClass> TTicketClasses { get; set; }
 
-    public virtual DbSet<TmActor> TmActors { get; set; }
+    public virtual DbSet<TType> TTypes { get; set; }
 
-    public virtual DbSet<TmActorList> TmActorLists { get; set; }
-
-    public virtual DbSet<TmCountry> TmCountries { get; set; }
-
-    public virtual DbSet<TmCountryList> TmCountryLists { get; set; }
-
-    public virtual DbSet<TmDirector> TmDirectors { get; set; }
-
-    public virtual DbSet<TmDirectorList> TmDirectorLists { get; set; }
-
-    public virtual DbSet<TmImage> TmImages { get; set; }
-
-    public virtual DbSet<TmImageList> TmImageLists { get; set; }
-
-    public virtual DbSet<TmLanguage> TmLanguages { get; set; }
-
-    public virtual DbSet<TmLanguageList> TmLanguageLists { get; set; }
-
-    public virtual DbSet<TmMovie> TmMovies { get; set; }
-
-    public virtual DbSet<TmSeries> TmSeries { get; set; }
-
-    public virtual DbSet<TmType> TmTypes { get; set; }
-
-    public virtual DbSet<TmTypeList> TmTypeLists { get; set; }
+    public virtual DbSet<TTypeList> TTypeLists { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -119,396 +119,73 @@ public partial class MovieContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ActionType>(entity =>
+        modelBuilder.Entity<TActionType>(entity =>
         {
-            entity.ToTable("ActionType", "Members");
+            entity.HasKey(e => e.FActionTypeId).HasName("PK_ActionType");
 
-            entity.Property(e => e.ActionTypeId)
+            entity.ToTable("tActionType", "Members");
+
+            entity.Property(e => e.FActionTypeId)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("ActionTypeID");
-            entity.Property(e => e.ActionTypeName)
+                .HasColumnName("fActionTypeID");
+            entity.Property(e => e.FActionTypeName)
                 .HasMaxLength(10)
-                .IsFixedLength();
+                .IsFixedLength()
+                .HasColumnName("fActionTypeName");
         });
 
-        modelBuilder.Entity<Category>(entity =>
+        modelBuilder.Entity<TActor>(entity =>
         {
-            entity.ToTable("Category", "Products");
+            entity.HasKey(e => e.FId).HasName("PK_Actors");
 
-            entity.Property(e => e.CategoryId).HasColumnName("Category_ID");
-            entity.Property(e => e.CategoryName)
+            entity.ToTable("tActor", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FActorImagePath)
                 .HasMaxLength(50)
-                .HasColumnName("Category_Name");
-        });
-
-        modelBuilder.Entity<CouponList>(entity =>
-        {
-            entity.HasKey(e => e.CouponId);
-
-            entity.ToTable("CouponList", "Products");
-
-            entity.Property(e => e.CouponId).HasColumnName("Coupon_ID");
-            entity.Property(e => e.CouponTypeId).HasColumnName("CouponType_ID");
-            entity.Property(e => e.MemberId).HasColumnName("Member_ID");
-            entity.Property(e => e.OrderId).HasColumnName("Order_ID");
-            entity.Property(e => e.ReceiveDate).HasColumnType("date");
-
-            entity.HasOne(d => d.CouponType).WithMany(p => p.CouponLists)
-                .HasForeignKey(d => d.CouponTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CouponList_Coupon");
-
-            entity.HasOne(d => d.Member).WithMany(p => p.CouponLists)
-                .HasForeignKey(d => d.MemberId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CouponList_Member");
-        });
-
-        modelBuilder.Entity<CouponType>(entity =>
-        {
-            entity.HasKey(e => e.CouponTypeId).HasName("PK_Coupon");
-
-            entity.ToTable("CouponType", "Products");
-
-            entity.Property(e => e.CouponTypeId).HasColumnName("CouponType_ID");
-            entity.Property(e => e.CouponDiscount).HasColumnName("Coupon_Discount");
-            entity.Property(e => e.CouponDueDate)
-                .HasColumnType("date")
-                .HasColumnName("Coupon_DueDate");
-            entity.Property(e => e.CouponStartDate)
-                .HasColumnType("date")
-                .HasColumnName("Coupon_StartDate");
-            entity.Property(e => e.CouponTypeName)
+                .HasColumnName("fActorImagePath");
+            entity.Property(e => e.FActorNameCht)
                 .HasMaxLength(50)
-                .HasColumnName("CouponType_Name");
+                .HasColumnName("fActorNameCht");
+            entity.Property(e => e.FActorNameEng)
+                .HasMaxLength(50)
+                .HasColumnName("fActorNameEng");
         });
 
-        modelBuilder.Entity<CreditCardType>(entity =>
+        modelBuilder.Entity<TActorList>(entity =>
         {
-            entity.HasKey(e => e.CreditCardTypeId).HasName("PK_CreditCard");
+            entity.HasKey(e => e.FId).HasName("PK_Case");
 
-            entity.ToTable("CreditCardType", "Order");
+            entity.ToTable("tActorList", "Movie");
 
-            entity.Property(e => e.CreditCardTypeId).HasColumnName("CreditCardType_ID");
-            entity.Property(e => e.CreditCardType1)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("CreditCardType");
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FActorId).HasColumnName("fActorId");
+            entity.Property(e => e.FCharactorNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fCharactorNameCht");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
+
+            entity.HasOne(d => d.FActor).WithMany(p => p.TActorLists)
+                .HasForeignKey(d => d.FActorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Case_Actors");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TActorLists)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Case_Movie");
         });
 
-        modelBuilder.Entity<Employee>(entity =>
+        modelBuilder.Entity<TCategory>(entity =>
         {
-            entity.ToTable("Employee", "Employee");
+            entity.HasKey(e => e.FCategoryId).HasName("PK_Category");
 
-            entity.Property(e => e.EmployeeId).HasColumnName("Employee_ID");
-            entity.Property(e => e.EmployeeAccount).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(50);
-        });
+            entity.ToTable("tCategory", "Products");
 
-        modelBuilder.Entity<Gender>(entity =>
-        {
-            entity.ToTable("Gender", "Members");
-
-            entity.Property(e => e.GenderId).HasColumnName("GenderID");
-            entity.Property(e => e.GenderName)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("Gender_Name");
-        });
-
-        modelBuilder.Entity<Member>(entity =>
-        {
-            entity.ToTable("Member", "Members");
-
-            entity.Property(e => e.MemberId)
-                .ValueGeneratedNever()
-                .HasColumnName("MemberID");
-            entity.Property(e => e.BirthDate).HasColumnType("date");
-            entity.Property(e => e.CreatedDate).HasColumnType("date");
-            entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.GenderId).HasColumnName("GenderID");
-            entity.Property(e => e.IdcardNumber)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("IDCardNumber");
-            entity.Property(e => e.MembershipId).HasColumnName("MembershipID");
-            entity.Property(e => e.Name).HasMaxLength(10);
-            entity.Property(e => e.Nickname).HasMaxLength(10);
-            entity.Property(e => e.Password)
-                .HasMaxLength(20)
-                .IsUnicode(false);
-            entity.Property(e => e.Phone)
-                .HasMaxLength(20)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.Gender).WithMany(p => p.Members)
-                .HasForeignKey(d => d.GenderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Member_Gender");
-
-            entity.HasOne(d => d.Membership).WithMany(p => p.Members)
-                .HasForeignKey(d => d.MembershipId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Member_Membership");
-        });
-
-        modelBuilder.Entity<MemberAction>(entity =>
-        {
-            entity.ToTable("MemberAction", "Members");
-
-            entity.Property(e => e.MemberActionId).HasColumnName("MemberActionID");
-            entity.Property(e => e.ActionTypeId).HasColumnName("ActionTypeID");
-            entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.MovieId).HasColumnName("MovieID");
-            entity.Property(e => e.TimeStamp).HasColumnType("datetime");
-
-            entity.HasOne(d => d.ActionType).WithMany(p => p.MemberActions)
-                .HasForeignKey(d => d.ActionTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MemberAction_ActionType");
-
-            entity.HasOne(d => d.Member).WithMany(p => p.MemberActions)
-                .HasForeignKey(d => d.MemberId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MemberAction_Member1");
-
-            entity.HasOne(d => d.Movie).WithMany(p => p.MemberActions)
-                .HasForeignKey(d => d.MovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MemberAction_Movie");
-        });
-
-        modelBuilder.Entity<Membership>(entity =>
-        {
-            entity.ToTable("Membership", "Members");
-
-            entity.Property(e => e.MembershipId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("MembershipID");
-            entity.Property(e => e.MembershipName)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("Membership_Name");
-            entity.Property(e => e.PriceRate).HasColumnType("decimal(3, 2)");
-        });
-
-        modelBuilder.Entity<MembershipChangeLog>(entity =>
-        {
-            entity.ToTable("MembershipChangeLog", "Members");
-
-            entity.Property(e => e.MembershipChangeLogId).HasColumnName("MembershipChangeLogID");
-            entity.Property(e => e.ChangeDate).HasColumnType("datetime");
-            entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.MembershipId).HasColumnName("MembershipID");
-        });
-
-        modelBuilder.Entity<Order>(entity =>
-        {
-            entity.ToTable("Order", "Order");
-
-            entity.Property(e => e.OrderId).HasColumnName("Order_ID");
-            entity.Property(e => e.CouponId).HasColumnName("Coupon_ID");
-            entity.Property(e => e.CreditCardTypeId).HasColumnName("CreditCardType_ID");
-            entity.Property(e => e.MemberId).HasColumnName("Member_ID");
-            entity.Property(e => e.OrderDate).HasColumnType("smalldatetime");
-            entity.Property(e => e.PayTypeId).HasColumnName("PayType_ID");
-            entity.Property(e => e.SessionId).HasColumnName("Session_ID");
-
-            entity.HasOne(d => d.CreditCardType).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.CreditCardTypeId)
-                .HasConstraintName("FK_Order_CreditCardType");
-
-            entity.HasOne(d => d.Member).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.MemberId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Member");
-
-            entity.HasOne(d => d.PayType).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.PayTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_PayType");
-
-            entity.HasOne(d => d.Session).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.SessionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Session");
-        });
-
-        modelBuilder.Entity<OrderDetail>(entity =>
-        {
-            entity.ToTable("OrderDetail", "Order");
-
-            entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetail_ID");
-            entity.Property(e => e.OrderId).HasColumnName("Order_ID");
-            entity.Property(e => e.SeatId).HasColumnName("Seat_ID");
-            entity.Property(e => e.TicketClassId).HasColumnName("TicketClass_ID");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderDetail_Order");
-
-            entity.HasOne(d => d.Seat).WithMany(p => p.OrderDetails)
-                .HasForeignKey(d => d.SeatId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderDetail_Seat");
-
-            entity.HasOne(d => d.TicketClass).WithMany(p => p.OrderDetails)
-                .HasForeignKey(d => d.TicketClassId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderDetail_TicketClass");
-        });
-
-        modelBuilder.Entity<OrderStatus>(entity =>
-        {
-            entity.ToTable("OrderStatus", "Order");
-
-            entity.Property(e => e.OrderStatusId).HasColumnName("OrderStatus_ID");
-            entity.Property(e => e.ChangedTime).HasColumnType("smalldatetime");
-            entity.Property(e => e.OrderStatus1)
-                .HasMaxLength(15)
-                .HasColumnName("OrderStatus");
-        });
-
-        modelBuilder.Entity<OrderStatusLog>(entity =>
-        {
-            entity.ToTable("OrderStatusLog", "Order");
-
-            entity.Property(e => e.OrderStatusLogId).HasColumnName("OrderStatusLog_ID");
-            entity.Property(e => e.OrderId).HasColumnName("Order_ID");
-            entity.Property(e => e.OrderStatusId).HasColumnName("OrderStatus_ID");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderStatusLogs)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderStatusLog_Order");
-
-            entity.HasOne(d => d.OrderStatus).WithMany(p => p.OrderStatusLogs)
-                .HasForeignKey(d => d.OrderStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderStatusLog_OrderStatus");
-        });
-
-        modelBuilder.Entity<PayType>(entity =>
-        {
-            entity.ToTable("PayType", "Order");
-
-            entity.Property(e => e.PayTypeId).HasColumnName("PayType_ID");
-            entity.Property(e => e.PayType1)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("PayType");
-        });
-
-        modelBuilder.Entity<Product>(entity =>
-        {
-            entity.HasKey(e => e.ProductId).HasName("PK_Products");
-
-            entity.ToTable("Product", "Products");
-
-            entity.Property(e => e.ProductId)
-                .ValueGeneratedNever()
-                .HasColumnName("Product_ID");
-            entity.Property(e => e.CategoryId).HasColumnName("Category_ID");
-            entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.ImagePath).HasMaxLength(50);
-            entity.Property(e => e.Introduce).HasMaxLength(50);
-            entity.Property(e => e.ProductName).HasMaxLength(50);
-
-            entity.HasOne(d => d.Category).WithMany(p => p.Products)
-                .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Products_Category");
-        });
-
-        modelBuilder.Entity<Receipt>(entity =>
-        {
-            entity.ToTable("Receipt", "Products");
-
-            entity.Property(e => e.ReceiptId).HasColumnName("Receipt_ID");
-            entity.Property(e => e.MemberId).HasColumnName("Member_ID");
-            entity.Property(e => e.OrderId).HasColumnName("Order_ID");
-            entity.Property(e => e.ReceiptDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("smalldatetime");
-
-            entity.HasOne(d => d.Member).WithMany(p => p.Receipts)
-                .HasForeignKey(d => d.MemberId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Receipt_Member");
-        });
-
-        modelBuilder.Entity<ReceiptDetail>(entity =>
-        {
-            entity.ToTable("ReceiptDetail", "Products");
-
-            entity.Property(e => e.ReceiptDetailId).HasColumnName("ReceiptDetail_ID");
-            entity.Property(e => e.ProductId).HasColumnName("Product_ID");
-            entity.Property(e => e.ReceiptId).HasColumnName("Receipt_ID");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ReceiptDetails)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ReceiptDetail_Products");
-
-            entity.HasOne(d => d.Receipt).WithMany(p => p.ReceiptDetails)
-                .HasForeignKey(d => d.ReceiptId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ReceiptDetail_Receipt");
-        });
-
-        modelBuilder.Entity<Seat>(entity =>
-        {
-            entity.ToTable("Seat", "Theater");
-
-            entity.Property(e => e.SeatId).HasColumnName("Seat_ID");
-            entity.Property(e => e.SeatStatusId).HasColumnName("SeatStatus_ID");
-            entity.Property(e => e.TheaterId).HasColumnName("Theater_ID");
-
-            entity.HasOne(d => d.SeatStatus).WithMany(p => p.Seats)
-                .HasForeignKey(d => d.SeatStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Seat_SeatStatus");
-
-            entity.HasOne(d => d.Theater).WithMany(p => p.Seats)
-                .HasForeignKey(d => d.TheaterId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Seat_Theater");
-        });
-
-        modelBuilder.Entity<SeatStatus>(entity =>
-        {
-            entity.ToTable("SeatStatus", "Theater");
-
-            entity.HasIndex(e => e.SeatStatusId, "IX_SeatStatus").IsUnique();
-
-            entity.Property(e => e.SeatStatusId)
-                .ValueGeneratedNever()
-                .HasColumnName("SeatStatus_ID");
-            entity.Property(e => e.SeatStatus1)
-                .HasMaxLength(10)
-                .HasColumnName("SeatStatus");
-        });
-
-        modelBuilder.Entity<Session>(entity =>
-        {
-            entity.ToTable("Session", "Theater");
-
-            entity.Property(e => e.SessionId).HasColumnName("Session_ID");
-            entity.Property(e => e.EndTime).HasColumnType("smalldatetime");
-            entity.Property(e => e.MovieId).HasColumnName("Movie_ID");
-            entity.Property(e => e.StartTime).HasColumnType("smalldatetime");
-            entity.Property(e => e.TheaterId).HasColumnName("Theater_ID");
-
-            entity.HasOne(d => d.Movie).WithMany(p => p.Sessions)
-                .HasForeignKey(d => d.MovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Session_Movie");
-
-            entity.HasOne(d => d.Theater).WithMany(p => p.Sessions)
-                .HasForeignKey(d => d.TheaterId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Session_Theater");
+            entity.Property(e => e.FCategoryId).HasColumnName("fCategory_ID");
+            entity.Property(e => e.FCategoryName)
+                .HasMaxLength(50)
+                .HasColumnName("fCategory_Name");
         });
 
         modelBuilder.Entity<TCmtImage>(entity =>
@@ -597,6 +274,157 @@ public partial class MovieContext : DbContext
                 .HasColumnName("fCnQType");
         });
 
+        modelBuilder.Entity<TCountry>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_Country");
+
+            entity.ToTable("tCountry", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(50)
+                .HasColumnName("fImagePath");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
+            entity.Property(e => e.FNameEng)
+                .HasMaxLength(50)
+                .HasColumnName("fNameEng");
+        });
+
+        modelBuilder.Entity<TCountryList>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieOrigin");
+
+            entity.ToTable("tCountryList", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FCountryId).HasColumnName("fCountryId");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
+
+            entity.HasOne(d => d.FCountry).WithMany(p => p.TCountryLists)
+                .HasForeignKey(d => d.FCountryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieOrigin_Country");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TCountryLists)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieCountriesList_Movies");
+        });
+
+        modelBuilder.Entity<TCouponList>(entity =>
+        {
+            entity.HasKey(e => e.FCouponId).HasName("PK_CouponList");
+
+            entity.ToTable("tCouponList", "Products");
+
+            entity.Property(e => e.FCouponId).HasColumnName("fCoupon_ID");
+            entity.Property(e => e.FCouponTypeId).HasColumnName("fCouponType_ID");
+            entity.Property(e => e.FIsUsed).HasColumnName("fIsUsed");
+            entity.Property(e => e.FMemberId).HasColumnName("fMember_ID");
+            entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
+            entity.Property(e => e.FReceiveDate)
+                .HasColumnType("date")
+                .HasColumnName("fReceiveDate");
+
+            entity.HasOne(d => d.FCouponType).WithMany(p => p.TCouponLists)
+                .HasForeignKey(d => d.FCouponTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CouponList_Coupon");
+
+            entity.HasOne(d => d.FMember).WithMany(p => p.TCouponLists)
+                .HasForeignKey(d => d.FMemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CouponList_Member");
+        });
+
+        modelBuilder.Entity<TCouponType>(entity =>
+        {
+            entity.HasKey(e => e.FCouponTypeId).HasName("PK_Coupon");
+
+            entity.ToTable("tCouponType", "Products");
+
+            entity.Property(e => e.FCouponTypeId).HasColumnName("fCouponType_ID");
+            entity.Property(e => e.FCouponDiscount).HasColumnName("fCoupon_Discount");
+            entity.Property(e => e.FCouponDueDate)
+                .HasColumnType("date")
+                .HasColumnName("fCoupon_DueDate");
+            entity.Property(e => e.FCouponStartDate)
+                .HasColumnType("date")
+                .HasColumnName("fCoupon_StartDate");
+            entity.Property(e => e.FCouponTypeName)
+                .HasMaxLength(50)
+                .HasColumnName("fCouponType_Name");
+        });
+
+        modelBuilder.Entity<TCreditCardType>(entity =>
+        {
+            entity.HasKey(e => e.FCreditCardTypeId).HasName("PK_CreditCard");
+
+            entity.ToTable("tCreditCardType", "Order");
+
+            entity.Property(e => e.FCreditCardTypeId).HasColumnName("fCreditCardType_ID");
+            entity.Property(e => e.FCreditCardType)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("fCreditCardType");
+            entity.Property(e => e.FPriceRate).HasColumnName("fPriceRate");
+        });
+
+        modelBuilder.Entity<TDirector>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_Directors");
+
+            entity.ToTable("tDirector", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FImagePath).HasColumnName("fImagePath");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
+            entity.Property(e => e.FNameEng)
+                .HasMaxLength(50)
+                .HasColumnName("fNameEng");
+        });
+
+        modelBuilder.Entity<TDirectorList>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieDirectors");
+
+            entity.ToTable("tDirectorList", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FDirectorId).HasColumnName("fDirectorId");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
+
+            entity.HasOne(d => d.FDirector).WithMany(p => p.TDirectorLists)
+                .HasForeignKey(d => d.FDirectorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieDirectorsList_Directors");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TDirectorLists)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieDirectors_Movie");
+        });
+
+        modelBuilder.Entity<TEmployee>(entity =>
+        {
+            entity.HasKey(e => e.FEmployeeId).HasName("PK_Employee");
+
+            entity.ToTable("tEmployee", "Employee");
+
+            entity.Property(e => e.FEmployeeId).HasColumnName("fEmployee_ID");
+            entity.Property(e => e.FAccess).HasColumnName("fAccess");
+            entity.Property(e => e.FEmployeeAccount)
+                .HasMaxLength(50)
+                .HasColumnName("fEmployeeAccount");
+            entity.Property(e => e.FPassword)
+                .HasMaxLength(50)
+                .HasColumnName("fPassword");
+        });
+
         modelBuilder.Entity<TFaq>(entity =>
         {
             entity.HasKey(e => e.FFaqid).HasName("PK_FAQ");
@@ -618,6 +446,19 @@ public partial class MovieContext : DbContext
                 .HasConstraintName("FK_FAQ_CnQTypes");
         });
 
+        modelBuilder.Entity<TGender>(entity =>
+        {
+            entity.HasKey(e => e.FGenderId).HasName("PK_Gender");
+
+            entity.ToTable("tGender", "Members");
+
+            entity.Property(e => e.FGenderId).HasColumnName("fGenderID");
+            entity.Property(e => e.FGenderName)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("fGender_Name");
+        });
+
         modelBuilder.Entity<THashtag>(entity =>
         {
             entity.HasKey(e => e.FHashtagId).HasName("PK_Hashtags");
@@ -628,6 +469,221 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FText)
                 .HasMaxLength(20)
                 .HasColumnName("fText");
+        });
+
+        modelBuilder.Entity<TImage>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieImage");
+
+            entity.ToTable("tImage", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(50)
+                .HasColumnName("fImagePath");
+        });
+
+        modelBuilder.Entity<TImageList>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieImageList");
+
+            entity.ToTable("tImageList", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FImageId).HasColumnName("fImageId");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
+
+            entity.HasOne(d => d.FImage).WithMany(p => p.TImageLists)
+                .HasForeignKey(d => d.FImageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieImageList_MovieImage");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TImageLists)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieImagesList_Movies");
+        });
+
+        modelBuilder.Entity<TLanguage>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieLanguage");
+
+            entity.ToTable("tLanguage", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
+        });
+
+        modelBuilder.Entity<TLanguageList>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieCode");
+
+            entity.ToTable("tLanguageList", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FLanguageId).HasColumnName("fLanguageId");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
+
+            entity.HasOne(d => d.FLanguage).WithMany(p => p.TLanguageLists)
+                .HasForeignKey(d => d.FLanguageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieCode_MovieLanguage");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TLanguageLists)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieLanguagesList_Movies");
+        });
+
+        modelBuilder.Entity<TMember>(entity =>
+        {
+            entity.HasKey(e => e.FMemberId).HasName("PK_Member");
+
+            entity.ToTable("tMember", "Members");
+
+            entity.Property(e => e.FMemberId)
+                .ValueGeneratedNever()
+                .HasColumnName("fMemberID");
+            entity.Property(e => e.FBirthDate)
+                .HasColumnType("date")
+                .HasColumnName("fBirthDate");
+            entity.Property(e => e.FCreatedDate)
+                .HasColumnType("date")
+                .HasColumnName("fCreatedDate");
+            entity.Property(e => e.FEmail)
+                .HasMaxLength(50)
+                .HasColumnName("fEmail");
+            entity.Property(e => e.FGenderId).HasColumnName("fGenderID");
+            entity.Property(e => e.FIdcardNumber)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("fIDCardNumber");
+            entity.Property(e => e.FMembershipId).HasColumnName("fMembershipID");
+            entity.Property(e => e.FName)
+                .HasMaxLength(10)
+                .HasColumnName("fName");
+            entity.Property(e => e.FNickname)
+                .HasMaxLength(10)
+                .HasColumnName("fNickname");
+            entity.Property(e => e.FPassword)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("fPassword");
+            entity.Property(e => e.FPhone)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("fPhone");
+
+            entity.HasOne(d => d.FGender).WithMany(p => p.TMembers)
+                .HasForeignKey(d => d.FGenderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Member_Gender");
+
+            entity.HasOne(d => d.FMembership).WithMany(p => p.TMembers)
+                .HasForeignKey(d => d.FMembershipId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Member_Membership");
+        });
+
+        modelBuilder.Entity<TMemberAction>(entity =>
+        {
+            entity.HasKey(e => e.FMemberActionId).HasName("PK_MemberAction");
+
+            entity.ToTable("tMemberAction", "Members");
+
+            entity.Property(e => e.FMemberActionId).HasColumnName("fMemberActionID");
+            entity.Property(e => e.FActionTypeId).HasColumnName("fActionTypeID");
+            entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieID");
+            entity.Property(e => e.FTimeStamp)
+                .HasColumnType("datetime")
+                .HasColumnName("fTimeStamp");
+
+            entity.HasOne(d => d.FActionType).WithMany(p => p.TMemberActions)
+                .HasForeignKey(d => d.FActionTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MemberAction_ActionType");
+
+            entity.HasOne(d => d.FMember).WithMany(p => p.TMemberActions)
+                .HasForeignKey(d => d.FMemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MemberAction_Member1");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TMemberActions)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MemberAction_Movie");
+        });
+
+        modelBuilder.Entity<TMembership>(entity =>
+        {
+            entity.HasKey(e => e.FMembershipId).HasName("PK_Membership");
+
+            entity.ToTable("tMembership", "Members");
+
+            entity.Property(e => e.FMembershipId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("fMembershipID");
+            entity.Property(e => e.FMembershipName)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("fMembership_Name");
+            entity.Property(e => e.FPriceRate)
+                .HasColumnType("decimal(3, 2)")
+                .HasColumnName("fPriceRate");
+        });
+
+        modelBuilder.Entity<TMembershipChangeLog>(entity =>
+        {
+            entity.HasKey(e => e.FMembershipChangeLogId).HasName("PK_MembershipChangeLog");
+
+            entity.ToTable("tMembershipChangeLog", "Members");
+
+            entity.Property(e => e.FMembershipChangeLogId).HasColumnName("fMembershipChangeLogID");
+            entity.Property(e => e.FChangeDate)
+                .HasColumnType("datetime")
+                .HasColumnName("fChangeDate");
+            entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
+            entity.Property(e => e.FMembershipId).HasColumnName("fMembershipID");
+        });
+
+        modelBuilder.Entity<TMovie>(entity =>
+        {
+            entity.HasKey(e => e.FMovieId).HasName("PK_Movie");
+
+            entity.ToTable("tMovie", "Movie");
+
+            entity.Property(e => e.FMovieId)
+                .ValueGeneratedNever()
+                .HasColumnName("fMovieId");
+            entity.Property(e => e.FInteroduce).HasColumnName("fInteroduce");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
+            entity.Property(e => e.FNameEng)
+                .HasMaxLength(50)
+                .HasColumnName("fNameEng");
+            entity.Property(e => e.FPosterPath)
+                .HasMaxLength(50)
+                .HasColumnName("fPosterPath");
+            entity.Property(e => e.FPrice)
+                .HasColumnType("money")
+                .HasColumnName("fPrice");
+            entity.Property(e => e.FScheduleEnd)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fScheduleEnd");
+            entity.Property(e => e.FScheduleStart)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fScheduleStart");
+            entity.Property(e => e.FSeriesId).HasColumnName("fSeriesId");
+            entity.Property(e => e.FShowLength).HasColumnName("fShowLength");
+            entity.Property(e => e.FTrailerLink).HasColumnName("fTrailerLink");
+
+            entity.HasOne(d => d.FSeries).WithMany(p => p.TMovies)
+                .HasForeignKey(d => d.FSeriesId)
+                .HasConstraintName("FK_Movie_MovieSeries");
         });
 
         modelBuilder.Entity<TMovieCmt>(entity =>
@@ -685,6 +741,200 @@ public partial class MovieContext : DbContext
                 .HasConstraintName("FK_Com_Hash_Hashtags");
         });
 
+        modelBuilder.Entity<TOrder>(entity =>
+        {
+            entity.HasKey(e => e.FOrderId).HasName("PK_Order");
+
+            entity.ToTable("tOrder", "Order");
+
+            entity.Property(e => e.FOrderId)
+                .ValueGeneratedNever()
+                .HasColumnName("fOrder_ID");
+            entity.Property(e => e.FCouponId).HasColumnName("fCoupon_ID");
+            entity.Property(e => e.FCreditCardTypeId).HasColumnName("fCreditCardType_ID");
+            entity.Property(e => e.FInvoiceNumber).HasColumnName("fInvoiceNumber");
+            entity.Property(e => e.FMemberId).HasColumnName("fMember_ID");
+            entity.Property(e => e.FOrderDate)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fOrderDate");
+            entity.Property(e => e.FPayTypeId).HasColumnName("fPayType_ID");
+            entity.Property(e => e.FSessionId).HasColumnName("fSession_ID");
+            entity.Property(e => e.FTotalPrice).HasColumnName("fTotalPrice");
+
+            entity.HasOne(d => d.FCreditCardType).WithMany(p => p.TOrders)
+                .HasForeignKey(d => d.FCreditCardTypeId)
+                .HasConstraintName("FK_Order_CreditCardType");
+
+            entity.HasOne(d => d.FMember).WithMany(p => p.TOrders)
+                .HasForeignKey(d => d.FMemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Member");
+
+            entity.HasOne(d => d.FPayType).WithMany(p => p.TOrders)
+                .HasForeignKey(d => d.FPayTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_PayType");
+
+            entity.HasOne(d => d.FSession).WithMany(p => p.TOrders)
+                .HasForeignKey(d => d.FSessionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Session");
+        });
+
+        modelBuilder.Entity<TOrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.FOrderDetailId).HasName("PK_OrderDetail");
+
+            entity.ToTable("tOrderDetail", "Order");
+
+            entity.Property(e => e.FOrderDetailId)
+                .ValueGeneratedNever()
+                .HasColumnName("fOrderDetail_ID");
+            entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
+            entity.Property(e => e.FSeatId).HasColumnName("fSeat_ID");
+            entity.Property(e => e.FTicketClassId).HasColumnName("fTicketClass_ID");
+
+            entity.HasOne(d => d.FOrder).WithMany(p => p.TOrderDetails)
+                .HasForeignKey(d => d.FOrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderDetail_Order");
+
+            entity.HasOne(d => d.FSeat).WithMany(p => p.TOrderDetails)
+                .HasForeignKey(d => d.FSeatId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderDetail_Seat");
+
+            entity.HasOne(d => d.FTicketClass).WithMany(p => p.TOrderDetails)
+                .HasForeignKey(d => d.FTicketClassId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderDetail_TicketClass");
+        });
+
+        modelBuilder.Entity<TOrderStatus>(entity =>
+        {
+            entity.HasKey(e => e.FOrderStatusId).HasName("PK_OrderStatus");
+
+            entity.ToTable("tOrderStatus", "Order");
+
+            entity.Property(e => e.FOrderStatusId).HasColumnName("fOrderStatus_ID");
+            entity.Property(e => e.FChangedTime)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fChangedTime");
+            entity.Property(e => e.FOrderStatus)
+                .HasMaxLength(15)
+                .HasColumnName("fOrderStatus");
+        });
+
+        modelBuilder.Entity<TOrderStatusLog>(entity =>
+        {
+            entity.HasKey(e => e.FOrderStatusLogId).HasName("PK_OrderStatusLog");
+
+            entity.ToTable("tOrderStatusLog", "Order");
+
+            entity.Property(e => e.FOrderStatusLogId).HasColumnName("fOrderStatusLog_ID");
+            entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
+            entity.Property(e => e.FOrderStatusId).HasColumnName("fOrderStatus_ID");
+
+            entity.HasOne(d => d.FOrder).WithMany(p => p.TOrderStatusLogs)
+                .HasForeignKey(d => d.FOrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderStatusLog_Order");
+
+            entity.HasOne(d => d.FOrderStatus).WithMany(p => p.TOrderStatusLogs)
+                .HasForeignKey(d => d.FOrderStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderStatusLog_OrderStatus");
+        });
+
+        modelBuilder.Entity<TPayType>(entity =>
+        {
+            entity.HasKey(e => e.FPayTypeId).HasName("PK_PayType");
+
+            entity.ToTable("tPayType", "Order");
+
+            entity.Property(e => e.FPayTypeId).HasColumnName("fPayType_ID");
+            entity.Property(e => e.FPayType)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("fPayType");
+        });
+
+        modelBuilder.Entity<TProduct>(entity =>
+        {
+            entity.HasKey(e => e.FProductId).HasName("PK_Products");
+
+            entity.ToTable("tProduct", "Products");
+
+            entity.Property(e => e.FProductId)
+                .ValueGeneratedNever()
+                .HasColumnName("fProduct_ID");
+            entity.Property(e => e.FCategoryId).HasColumnName("fCategory_ID");
+            entity.Property(e => e.FImage)
+                .HasColumnType("image")
+                .HasColumnName("fImage");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(50)
+                .HasColumnName("fImagePath");
+            entity.Property(e => e.FIntroduce)
+                .HasMaxLength(50)
+                .HasColumnName("fIntroduce");
+            entity.Property(e => e.FProductName)
+                .HasMaxLength(50)
+                .HasColumnName("fProductName");
+            entity.Property(e => e.FProductPrice).HasColumnName("fProductPrice");
+
+            entity.HasOne(d => d.FCategory).WithMany(p => p.TProducts)
+                .HasForeignKey(d => d.FCategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Products_Category");
+        });
+
+        modelBuilder.Entity<TReceipt>(entity =>
+        {
+            entity.HasKey(e => e.FReceiptId).HasName("PK_Receipt");
+
+            entity.ToTable("tReceipt", "Products");
+
+            entity.Property(e => e.FReceiptId)
+                .ValueGeneratedNever()
+                .HasColumnName("fReceipt_ID");
+            entity.Property(e => e.FMemberId).HasColumnName("fMember_ID");
+            entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
+            entity.Property(e => e.FReceiptDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fReceiptDate");
+
+            entity.HasOne(d => d.FMember).WithMany(p => p.TReceipts)
+                .HasForeignKey(d => d.FMemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Receipt_Member");
+        });
+
+        modelBuilder.Entity<TReceiptDetail>(entity =>
+        {
+            entity.HasKey(e => e.FReceiptDetailId).HasName("PK_ReceiptDetail");
+
+            entity.ToTable("tReceiptDetail", "Products");
+
+            entity.Property(e => e.FReceiptDetailId)
+                .ValueGeneratedNever()
+                .HasColumnName("fReceiptDetail_ID");
+            entity.Property(e => e.FProductId).HasColumnName("fProduct_ID");
+            entity.Property(e => e.FQty).HasColumnName("fQty");
+            entity.Property(e => e.FReceiptId).HasColumnName("fReceipt_ID");
+
+            entity.HasOne(d => d.FProduct).WithMany(p => p.TReceiptDetails)
+                .HasForeignKey(d => d.FProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReceiptDetail_Products");
+
+            entity.HasOne(d => d.FReceipt).WithMany(p => p.TReceiptDetails)
+                .HasForeignKey(d => d.FReceiptId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReceiptDetail_Receipt");
+        });
+
         modelBuilder.Entity<TReply>(entity =>
         {
             entity.HasKey(e => e.FReplyId).HasName("PK_Replies");
@@ -695,6 +945,84 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FReply)
                 .HasMaxLength(300)
                 .HasColumnName("fReply");
+        });
+
+        modelBuilder.Entity<TSeat>(entity =>
+        {
+            entity.HasKey(e => e.FSeatId).HasName("PK_Seat");
+
+            entity.ToTable("tSeat", "Theater");
+
+            entity.Property(e => e.FSeatId).HasColumnName("fSeat_ID");
+            entity.Property(e => e.FSeatNum).HasColumnName("fSeatNum");
+            entity.Property(e => e.FSeatRow).HasColumnName("fSeatRow");
+            entity.Property(e => e.FSeatStatusId).HasColumnName("fSeatStatus_ID");
+            entity.Property(e => e.FTheaterId).HasColumnName("fTheater_ID");
+
+            entity.HasOne(d => d.FSeatStatus).WithMany(p => p.TSeats)
+                .HasForeignKey(d => d.FSeatStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Seat_SeatStatus");
+
+            entity.HasOne(d => d.FTheater).WithMany(p => p.TSeats)
+                .HasForeignKey(d => d.FTheaterId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Seat_Theater");
+        });
+
+        modelBuilder.Entity<TSeatStatus>(entity =>
+        {
+            entity.HasKey(e => e.FSeatStatusId).HasName("PK_SeatStatus");
+
+            entity.ToTable("tSeatStatus", "Theater");
+
+            entity.HasIndex(e => e.FSeatStatusId, "IX_SeatStatus").IsUnique();
+
+            entity.Property(e => e.FSeatStatusId)
+                .ValueGeneratedNever()
+                .HasColumnName("fSeatStatus_ID");
+            entity.Property(e => e.FSeatStatus)
+                .HasMaxLength(10)
+                .HasColumnName("fSeatStatus");
+        });
+
+        modelBuilder.Entity<TSeries>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_MovieSeries");
+
+            entity.ToTable("tSeries", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
+        });
+
+        modelBuilder.Entity<TSession>(entity =>
+        {
+            entity.HasKey(e => e.FSessionId).HasName("PK_Session");
+
+            entity.ToTable("tSession", "Theater");
+
+            entity.Property(e => e.FSessionId).HasColumnName("fSession_ID");
+            entity.Property(e => e.FEndTime)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fEndTime");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovie_ID");
+            entity.Property(e => e.FStartTime)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("fStartTime");
+            entity.Property(e => e.FTheaterId).HasColumnName("fTheater_ID");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TSessions)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Session_Movie");
+
+            entity.HasOne(d => d.FTheater).WithMany(p => p.TSessions)
+                .HasForeignKey(d => d.FTheaterId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Session_Theater");
         });
 
         modelBuilder.Entity<TStatusType>(entity =>
@@ -709,286 +1037,61 @@ public partial class MovieContext : DbContext
                 .HasColumnName("fStatusText");
         });
 
-        modelBuilder.Entity<Theater>(entity =>
+        modelBuilder.Entity<TTheater>(entity =>
         {
-            entity.ToTable("Theater", "Theater");
+            entity.HasKey(e => e.FTheaterId).HasName("PK_Theater");
 
-            entity.Property(e => e.TheaterId)
+            entity.ToTable("tTheater", "Theater");
+
+            entity.Property(e => e.FTheaterId)
                 .ValueGeneratedNever()
-                .HasColumnName("Theater_ID");
-            entity.Property(e => e.Theater1)
+                .HasColumnName("fTheater_ID");
+            entity.Property(e => e.FTheater)
                 .HasMaxLength(20)
-                .HasColumnName("Theater");
-            entity.Property(e => e.TheaterClassId).HasColumnName("TheaterClass_ID");
+                .HasColumnName("fTheater");
+            entity.Property(e => e.FTheaterClassId).HasColumnName("fTheaterClass_ID");
 
-            entity.HasOne(d => d.TheaterClass).WithMany(p => p.Theaters)
-                .HasForeignKey(d => d.TheaterClassId)
+            entity.HasOne(d => d.FTheaterClass).WithMany(p => p.TTheaters)
+                .HasForeignKey(d => d.FTheaterClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Theater_TheaterClass");
         });
 
-        modelBuilder.Entity<TheaterClass>(entity =>
+        modelBuilder.Entity<TTheaterClass>(entity =>
         {
-            entity.ToTable("TheaterClass", "Theater");
+            entity.HasKey(e => e.FTheaterClassId).HasName("PK_TheaterClass");
 
-            entity.Property(e => e.TheaterClassId).HasColumnName("TheaterClass_ID");
-            entity.Property(e => e.PriceRate).HasColumnType("decimal(3, 2)");
-            entity.Property(e => e.TheaterClass1)
+            entity.ToTable("tTheaterClass", "Theater");
+
+            entity.Property(e => e.FTheaterClassId).HasColumnName("fTheaterClass_ID");
+            entity.Property(e => e.FPriceRate)
+                .HasColumnType("decimal(3, 2)")
+                .HasColumnName("fPriceRate");
+            entity.Property(e => e.FTheaterClass)
                 .HasMaxLength(10)
-                .HasColumnName("TheaterClass");
+                .HasColumnName("fTheaterClass");
         });
 
-        modelBuilder.Entity<TicketClass>(entity =>
+        modelBuilder.Entity<TTicketClass>(entity =>
         {
-            entity.HasKey(e => e.TicketClassId).HasName("PK_Ticket_Class");
+            entity.HasKey(e => e.FTicketClassId).HasName("PK_Ticket_Class");
 
-            entity.ToTable("TicketClass", "Theater");
+            entity.ToTable("tTicketClass", "Theater");
 
-            entity.Property(e => e.TicketClassId).HasColumnName("TicketClass_ID");
-            entity.Property(e => e.PriceRate).HasColumnType("decimal(3, 2)");
-            entity.Property(e => e.TicketClass1)
+            entity.Property(e => e.FTicketClassId).HasColumnName("fTicketClass_ID");
+            entity.Property(e => e.FPriceRate)
+                .HasColumnType("decimal(3, 2)")
+                .HasColumnName("fPriceRate");
+            entity.Property(e => e.FTicketClass)
                 .HasMaxLength(10)
-                .HasColumnName("TicketClass");
+                .HasColumnName("fTicketClass");
         });
 
-        modelBuilder.Entity<TmActor>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_Actors");
-
-            entity.ToTable("tmActor", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FActorImagePath)
-                .HasMaxLength(50)
-                .HasColumnName("fActorImagePath");
-            entity.Property(e => e.FActorNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fActorNameCht");
-            entity.Property(e => e.FActorNameEng)
-                .HasMaxLength(50)
-                .HasColumnName("fActorNameEng");
-        });
-
-        modelBuilder.Entity<TmActorList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_Case");
-
-            entity.ToTable("tmActorList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FActorId).HasColumnName("fActorId");
-            entity.Property(e => e.FCharactorNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fCharactorNameCht");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FActor).WithMany(p => p.TmActorLists)
-                .HasForeignKey(d => d.FActorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Case_Actors");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TmActorLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Case_Movie");
-        });
-
-        modelBuilder.Entity<TmCountry>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_Country");
-
-            entity.ToTable("tmCountry", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImagePath)
-                .HasMaxLength(50)
-                .HasColumnName("fImagePath");
-            entity.Property(e => e.FNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fNameCht");
-            entity.Property(e => e.FNameEng)
-                .HasMaxLength(50)
-                .HasColumnName("fNameEng");
-        });
-
-        modelBuilder.Entity<TmCountryList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieOrigin");
-
-            entity.ToTable("tmCountryList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FCountryId).HasColumnName("fCountryId");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FCountry).WithMany(p => p.TmCountryLists)
-                .HasForeignKey(d => d.FCountryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieOrigin_Country");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TmCountryLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieCountriesList_Movies");
-        });
-
-        modelBuilder.Entity<TmDirector>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_Directors");
-
-            entity.ToTable("tmDirector", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImagePath).HasColumnName("fImagePath");
-            entity.Property(e => e.FNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fNameCht");
-            entity.Property(e => e.FNameEng)
-                .HasMaxLength(50)
-                .HasColumnName("fNameEng");
-        });
-
-        modelBuilder.Entity<TmDirectorList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieDirectors");
-
-            entity.ToTable("tmDirectorList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FDirectorId).HasColumnName("fDirectorId");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FDirector).WithMany(p => p.TmDirectorLists)
-                .HasForeignKey(d => d.FDirectorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieDirectorsList_Directors");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TmDirectorLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieDirectors_Movie");
-        });
-
-        modelBuilder.Entity<TmImage>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieImage");
-
-            entity.ToTable("tmImage", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImagePath)
-                .HasMaxLength(50)
-                .HasColumnName("fImagePath");
-        });
-
-        modelBuilder.Entity<TmImageList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieImageList");
-
-            entity.ToTable("tmImageList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImageId).HasColumnName("fImageId");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FImage).WithMany(p => p.TmImageLists)
-                .HasForeignKey(d => d.FImageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieImageList_MovieImage");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TmImageLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieImagesList_Movies");
-        });
-
-        modelBuilder.Entity<TmLanguage>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieLanguage");
-
-            entity.ToTable("tmLanguage", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fNameCht");
-        });
-
-        modelBuilder.Entity<TmLanguageList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieCode");
-
-            entity.ToTable("tmLanguageList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FLanguageId).HasColumnName("fLanguageId");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FLanguage).WithMany(p => p.TmLanguageLists)
-                .HasForeignKey(d => d.FLanguageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieCode_MovieLanguage");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TmLanguageLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieLanguagesList_Movies");
-        });
-
-        modelBuilder.Entity<TmMovie>(entity =>
-        {
-            entity.HasKey(e => e.FMovieId).HasName("PK_Movie");
-
-            entity.ToTable("tmMovie", "Movie");
-
-            entity.Property(e => e.FMovieId)
-                .ValueGeneratedNever()
-                .HasColumnName("fMovieId");
-            entity.Property(e => e.FInteroduce).HasColumnName("fInteroduce");
-            entity.Property(e => e.FNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fNameCht");
-            entity.Property(e => e.FNameEng)
-                .HasMaxLength(50)
-                .HasColumnName("fNameEng");
-            entity.Property(e => e.FPosterPath)
-                .HasMaxLength(50)
-                .HasColumnName("fPosterPath");
-            entity.Property(e => e.FPrice)
-                .HasColumnType("money")
-                .HasColumnName("fPrice");
-            entity.Property(e => e.FScheduleEnd)
-                .HasColumnType("smalldatetime")
-                .HasColumnName("fScheduleEnd");
-            entity.Property(e => e.FScheduleStart)
-                .HasColumnType("smalldatetime")
-                .HasColumnName("fScheduleStart");
-            entity.Property(e => e.FSeriesId).HasColumnName("fSeriesId");
-            entity.Property(e => e.FShowLength).HasColumnName("fShowLength");
-            entity.Property(e => e.FTrailerLink).HasColumnName("fTrailerLink");
-
-            entity.HasOne(d => d.FSeries).WithMany(p => p.TmMovies)
-                .HasForeignKey(d => d.FSeriesId)
-                .HasConstraintName("FK_Movie_MovieSeries");
-        });
-
-        modelBuilder.Entity<TmSeries>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieSeries");
-
-            entity.ToTable("tmSeries", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FNameCht)
-                .HasMaxLength(50)
-                .HasColumnName("fNameCht");
-        });
-
-        modelBuilder.Entity<TmType>(entity =>
+        modelBuilder.Entity<TType>(entity =>
         {
             entity.HasKey(e => e.FId).HasName("PK_MovieTypeList");
 
-            entity.ToTable("tmType", "Movie");
+            entity.ToTable("tType", "Movie");
 
             entity.Property(e => e.FId).HasColumnName("fId");
             entity.Property(e => e.FNameCht)
@@ -996,22 +1099,22 @@ public partial class MovieContext : DbContext
                 .HasColumnName("fNameCht");
         });
 
-        modelBuilder.Entity<TmTypeList>(entity =>
+        modelBuilder.Entity<TTypeList>(entity =>
         {
             entity.HasKey(e => e.FId).HasName("PK_MovieType");
 
-            entity.ToTable("tmTypeList", "Movie");
+            entity.ToTable("tTypeList", "Movie");
 
             entity.Property(e => e.FId).HasColumnName("fId");
             entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
             entity.Property(e => e.FTypeId).HasColumnName("fTypeId");
 
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TmTypeLists)
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TTypeLists)
                 .HasForeignKey(d => d.FMovieId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MovieType_Movie");
 
-            entity.HasOne(d => d.FType).WithMany(p => p.TmTypeLists)
+            entity.HasOne(d => d.FType).WithMany(p => p.TTypeLists)
                 .HasForeignKey(d => d.FTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MovieType_MovieTypeList");
