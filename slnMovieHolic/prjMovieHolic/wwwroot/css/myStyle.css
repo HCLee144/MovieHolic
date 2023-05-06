@@ -44,6 +44,22 @@
     justify-content: space-between;
 }
 
+.movieCard a {
+    text-decoration: none;
+}
+
+.movieCardFontColorBlack {
+    color: #111;
+}
+
+.movieCard:hover {
+    background-color: darkgrey;
+}
+
+.movieCard img {
+    width: 200px;
+}
+
 .movieCard h3 {
     font-size: 22px;
     margin-bottom: px;
