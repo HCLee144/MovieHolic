@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc().AddJsonOptions(options =>
 {
-    //允許基本拉丁英文及中日韓文字維持原字元
+
     options.JsonSerializerOptions.Encoder =
         JavaScriptEncoder.Create(UnicodeRanges.All);
 });
@@ -34,6 +34,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=MovieSession}/{action=ViewSession}/{id?}");
+    pattern: "{controller=SessionBack}/{action=ViewSession}/{id?}");
 
 app.Run();
