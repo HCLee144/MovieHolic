@@ -23,7 +23,6 @@
     }
 
 /*浮動區塊*/
-
 .position {
     background-color: #10a5d6;
     width: 120px;
@@ -38,16 +37,16 @@
     top: 700px;
     right: 30px;
 }
+ .position:hover {
+    background-color: rgb(182, 182, 182);
+    color: #10a5d6;
 
-    .position:hover {
-        background-color: rgb(182, 182, 182);
-        color: #10a5d6;
-    }
+ }
 
-    .position a {
-        color: #eaeaea;
-        text-decoration: none;
-    }
+.position a {
+    color: #eaeaea;
+    text-decoration: none;
+}
 
 
 
