@@ -55,13 +55,10 @@ namespace prjMovieHolic.Controllers
                 {
                     SessionTheaterAndTimeData sessionData = new SessionTheaterAndTimeData();
                     sessionData.x = _db.TTheaters.Where(m => m.FTheaterId ==session.FTheaterId).First().FTheater;
-                    sessionData.y = new string[]
+                    sessionData.y = new long[]
                     {
-                        //(long)((session.FStartTime.ToUniversalTime() - new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc)).TotalMicroseconds+0.5),
-                        //(long)((session.FEndTime.ToUniversalTime() - new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc)).TotalMicroseconds+0.5)
-                        session.FStartTime.ToString(),
-                        session.FEndTime.ToString(),
-
+                        new DateTimeOffset(session.FStartTime.AddHours(8)).ToUnixTimeMilliseconds(),
+                         new DateTimeOffset(session.FEndTime.AddHours(8)).ToUnixTimeMilliseconds()
                     };
                     datas.Where(data => data.name==movieName).First().data.Add(sessionData);
                 }

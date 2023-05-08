@@ -21,6 +21,7 @@
 
         const selectDate = document.querySelector('#selectDate');
         const test = document.querySelector('#test');
+        const chart = document.querySelector('#chart');
         var chartData;
 
         //生成連續21天日期list
@@ -41,6 +42,7 @@
             //const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`)
             //chartData = await response.text();
             //test.innerHTML = chartData;
+            chart.innerHTML ="";
             CreateChart(date);
         })
 
@@ -48,31 +50,13 @@
 
         async function CreateChart(date){
             const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`)
-            chartData = await response.text();
+            //chartData = await response.text();
+            chartData = await response.json();
             console.log(chartData)
 
             var options=
             {
-                series: 
-                [
-                    {
-                        "name":"媽的",
-                        "data" :
-                        [
-                            {
-                                "x" : "IMAX",
-                                "y" : [
-
-                                            new Date(2023,5,9,10,24).getTime(),
-                                            new Date(2023, 5, 9, 12, 53).getTime()
-                                    
-                                ]
-                            }
-                        ]
-                    }
-                ]
-                
-                    ,
+                series:chartData,
                 chart: {
                     height: 300,
                     type: 'rangeBar'
@@ -81,6 +65,7 @@
                     bar: {
                         horizontal: true,
                         barHeight: '50%',
+                        rangeBarGroupRows: true
                     }
                 },
                 fill: {
@@ -97,25 +82,6 @@
             chart.render();
 
         }
-
-        //var options = {
-        //    chart: {
-        //        type: 'line'
-        //    },
-        //    series: [{
-        //        name: 'sales',
-        //        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-        //    }],
-        //    xaxis: {
-        //        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-        //    }
-        //}
-
-
-        //var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-        //chart.render();
-
 
     </script>
 }
