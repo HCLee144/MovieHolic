@@ -52,7 +52,6 @@
         })
 
         //生成表格
-
         async function CreateChart(date){
             const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`)
             chartData = await response.json();
@@ -65,8 +64,13 @@
                     height: 300,
                     type: 'rangeBar',
                     events: {
-                        dataPointSelection: function (event, chartContext, config) {
-                            console.log(config)
+                        dataPointSelection: async function (event, chartContext, config) {
+                            console.log(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].x)
+                            console.log(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].y[0])
+                            let theater = config.w.config.series[config.seriesIndex].data[config.dataPointIndex].x
+                            let startTimeStamp = new Date(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].y[0]-28800000)
+                            let start = `${startTimeStamp.getFullYear()}-${startTimeStamp.getMonth() + 1}-${startTimeStamp.getDate()} ${startTimeStamp.getHours()}:${startTimeStamp.getMinutes()}:${startTimeStamp.getSeconds()}`;
+                            console.log(start)
                             edit.innerHTML = '<form><input type="button"  value = "修改場次" /><input type="button" value = "新增場次" /></form>'
                         },
                     }
@@ -94,6 +98,19 @@
                     x:{
                         format :"HH:mm:ss"
                     }
+                },
+                toolbar:{
+                    show:false,
+                    tools:{
+                        zoom:false
+                        
+                    }
+                },
+                selection: {
+                    enabled: true
+                },
+                zoom:{
+                    enabled:false
                 }
             }
             var chartCreate = new ApexCharts(document.querySelector("#chart"), options);
