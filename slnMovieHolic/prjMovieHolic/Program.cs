@@ -1,7 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using prjMovieHolic.Models;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMvc().AddJsonOptions(options =>
+{
+
+    options.JsonSerializerOptions.Encoder =
+        JavaScriptEncoder.Create(UnicodeRanges.All);
+});
+builder.Services.AddDbContext<MovieContext>(
+    options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("MovieConnection")));
 
 var app = builder.Build();
 
@@ -22,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=SessionBack}/{action=ViewSession}/{id?}");
 
 app.Run();

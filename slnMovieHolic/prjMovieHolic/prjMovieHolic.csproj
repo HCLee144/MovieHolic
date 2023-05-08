@@ -88,10 +88,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\images\aa.jpg" />
     <None Include="wwwroot\images\aaa.jpg" />
     <None Include="wwwroot\images\banner1.jpg" />
