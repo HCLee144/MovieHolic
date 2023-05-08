@@ -22,7 +22,36 @@
     text-decoration: none;
 }
 
-.myBr{
+/*浮動區塊*/
+
+.position {
+    background-color: #10a5d6;
+    width: 120px;
+    height: 120px;
+    border-radius: 100px;
+    color: #eaeaea;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 120px;
+    text-align: center;
+    position: fixed;
+    top: 700px;
+    right: 30px;
+}
+
+    .position:hover {
+        background-color: rgb(182, 182, 182);
+        color: #10a5d6;
+    }
+
+    .position a {
+        color: #eaeaea;
+        text-decoration: none;
+    }
+
+
+
+.myBr {
     height: 25px;
 }
 .hotMoviePlaceLine {
@@ -37,17 +66,36 @@
     justify-content: space-between;
     font-weight: bold;
 }
-.wrapper2{
+
+.wrapper2 {
     display: flex;
     justify-content: space-between;
 }
+
+.movieCard a {
+    text-decoration: none;
+}
+
+.movieCardFontColorBlack {
+    color: #111;
+}
+
+.movieCard:hover {
+    background-color: darkgrey;
+}
+
+.movieCard img {
+    width: 200px;
+}
+
 .movieCard h3 {
     font-size: 22px;
-    margin-bottom:px;
+    color: #373737;
 }
 
 .movieCard li {
     font-size: 18px;
+    color: #373737;
 }
 
 .buyNow {
@@ -56,13 +104,15 @@
     line-height: 28px;
     text-decoration: none;
     padding: 0 14px;
-    background:#10a5d6;
+    background: #10a5d6;
     margin-top: 15px;
     margin-left: 94px;
-}    
-.buyNow:hover {
-    background: #373737
 }
+
+    .buyNow:hover {
+        background: #373737
+    }
+
 .notYetMoviePlaceLine {
     height: 45px;
     background-color: #3a3939;
@@ -75,114 +125,165 @@
     justify-content: space-between;
     font-weight: bold;
 }
-.homePagebottom{
+
+.homePagebottom {
     /*background: #363636;*/
     /*background-color: rgb(19, 32, 49);*/
     height: 160px;
     width: 1016px;
     margin: 0 auto;
-    padding:60px;
-    display: flex;
-    justify-content:space-around;
-}
-.bottomLinkbox{
-    color: #237d9b;
-}
-.bottomLinkbox h3{
-    font-size: 20px;
-    margin-bottom: 20px;
-    margin-left: 8px;
-}
-.bottomLinkbox li{
-    font-size: 14px;
-    margin: 10px;
-}
-
-/*第二頁的東西*/
-/*流程圓圈在這裡*/
-.orderStep{
-    margin-bottom: 30px;
-}
-.orderStep a{
-    text-decoration: none;
-}
-.orderStep ul{
+    padding: 60px;
     display: flex;
     justify-content: space-around;
 }
-.orderStep img{
-    margin-top: 40px;
-    width: 20px;
+
+.bottomLinkbox {
+    color: #237d9b;
 }
-.liInOrderstep{
-    background-color:#10a5d6;
+
+    .bottomLinkbox h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-left: 8px;
+    }
+
+    .bottomLinkbox li {
+        font-size: 14px;
+        margin: 10px;
+    }
+
+/*快速訂票的東西*/
+/*流程圓圈在這裡*/
+.orderStep {
+    margin-bottom: 30px;
+}
+
+    .orderStep a {
+        text-decoration: none;
+    }
+
+    .orderStep ul {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .orderStep img {
+        margin-top: 50px;
+        width: 20px;
+    }
+
+.liInOrderstep {
+    background-color: #10a5d6;
+    border: 10px solid rgb(236, 236, 236);
     color: #fff;
     display: block;
-    border-radius: 50px;
-    width: 100px;
-    height: 100px;    
+    border-radius: 75px;
+    width: 120px;
+    height: 120px;
     font-size: 20px;
     line-height: 100px;
     text-align: center;
 }
-.liInOrderstephere{
-    background-color: rgb(182, 182, 182);
-    color: #10a5d6;
+/*特別變色的圈圈是這一塊*/
+.liInOrderstephere {
+    background-color: #105190;
+    color: #eaeaea;
     display: block;
-    border-radius: 50px;
-    width: 100px;
-    height: 100px;    
-    font-size: 20px;
+    border-radius: 75px;
+    border: 10px solid #105190;
+    width: 120px;
+    height: 120px;
+    font-size: 24px;
+    font-weight: 900;
     line-height: 100px;
     text-align: center;
 }
+
+    .liInOrderstephere li {
+    }
 /*流程圓圈到此結束*/
-.orderBox{    
+
+.orderBox {
     display: flex;
+    margin-left: 20px;
+    margin-top: 80px;
 }
-.orderMovieImage{
+
+    .orderBox h4 {
+        font-size: 30px;
+        padding-bottom: 15px;
+        text-align: center;
+    }
+
+.orderMovieImage {
     width: 350px;
 }
-.pick{
+
+.pick {
     margin-left: 80px;
 }
-.pickDate{
+
+.pickDate {
     display: flex;
     border-bottom: 1px solid silver;
     margin-left: 30px;
 }
-.pickDate li{
-    border: 1px solid silver;
-    padding: 5px;
-    margin: 5px;
-    font-size: 20px;
-}
-.pickDate a{
-    text-decoration: none;
-}
-.pickDate a:hover{
-    color: #3a3939;
-}
-.pickCinemaAndTime h3{
-    font-size: 18px;
+
+    .pickDate li {
+        border: 1px solid silver;
+        padding: 5px;
+        margin-right: 15px;
+        margin-bottom: 5px;
+        font-size: 20px;
+    }
+
+        .pickDate li:hover {
+            background-color: #10a5d6;
+            color: #eaeaea;
+        }
+
+    .pickDate a {
+        text-decoration: none;
+    }
+
+.pickCinemaAndTime h3 {
+    font-size: 24px;
     margin: 30px;
 }
-.pickCinemaAndTime ul{
+
+.pickCinemaAndTime ul {
     display: flex;
     margin: 30px;
     font-size: 16px;
 }
-.pickCinemaAndTime li{
+
+.pickCinemaAndTime li {
     margin-right: 25px;
     border: 1px solid silver;
     padding: 3px;
     margin-bottom: 20px;
     font-size: 20px;
 }
-.chooseTime{
+
+.chooseTime {
     border-bottom: 1px solid silver;
+    width: 1000px;
 }
-.toRight{
+
+    .chooseTime a {
+        color: #111;
+        text-decoration: none;
+    }
+
+        .chooseTime a:hover {
+            color: #eaeaea;
+        }
+
+    .chooseTime li:hover {
+        background-color: #10a5d6;
+    }
+
+.toRight {
     background-color: #10a5d6;
     float: right;
     width: 100px;
@@ -190,51 +291,60 @@
     text-align: center;
     line-height: 50px;
     font-size: 22px;
+    margin-right: 10px;
 }
 /*會員開始*/
-.memCut{
+.memCut {
     display: flex;
     justify-content: space-around;
 }
 /*會員選單*/
-.memberMenu{
+.memberMenu {
     width: 240px;
 }
 /*會員資料顯示區塊*/
-.memberInformation{
+.memberInformation {
     width: 550px;
 }
-.memberInformation p{
-    text-align: right;
-    font-size: 16px;
-}
-.memberTable{
+
+    .memberInformation p {
+        text-align: right;
+        font-size: 16px;
+    }
+
+.memberTable {
     width: 550px;
 }
-.memberTable tr{    
-    font-size: 20px;
-    line-height: 80px;
-}
-.memberTable th{
-    border-bottom: 1px solid silver;
-}
-.memberTable td{
-    border-bottom: 1px solid silver;
-    text-align:right;
-}
-.memberTable input{
-    border: 1px solid silver;
-    border-radius: 5px;    
-}
-.MemberEditSubmit{
+
+    .memberTable tr {
+        font-size: 20px;
+        line-height: 80px;
+    }
+
+    .memberTable th {
+        border-bottom: 1px solid silver;
+    }
+
+    .memberTable td {
+        border-bottom: 1px solid silver;
+        text-align: right;
+    }
+
+    .memberTable input {
+        border: 1px solid silver;
+        border-radius: 5px;
+    }
+
+.MemberEditSubmit {
     text-align: right;
 }
 
 /*會員密碼修改盒子*/
-.MemberPasswordChangeform{
+.MemberPasswordChangeform {
     padding-top: 90px;
     padding-right: 50px;
 }
-.MemberPasswordChangeform form{
-    border-bottom:1px solid silver ;
-}
+
+    .MemberPasswordChangeform form {
+        border-bottom: 1px solid silver;
+    }
