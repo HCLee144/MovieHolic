@@ -2,19 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using prjMovieHolic.Models;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc().AddJsonOptions(options =>
 {
-    //允許基本拉丁英文及中日韓文字維持原字元
+
     options.JsonSerializerOptions.Encoder =
         JavaScriptEncoder.Create(UnicodeRanges.All);
 });
 builder.Services.AddDbContext<MovieContext>(
-    options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+    options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("MovieConnection")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=MovieSession}/{action=ViewSession}/{id?}");
+    pattern: "{controller=SessionBack}/{action=ViewSession}/{id?}");
 
 app.Run();
