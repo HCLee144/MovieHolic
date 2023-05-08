@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using prjMovieHolic.Models;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,7 +13,9 @@ builder.Services.AddMvc().AddJsonOptions(options =>
         JavaScriptEncoder.Create(UnicodeRanges.All);
 });
 builder.Services.AddDbContext<MovieContext>(
-    options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+    options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("MovieConnection")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

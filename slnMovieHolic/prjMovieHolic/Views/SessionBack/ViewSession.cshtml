@@ -32,7 +32,7 @@
             let dateString = `<option value="${date}" name="queryDate" id="optionDate">${date}</option>`;
             selectDate.innerHTML += dateString;
         }
-
+        selectDate.innerHTML += `<option value="2023-02-01" name="queryDate" id="optionDate">2023-02-01</option>`
         //list在選擇後可以收到選擇日期的session list
         //javascript 沒有針對option的select事件
         //在select上 使用onchange事件
@@ -54,18 +54,24 @@
             var options=
             {
                 series: 
-                   [ {
-                        "name": "鬼噤聲",
-                    "data": [
-                        {
-                                "x": "IMAX廳 - 第1廳",
-                            "y": [
-                                    1683628800000000,
-                                    1683637740000000
-                            ]
-                        }
-                    ]
-                    }]
+                [
+                    {
+                        "name":"媽的",
+                        "data" :
+                        [
+                            {
+                                "x" : "IMAX",
+                                "y" : [
+
+                                            new Date(2023,5,9,10,24).getTime(),
+                                            new Date(2023, 5, 9, 12, 53).getTime()
+                                    
+                                ]
+                            }
+                        ]
+                    }
+                ]
+                
                     ,
                 chart: {
                     height: 300,
