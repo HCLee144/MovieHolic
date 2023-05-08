@@ -8,9 +8,11 @@
 
 <select id="selectDate" class="form-select" width =20px></select>
 <div id="chart"></div>
+<div id="edit">
+
+</div>
 
 <span id="test"></span>
-
 
 
 
@@ -22,27 +24,30 @@
         const selectDate = document.querySelector('#selectDate');
         const test = document.querySelector('#test');
         const chart = document.querySelector('#chart');
-        var chartData;
+        const edit = document.querySelector('#edit');
+        var chartData;       
 
-        //生成連續21天日期list
         const NowYear = new Date().getFullYear();
         const NowMonth = new Date().getMonth()+1;
         const NowDate = new Date().getDate();
+        var date = `${NowYear}-${NowMonth}-${NowDate}`;
+
+        CreateChart(date);
+
+        //生成連續21天日期list
+
         for(var i=0;i<21;i++){
-            let date = `${NowYear}-${NowMonth}-${NowDate+i}`
+            date = `${NowYear}-${NowMonth}-${NowDate + i}`;
             let dateString = `<option value="${date}" name="queryDate" id="optionDate">${date}</option>`;
             selectDate.innerHTML += dateString;
         }
-        selectDate.innerHTML += `<option value="2023-02-01" name="queryDate" id="optionDate">2023-02-01</option>`
+        selectDate.innerHTML += `<option value="2023-2-1" name="queryDate" id="optionDate">2023-2-1</option>`;
+
         //list在選擇後可以收到選擇日期的session list
         //javascript 沒有針對option的select事件
         //在select上 使用onchange事件
         selectDate.addEventListener('change',async (event)=>{
            let date = selectDate.options[selectDate.selectedIndex].value;
-            //const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`)
-            //chartData = await response.text();
-            //test.innerHTML = chartData;
-            chart.innerHTML ="";
             CreateChart(date);
         })
 
@@ -50,16 +55,21 @@
 
         async function CreateChart(date){
             const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`)
-            //chartData = await response.text();
             chartData = await response.json();
             console.log(chartData)
-
+            chart.innerHTML="";
             var options=
             {
                 series:chartData,
                 chart: {
                     height: 300,
-                    type: 'rangeBar'
+                    type: 'rangeBar',
+                    events: {
+                        dataPointSelection: function (event, chartContext, config) {
+                            console.log(config)
+                            edit.innerHTML = '<form><input type="button"  value = "修改場次" /><input type="button" value = "新增場次" /></form>'
+                        },
+                    }
                 },
                 plotOptions: {
                     bar: {
@@ -76,11 +86,18 @@
                 },
                 legend: {
                     position: 'right'
+                },
+                colors:[
+                    "#84C1FF", "#019858", "#FF7575", "#B8B8DC", "#BF0060", "#C2C287", "#95CACA", "#9D9D9D", "#FFDAC8"
+                ],
+                tooltip:{
+                    x:{
+                        format :"HH:mm:ss"
+                    }
                 }
             }
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-
+            var chartCreate = new ApexCharts(document.querySelector("#chart"), options);
+            chartCreate.render();
         }
 
     </script>
