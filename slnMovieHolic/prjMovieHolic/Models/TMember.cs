@@ -31,6 +31,7 @@ public partial class TMember
 
     public virtual TMembership FMembership { get; set; } = null!;
 
+
     public virtual ICollection<TCnQ> TCnQs { get; set; } = new List<TCnQ>();
 
     public virtual ICollection<TCouponList> TCouponLists { get; set; } = new List<TCouponList>();

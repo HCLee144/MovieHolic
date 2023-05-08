@@ -1,9 +1,8 @@
 ﻿@model prjMovieHolic.Models.TMember
 @{
-    ViewData["Title"] = "memberList";
+    ViewData["Title"] = "memberEdit";
 }
 
-<input type="hidden" value="@Model.FMemberId" />
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -17,7 +16,7 @@
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
-                                        <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("會員資料", "memberList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Wedding">訂單查詢</a></li>
                                         <li><a href="#Reportage">我的最愛</a></li>
@@ -28,33 +27,37 @@
                                 </div>
                             </article>
                             <div class="memberInformation">
-                                @*<input type="hidden" value="@Model.FMemberId" />*@
-                                <table class="memberTable">
+                                <form asp-action="memberEdit">
+                                    <input type="hidden" value="@Model.FMemberId" name="FMemberId" />
+                                    <table class="memberTable">
                                     <tr>
                                         <th>會員等級</th>
-                                        <td>@Model.FMembership.FMembershipName</td>
+                                        <td>很瞎</td>
                                     </tr>
                                     <tr>
                                         <th>姓名</th>
-                                        <td>@Model.FName</td>
+                                        <td><input type="text" name="FName" value="@Model.FName" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>生日</th>
-                                        <td>@Model.FBirthDate.ToString().Substring(0,9)</td>
+                                        <td><input type="text" name="FBirthDate" value="@Model.FBirthDate.ToString().Substring(0,9)" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>電話</th>
-                                        <td>@Model.FPhone</td>
+                                        <td><input type="text" name="Fphone" value="@Model.FPhone" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>Email</th>
-                                        <td>@Model.FEmail</td>
+                                        <td><input type="text" name="FEmail" value="@Model.FEmail" size="30"></td>
                                     </tr>
                                     <tr>
                                         <th>性別</th>
-                                        <td>@Model.FGender.FGenderName</td>
+                                        <td><input type="text" name="FGender" value="@Model.FGender" size="30"></td>
                                     </tr>
                                 </table>
+                                <br>
+                                <div class="MemberEditSubmit"><input class="button" type="submit" value="送出"></div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -63,3 +66,4 @@
         </div>
     </div>
 </div>
+
