@@ -1,0 +1,65 @@
+﻿@model prjMovieHolic.Models.TMember
+@{
+    ViewData["Title"] = "memberList";
+}
+
+@*<input type="hidden" value="@Model.FMemberId" />*@
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <div class="line1 wrapper">
+                        <div class="wrapper tabs memCut">
+                            <article class="memberMenu">
+                                <h2>(MemberName)</h2>
+                                <div class="pad">
+                                    <ul class="nav">
+                                        <li class="selected"><a href="Member.html">會員登入</a></li>
+                                        <li><a href="MemberEdit.html">資料修改</a></li>
+                                        <li><a href="MemberPasswordChange.html">更改密碼</a></li>
+                                        <li><a href="#Wedding">訂單查詢</a></li>
+                                        <li><a href="#Reportage">我的最愛</a></li>
+                                        <li><a href="#Advertising">我的優惠券</a></li>
+                                        <li><a href="#Advertising">我的評論</a></li>
+                                        <li><a href="#Portrait">登出</a></li>
+                                    </ul>
+                                </div>
+                            </article>
+                            <div class="memberInformation">
+                                
+                                <table class="memberTable">
+                                    <tr>
+                                        <th>會員等級</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th>姓名</th>
+                                        <td>@Model.FName</td>
+                                    </tr>
+                                    <tr>
+                                        <th>生日</th>
+                                        <td>@Model.FBirthDate</td>
+                                    </tr>
+                                    <tr>
+                                        <th>電話</th>
+                                        <td>@Model.FPhone</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>@Model.FEmail</td>
+                                    </tr>
+                                    <tr>
+                                        <th>性別</th>
+                                        <td>@Model.FGender</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
