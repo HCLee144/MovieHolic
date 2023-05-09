@@ -29,7 +29,7 @@
                                     <!-- 上面選單 Menu-->
                                     <nav>
                                         <ul id="menu">
-                                        <li id="active"><a href="https://localhost:7085/order/listsession?movieid=1">快速訂票</a></li>
+                                        <li id="active">@Html.ActionLink("快速訂票","listsession","order",new{movieid=1},null)</li>
                                             <li><a href="#">最新消息</a></li>
                                             <li><a href="Services.html">電影資訊</a></li>
                                         <li>
@@ -45,7 +45,7 @@
                                             }
 
                                         </li>
-                                            <li class="end"><a href="Contact.html">聯絡我們</a></li>
+                                        <li class="end">@Html.ActionLink("電影評論","index","article")</li>
                                         </ul>
                                     </nav>
                                 </div>
