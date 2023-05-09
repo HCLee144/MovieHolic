@@ -16,7 +16,7 @@
     {
         public string? x { get; set; }
         //影廳名稱
-        public string[]? y { get; set; }
-        //Session開始時間及結束時間
+        public long[]? y { get; set; }
+        //Session開始時間及結束時間(從1970.1.1生成之毫秒數)
     }
 }

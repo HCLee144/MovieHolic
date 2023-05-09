@@ -53,10 +53,6 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<THashtag> THashtags { get; set; }
 
-    public virtual DbSet<TImage> TImages { get; set; }
-
-    public virtual DbSet<TImageList> TImageLists { get; set; }
-
     public virtual DbSet<TLanguage> TLanguages { get; set; }
 
     public virtual DbSet<TLanguageList> TLanguageLists { get; set; }
@@ -87,6 +83,8 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TProduct> TProducts { get; set; }
 
+    public virtual DbSet<TRating> TRatings { get; set; }
+
     public virtual DbSet<TReceipt> TReceipts { get; set; }
 
     public virtual DbSet<TReceiptDetail> TReceiptDetails { get; set; }
@@ -113,9 +111,9 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TTypeList> TTypeLists { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433; Initial Catalog=Movie; User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433; Initial Catalog=Movie; User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -141,15 +139,15 @@ public partial class MovieContext : DbContext
             entity.ToTable("tActor", "Movie");
 
             entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FActorImagePath)
+            entity.Property(e => e.FImagePath)
                 .HasMaxLength(50)
-                .HasColumnName("fActorImagePath");
-            entity.Property(e => e.FActorNameCht)
+                .HasColumnName("fImagePath");
+            entity.Property(e => e.FNameCht)
                 .HasMaxLength(50)
-                .HasColumnName("fActorNameCht");
-            entity.Property(e => e.FActorNameEng)
+                .HasColumnName("fNameCht");
+            entity.Property(e => e.FNameEng)
                 .HasMaxLength(50)
-                .HasColumnName("fActorNameEng");
+                .HasColumnName("fNameEng");
         });
 
         modelBuilder.Entity<TActorList>(entity =>
@@ -471,39 +469,6 @@ public partial class MovieContext : DbContext
                 .HasColumnName("fText");
         });
 
-        modelBuilder.Entity<TImage>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieImage");
-
-            entity.ToTable("tImage", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImagePath)
-                .HasMaxLength(50)
-                .HasColumnName("fImagePath");
-        });
-
-        modelBuilder.Entity<TImageList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieImageList");
-
-            entity.ToTable("tImageList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImageId).HasColumnName("fImageId");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FImage).WithMany(p => p.TImageLists)
-                .HasForeignKey(d => d.FImageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieImageList_MovieImage");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TImageLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieImagesList_Movies");
-        });
-
         modelBuilder.Entity<TLanguage>(entity =>
         {
             entity.HasKey(e => e.FId).HasName("PK_MovieLanguage");
@@ -651,13 +616,17 @@ public partial class MovieContext : DbContext
 
         modelBuilder.Entity<TMovie>(entity =>
         {
-            entity.HasKey(e => e.FMovieId).HasName("PK_Movie");
+            entity.HasKey(e => e.FId).HasName("PK_Movie");
 
             entity.ToTable("tMovie", "Movie");
 
-            entity.Property(e => e.FMovieId)
+            entity.Property(e => e.FId)
                 .ValueGeneratedNever()
-                .HasColumnName("fMovieId");
+                .HasColumnName("fId");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("fImagePath");
             entity.Property(e => e.FInteroduce).HasColumnName("fInteroduce");
             entity.Property(e => e.FNameCht)
                 .HasMaxLength(50)
@@ -671,6 +640,7 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FPrice)
                 .HasColumnType("money")
                 .HasColumnName("fPrice");
+            entity.Property(e => e.FRatingId).HasColumnName("fRatingId");
             entity.Property(e => e.FScheduleEnd)
                 .HasColumnType("smalldatetime")
                 .HasColumnName("fScheduleEnd");
@@ -680,6 +650,10 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FSeriesId).HasColumnName("fSeriesId");
             entity.Property(e => e.FShowLength).HasColumnName("fShowLength");
             entity.Property(e => e.FTrailerLink).HasColumnName("fTrailerLink");
+
+            entity.HasOne(d => d.FRating).WithMany(p => p.TMovies)
+                .HasForeignKey(d => d.FRatingId)
+                .HasConstraintName("FK_tMovie_tRating");
 
             entity.HasOne(d => d.FSeries).WithMany(p => p.TMovies)
                 .HasForeignKey(d => d.FSeriesId)
@@ -887,6 +861,21 @@ public partial class MovieContext : DbContext
                 .HasForeignKey(d => d.FCategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Category");
+        });
+
+        modelBuilder.Entity<TRating>(entity =>
+        {
+            entity.HasKey(e => e.FId);
+
+            entity.ToTable("tRating", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(50)
+                .HasColumnName("fImagePath");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
         });
 
         modelBuilder.Entity<TReceipt>(entity =>
