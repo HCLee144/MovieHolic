@@ -10,7 +10,7 @@
             border: solid
         }
 
-        .aaaa {
+        .ccc {
             border: solid
         }
     </style>
@@ -47,8 +47,8 @@
                                             <li style="padding-top:10px"><span style="font-weight:bold;font-size:20px">英文</span> @Model.tMovie.FNameEng</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">類型</span>@Model.TypeListNames</li>
-                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">導演</span></li>
-                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">演員</span></li>
+                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">導演</span>@Model.DirectorListNames</li>
+                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">演員</span>@Model.ActorListNames</li>
                                         </ul>
                                     </figure>
                                 </div>
@@ -137,34 +137,38 @@
                 //呈現場次
                 const response = await fetch('@Url.Content("~/Order/queryByDate")?date=' + day.innerHTML)
                 const datas = await response.json();
-                console.log(datas);
+                //console.log(datas);
 
                 let result = `<div>`;
                 datas.forEach((data) => {
                     result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
                     data["sessionIDandTime"].split(",").forEach(item => {
                         let sessionID = item.split("##")[0];
-                        console.log(item.split("##")[0])
+                        //console.log(item.split("##")[0])
                         let sessionTime = item.split("##")[1];
-                        console.log(item.split("##")[1])
-                        result += `<li name="${sessionID}" onclick="chooseSession(event) class="aaaa">${sessionTime}</li>`
+                        //console.log(item.split("##")[1])
+                        result += `<li name="${sessionID}" onclick="chooseSession(event)" class="ccc">${sessionTime}</li>`
                     })
 
                     result += `</ul>`
                 })
                 result += `</div>`;
-                console.log(result);
+                //console.log(result);
                 pickCinemaAndTime.innerHTML = result
             })
 
          })
 
-
+        
          function chooseSession(event)
-         {
-             const btns=document.querySelectorAll(".aaaa");
-            event.target.style.backgroundColor = '#10a5d6';
-
+         {   
+            const sessionBtns = document.querySelectorAll('.ccc');
+            sessionBtns.forEach((item)=>
+            {
+                item.style.backgroundColor = '#eaeaea';
+            })
+         event.target.style.backgroundColor = '#10a5d6';
+            console.log(event.target.getAttribute('name'))
          }
 
     </script>

@@ -16,7 +16,7 @@ namespace prjMovieHolic.Controllers
         {
             if (movieID == null)
                 return RedirectToAction("Index", "Home");
-           var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m=>m.TTypeLists).ThenInclude(t=>t.FType).Where(m => m.FId == movieID).FirstOrDefault();
+           var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m=>m.TTypeLists).ThenInclude(t=>t.FType).Include(m=>m.TDirectorLists).ThenInclude(t=>t.FDirector).Include(m=>m.TActorLists).ThenInclude(t=>t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
 
             if (movie == null)
                 return RedirectToAction("Index", "Home");
@@ -25,10 +25,15 @@ namespace prjMovieHolic.Controllers
             shoppingCart.tMovie = movie;
 
             shoppingCart.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t=>t.FType.FNameCht).ToArray();
-
             shoppingCart.TypeListNames = getNames(shoppingCart.tTypeListNames);
 
-        string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+            shoppingCart.tDirectorListNames = movie.TDirectorLists.Where(t => t.FMovieId == movieID).Select(t => t.FDirector.FNameCht).ToArray();
+            shoppingCart.DirectorListNames = getNames(shoppingCart.tDirectorListNames);
+
+            shoppingCart.tActorListNames = movie.TActorLists.Where(t => t.FMovieId == movieID).Select(t => t.FActor.FNameCht).ToArray();
+            shoppingCart.ActorListNames = getNames(shoppingCart.tActorListNames);
+
+            string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
             //將session時間取出星期幾(原先英文，轉數字)
             int selectDays = Convert.ToInt32(movie.TSessions.Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
@@ -46,8 +51,6 @@ namespace prjMovieHolic.Controllers
             shoppingCart.weekDays = wholeWeekDays.ToArray();
             return View(shoppingCart);
         }
-
-
 
         public IActionResult queryByDate(string date)
         {
