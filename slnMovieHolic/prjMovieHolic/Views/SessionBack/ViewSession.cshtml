@@ -7,10 +7,15 @@
 <h1>ViewSession</h1>
 
 <select id="selectDate" class="form-select" width =20px></select>
-<div id="chart"></div>
-<div id="edit">
-
+<div id="chartArea"></div>
+<input type="hidden" id="selectedSessionTheaterName" value="" />
+<input type="hidden" id="selectedSessionStartString" value="" />
+<div id="sessionDisplay">
 </div>
+<div id="edit">
+</div>
+
+
 
 <span id="test"></span>
 
@@ -23,9 +28,13 @@
 
         const selectDate = document.querySelector('#selectDate');
         const test = document.querySelector('#test');
-        const chart = document.querySelector('#chart');
+        const chartArea = document.querySelector('#chartArea');
         const edit = document.querySelector('#edit');
+        const selectedSessionTheaterName = document.querySelector('#selectedSessionTheaterName');
+        const selectedSessionStartString = document.querySelector('#selectedSessionStartString');
+        const sessionDisplay = document.querySelector('#sessionDisplay');
         var chartData;       
+        var chart= null;
 
         const NowYear = new Date().getFullYear();
         const NowMonth = new Date().getMonth()+1;
@@ -35,7 +44,6 @@
         CreateChart(date);
 
         //生成連續21天日期list
-
         for(var i=0;i<21;i++){
             date = `${NowYear}-${NowMonth}-${NowDate + i}`;
             let dateString = `<option value="${date}" name="queryDate" id="optionDate">${date}</option>`;
@@ -47,31 +55,51 @@
         //javascript 沒有針對option的select事件
         //在select上 使用onchange事件
         selectDate.addEventListener('change',async (event)=>{
+            edit.innerHTML = "";
            let date = selectDate.options[selectDate.selectedIndex].value;
             CreateChart(date);
         })
 
-        //生成表格
+        //選擇時間，清空編輯區域，清空表格，查詢資料，取得影廳ID、取得開始時間、取得表格用資料，生成表格
         async function CreateChart(date){
-            const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`)
+            if (chart != null) {
+                chart.destroy();
+            }
+            const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`);
             chartData = await response.json();
-            console.log(chartData)
-            chart.innerHTML="";
+            console.log(chartData);
             var options=
             {
                 series:chartData,
                 chart: {
+                    id:'SessionChart',
                     height: 300,
                     type: 'rangeBar',
                     events: {
                         dataPointSelection: async function (event, chartContext, config) {
-                            console.log(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].x)
-                            console.log(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].y[0])
-                            let theater = config.w.config.series[config.seriesIndex].data[config.dataPointIndex].x
-                            let startTimeStamp = new Date(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].y[0]-28800000)
+                            edit.innerHTML = "";
+                            let theater = config.w.config.series[config.seriesIndex].data[config.dataPointIndex].x;
+                            selectedSessionTheaterName.value = theater;
+                            let startTimeStamp = new Date(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].y[0]-28800000);
                             let start = `${startTimeStamp.getFullYear()}-${startTimeStamp.getMonth() + 1}-${startTimeStamp.getDate()} ${startTimeStamp.getHours()}:${startTimeStamp.getMinutes()}:${startTimeStamp.getSeconds()}`;
-                            console.log(start)
-                            edit.innerHTML = '<form><input type="button"  value = "修改場次" /><input type="button" value = "新增場次" /></form>'
+                            selectedSessionStartString.value=start;
+                            const response = await fetch(`@Url.Content("~/SessionBack/getSessionByTheaterAndStart")?selectedSessionTheaterName=${theater}&selectedSessionStartString=${start}`);
+                            console.log(response);
+                            let session = await response.json();
+                            console.log(session);
+                            console.log(session.hasOrder);
+                            if(session.sessionID== null){
+                                alert("查無場次，請重新整理");
+                                return;
+                            }
+                            if(session.hasOrder == true){
+                                edit.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法修改</div>';
+                            }else{
+                                edit.innerHTML += '<input type="button"  value = "修改場次" class="btn btn-primary m-1" /><input type="submit" value = "刪除場次" class="btn btn-danger m-1" />';
+                            }
+                            //session.moviePosterPath = String.subs
+                            console.log(session.moviePosterPath)
+                            //edit.innerHTML += `<img src=Content(${session.moviePosterPath})>`;
                         },
                     }
                 },
@@ -99,22 +127,12 @@
                         format :"HH:mm:ss"
                     }
                 },
-                toolbar:{
-                    show:false,
-                    tools:{
-                        zoom:false
-                        
-                    }
-                },
-                selection: {
-                    enabled: true
-                },
-                zoom:{
-                    enabled:false
+                noData:{
+                    text:"尚無場次資料"
                 }
             }
-            var chartCreate = new ApexCharts(document.querySelector("#chart"), options);
-            chartCreate.render();
+            chart = new ApexCharts(document.querySelector("#chartArea"), options);
+            chart.render();
         }
 
     </script>
