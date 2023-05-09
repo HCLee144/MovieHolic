@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
 builder.Services.AddMvc().AddJsonOptions(options =>
 {
 
@@ -31,10 +32,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Order}/{action=ListSession}/{movieid=8}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

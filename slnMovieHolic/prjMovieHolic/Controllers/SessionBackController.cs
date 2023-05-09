@@ -35,7 +35,6 @@ namespace prjMovieHolic.Controllers
             var rawDatas =
                 from s in _db.TSessions.AsEnumerable()
                 where s.FStartTime.Date == date.Date
-                //group s by s.FMovie.FNameCht into g
                 group s by s.FMovieId into g
                 select new
                 {
@@ -54,20 +53,18 @@ namespace prjMovieHolic.Controllers
                 foreach (var session in rawData.g)
                 {
                     SessionTheaterAndTimeData sessionData = new SessionTheaterAndTimeData();
-                    sessionData.x = _db.TTheaters.Where(m => m.FTheaterId ==session.FTheaterId).First().FTheater;
-                    sessionData.y = new string[]
+                    sessionData.x = _db.TTheaters.Where(m => m.FTheaterId == session.FTheaterId).First().FTheater;
+                    sessionData.y = new long[]
                     {
-                        //(long)((session.FStartTime.ToUniversalTime() - new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc)).TotalMicroseconds+0.5),
-                        //(long)((session.FEndTime.ToUniversalTime() - new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc)).TotalMicroseconds+0.5)
-                        session.FStartTime.ToString(),
-                        session.FEndTime.ToString(),
-
+                        new DateTimeOffset(session.FStartTime.AddHours(8)).ToUnixTimeMilliseconds(),
+                         new DateTimeOffset(session.FEndTime.AddHours(8)).ToUnixTimeMilliseconds()
                     };
-                    datas.Where(data => data.name==movieName).First().data.Add(sessionData);
+                    datas.Where(data => data.name == movieName).First().data.Add(sessionData);
                 }
             }
-
             return Json(datas);
         }
+
+        //public IActionResult get
     }
 }

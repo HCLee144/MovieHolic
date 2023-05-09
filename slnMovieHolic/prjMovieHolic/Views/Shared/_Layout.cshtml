@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/layout.css" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/style.css" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/myStyle.css" type="text/css" media="all">
-   
+  
 </head>
 <body>
    
@@ -32,7 +32,19 @@
                                             <li id="active"><a href="StartOrder.html">快速訂票</a></li>
                                             <li><a href="#">最新消息</a></li>
                                             <li><a href="Services.html">電影資訊</a></li>
-                                            <li><a href="Member.html">會員登入</a></li>
+                                        <li>
+                                            @{
+                                                if (ViewBag.Login == true)
+                                                {
+                                                    @Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)
+                                                }
+                                                else
+                                                {
+                                                    @Html.ActionLink("會員登入", "memberLogin","memberFront")
+                                                }
+                                            }
+
+                                        </li>
                                             <li class="end"><a href="Contact.html">聯絡我們</a></li>
                                         </ul>
                                     </nav>
