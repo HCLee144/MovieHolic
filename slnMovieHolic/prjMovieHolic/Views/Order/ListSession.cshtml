@@ -4,7 +4,13 @@
 @{
 }
 @model prjMovieHolic.ViewModels.CShoppingCartViewModel
-
+@section Styles{
+    <style>
+        .day {
+            border: solid
+        }
+    </style>
+}
 <div id="page2">
     <div class="body1">
         <div class="">
@@ -45,21 +51,16 @@
                                 <div class="pick">
                                     <div>
                                         <ul class="pickDate">
-                                            <a>
-                                            <li value="@Model.tMovie.TSessions.FirstOrDefault().FStartTime.ToString("MM/dd")" id="day1">@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.ToString("MM/dd")<br>@Model.weekDays[0]</li>
-                                            </a>
-                                            <a>
-                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(1).ToString("MM/dd")<br>@Model.weekDays[1]</li>
-                                            </a>
-                                            <a>
-                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(2).ToString("MM/dd")<br>@Model.weekDays[2]</li>
-                                            </a>
-                                            <a>
-                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(3).ToString("MM/dd")<br>@Model.weekDays[3]</li>
-                                            </a>
-                                            <a>
-                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(4).ToString("MM/dd")<br>@Model.weekDays[4]</li>
-                                            </a>
+                                        @{
+                                              for (int i = 0; i < 5; i++)
+                                              {
+                                                  string showDay = $"day{i + 1}";
+                                                  <a>
+                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
+                                                  </a>
+                                             }
+                                        }
+
                                         </ul>
                                     </div>
                                     <div class="pickCinemaAndTime" id="pickCinemaAndTime">
@@ -99,7 +100,6 @@
                                 </div>
                             </div>
                             <a href="#" class="button toRight">下一步</a>
-                            <div id="rest" style="border:1px; height:100px;width:100px;background-color:bisque"></div>
                         </div>
                     </section>
                 </div>
@@ -110,52 +110,41 @@
 
 @section Scripts{
     <script>
-        const day1 = document.querySelector('#day1');
+  
         const pickCinemaAndTime = document.querySelector('#pickCinemaAndTime');
-        const rest = document.querySelector('#rest');
-        let eachSessionIDandTime = [];
+        const days = document.querySelectorAll('.day');
 
-        day1.addEventListener('click', async () => {
-            const response = await fetch('@Url.Content("~/Order/queryByDate")?date=' + day1.innerHTML)
-            const datas = await response.json();
-            console.log(datas);
-            /*eachSessionIDandTime=datas.map
-            (
-                (data)=>
-                {
-                        console.log(data["sessionIDandTime"])
-                        return(data["sessionIDandTime"].split(","))
-                }
-            )
+        days.forEach((day) => {
+            day.addEventListener('click', async () => {
+                //改顏色
+                const elementID=day.getAttribute('id');
+                const element=document.querySelector(`#${elementID}`);
+                element.style.backgroundColor ='blue';
 
-            console.log(eachSessionIDandTime[0][0].split("##"))
-            eachSessionIDandTime.forEach((item)=>{
-                console.log(item)
-                item.forEach((subitem)=>{
-                     const subitems=subitem.split("##")
-                     console.log(subitems[1])
+
+                //呈現場次
+                const response = await fetch('@Url.Content("~/Order/queryByDate")?date=' + day.innerHTML)
+                const datas = await response.json();
+                console.log(datas);
+
+                let result = `<div>`;
+                datas.forEach((data) => {
+                    result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
+                    data["sessionIDandTime"].split(",").forEach(item => {
+                        console.log(item.split("##")[0])
+                        let sessionTime = item.split("##")[1];
+                        console.log(item.split("##")[1])
+                        result += `<li><a>${sessionTime}</a></li>`
+                    })
+
+                    result += `</ul>`
                 })
-            })*/
-
-            //重這裡開始新的
-
-            let result = "`<div>`";
-            eachSessionIDandTime = datas.forEach((data) => 
-            {
-                result += `<h3>${data["theaterName"]}`;
-                data["sessionIDandTime"].split(",").forEach(item=>{
-                    console.log(item)
-                })
-
-                //    <h3>${data["theaterName"]}</h3>
-                //    <ul class="chooseTime">
-                //    <li><a>${}</a></li>
-                //    </ul>
-                //    </div>`
-                result+=`</h3>`;
+                result += `</div>`;
+                console.log(result);
+                pickCinemaAndTime.innerHTML = result
             })
-            result += `</div>`;
-        })
+         })
+
 
     </script>
 }
