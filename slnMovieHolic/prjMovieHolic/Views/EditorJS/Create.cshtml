@@ -6,14 +6,12 @@
     <link href="~/css/EditorJS/simple-image.css" rel="stylesheet" />
     <link href="~/css/EditorJS/editorJS.css" rel="stylesheet" />
 }
+<hr />
 <div class="editorJS">
     <div id="editorjs"></div>
-    <button id="save-button">Save</button>
+    <button id="save-button">送出</button>
 <pre id="output"></pre>
 </div>
-
-
-
 
 
 
@@ -24,8 +22,10 @@
         const editor = new EditorJS({
             autofocus: true,
             tools: {
-                image: SimpleImage
-            }
+                image: {
+                    class: SimpleImage,
+                    inlineToolbar: ['link']
+                }}
         });
 
         const saveButton = document.getElementById('save-button');
