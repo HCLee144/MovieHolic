@@ -22,6 +22,34 @@
         text-decoration: none;
     }
 
+/*浮動區塊*/
+.position {
+    background-color: #10a5d6;
+    width: 120px;
+    height: 120px;
+    border-radius: 100px;
+    color: #eaeaea;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 120px;
+    text-align: center;
+    position: fixed;
+    top: 700px;
+    right: 30px;
+}
+ .position:hover {
+    background-color: rgb(182, 182, 182);
+    color: #10a5d6;
+
+ }
+
+.position a {
+    color: #eaeaea;
+    text-decoration: none;
+}
+
+
+
 .myBr {
     height: 25px;
 }
@@ -62,11 +90,12 @@
 
 .movieCard h3 {
     font-size: 22px;
-    margin-bottom: px;
+    color: #373737;
 }
 
 .movieCard li {
     font-size: 18px;
+    color: #373737;
 }
 
 .buyNow {
@@ -123,7 +152,7 @@
         margin: 10px;
     }
 
-/*第二頁的東西*/
+/*快速訂票的東西*/
 /*流程圓圈在這裡*/
 .orderStep {
     margin-bottom: 30px;
@@ -139,39 +168,52 @@
     }
 
     .orderStep img {
-        margin-top: 40px;
+        margin-top: 50px;
         width: 20px;
     }
 
 .liInOrderstep {
     background-color: #10a5d6;
+    border: 10px solid rgb(236, 236, 236);
     color: #fff;
     display: block;
-    border-radius: 50px;
-    width: 100px;
-    height: 100px;
+    border-radius: 75px;
+    width: 120px;
+    height: 120px;
     font-size: 20px;
+    line-height: 100px;
+    text-align: center;
+}
+/*特別變色的圈圈是這一塊*/
+.liInOrderstephere {
+    background-color: #105190;
+    color: #eaeaea;
+    display: block;
+    border-radius: 75px;
+    border: 10px solid #105190;
+    width: 120px;
+    height: 120px;
+    font-size: 24px;
+    font-weight: 900;
     line-height: 100px;
     text-align: center;
 }
 
-.liInOrderstephere {
-    background-color: rgb(182, 182, 182);
-    color: #10a5d6;
-    display: block;
-    border-radius: 50px;
-    width: 100px;
-    height: 100px;
-    font-size: 20px;
-    line-height: 100px;
-    text-align: center;
-}
+    .liInOrderstephere li {
+    }
 /*流程圓圈到此結束*/
 
 .orderBox {
     display: flex;
-    margin-left: 100px;
+    margin-left: 20px;
+    margin-top: 80px;
 }
+
+    .orderBox h4 {
+        font-size: 30px;
+        padding-bottom: 15px;
+        text-align: center;
+    }
 
 .orderMovieImage {
     width: 350px;
@@ -190,20 +232,22 @@
     .pickDate li {
         border: 1px solid silver;
         padding: 5px;
-        margin: 5px;
+        margin-right: 15px;
+        margin-bottom: 5px;
         font-size: 20px;
     }
+
+        .pickDate li:hover {
+            background-color: #10a5d6;
+            color: #eaeaea;
+        }
 
     .pickDate a {
         text-decoration: none;
     }
 
-        .pickDate a:hover {
-            color: #3a3939;
-        }
-
 .pickCinemaAndTime h3 {
-    font-size: 18px;
+    font-size: 24px;
     margin: 30px;
 }
 
@@ -223,7 +267,21 @@
 
 .chooseTime {
     border-bottom: 1px solid silver;
+    width: 1000px;
 }
+
+    .chooseTime a {
+        color: #111;
+        text-decoration: none;
+    }
+
+        .chooseTime a:hover {
+            color: #eaeaea;
+        }
+
+    .chooseTime li:hover {
+        background-color: #10a5d6;
+    }
 
 .toRight {
     background-color: #10a5d6;
@@ -233,6 +291,7 @@
     text-align: center;
     line-height: 50px;
     font-size: 22px;
+    margin-right: 10px;
 }
 /*會員開始*/
 .memCut {
