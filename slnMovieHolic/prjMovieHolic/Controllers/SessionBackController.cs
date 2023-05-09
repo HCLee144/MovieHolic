@@ -29,42 +29,76 @@ namespace prjMovieHolic.Controllers
             return View();
         }
 
-        public IActionResult getChartDataForSessionByDate(CMovieSessionViewModel vm)
+        public IActionResult getChartDataForSessionByDate(CSessionBackViewModel vm)
         {
-            DateTime date = DateTime.Parse(vm.queryDate);
-            var rawDatas =
-                from s in _db.TSessions.AsEnumerable()
-                where s.FStartTime.Date == date.Date
-                group s by s.FMovieId into g
-                select new
-                {
-                    movieID = g.Key,
-                    g
-                };
-            List<CDataForSessionChart> datas = new List<CDataForSessionChart>();
-            foreach (var rawData in rawDatas)
+            try
             {
-                string movieName = _db.TMovies.Where(m => m.FId == rawData.movieID).First().FNameCht;
-                if (!datas.Where(data => data.name == movieName).Any())
-                {
-                    datas.Add(new CDataForSessionChart { name = movieName });
-                    //如果datas裡還沒有這個電影名的資料，新增物件
-                }
-                foreach (var session in rawData.g)
-                {
-                    SessionTheaterAndTimeData sessionData = new SessionTheaterAndTimeData();
-                    sessionData.x = _db.TTheaters.Where(m => m.FTheaterId == session.FTheaterId).First().FTheater;
-                    sessionData.y = new long[]
+                DateTime date = DateTime.Parse(vm.queryDate);
+                var rawDatas =
+                    from s in _db.TSessions.AsEnumerable()
+                    where s.FStartTime.Date == date.Date
+                    group s by s.FMovieId into g
+                    select new
                     {
+                        movieID = g.Key,
+                        g
+                    };
+                List<CDataForSessionChart> datas = new List<CDataForSessionChart>();
+                foreach (var rawData in rawDatas)
+                {
+                    string movieName = _db.TMovies.Where(m => m.FId == rawData.movieID).First().FNameCht;
+                    if (!datas.Where(data => data.name == movieName).Any())
+                    {
+                        datas.Add(new CDataForSessionChart { name = movieName });
+                        //如果datas裡還沒有這個電影名的資料，新增物件
+                    }
+                    foreach (var session in rawData.g)
+                    {
+                        SessionTheaterAndTimeData sessionData = new SessionTheaterAndTimeData();
+                        sessionData.x = _db.TTheaters.Where(m => m.FTheaterId == session.FTheaterId).First().FTheater;
+                        sessionData.y = new long[]
+                        {
                         new DateTimeOffset(session.FStartTime.AddHours(8)).ToUnixTimeMilliseconds(),
                          new DateTimeOffset(session.FEndTime.AddHours(8)).ToUnixTimeMilliseconds()
-                    };
-                    datas.Where(data => data.name == movieName).First().data.Add(sessionData);
+                        };
+                        datas.Where(data => data.name == movieName).First().data.Add(sessionData);
+                    }
                 }
+                return Json(datas);
             }
-            return Json(datas);
+            catch (Exception ex)
+            {
+                return Json(null);
+            }
         }
 
-        //public IActionResult get
+        public IActionResult getSessionByTheaterAndStart(CSessionBackViewModel vm)
+        {
+            try
+            {
+                int TheaterID = _db.TTheaters.Where(t => t.FTheater == vm.selectedSessionTheaterName).Select(t => t.FTheaterId).FirstOrDefault();
+                DateTime startTime = DateTime.Parse(vm.selectedSessionStartString);
+                var session = _db.TSessions.Include(s => s.FMovie).Include(s=>s.FTheater).Where(s => s.FTheaterId == TheaterID && s.FStartTime == startTime).FirstOrDefault();
+                if (session == null)
+                {
+                    return Json(null);
+                }
+                CSessionBackViewModel datas = new CSessionBackViewModel();
+                datas.sessionID = session.FSessionId;
+                datas.TheaterName = session.FTheater.FTheater;
+                datas.StartTime = session.FStartTime;
+                datas.EndTime = session.FEndTime;
+                datas.hasOrder = _db.TOrders.Where(o => o.FSessionId == session.FSessionId).Any();
+                datas.MovieId = session.FMovieId;
+                datas.MovieName = session.FMovie.FNameCht;
+                datas.MoviePosterPath =session.FMovie.FPosterPath;
+                return Json(datas);
+            }
+            catch (Exception ex)
+            {
+                return Json(null);
+            }
+
+        }
     }
 }
