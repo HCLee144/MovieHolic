@@ -21,9 +21,13 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TActorList> TActorLists { get; set; }
 
-    public virtual DbSet<TCategory> TCategories { get; set; }
+    public virtual DbSet<TArticle> TArticles { get; set; }
 
-    public virtual DbSet<TCmtImage> TCmtImages { get; set; }
+    public virtual DbSet<TArticleImg> TArticleImgs { get; set; }
+
+    public virtual DbSet<TArticleTag> TArticleTags { get; set; }
+
+    public virtual DbSet<TCategory> TCategories { get; set; }
 
     public virtual DbSet<TCnQ> TCnQs { get; set; }
 
@@ -51,12 +55,6 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TGender> TGenders { get; set; }
 
-    public virtual DbSet<THashtag> THashtags { get; set; }
-
-    public virtual DbSet<TImage> TImages { get; set; }
-
-    public virtual DbSet<TImageList> TImageLists { get; set; }
-
     public virtual DbSet<TLanguage> TLanguages { get; set; }
 
     public virtual DbSet<TLanguageList> TLanguageLists { get; set; }
@@ -71,10 +69,6 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TMovie> TMovies { get; set; }
 
-    public virtual DbSet<TMovieCmt> TMovieCmts { get; set; }
-
-    public virtual DbSet<TMovieCmtHash> TMovieCmtHashes { get; set; }
-
     public virtual DbSet<TOrder> TOrders { get; set; }
 
     public virtual DbSet<TOrderDetail> TOrderDetails { get; set; }
@@ -86,6 +80,8 @@ public partial class MovieContext : DbContext
     public virtual DbSet<TPayType> TPayTypes { get; set; }
 
     public virtual DbSet<TProduct> TProducts { get; set; }
+
+    public virtual DbSet<TRating> TRatings { get; set; }
 
     public virtual DbSet<TReceipt> TReceipts { get; set; }
 
@@ -101,7 +97,11 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TSession> TSessions { get; set; }
 
+    public virtual DbSet<TShortCmt> TShortCmts { get; set; }
+
     public virtual DbSet<TStatusType> TStatusTypes { get; set; }
+
+    public virtual DbSet<TTagList> TTagLists { get; set; }
 
     public virtual DbSet<TTheater> TTheaters { get; set; }
 
@@ -113,9 +113,9 @@ public partial class MovieContext : DbContext
 
     public virtual DbSet<TTypeList> TTypeLists { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433; Initial Catalog=Movie; User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433; Initial Catalog=Movie; User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -141,15 +141,15 @@ public partial class MovieContext : DbContext
             entity.ToTable("tActor", "Movie");
 
             entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FActorImagePath)
+            entity.Property(e => e.FImagePath)
                 .HasMaxLength(50)
-                .HasColumnName("fActorImagePath");
-            entity.Property(e => e.FActorNameCht)
+                .HasColumnName("fImagePath");
+            entity.Property(e => e.FNameCht)
                 .HasMaxLength(50)
-                .HasColumnName("fActorNameCht");
-            entity.Property(e => e.FActorNameEng)
+                .HasColumnName("fNameCht");
+            entity.Property(e => e.FNameEng)
                 .HasMaxLength(50)
-                .HasColumnName("fActorNameEng");
+                .HasColumnName("fNameEng");
         });
 
         modelBuilder.Entity<TActorList>(entity =>
@@ -176,6 +176,74 @@ public partial class MovieContext : DbContext
                 .HasConstraintName("FK_Case_Movie");
         });
 
+        modelBuilder.Entity<TArticle>(entity =>
+        {
+            entity.HasKey(e => e.FArticleId);
+
+            entity.ToTable("tArticle", "CMT");
+
+            entity.Property(e => e.FArticleId).HasColumnName("fArticleID");
+            entity.Property(e => e.FBlockJson).HasColumnName("fBlockJson");
+            entity.Property(e => e.FIsPublic).HasColumnName("fIsPublic");
+            entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovieID");
+            entity.Property(e => e.FTimeCreated)
+                .HasColumnType("datetime")
+                .HasColumnName("fTimeCreated");
+            entity.Property(e => e.FTimeEdited)
+                .HasColumnType("datetime")
+                .HasColumnName("fTimeEdited");
+            entity.Property(e => e.FTitle)
+                .HasMaxLength(50)
+                .HasColumnName("fTitle");
+
+            entity.HasOne(d => d.FMember).WithMany(p => p.TArticles)
+                .HasForeignKey(d => d.FMemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tArticle_tMember");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TArticles)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tArticle_tMovie");
+        });
+
+        modelBuilder.Entity<TArticleImg>(entity =>
+        {
+            entity.HasKey(e => e.FimgId);
+
+            entity.ToTable("tArticleImg", "CMT");
+
+            entity.Property(e => e.FimgId).HasColumnName("FImgID");
+            entity.Property(e => e.FblockId)
+                .HasMaxLength(50)
+                .HasColumnName("FBlockID");
+            entity.Property(e => e.FimagePath)
+                .HasMaxLength(50)
+                .HasColumnName("FImagePath");
+        });
+
+        modelBuilder.Entity<TArticleTag>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("PK_Com_Hash");
+
+            entity.ToTable("tArticleTags", "CMT");
+
+            entity.Property(e => e.FId).HasColumnName("fID");
+            entity.Property(e => e.FArticleId).HasColumnName("fArticleID");
+            entity.Property(e => e.FTagId).HasColumnName("fTagID");
+
+            entity.HasOne(d => d.FArticle).WithMany(p => p.TArticleTags)
+                .HasForeignKey(d => d.FArticleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tArticleTags_tArticle");
+
+            entity.HasOne(d => d.FTag).WithMany(p => p.TArticleTags)
+                .HasForeignKey(d => d.FTagId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Com_Hash_Hashtags");
+        });
+
         modelBuilder.Entity<TCategory>(entity =>
         {
             entity.HasKey(e => e.FCategoryId).HasName("PK_Category");
@@ -186,24 +254,6 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FCategoryName)
                 .HasMaxLength(50)
                 .HasColumnName("fCategory_Name");
-        });
-
-        modelBuilder.Entity<TCmtImage>(entity =>
-        {
-            entity.HasKey(e => e.FCmtImgId).HasName("PK_Complaint_ImageList");
-
-            entity.ToTable("tCmtImage", "CMT");
-
-            entity.Property(e => e.FCmtImgId).HasColumnName("fCmtImgID");
-            entity.Property(e => e.FCmtId).HasColumnName("fCmt_ID");
-            entity.Property(e => e.FImgName)
-                .HasMaxLength(50)
-                .HasColumnName("fImgName");
-
-            entity.HasOne(d => d.FCmt).WithMany(p => p.TCmtImages)
-                .HasForeignKey(d => d.FCmtId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Cmt_Image__Movie__61BB7BD9");
         });
 
         modelBuilder.Entity<TCnQ>(entity =>
@@ -459,51 +509,6 @@ public partial class MovieContext : DbContext
                 .HasColumnName("fGender_Name");
         });
 
-        modelBuilder.Entity<THashtag>(entity =>
-        {
-            entity.HasKey(e => e.FHashtagId).HasName("PK_Hashtags");
-
-            entity.ToTable("tHashtag", "CMT");
-
-            entity.Property(e => e.FHashtagId).HasColumnName("fHashtagID");
-            entity.Property(e => e.FText)
-                .HasMaxLength(20)
-                .HasColumnName("fText");
-        });
-
-        modelBuilder.Entity<TImage>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieImage");
-
-            entity.ToTable("tImage", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImagePath)
-                .HasMaxLength(50)
-                .HasColumnName("fImagePath");
-        });
-
-        modelBuilder.Entity<TImageList>(entity =>
-        {
-            entity.HasKey(e => e.FId).HasName("PK_MovieImageList");
-
-            entity.ToTable("tImageList", "Movie");
-
-            entity.Property(e => e.FId).HasColumnName("fId");
-            entity.Property(e => e.FImageId).HasColumnName("fImageId");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
-
-            entity.HasOne(d => d.FImage).WithMany(p => p.TImageLists)
-                .HasForeignKey(d => d.FImageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieImageList_MovieImage");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TImageLists)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieImagesList_Movies");
-        });
-
         modelBuilder.Entity<TLanguage>(entity =>
         {
             entity.HasKey(e => e.FId).HasName("PK_MovieLanguage");
@@ -514,6 +519,9 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FNameCht)
                 .HasMaxLength(50)
                 .HasColumnName("fNameCht");
+            entity.Property(e => e.FNameEng)
+                .HasMaxLength(50)
+                .HasColumnName("fNameEng");
         });
 
         modelBuilder.Entity<TLanguageList>(entity =>
@@ -651,13 +659,16 @@ public partial class MovieContext : DbContext
 
         modelBuilder.Entity<TMovie>(entity =>
         {
-            entity.HasKey(e => e.FMovieId).HasName("PK_Movie");
+            entity.HasKey(e => e.FId).HasName("PK_Movie");
 
             entity.ToTable("tMovie", "Movie");
 
-            entity.Property(e => e.FMovieId)
+            entity.Property(e => e.FId)
                 .ValueGeneratedNever()
-                .HasColumnName("fMovieId");
+                .HasColumnName("fId");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(50)
+                .HasColumnName("fImagePath");
             entity.Property(e => e.FInteroduce).HasColumnName("fInteroduce");
             entity.Property(e => e.FNameCht)
                 .HasMaxLength(50)
@@ -671,6 +682,7 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FPrice)
                 .HasColumnType("money")
                 .HasColumnName("fPrice");
+            entity.Property(e => e.FRatingId).HasColumnName("fRatingId");
             entity.Property(e => e.FScheduleEnd)
                 .HasColumnType("smalldatetime")
                 .HasColumnName("fScheduleEnd");
@@ -681,64 +693,13 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FShowLength).HasColumnName("fShowLength");
             entity.Property(e => e.FTrailerLink).HasColumnName("fTrailerLink");
 
+            entity.HasOne(d => d.FRating).WithMany(p => p.TMovies)
+                .HasForeignKey(d => d.FRatingId)
+                .HasConstraintName("FK_tMovie_tRating");
+
             entity.HasOne(d => d.FSeries).WithMany(p => p.TMovies)
                 .HasForeignKey(d => d.FSeriesId)
                 .HasConstraintName("FK_Movie_MovieSeries");
-        });
-
-        modelBuilder.Entity<TMovieCmt>(entity =>
-        {
-            entity.HasKey(e => e.FCmtid).HasName("PK_MovieComments");
-
-            entity.ToTable("tMovieCmt", "CMT");
-
-            entity.Property(e => e.FCmtid).HasColumnName("fCMTID");
-            entity.Property(e => e.FCreatedTime)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("fCreatedTime");
-            entity.Property(e => e.FEditedTime)
-                .HasColumnType("datetime")
-                .HasColumnName("fEditedTime");
-            entity.Property(e => e.FMemberId).HasColumnName("fMember_ID");
-            entity.Property(e => e.FMovieId).HasColumnName("fMovie_ID");
-            entity.Property(e => e.FRate).HasColumnName("fRate");
-            entity.Property(e => e.FText)
-                .HasColumnType("text")
-                .HasColumnName("fText");
-            entity.Property(e => e.FTitle)
-                .HasMaxLength(20)
-                .HasColumnName("fTitle");
-            entity.Property(e => e.FVisible)
-                .IsRequired()
-                .HasDefaultValueSql("((1))")
-                .HasColumnName("fVisible");
-
-            entity.HasOne(d => d.FMember).WithMany(p => p.TMovieCmts)
-                .HasForeignKey(d => d.FMemberId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__MovieCmts__Membe__5FD33367");
-
-            entity.HasOne(d => d.FMovie).WithMany(p => p.TMovieCmts)
-                .HasForeignKey(d => d.FMovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieCmts_Movie");
-        });
-
-        modelBuilder.Entity<TMovieCmtHash>(entity =>
-        {
-            entity.HasKey(e => e.FCmthashId).HasName("PK_Com_Hash");
-
-            entity.ToTable("tMovieCmt_Hash", "CMT");
-
-            entity.Property(e => e.FCmthashId).HasColumnName("fCMTHashID");
-            entity.Property(e => e.FHashtagId).HasColumnName("fHashtagID");
-            entity.Property(e => e.FMovieCmtId).HasColumnName("fMovieCmtID");
-
-            entity.HasOne(d => d.FHashtag).WithMany(p => p.TMovieCmtHashes)
-                .HasForeignKey(d => d.FHashtagId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Com_Hash_Hashtags");
         });
 
         modelBuilder.Entity<TOrder>(entity =>
@@ -889,6 +850,21 @@ public partial class MovieContext : DbContext
                 .HasConstraintName("FK_Products_Category");
         });
 
+        modelBuilder.Entity<TRating>(entity =>
+        {
+            entity.HasKey(e => e.FId);
+
+            entity.ToTable("tRating", "Movie");
+
+            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FImagePath)
+                .HasMaxLength(50)
+                .HasColumnName("fImagePath");
+            entity.Property(e => e.FNameCht)
+                .HasMaxLength(50)
+                .HasColumnName("fNameCht");
+        });
+
         modelBuilder.Entity<TReceipt>(entity =>
         {
             entity.HasKey(e => e.FReceiptId).HasName("PK_Receipt");
@@ -1025,6 +1001,42 @@ public partial class MovieContext : DbContext
                 .HasConstraintName("FK_Session_Theater");
         });
 
+        modelBuilder.Entity<TShortCmt>(entity =>
+        {
+            entity.HasKey(e => e.FCmtid).HasName("PK_MovieComments");
+
+            entity.ToTable("tShortCmt", "CMT");
+
+            entity.Property(e => e.FCmtid).HasColumnName("fCMTID");
+            entity.Property(e => e.FCreatedTime)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("fCreatedTime");
+            entity.Property(e => e.FEditedTime)
+                .HasColumnType("datetime")
+                .HasColumnName("fEditedTime");
+            entity.Property(e => e.FMemberId).HasColumnName("fMember_ID");
+            entity.Property(e => e.FMovieId).HasColumnName("fMovie_ID");
+            entity.Property(e => e.FRate).HasColumnName("fRate");
+            entity.Property(e => e.FTitle)
+                .HasMaxLength(50)
+                .HasColumnName("fTitle");
+            entity.Property(e => e.FVisible)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("fVisible");
+
+            entity.HasOne(d => d.FMember).WithMany(p => p.TShortCmts)
+                .HasForeignKey(d => d.FMemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__MovieCmts__Membe__5FD33367");
+
+            entity.HasOne(d => d.FMovie).WithMany(p => p.TShortCmts)
+                .HasForeignKey(d => d.FMovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovieCmts_Movie");
+        });
+
         modelBuilder.Entity<TStatusType>(entity =>
         {
             entity.HasKey(e => e.FStatusTypeId).HasName("PK_StatusList");
@@ -1035,6 +1047,18 @@ public partial class MovieContext : DbContext
             entity.Property(e => e.FStatusText)
                 .HasMaxLength(20)
                 .HasColumnName("fStatusText");
+        });
+
+        modelBuilder.Entity<TTagList>(entity =>
+        {
+            entity.HasKey(e => e.FTagId).HasName("PK_Hashtags");
+
+            entity.ToTable("tTagList", "CMT");
+
+            entity.Property(e => e.FTagId).HasColumnName("fTagID");
+            entity.Property(e => e.FTagText)
+                .HasMaxLength(20)
+                .HasColumnName("fTagText");
         });
 
         modelBuilder.Entity<TTheater>(entity =>
@@ -1105,7 +1129,9 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tTypeList", "Movie");
 
-            entity.Property(e => e.FId).HasColumnName("fId");
+            entity.Property(e => e.FId)
+                .ValueGeneratedNever()
+                .HasColumnName("fId");
             entity.Property(e => e.FMovieId).HasColumnName("fMovieId");
             entity.Property(e => e.FTypeId).HasColumnName("fTypeId");
 

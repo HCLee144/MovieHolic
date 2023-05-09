@@ -1,0 +1,161 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model prjMovieHolic.ViewModels.CShoppingCartViewModel
+
+<div id="page2">
+    <div class="body1">
+        <div class="">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="wrapper">
+                            <!--步驟圈圈在這裡-->
+                            <div class="orderStep">
+                                <ul>
+                                    <li class="liInOrderstephere">選擇時段</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇票種</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇座位</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">配餐選擇</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">送出訂單</li>
+                                </ul>
+                            </div>
+                            <!--這裡開始訂票-->
+                            <div class="orderBox">
+                                <div>
+                                    <figure>
+                                        <h4>@Model.tMovie.FNameCht</h4>
+                                        <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
+                                        <ul>
+                                            <li style="padding-top:10px"><span style="font-weight:bold;font-size:20px">英文</span> @Model.tMovie.FNameEng</li>
+                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
+                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">類型</span>@Model.TypeListNames</li>
+                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">導演</span></li>
+                                            <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">演員</span></li>
+                                        </ul>
+                                    </figure>
+                                </div>
+                                <div class="pick">
+                                    <div>
+                                        <ul class="pickDate">
+                                            <a>
+                                            <li value="@Model.tMovie.TSessions.FirstOrDefault().FStartTime.ToString("MM/dd")" id="day1">@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.ToString("MM/dd")<br>@Model.weekDays[0]</li>
+                                            </a>
+                                            <a>
+                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(1).ToString("MM/dd")<br>@Model.weekDays[1]</li>
+                                            </a>
+                                            <a>
+                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(2).ToString("MM/dd")<br>@Model.weekDays[2]</li>
+                                            </a>
+                                            <a>
+                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(3).ToString("MM/dd")<br>@Model.weekDays[3]</li>
+                                            </a>
+                                            <a>
+                                            <li>@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(4).ToString("MM/dd")<br>@Model.weekDays[4]</li>
+                                            </a>
+                                        </ul>
+                                    </div>
+                                    <div class="pickCinemaAndTime" id="pickCinemaAndTime">
+                                        <div>
+                                            <h3>1廳</h3>
+                                            <ul class="chooseTime">
+                                                <li><a href="">10:30</a></li>
+                                                <li><a href="">13:10</a></li>
+                                                <li><a href="">16:20</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h3>2廳</h3>
+                                            <ul class="chooseTime">
+                                                <li><a href="">10:30</a></li>
+                                                <li><a href="">13:10</a></li>
+                                                <li><a href="">16:20</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h3>3廳</h3>
+                                            <ul class="chooseTime">
+                                                <li><a href="">10:30</a></li>
+                                                <li><a href="">13:10</a></li>
+                                                <li><a href="">16:20</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h3>4廳</h3>
+                                            <ul class="chooseTime">
+                                                <li><a href="">10:30</a></li>
+                                                <li><a href="">13:10</a></li>
+                                                <li><a href="">16:20</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="button toRight">下一步</a>
+                            <div id="rest" style="border:1px; height:100px;width:100px;background-color:bisque"></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        const day1 = document.querySelector('#day1');
+        const pickCinemaAndTime = document.querySelector('#pickCinemaAndTime');
+        const rest = document.querySelector('#rest');
+        let eachSessionIDandTime = [];
+
+        day1.addEventListener('click', async () => {
+            const response = await fetch('@Url.Content("~/Order/queryByDate")?date=' + day1.innerHTML)
+            const datas = await response.json();
+            console.log(datas);
+            /*eachSessionIDandTime=datas.map
+            (
+                (data)=>
+                {
+                        console.log(data["sessionIDandTime"])
+                        return(data["sessionIDandTime"].split(","))
+                }
+            )
+
+            console.log(eachSessionIDandTime[0][0].split("##"))
+            eachSessionIDandTime.forEach((item)=>{
+                console.log(item)
+                item.forEach((subitem)=>{
+                     const subitems=subitem.split("##")
+                     console.log(subitems[1])
+                })
+            })*/
+
+            //重這裡開始新的
+
+            let result = "`<div>`";
+            eachSessionIDandTime = datas.forEach((data) => 
+            {
+                result += `<h3>${data["theaterName"]}`;
+                data["sessionIDandTime"].split(",").forEach(item=>{
+                    console.log(item)
+                })
+
+                //    <h3>${data["theaterName"]}</h3>
+                //    <ul class="chooseTime">
+                //    <li><a>${}</a></li>
+                //    </ul>
+                //    </div>`
+                result+=`</h3>`;
+            })
+            result += `</div>`;
+        })
+
+    </script>
+}
