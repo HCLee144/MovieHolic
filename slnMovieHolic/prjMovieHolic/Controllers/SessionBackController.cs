@@ -35,7 +35,6 @@ namespace prjMovieHolic.Controllers
             var rawDatas =
                 from s in _db.TSessions.AsEnumerable()
                 where s.FStartTime.Date == date.Date
-                //group s by s.FMovie.FNameCht into g
                 group s by s.FMovieId into g
                 select new
                 {
@@ -45,7 +44,7 @@ namespace prjMovieHolic.Controllers
             List<CDataForSessionChart> datas = new List<CDataForSessionChart>();
             foreach (var rawData in rawDatas)
             {
-                string movieName = _db.TMovies.Where(m => m.FMovieId == rawData.movieID).First().FNameCht;
+                string movieName = _db.TMovies.Where(m => m.FId == rawData.movieID).First().FNameCht;
                 if (!datas.Where(data => data.name == movieName).Any())
                 {
                     datas.Add(new CDataForSessionChart { name = movieName });
@@ -54,17 +53,18 @@ namespace prjMovieHolic.Controllers
                 foreach (var session in rawData.g)
                 {
                     SessionTheaterAndTimeData sessionData = new SessionTheaterAndTimeData();
-                    sessionData.x = _db.TTheaters.Where(m => m.FTheaterId ==session.FTheaterId).First().FTheater;
+                    sessionData.x = _db.TTheaters.Where(m => m.FTheaterId == session.FTheaterId).First().FTheater;
                     sessionData.y = new long[]
                     {
                         new DateTimeOffset(session.FStartTime.AddHours(8)).ToUnixTimeMilliseconds(),
                          new DateTimeOffset(session.FEndTime.AddHours(8)).ToUnixTimeMilliseconds()
                     };
-                    datas.Where(data => data.name==movieName).First().data.Add(sessionData);
+                    datas.Where(data => data.name == movieName).First().data.Add(sessionData);
                 }
             }
-
             return Json(datas);
         }
+
+        //public IActionResult get
     }
 }
