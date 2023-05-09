@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - prjMovieHolic</title>
+    <link rel="stylesheet" href="~/css/reset.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/css/article.css" type="text/css" media="all">
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header>
+        <div class="top">
+            <img class="logo" src="/images/logo01.jpg" alt="">
+            <div class="topMenu">
+                <ul>
+                    <li><a href="">選項一</a></li>
+                    <li><a href="">選項二</a></li>
+                    <li><a href="">選項三</a></li>
+                </ul>
+                <div class="forSearch">
+                    <input type="text" id="movieName">
+                    <input type="button" id="searchBotton" value="搜尋">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @RenderBody()
+
+
+    <footer>
+        <div class="footerdiv">
+            <p>瘋電影文化事業版權所有、轉載必究 | Copyright © iThome 刊登廣告 授權服務 服務信箱 隱私權聲明與會員使用條款 使用說明</p>
+        </div>
+
+
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
