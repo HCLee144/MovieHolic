@@ -31,16 +31,9 @@
 
         public TGender FGender { get; set; } = null!;
 
-        public TMembership FMembership { get; set; } 
+        public TMembership FMembership { get; set; }
 
-        public TMember mem
-        {
-            get
-            {
-                MovieContext movieContext = new MovieContext();
-                return movieContext.TMembers.Where(m => m.FMembership == FMembership).FirstOrDefault();
-            }
-        }
+        public bool IsLogin { get; set; }
 
     }
 }

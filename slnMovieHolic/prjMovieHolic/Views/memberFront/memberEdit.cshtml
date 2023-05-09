@@ -32,7 +32,7 @@
                                     <table class="memberTable">
                                     <tr>
                                         <th>會員等級</th>
-                                        <td>很瞎</td>
+                                        <td>@Model.FMembership.FMembershipName</td>
                                     </tr>
                                     <tr>
                                         <th>姓名</th>
@@ -52,7 +52,7 @@
                                     </tr>
                                     <tr>
                                         <th>性別</th>
-                                        <td><input type="text" name="FGender" value="@Model.FGender" size="30"></td>
+                                        <td><input type="text" name="FGender" value="@Model.FGender.FGenderName" size="30"></td>
                                     </tr>
                                 </table>
                                 <br>
