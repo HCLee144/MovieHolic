@@ -15,6 +15,10 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult Index()
         {
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER)!= null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
             return View();
         }
 

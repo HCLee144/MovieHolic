@@ -10,7 +10,6 @@ public partial class TMember
     public string FIdcardNumber { get; set; } = null!;
 
     public string FPassword { get; set; } = null!;
-
     public string FName { get; set; } = null!;
 
     public string? FEmail { get; set; }
