@@ -38,7 +38,7 @@
 }
 
     .position:hover {
-        background-color: rgb(182, 182, 182);
+        background-color: #105190;
         color: #10a5d6;
     }
 
@@ -65,11 +65,19 @@
     justify-content: space-between;
     font-weight: bold;
 }
+    .hotMoviePlaceLineMenu a{
+        text-decoration:none;
+    }
 
-.wrapper2 {
-    display: flex;
-    justify-content: space-between;
-}
+    .hotMoviePlaceLineMenu a:hover{
+        color:#eaeaea;
+    }
+
+
+    .wrapper2 {
+        display: flex;
+        justify-content: space-between;
+    }
 
 .movieCard a {
     text-decoration: none;
@@ -145,6 +153,9 @@
     justify-content: space-between;
     font-weight: bold;
 }
+    .notYetMoviePlaceLineMenu a:hover {
+        color: #eaeaea;
+    }
 
 .homePagebottom {
     /*background: #363636;*/
@@ -201,7 +212,7 @@
     width: 120px;
     height: 120px;
     font-size: 20px;
-    line-height: 100px;
+    line-height: 120px;
     text-align: center;
 }
 /*特別變色的圈圈是這一塊*/
@@ -215,7 +226,7 @@
     height: 120px;
     font-size: 24px;
     font-weight: 900;
-    line-height: 100px;
+    line-height: 120px;
     text-align: center;
 }
 /*流程圓圈到此結束*/

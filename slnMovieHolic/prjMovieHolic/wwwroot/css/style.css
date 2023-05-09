@@ -17,7 +17,7 @@ body {background:#111;border:0;font:14px Arial, Helvetica, sans-serif;color:#0f0
 .body3 {background:url(../images/bg_top_img.jpg) top center no-repeat}
 .body4 {background:url(../images/bg_content.gif) top repeat-x #363636}
 /* main layout */
-a {color:#13c5ff;text-decoration:underline;outline:none}
+a {color:#13c5ff;text-decoration:none;outline:none}
 a:hover {text-decoration:none}
 h1 {padding:37px 0 0 19px;float:left}
 h2 {font-size:40px;line-height:1.2em;color:#0f0f0f;padding:1px 0 17px 10px;letter-spacing:-1px}
