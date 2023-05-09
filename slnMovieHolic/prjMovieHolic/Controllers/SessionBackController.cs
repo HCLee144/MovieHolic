@@ -45,7 +45,7 @@ namespace prjMovieHolic.Controllers
             List<CDataForSessionChart> datas = new List<CDataForSessionChart>();
             foreach (var rawData in rawDatas)
             {
-                string movieName = _db.TMovies.Where(m => m.FMovieId == rawData.movieID).First().FNameCht;
+                string movieName = _db.TMovies.Where(m => m.FId == rawData.movieID).First().FNameCht;
                 if (!datas.Where(data => data.name == movieName).Any())
                 {
                     datas.Add(new CDataForSessionChart { name = movieName });

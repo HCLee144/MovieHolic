@@ -35,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=SessionBack}/{action=ViewSession}/{id?}");
+    pattern: "{controller=Order}/{action=ListSession}/{movieid=8}");
 
 app.Run();

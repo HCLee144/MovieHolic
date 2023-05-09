@@ -5,9 +5,11 @@ namespace prjMovieHolic.Models;
 
 public partial class TMovie
 {
-    public int FMovieId { get; set; }
+    public int FId { get; set; }
 
     public int? FSeriesId { get; set; }
+
+    public int? FRatingId { get; set; }
 
     public string FNameCht { get; set; } = null!;
 
@@ -25,7 +27,11 @@ public partial class TMovie
 
     public string? FPosterPath { get; set; }
 
+    public string? FImagePath { get; set; }
+
     public decimal? FPrice { get; set; }
+
+    public virtual TRating? FRating { get; set; }
 
     public virtual TSeries? FSeries { get; set; }
 
@@ -34,8 +40,6 @@ public partial class TMovie
     public virtual ICollection<TCountryList> TCountryLists { get; set; } = new List<TCountryList>();
 
     public virtual ICollection<TDirectorList> TDirectorLists { get; set; } = new List<TDirectorList>();
-
-    public virtual ICollection<TImageList> TImageLists { get; set; } = new List<TImageList>();
 
     public virtual ICollection<TLanguageList> TLanguageLists { get; set; } = new List<TLanguageList>();
 
