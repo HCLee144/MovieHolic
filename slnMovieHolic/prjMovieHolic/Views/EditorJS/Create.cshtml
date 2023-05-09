@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "文章編輯器";
+}
+
+@section Styles{
+    <link href="~/css/EditorJS/simple-image.css" rel="stylesheet" />
+    <link href="~/css/EditorJS/editorJS.css" rel="stylesheet" />
+}
+<div class="editorJS">
+    <div id="editorjs"></div>
+    <button id="save-button">Save</button>
+<pre id="output"></pre>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/editorjs@@latest"></script>
+    <script src="~/js/EditorJS/simple-image.js"></script>
+    <script>
+        const editor = new EditorJS({
+            autofocus: true,
+            tools: {
+                image: SimpleImage
+            }
+        });
+
+        const saveButton = document.getElementById('save-button');
+        const output = document.getElementById('output');
+
+        saveButton.addEventListener('click', () => {
+            editor.save().then(savedData => {
+                output.innerHTML = JSON.stringify(savedData, null, 4);
+            })
+        })
+    </script>
+}
+
+
