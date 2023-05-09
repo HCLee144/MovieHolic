@@ -91,7 +91,7 @@ namespace prjMovieHolic.Controllers
                 datas.hasOrder = _db.TOrders.Where(o => o.FSessionId == session.FSessionId).Any();
                 datas.MovieId = session.FMovieId;
                 datas.MovieName = session.FMovie.FNameCht;
-                datas.MoviePosterPath = session.FMovie.FPosterPath;
+                datas.MoviePosterPath =session.FMovie.FPosterPath;
                 return Json(datas);
             }
             catch (Exception ex)

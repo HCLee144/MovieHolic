@@ -95,11 +95,11 @@
                             if(session.hasOrder == true){
                                 edit.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法修改</div>';
                             }else{
-                                edit.innerHTML += '<input type="button"  value = "修改場次" class="btn btn-primary m-1" /><input type="submit" value = "刪除場次" class="btn btn-danger m-1" />';
+                                edit.innerHTML += '<div><input type="button"  value = "修改場次" class="btn btn-primary m-1" /><input type="submit" value = "刪除場次" class="btn btn-danger m-1" /></div>';
                             }
-                            //session.moviePosterPath = String.subs
+                            session.moviePosterPath = session.moviePosterPath.substring(2);
                             console.log(session.moviePosterPath)
-                            //edit.innerHTML += `<img src=Content(${session.moviePosterPath})>`;
+                            edit.innerHTML += `<img src="${session.moviePosterPath}/${session.movieId}.jpg" width=300>`;
                         },
                     }
                 },
