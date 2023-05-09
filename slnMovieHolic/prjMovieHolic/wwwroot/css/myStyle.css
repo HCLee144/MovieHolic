@@ -111,6 +111,7 @@
         color: #eaeaea;
         background-color: #10a5d6;
         border-radius: 5px;
+        cursor: pointer;
     }
 
     .likeAndBuy a {
