@@ -62,7 +62,7 @@ namespace prjMovieHolic.Controllers
                 {
                     if (item.theaterName == sessionItem.FTheater.FTheater)
                     {
-                        item.sessionIDandTime += $",{sessionItem.FSessionId}##{sessionItem.FStartTime.ToShortTimeString()}";
+                        item.sessionIDandTime += $",{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
                         verify = true;
                         break;
                     }
@@ -71,7 +71,7 @@ namespace prjMovieHolic.Controllers
                 {
                     CShowSession showSession = new CShowSession();
                     showSession.theaterName = sessionItem.FTheater.FTheater;
-                    showSession.sessionIDandTime = $"{sessionItem.FSessionId}##{sessionItem.FStartTime.ToShortTimeString()}";
+                    showSession.sessionIDandTime = $"{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
 
                     showSessions.Add(showSession);
                 }

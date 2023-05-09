@@ -9,6 +9,10 @@
         .day {
             border: solid
         }
+
+        .aaaa {
+            border: solid
+        }
     </style>
 }
 <div id="page2">
@@ -115,11 +119,19 @@
         const days = document.querySelectorAll('.day');
 
         days.forEach((day) => {
+            
             day.addEventListener('click', async () => {
                 //改顏色
+                
+                days.forEach((allDays)=>{
+                allDays.style.backgroundColor = '#eaeaea';
+                    allDays.style.color = '#10a5d6';
+                })
+
                 const elementID=day.getAttribute('id');
                 const element=document.querySelector(`#${elementID}`);
-                element.style.backgroundColor ='blue';
+                element.style.backgroundColor ='#10a5d6';
+                element.style.color = '#eaeaea';
 
 
                 //呈現場次
@@ -131,10 +143,11 @@
                 datas.forEach((data) => {
                     result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
                     data["sessionIDandTime"].split(",").forEach(item => {
+                        let sessionID = item.split("##")[0];
                         console.log(item.split("##")[0])
                         let sessionTime = item.split("##")[1];
                         console.log(item.split("##")[1])
-                        result += `<li><a>${sessionTime}</a></li>`
+                        result += `<li name="${sessionID}" onclick="chooseSession(event) class="aaaa">${sessionTime}</li>`
                     })
 
                     result += `</ul>`
@@ -143,8 +156,16 @@
                 console.log(result);
                 pickCinemaAndTime.innerHTML = result
             })
+
          })
 
+
+         function chooseSession(event)
+         {
+             const btns=document.querySelectorAll(".aaaa");
+            event.target.style.backgroundColor = '#10a5d6';
+
+         }
 
     </script>
 }
