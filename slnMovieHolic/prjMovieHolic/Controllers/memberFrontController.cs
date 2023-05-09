@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace prjMovieHolic.Controllers
 {
-    public class memberFrontController : Controller
+    public class memberFrontController : SuperController
     {
         private readonly MovieContext _movieContext;
         public memberFrontController(MovieContext context)
@@ -30,11 +30,21 @@ namespace prjMovieHolic.Controllers
             }
             return View();
         }
+        //登出
         public IActionResult memberLogout()
-        {//todo 登出
+        {
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
             return RedirectToAction("Index","Home");
         }
+         //todo 忘記密碼
+        public IActionResult forgetPassword()
+        {   //step1 驗證是否有此帳號
+            //step2 寄信
+            return View();
+        }
+
+
+
         //會員基本資料
         public IActionResult memberList(int? id)
         {
@@ -43,7 +53,10 @@ namespace prjMovieHolic.Controllers
             TMember memberData = _movieContext.TMembers.Include(t => t.FMembership)
                 .Include(t => t.FGender)
                 .FirstOrDefault(t => t.FMemberId == id);
-            return View(memberData);
+
+                sessionCheck();
+
+                return View(memberData);
             }
             return RedirectToAction("memberLogin");
         }
@@ -53,6 +66,7 @@ namespace prjMovieHolic.Controllers
             TMember memberData = _movieContext.TMembers.Include(t => t.FMembership)
                 .Include(t => t.FGender)
                 .FirstOrDefault(t => t.FMemberId == id);
+            sessionCheck();
             if (memberData != null)
             {
                 return View(memberData);
@@ -82,25 +96,27 @@ namespace prjMovieHolic.Controllers
             TMember memberData = _movieContext.TMembers.Include(t => t.FMembership)
                                .Include(t => t.FGender)
                                .FirstOrDefault(t => t.FMemberId == id);
+            sessionCheck();
             return View(memberData);
         }
         [HttpPost]
         public IActionResult passwordEdit(CMemberViewModel vm)
-        { //todo 密碼驗證
+        { 
             var memberData = _movieContext.TMembers.FirstOrDefault(t=>t.FMemberId==vm.FMemberId);
             if (memberData != null)
             {
                 var password = _movieContext.TMembers.FirstOrDefault(t => t.FPassword == vm.txtPreviousFPassword);
+                bool passwordFormat = !string.IsNullOrEmpty(vm.txtNewFPassword) && Regex.IsMatch(vm.txtNewFPassword, @"(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
                 bool passwordDoubleCheck = vm.txtNewFPassword.Equals(vm.txtNewFPasswordCheck);
-                if (password != null && passwordDoubleCheck==true)
+                if (password != null && passwordFormat==true && passwordDoubleCheck==true)
                 {
                     memberData.FPassword = vm.txtNewFPasswordCheck;
                     _movieContext.SaveChanges();
                     return RedirectToAction("memberList", new { id = vm.FMemberId });
                 }
-                return View();
-            }
-            return View();
+                return View(memberData);
+            }//todo 修改失敗時要有提示字
+            return View(memberData);
         }
         //舊密碼確認
         public IActionResult passwordCheck(string previousPassword)
