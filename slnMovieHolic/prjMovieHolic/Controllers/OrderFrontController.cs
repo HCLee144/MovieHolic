@@ -5,10 +5,10 @@ using prjMovieHolic.ViewModels;
 
 namespace prjMovieHolic.Controllers
 {
-    public class OrderController : Controller
+    public class OrderFrontController : Controller
     {
         private MovieContext movieContext;
-        public OrderController(MovieContext db)
+        public OrderFrontController(MovieContext db)
         {
             movieContext = db;
         }
@@ -80,6 +80,21 @@ namespace prjMovieHolic.Controllers
                 }
             }
             return Json(showSessions);
+        }
+
+        public IActionResult SaveSelectedSessionID(int sessionID)
+        {
+            HttpContext.Session.SetInt32(CDictionary.SelectedSessionID, sessionID);
+            return Content("Success");
+          
+        }
+
+        public IActionResult ListTicketClass()
+        {
+            if(!(HttpContext.Session.Keys.Contains(CDictionary.SelectedSessionID)))
+                return RedirectToAction("ListSession");
+          
+            return View();
         }
 
         [NonAction]

@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="button toRight">下一步</a>
+                            <a href="~/OrderFront/ListTicketClass" class="button toRight" id=" nextStep">下一步</a>
                         </div>
                     </section>
                 </div>
@@ -116,6 +116,7 @@
     <script>
   
         const pickCinemaAndTime = document.querySelector('#pickCinemaAndTime');
+        const nextStep = document.querySelector('#nextStep');
         const days = document.querySelectorAll('.day');
 
         days.forEach((day) => {
@@ -135,7 +136,7 @@
 
 
                 //呈現場次
-                const response = await fetch('@Url.Content("~/Order/queryByDate")?date=' + day.innerHTML)
+                const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day.innerHTML)
                 const datas = await response.json();
                 //console.log(datas);
 
@@ -160,15 +161,21 @@
          })
 
         
-         function chooseSession(event)
+         async function chooseSession(event)
          {   
-            const sessionBtns = document.querySelectorAll('.ccc');
-            sessionBtns.forEach((item)=>
+            //將ID存入Session
+            const response = await fetch('@Url.Content("~/OrderFront/SaveSelectedSessionID")?sessionID=' + event.target.getAttribute('name'));
+            const info=await response.text();
+            if(info==='Success')
             {
+                const sessionBtns = document.querySelectorAll('.ccc');
+                sessionBtns.forEach((item)=>
+                {
                 item.style.backgroundColor = '#eaeaea';
-            })
-         event.target.style.backgroundColor = '#10a5d6';
-            console.log(event.target.getAttribute('name'))
+                })
+            event.target.style.backgroundColor = '#10a5d6';
+            }
+
          }
 
     </script>
