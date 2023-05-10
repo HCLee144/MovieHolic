@@ -23,15 +23,14 @@
     }
 /*浮動區塊*/
 .position {
+    background: -webkit-linear-gradient(#10a5d6,#eaeaea);
     background-color: #10a5d6;
-    width: 120px;
+    width: 250px;
     height: 120px;
-    border-radius: 100px;
-    color: #eaeaea;
-    font-size: 26px;
-    font-weight: 900;
-    line-height: 120px;
+    border-radius: 5px;
+    padding-top: 50px;
     text-align: center;
+    /*浮動視窗螢幕位置*/
     position: fixed;
     top: 700px;
     right: 30px;
@@ -39,14 +38,19 @@
 
     .position:hover {
         background-color: #105190;
-        color: #10a5d6;
     }
 
-    .position a {
+    .position p {
         color: #eaeaea;
-        text-decoration: none;
+        font-size: 26px;
+        font-weight: 900;
     }
 
+    .position select {
+        width: 200px;
+        height: 30px;
+        font-size: 20px;
+    }
 
 
 .myBr {
@@ -65,19 +69,11 @@
     justify-content: space-between;
     font-weight: bold;
 }
-    .hotMoviePlaceLineMenu a{
-        text-decoration:none;
-    }
 
-    .hotMoviePlaceLineMenu a:hover{
-        color:#eaeaea;
-    }
-
-
-    .wrapper2 {
-        display: flex;
-        justify-content: space-between;
-    }
+.wrapper2 {
+    display: flex;
+    justify-content: space-between;
+}
 
 .movieCard a {
     text-decoration: none;
@@ -153,9 +149,6 @@
     justify-content: space-between;
     font-weight: bold;
 }
-    .notYetMoviePlaceLineMenu a:hover {
-        color: #eaeaea;
-    }
 
 .homePagebottom {
     /*background: #363636;*/
@@ -212,7 +205,7 @@
     width: 120px;
     height: 120px;
     font-size: 20px;
-    line-height: 120px;
+    line-height: 100px;
     text-align: center;
 }
 /*特別變色的圈圈是這一塊*/
@@ -226,7 +219,7 @@
     height: 120px;
     font-size: 24px;
     font-weight: 900;
-    line-height: 120px;
+    line-height: 100px;
     text-align: center;
 }
 /*流程圓圈到此結束*/
@@ -344,9 +337,10 @@ figure span {
         text-align: center;
     }
 
-    .chooseTime li:hover {
-        background-color: #10a5d6;
-    }
+        .chooseTime li:hover {
+            background-color: #10a5d6;
+            color: #eaeaea;
+        }
 /*下一步按鍵的位置調整*/
 .toRight {
     background-color: #10a5d6;
@@ -360,7 +354,9 @@ figure span {
 }
 /*已點項目小框框*/
 .alreadyOrder {
+    width: 430px;
     margin-top: 52px;
+    margin-bottom: 20px;
     padding-top: 8px;
     border: 1px solid silver;
     border-radius: 5px;
@@ -437,6 +433,25 @@ figure span {
     margin-right: 5px;
     font-weight: bolder;
 }
+
+.labUsingCoupon {
+    line-height: 36px;
+}
+
+.txtUsingCoupon {
+    border: 1px solid silver;
+    border-radius: 5px;
+    width: 170px;
+    margin-right: 20px;
+}
+
+.btnGoToCoupon {
+    background-color: #10a5d6;
+    padding: 10px;
+    border-radius: 5px;
+    color: #eaeaea;
+}
+
 
 
 
