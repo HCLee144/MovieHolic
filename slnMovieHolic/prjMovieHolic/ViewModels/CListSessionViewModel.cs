@@ -2,7 +2,7 @@
 
 namespace prjMovieHolic.ViewModels
 {
-    public class CShoppingCartViewModel
+    public class CListSessionViewModel
     {
         //ListSession
         public TMovie tMovie { get; set; }
@@ -15,10 +15,7 @@ namespace prjMovieHolic.ViewModels
         public string DirectorListNames { get; set; }
         public string[] weekDays { get; set; }
 
-        //ListTicketClass
-        public int selectedSessionID { get; set; }
-        public string selectedSessionDate { get; set; }
-        public string selectedTheater { get; set; }
+       
 
     }
 }
