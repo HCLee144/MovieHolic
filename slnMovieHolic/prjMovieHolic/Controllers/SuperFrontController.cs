@@ -4,7 +4,7 @@ using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
 {
-    public class SuperController : Controller
+    public class SuperFrontController : Controller
     {//todo 改成強行別?
         public void sessionCheck()
         {

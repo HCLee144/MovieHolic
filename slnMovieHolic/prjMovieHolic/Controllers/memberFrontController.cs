@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace prjMovieHolic.Controllers
 {
-    public class memberFrontController : SuperController
+    public class memberFrontController : SuperFrontController
     {
         private readonly MovieContext _movieContext;
         public memberFrontController(MovieContext context)
@@ -40,9 +40,26 @@ namespace prjMovieHolic.Controllers
         public IActionResult forgetPassword()
         {   //step1 驗證是否有此帳號
             //step2 寄信
+
             return View();
         }
-
+        [HttpPost]
+        public IActionResult forgetPassword(CMemberViewModel vm)
+        {
+            string email = vm.txtForgetPasswordEmail;
+            bool userExists = _movieContext.TMembers.Where(o => o.FEmail == email).ToList().Any();
+            if (!userExists)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                CForgetPassword CforgetPassword = new CForgetPassword();
+                CforgetPassword.getNewPasswordEmail(email);
+                return View();
+            }
+            
+        }
 
 
         //會員基本資料
