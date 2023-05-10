@@ -6,6 +6,7 @@ namespace prjMovieHolic.ViewModels
     {
         //ListSession
         public TMovie tMovie { get; set; }
+        public string MovieName { get; set; }
         public string[] tTypeListNames { get; set; }
         public string TypeListNames { get; set; }
         public string[] tActorListNames { get; set; }
@@ -16,5 +17,8 @@ namespace prjMovieHolic.ViewModels
 
         //ListTicketClass
         public int selectedSessionID { get; set; }
+        public string selectedSessionDate { get; set; }
+        public string selectedTheater { get; set; }
+
     }
 }

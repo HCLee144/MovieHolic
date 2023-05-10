@@ -1,8 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
+@model prjMovieHolic.ViewModels.CShoppingCartViewModel
 <div id="page2">
     <div class="body1">
         <div class="">
@@ -29,7 +28,7 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
-                                        <h4>電影名稱電影名稱</h4>
+                                        <h4>@Model.MovieName</h4>
                                         <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
                                     </figure>
                                 </div>
@@ -37,8 +36,8 @@
                                     <div class="alreadyOrder">
                                         <h3>已選項目</h3>
                                         <ul>
-                                            <li><span>時間</span>一個時間.....</li>
-                                            <li><span>影廳</span>第X廳</li>
+                                            <li><span>時間</span>@Model.selectedSessionDate</li>
+                                            <li><span>影廳</span>@Model.selectedTheater</li>
                                         </ul>
                                     </div>
                                     <div class="pickTicket">

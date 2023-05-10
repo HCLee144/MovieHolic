@@ -12,6 +12,7 @@ namespace prjMovieHolic.Controllers
         {
             movieContext = db;
         }
+
         public IActionResult ListSession(int? movieID)
         {
             if (movieID == null)
@@ -23,6 +24,8 @@ namespace prjMovieHolic.Controllers
 
             CShoppingCartViewModel shoppingCart = new CShoppingCartViewModel();
             shoppingCart.tMovie = movie;
+            shoppingCart.MovieName = movie.FNameCht;
+            string c = shoppingCart.MovieName;
 
             shoppingCart.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t=>t.FType.FNameCht).ToArray();
             shoppingCart.TypeListNames = getNames(shoppingCart.tTypeListNames);
@@ -93,8 +96,17 @@ namespace prjMovieHolic.Controllers
         {
             if(!(HttpContext.Session.Keys.Contains(CDictionary.SelectedSessionID)))
                 return RedirectToAction("ListSession");
-          
-            return View();
+
+            int sessionID = (int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
+            shoppingCart.selectedSessionID = sessionID;
+
+            string selectedSessionDateTime=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("MM/dd HH:mm");
+            shoppingCart.selectedSessionDate = selectedSessionDateTime;
+
+            string selectedTheater = movieContext.TSessions.Include(s=>s.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater.FTheater;
+            shoppingCart.selectedTheater=selectedTheater;
+            string c = shoppingCart.MovieName;
+            return View(shoppingCart);
         }
 
         [NonAction]
