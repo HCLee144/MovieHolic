@@ -36,11 +36,10 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
             return RedirectToAction("Index","Home");
         }
-         //todo 忘記密碼
+         
         public IActionResult forgetPassword()
         {   //step1 驗證是否有此帳號
             //step2 寄信
-
             return View();
         }
         [HttpPost]
@@ -50,17 +49,31 @@ namespace prjMovieHolic.Controllers
             bool userExists = _movieContext.TMembers.Where(o => o.FEmail == email).ToList().Any();
             if (!userExists)
             {
-                return RedirectToAction("Index", "Home");
+                var message = new { text = "該電子郵件地址不存在。", type = "success" };
+                return View("forgetPassword", message);
+            }
+            else
+            { //todo 已重新設定會跳轉頁面到登入
+                CForgetPassword CforgetPassword = new CForgetPassword();
+                CforgetPassword.getNewPasswordEmail(email);
+                return RedirectToAction("memberLogin");
+            }
+
+        }
+        //驗證是否成功
+        public IActionResult IsForgetPassword(string txtForgetPasswordEmail)
+        {
+            CForgetPassword CforgetPassword = new CForgetPassword();
+            bool isSent = _movieContext.TMembers.Where(o => o.FEmail == txtForgetPasswordEmail).ToList().Any();
+            if (!isSent)
+            {
+                return Json(new { success = false, message = "該電子郵件地址不存在。" });
             }
             else
             {
-                CForgetPassword CforgetPassword = new CForgetPassword();
-                CforgetPassword.getNewPasswordEmail(email);
-                return View();
+                return Json(new { success = true, message = "已成功寄出新密碼信件，請至您的信箱收取新密碼。" });
             }
-            
         }
-
 
         //會員基本資料
         public IActionResult memberList(int? id)
@@ -101,6 +114,7 @@ namespace prjMovieHolic.Controllers
             if (memberData != null)
             {
                 memberData.FName = member.FName;
+                memberData.FNickname= member.FNickname;
                 memberData.FPhone = member.FPhone;
                 memberData.FEmail = member.FEmail;
                 _movieContext.SaveChanges();
