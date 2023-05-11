@@ -25,7 +25,7 @@
 .position {
     background: -webkit-linear-gradient(#10a5d6,#eaeaea);
     background-color: #10a5d6;
-    width: 250px;
+    width: 200px;
     height: 120px;
     border-radius: 5px;
     padding-top: 50px;
@@ -47,7 +47,7 @@
     }
 
     .position select {
-        width: 200px;
+        width: 180px;
         height: 30px;
         font-size: 20px;
     }
@@ -452,8 +452,110 @@ figure span {
     color: #eaeaea;
 }
 
+/*選擇座位*/
+.orderDetailOnChooseSit {
+    margin-bottom: 20px;
+}
 
+    .orderDetailOnChooseSit ul {
+        display: flex;
+        justify-content: space-between;
+    }
 
+    .orderDetailOnChooseSit li {
+        width: 180px;
+        height: 50px;
+        border-left: 1px solid silver;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .orderDetailOnChooseSit h3 {
+        font-size: 18px;
+    }
+
+    .orderDetailOnChooseSit h4 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+.addBorderRight {
+    border-right: 1px solid silver;
+}
+
+.Tingbox {
+    border: 1px solid silver;
+}
+
+.sellSold {
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 18px;
+}
+
+.sell {
+    width: 18px;
+    height: 18px;
+    background-color: #eaeaea;
+    border: 1px solid silver;
+    border-radius: 15px;
+}
+
+.sold {
+    width: 18px;
+    height: 18px;
+    background-color: dimgray;
+    border: 1px solid silver;
+    border-radius: 15px;
+}
+
+.sell2 {
+    width: 28px;
+    height: 28px;
+    background-color: #eaeaea;
+    border: 1px solid silver;
+    border-radius: 15px;
+    margin-right: 13px;
+}
+
+.sold2 {
+    width: 28px;
+    height: 28px;
+    background-color: dimgray;
+    border: 1px solid silver;
+    border-radius: 15px;
+    margin-right: 13px;
+}
+
+.screen {
+    background-color: aliceblue;
+    border-radius: 15px;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 36px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.soManySit {
+    background-color: lavender;
+    border-radius: 15px;
+    width: 100%;
+    height: 780px;
+    margin-bottom: 20px;
+    padding-top: 13px;
+}
+
+.rowSit {
+    margin-bottom: 5px;
+    margin-left: 13px;
+}
 
 /*上面大致是婷婷的區塊*/
 
@@ -581,4 +683,125 @@ figure span {
 .logInBoxSmall img:hover {
     -webkit-filter: drop-shadow(2px 12px 7px silver);
     filter: drop-shadow(2px 12px 7px silver)
+}
+
+/*優惠券部分*/
+
+.couponList {
+    width: 550px;
+}
+
+.tab_css {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+    .tab_css input {
+        display: none
+    }
+
+    .tab_css label {
+        margin: 0 5px 5px 0;
+        padding: 10px 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        background: #999;
+        color: #fff;
+        opacity: 0.5;
+    }
+
+.tab_content {
+    order: 1;
+    display: none;
+    width: 100%;
+    border-bottom: 3px solid #ddd;
+    line-height: 1.6;
+    font-size: .9em;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.tab_css input:checked + label, .tab_css label:hover {
+    opacity: 1;
+    font-weight: bold;
+}
+
+    .tab_css input:checked + label + .tab_content {
+        display: initial;
+    }
+
+
+
+/*妮妮的電影頁面*/
+
+
+
+.moviePage {
+    display: flex;
+}
+
+.posterPlace {
+    text-align: center;
+}
+
+    .posterPlace img {
+        width: 200px;
+    }
+
+.movie {
+    margin-left: 20px;
+}
+
+    .movie li {
+        font-size: 16px;
+    }
+
+    .movie h3 {
+        font-size: 32px;
+    }
+
+    .movie h4 {
+        font-size: 20px;
+        padding-bottom: 25px;
+    }
+
+.somethingAboutMovie ul {
+    display: flex;
+}
+
+.somethingAboutMovie li {
+    line-height: 20px;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.fatLi {
+    font-weight: bold;
+    width: 60px;
+    height: 30px;
+}
+
+.movieIntroduce {
+    letter-spacing: 2px;
+    color: dimgray;
+}
+
+.myButton {
+    background-color: #10a5d6;
+    border-radius: 5px;
+    color: #eaeaea;
+    width: 90px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.movieIntroduce input:hover {
+    background-color: #105190;
+}
+
+.video {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
