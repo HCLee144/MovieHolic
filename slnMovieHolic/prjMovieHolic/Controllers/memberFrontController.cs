@@ -15,12 +15,17 @@ namespace prjMovieHolic.Controllers
         {
             _movieContext= context;
         }
-        
         //會員登入
+        public IActionResult memberLogin()
+        {
+            return View();
+        }
+        [HttpPost]
         public IActionResult memberLogin(CMemberViewModel vm)
-        { 
-            TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount)&&t.FPassword.Equals(vm.txtPassword));
-            if(user != null && user.FPassword.Equals(vm.txtPassword))
+        {
+            TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount));
+            bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
+            if (user != null && verifyPassword==true)
             {
                 //string json=JsonSerializer.Serialize(user.);
                 HttpContext.Session.SetInt32(CDictionary.SK_LOGIN_USER,user.FMemberId);
@@ -141,7 +146,8 @@ namespace prjMovieHolic.Controllers
                 bool passwordDoubleCheck = vm.txtNewFPassword.Equals(vm.txtNewFPasswordCheck);
                 if (password != null && passwordFormat==true && passwordDoubleCheck==true)
                 {
-                    memberData.FPassword = vm.txtNewFPasswordCheck;
+                    string newPassword=CPasswordHasher.HashPassword(vm.txtNewFPasswordCheck);
+                    memberData.FPassword = newPassword;
                     _movieContext.SaveChanges();
                     return RedirectToAction("memberList", new { id = vm.FMemberId });
                 }
