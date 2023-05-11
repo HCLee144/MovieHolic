@@ -23,15 +23,15 @@
                             <!--步驟圈圈在這裡-->
                             <div class="orderStep">
                                 <ul>
-                                    <li class="liInOrderstep">選擇時段</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstephere">選擇票種</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstep">選擇座位</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstep">配餐選擇</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstep">送出訂單</li>
+                                     <li class="liInOrderstephere">選擇時段</li>
+                                     <li><img src="~/images/menu_marker.png" alt=""></li>
+                                     <li class="liInOrderstep">選擇票種</li>
+                                     <li><img src="~/images/menu_marker.png" alt=""></li>
+                                     <li class="liInOrderstep">選擇座位</li>
+                                     <li><img src="~/images/menu_marker.png" alt=""></li>
+                                     <li class="liInOrderstep">配餐選擇</li>
+                                     <li><img src="~/images/menu_marker.png" alt=""></li>
+                                     <li class="liInOrderstep">送出訂單</li>
                                 </ul>
                             </div>
                             <!--這裡開始訂票-->
@@ -59,7 +59,7 @@
                                                 <li class="fontFat">一般</li>
                                                 <li></li>
                                                 <li></li>
-                                                    <li>張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
+                                                    <li>張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" value="0" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
                                                 <li id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
                                             </ul>
                                             <ul>
@@ -67,7 +67,7 @@
                                                 <li class="fontFat">學生</li>
                                                 <li></li>
                                                 <li></li>
-                                                <li>張數<button id="studentMinus" type="button">-</button><input type="text" id="studentTicket" name="studentCount_seat" value="0" size="3" /><button id="studentPlus" type="button">+</button></li>
+                                                    <li>張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
                                                 <li id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
                                             </ul>
                                             <ul>
@@ -75,7 +75,7 @@
                                                 <li class="fontFat">軍警</li>
                                                 <li></li>
                                                 <li></li>
-                                                    <li>張數<button id="soldierMinus" type="button">-</button><input type="text" id="soldierTicket" name="soldierCount_seat" value="0" size="3" /><button id="soldierPlus" type="button">+</button></li>
+                                                    <li>張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px" /><button id="soldierPlus" type="button">+</button></li>
                                                 <li id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
                                             </ul>
                                         </div>

@@ -142,7 +142,24 @@ namespace prjMovieHolic.Controllers
             string x = vm.normalCount_seat.ToString();
             string y = vm.studentCount_seat.ToString();
             string z = vm.soldierCount_seat.ToString();
-            return View();
+
+            //所有這個場次的seatID
+            var seats=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats.Select(s => s.FSeatId);
+
+            //非座位區的所有ID
+            var nonSeats=seats.Where(s => s == 2);
+
+            //愛心座位的所有ID
+            var diabledSeats = seats.Where(s => s == 3);
+
+            //已被選走的座位
+            var selectedSeats=movieContext.TOrderDetails.Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
+
+            int[] seat = new int[400];
+
+
+
+            return View(vm);
         }
 
         [NonAction]
