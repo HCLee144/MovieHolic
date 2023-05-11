@@ -78,19 +78,18 @@ namespace prjMovieHolic.Controllers
             {
                 int TheaterID = _db.TTheaters.Where(t => t.FTheater == vm.selectedSessionTheaterName).Select(t => t.FTheaterId).FirstOrDefault();
                 DateTime startTime = DateTime.Parse(vm.selectedSessionStartString);
-                var session = _db.TSessions.Include(s => s.FMovie).Include(s=>s.FTheater).Where(s => s.FTheaterId == TheaterID && s.FStartTime == startTime).FirstOrDefault();
+                var session = _db.TSessions.Include(s => s.FMovie).Where(s => s.FTheaterId == TheaterID && s.FStartTime == startTime).FirstOrDefault();
                 if (session == null)
                 {
                     return Json(null);
                 }
                 CSessionBackViewModel datas = new CSessionBackViewModel();
-                datas.sessionID = session.FSessionId;
-                datas.TheaterName = session.FTheater.FTheater;
+                datas.SessionID = session.FSessionId;
                 datas.StartTime = session.FStartTime;
                 datas.EndTime = session.FEndTime;
                 datas.hasOrder = _db.TOrders.Where(o => o.FSessionId == session.FSessionId).Any();
-                datas.MovieId = session.FMovieId;
                 datas.MovieName = session.FMovie.FNameCht;
+                datas.MovieLength = session.FMovie.FShowLength+" 分鐘";
                 datas.MoviePosterPath =session.FMovie.FPosterPath;
                 return Json(datas);
             }
