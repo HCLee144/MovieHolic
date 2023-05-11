@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace prjMovieHolic.Models
 {
     public class CPasswordHasher
-    {//將新密碼加密
+    {// todo 將新密碼加密
         public static string HashPassword(string password)
         {
             // Generate a random salt
@@ -20,7 +20,7 @@ namespace prjMovieHolic.Models
                 salt: salt,
                 prf: KeyDerivationPrf.HMACSHA512,
                 iterationCount: 10000,
-                numBytesRequested: 256 / 8);
+                numBytesRequested: 128 / 8);
 
             // Combine the salt and hash into a single string
             byte[] hashBytes = new byte[salt.Length + hash.Length];
@@ -44,7 +44,7 @@ namespace prjMovieHolic.Models
                 salt: salt,
                 prf: KeyDerivationPrf.HMACSHA512,
                 iterationCount: 10000,
-                numBytesRequested: 256 / 8);
+                numBytesRequested: 128 / 8);
 
             // Compare the computed hash with the extracted hash
             return computedHash.SequenceEqual(hash);

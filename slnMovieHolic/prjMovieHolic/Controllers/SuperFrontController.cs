@@ -12,6 +12,7 @@ namespace prjMovieHolic.Controllers
             var isUserLoggedIn = userId != null;
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
+
         }
     }
 }

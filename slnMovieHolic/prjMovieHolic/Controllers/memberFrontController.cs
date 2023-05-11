@@ -24,8 +24,8 @@ namespace prjMovieHolic.Controllers
         public IActionResult memberLogin(CMemberViewModel vm)
         {
             TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount));
-            bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
-            if (user != null && verifyPassword==true)
+            //bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
+            if (user != null && user.FPassword.Equals(vm.txtPassword))
             {
                 //string json=JsonSerializer.Serialize(user.);
                 HttpContext.Session.SetInt32(CDictionary.SK_LOGIN_USER,user.FMemberId);
@@ -58,7 +58,7 @@ namespace prjMovieHolic.Controllers
                 return View("forgetPassword", message);
             }
             else
-            { //todo 已重新設定會跳轉頁面到登入
+            { //todo 已重新設定會跳轉頁面到登入 
                 CForgetPassword CforgetPassword = new CForgetPassword();
                 CforgetPassword.getNewPasswordEmail(email);
                 return RedirectToAction("memberLogin");
@@ -142,7 +142,7 @@ namespace prjMovieHolic.Controllers
             if (memberData != null)
             {
                 var password = _movieContext.TMembers.FirstOrDefault(t => t.FPassword == vm.txtPreviousFPassword);
-                bool passwordFormat = !string.IsNullOrEmpty(vm.txtNewFPassword) && Regex.IsMatch(vm.txtNewFPassword, @"(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+                bool passwordFormat = !string.IsNullOrEmpty(vm.txtNewFPassword) && Regex.IsMatch(vm.txtNewFPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
                 bool passwordDoubleCheck = vm.txtNewFPassword.Equals(vm.txtNewFPasswordCheck);
                 if (password != null && passwordFormat==true && passwordDoubleCheck==true)
                 {
@@ -164,7 +164,7 @@ namespace prjMovieHolic.Controllers
         //密碼格式驗證
         public IActionResult passwordFormat(string newPassword)
         {
-            bool passwordFormat= !string.IsNullOrEmpty(newPassword) && Regex.IsMatch(newPassword, @"(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+            bool passwordFormat= !string.IsNullOrEmpty(newPassword) && Regex.IsMatch(newPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
             return Content(passwordFormat.ToString());
         }
         //新密碼Double Check
