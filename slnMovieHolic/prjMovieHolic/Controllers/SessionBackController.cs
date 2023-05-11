@@ -25,7 +25,6 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult ViewSession()
         {
-
             return View();
         }
 
@@ -97,7 +96,28 @@ namespace prjMovieHolic.Controllers
             {
                 return Json(null);
             }
+        }
 
+        public IActionResult loadSelectTheater()
+        {
+            var q = _db.TTheaters.Select(t => new
+            {
+                t.FTheaterId,
+                t.FTheater
+            }) ;
+            return Json(q);
+        }
+
+        public IActionResult loadSelectMovie(string? createDate)
+        {
+            DateTime date = DateTime.Parse(createDate);
+            var q = _db.TMovies.Where(m => m.FScheduleStart <= date && m.FScheduleEnd > date).Select(m => new
+            {
+                m.FId,
+                m.FNameCht,
+                m.FShowLength
+            });
+            return Json(q);
         }
     }
 }
