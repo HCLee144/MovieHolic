@@ -1,23 +1,70 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "ViewSession";
     Layout = "~/Views/Shared/BackLayout.cshtml";
 }
 
-<h1>ViewSession</h1>
 
-<select id="selectDate" class="form-select" width =20px></select>
+<div>
+<h2>場次管理</h2>
+    <input type="button" class="btn btn-secondary" style="float:right" id="createButton" value="新增場次"/>
+</div>
+
+<select id="selectDate" class="form-select"></select>
 <div id="chartArea"></div>
 <input type="hidden" id="selectedSessionTheaterName" value="" />
 <input type="hidden" id="selectedSessionStartString" value="" />
-<div id="sessionDisplay">
+<div id="errorMessage"></div>
+<div id="sessionDisplay" style="display:flex" hidden>
+        <img src="" width=200 id="moviePoster" >
+        <div>
+            <div><label>電影名稱：</label><label id="movieName"></label></div>
+            <div><label>電影長度：</label><label id="movieLength"></label></div>
+            <div><label>場次時間：</label><label id="sessionStart"></label></div>
+            <div><label>場次結束：</label><label id="sessionEnd"></label></div>
+        </div>
+ </div>
+
+
+@using (Html.BeginForm("delete", "SessionBack", FormMethod.Post))
+{
+    <div>
+        <input type="hidden" name="SessionID" value=0 id="sessionID">
+        <input type="submit" value="刪除場次" class="btn btn-danger m-1" id="deleteButton" hidden />
+    </div>
+}
+<div class="row" id="createForm" hidden>
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label>選擇電影影廳</label>
+                <select id="selectTheater" class="form-select" name="TheaterID" required></select>
+            </div>
+            <div class="form-group">
+                <label>選擇上映電影</label>
+                <select id="selectMovie" class="form-select" name="MovieID" required></select>
+            </div>
+            <input type="hidden" value="" id="createDate"/>
+            <div class="form-group" >
+                <label>選擇上映時間</label>
+                <input type="time" id="selectStart" name="StartTime" class="form-select" required />
+            </div>
+            <div class="form-group">
+                <label>預計結束時間</label>
+                <input type="time" id="selectEnd" name="EndTime" class="form-select" disabled required>
+            </div>            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" onclick="confirm('確認要新增場次？')"/>
+            </div>
+        </form>
+    </div>
 </div>
-<div id="edit">
-</div>
 
 
 
-<span id="test"></span>
+
+
+
+
 
 
 
@@ -27,47 +74,64 @@
     <script>
 
         const selectDate = document.querySelector('#selectDate');
-        const test = document.querySelector('#test');
         const chartArea = document.querySelector('#chartArea');
-        const edit = document.querySelector('#edit');
+        const errorMessage = document.querySelector('#errorMessage');
         const selectedSessionTheaterName = document.querySelector('#selectedSessionTheaterName');
         const selectedSessionStartString = document.querySelector('#selectedSessionStartString');
         const sessionDisplay = document.querySelector('#sessionDisplay');
+        const createButton = document.querySelector('#createButton')
+        const deleteButton = document.querySelector('#deleteButton');
+        const moviePoster = document.querySelector('#moviePoster');
+        const movieName = document.querySelector('#movieName');
+        const movieLength = document.querySelector('#movieLength');
+        const sessionStart = document.querySelector('#sessionStart');
+        const sessionEnd = document.querySelector('#sessionEnd');
+        const createDate = document.querySelector('#createDate');
+
+        const sessionID = document.querySelectorAll('#sessionID');
+
+
         var chartData;       
         var chart= null;
 
         const NowYear = new Date().getFullYear();
         const NowMonth = new Date().getMonth()+1;
         const NowDate = new Date().getDate();
-        var date = `${NowYear}-${NowMonth}-${NowDate}`;
+        var date = `${NowYear}/${NowMonth}/${NowDate}`;
 
         CreateChart(date);
 
         //生成連續21天日期list
         for(var i=0;i<21;i++){
-            date = `${NowYear}-${NowMonth}-${NowDate + i}`;
-            let dateString = `<option value="${date}" name="queryDate" id="optionDate">${date}</option>`;
+            date = `${NowYear}/${NowMonth}/${NowDate + i}`;
+            let dateString = `<option value="${date}" name="queryDate">${date}</option>`;
             selectDate.innerHTML += dateString;
         }
-        selectDate.innerHTML += `<option value="2023-2-1" name="queryDate" id="optionDate">2023-2-1</option>`;
+        selectDate.innerHTML += `<option value="2023/2/1" name="queryDate">2023/2/1</option>`;
 
         //list在選擇後可以收到選擇日期的session list
         //javascript 沒有針對option的select事件
         //在select上 使用onchange事件
         selectDate.addEventListener('change',async (event)=>{
-            edit.innerHTML = "";
+           reset();
            let date = selectDate.options[selectDate.selectedIndex].value;
-            CreateChart(date);
+           await CreateChart(date);
+           createDate.value = date;
+        })
+
+        createButton.addEventListener('click',async(event)=>{
+           reset();
+            document.querySelector('#createForm').removeAttribute("hidden")
         })
 
         //選擇時間，清空編輯區域，清空表格，查詢資料，取得影廳ID、取得開始時間、取得表格用資料，生成表格
         async function CreateChart(date){
+            selectDate.setAttribute("disabled", true)
             if (chart != null) {
                 chart.destroy();
             }
             const response = await fetch(`@Url.Content("~/SessionBack/getChartDataForSessionByDate")?queryDate=${date}`);
             chartData = await response.json();
-            console.log(chartData);
             var options=
             {
                 series:chartData,
@@ -77,29 +141,33 @@
                     type: 'rangeBar',
                     events: {
                         dataPointSelection: async function (event, chartContext, config) {
-                            edit.innerHTML = "";
+                            reset();
                             let theater = config.w.config.series[config.seriesIndex].data[config.dataPointIndex].x;
                             selectedSessionTheaterName.value = theater;
                             let startTimeStamp = new Date(config.w.config.series[config.seriesIndex].data[config.dataPointIndex].y[0]-28800000);
                             let start = `${startTimeStamp.getFullYear()}-${startTimeStamp.getMonth() + 1}-${startTimeStamp.getDate()} ${startTimeStamp.getHours()}:${startTimeStamp.getMinutes()}:${startTimeStamp.getSeconds()}`;
                             selectedSessionStartString.value=start;
                             const response = await fetch(`@Url.Content("~/SessionBack/getSessionByTheaterAndStart")?selectedSessionTheaterName=${theater}&selectedSessionStartString=${start}`);
-                            console.log(response);
                             let session = await response.json();
-                            console.log(session);
-                            console.log(session.hasOrder);
+                            console.log(session)
                             if(session.sessionID== null){
                                 alert("查無場次，請重新整理");
                                 return;
                             }
+                            sessionID.forEach(i=>{
+                                i.value=session.sessionID
+                            })
                             if(session.hasOrder == true){
-                                edit.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法修改</div>';
+                                errorMessage.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法修改</div>';
                             }else{
-                                edit.innerHTML += '<div><input type="button"  value = "修改場次" class="btn btn-primary m-1" /><input type="submit" value = "刪除場次" class="btn btn-danger m-1" /></div>';
+                                deleteButton.removeAttribute("hidden");
                             }
-                            session.moviePosterPath = session.moviePosterPath.substring(2);
-                            console.log(session.moviePosterPath)
-                            edit.innerHTML += `<img src="${session.moviePosterPath}/${session.movieId}.jpg" width=300>`;
+                            sessionDisplay.removeAttribute("hidden");
+                            moviePoster.src = session.moviePosterPath;
+                            movieName.innerHTML=session.movieName;
+                            movieLength.innerHTML = session.movieLength;
+                            sessionStart.innerHTML = session.startTime;
+                            sessionEnd.innerHTML = session.endTime.toString();
                         },
                     }
                 },
@@ -133,7 +201,25 @@
             }
             chart = new ApexCharts(document.querySelector("#chartArea"), options);
             chart.render();
+            selectDate.removeAttribute("disabled");
         }
+
+        function reset(){
+            errorMessage.innerHTML="";
+            sessionDisplay.setAttribute("hidden", true);
+            deleteButton.setAttribute("hidden",true);
+            document.querySelector('#createForm').setAttribute("hidden",true)
+        }
+
+        function loadSelectTheater(){
+
+        }
+
+
+        function loadSelectMovie(){
+
+        }
+
 
     </script>
 }
