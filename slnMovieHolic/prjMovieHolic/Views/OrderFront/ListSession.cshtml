@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="~/OrderFront/ListTicketClass" class="button toRight" id=" nextStep">下一步</a>
+                            <a class="button toRight" id="nextStep">下一步</a>
                         </div>
                     </section>
                 </div>
@@ -197,6 +197,15 @@
             }
 
          }
+
+         nextStep.addEventListener('click',async()=>{
+            const response = await fetch('@Url.Content("~/OrderFront/checkSessionSelected")');
+            const info = await response.text();
+            if(info=='有選到場次')
+                window.location.replace('@Url.Content("~/OrderFront/ListTicketClass")');
+            else
+                alert('尚未選場次');
+         })
 
     </script>
 }

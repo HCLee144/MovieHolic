@@ -90,11 +90,16 @@ namespace prjMovieHolic.Controllers
             return Content("Success");          
         }
 
+        public IActionResult checkSessionSelected()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SelectedSessionID))
+                return Content("有選到場次");
+            else
+                return Content("沒有選到場次");
+        }
+
         public IActionResult ListTicketClass()
         {
-            if(!(HttpContext.Session.Keys.Contains(CDictionary.SelectedSessionID)))
-                return RedirectToAction("ListSession");
-
             //顯示剛剛選的場次
             CListTicketViewModel shoppingCart = new CListTicketViewModel();
             int sessionID = (int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
@@ -131,9 +136,13 @@ namespace prjMovieHolic.Controllers
             return View(shoppingCart);
         }
 
-        public IActionResult ListSeat()
+        public IActionResult ListSeat(CListSeatViewModel vm)
         {
-            return Content("");
+            int n = vm.sessionID_seat;
+            string x = vm.normalCount_seat.ToString();
+            string y = vm.studentCount_seat.ToString();
+            string z = vm.soldierCount_seat.ToString();
+            return View();
         }
 
         [NonAction]

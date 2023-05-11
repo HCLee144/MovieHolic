@@ -2,7 +2,17 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model prjMovieHolic.ViewModels.CListTicketViewModel
-<div id="page2">
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+@using(Html.BeginForm("ListSeat","OrderFront"))
+{
+    <div id="page2">
     <div class="body1">
         <div class="">
             <div class="body3">
@@ -35,6 +45,7 @@
                                 <div class="pick">
                                     <div class="alreadyOrder">
                                         <h3>已選項目</h3>
+                                        <input type="hidden" name="selectedSessionID" value="@Model.selectedSessionID">
                                         <ul>
                                             <li><span>時間</span>@Model.selectedSessionDate</li>
                                             <li><span>影廳</span>@Model.selectedTheater</li>
@@ -48,7 +59,7 @@
                                                 <li class="fontFat">一般</li>
                                                 <li></li>
                                                 <li></li>
-                                                <li>張數<button id="normalMinus">-</button><span id="normalTicket">0</span><button id="normalPlus">+</button></li>
+                                                    <li>張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
                                                 <li id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
                                             </ul>
                                             <ul>
@@ -56,7 +67,7 @@
                                                 <li class="fontFat">學生</li>
                                                 <li></li>
                                                 <li></li>
-                                                <li>張數<button id="studentMinus">-</button><span id="studentTicket">0</span><button id="studentPlus">+</button></li>
+                                                <li>張數<button id="studentMinus" type="button">-</button><input type="text" id="studentTicket" name="studentCount_seat" value="0" size="3" /><button id="studentPlus" type="button">+</button></li>
                                                 <li id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
                                             </ul>
                                             <ul>
@@ -64,14 +75,14 @@
                                                 <li class="fontFat">軍警</li>
                                                 <li></li>
                                                 <li></li>
-                                                <li>張數<button id="soldierMinus">-</button><span id="soldierTicket">0</span><button id="soldierPlus">+</button></li>
+                                                    <li>張數<button id="soldierMinus" type="button">-</button><input type="text" id="soldierTicket" name="soldierCount_seat" value="0" size="3" /><button id="soldierPlus" type="button">+</button></li>
                                                 <li id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="~/OrderFront/ListSeats" class="button toRight">下一步</a>
+                            <button href="~/OrderFront/ListSeats" class="button toRight" type="submit">下一步</button>
                         </div>
                     </section>
                 </div>
@@ -79,6 +90,7 @@
         </div>
     </div>
 </div>
+}
 
  @section Scripts{
      <script>
@@ -101,50 +113,50 @@
      const soldierPlus=document.querySelector('#soldierPlus');
      
      normalPlus.addEventListener('click',()=>{
-         let normalTicketNo=Number(normalTicket.innerHTML);
+         let normalTicketNo=Number(normalTicket.value);
          normalTicketNo++;
-         normalTicket.innerHTML=normalTicketNo;
+         normalTicket.value=normalTicketNo;
          sumNormalPrice.innerHTML='$'+(Number(oneNormalPrice.value)*normalTicketNo);
      })
 
      normalMinus.addEventListener('click', () => {
-         let normalTicketNo = Number(normalTicket.innerHTML);
+         let normalTicketNo = Number(normalTicket.value);
          normalTicketNo--;
          if(normalTicketNo<0)
             normalTicketNo=0;
-         normalTicket.innerHTML = normalTicketNo;
+         normalTicket.value = normalTicketNo;
          sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
      })
 
      studentMinus.addEventListener('click', () => {
-         let studentTicketNo = Number(studentTicket.innerHTML);
+         let studentTicketNo = Number(studentTicket.value);
          studentTicketNo--;
          if(studentTicketNo<0)
             studentTicketNo=0;
-         studentTicket.innerHTML = studentTicketNo;
+         studentTicket.value = studentTicketNo;
          sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
      })
 
      studentPlus.addEventListener('click', () => {
-         let studentTicketNo = Number(studentTicket.innerHTML);
+         let studentTicketNo = Number(studentTicket.value);
          studentTicketNo++;
-         studentTicket.innerHTML = studentTicketNo;
+         studentTicket.value = studentTicketNo;
          sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
      })
 
      soldierMinus.addEventListener('click', () => {
-         let soldierTicketNo = Number(soldierTicket.innerHTML);
+         let soldierTicketNo = Number(soldierTicket.value);
          soldierTicketNo--;
          if(soldierTicketNo<0)
             soldierTicketNo=0;
-         soldierTicket.innerHTML = soldierTicketNo;
+         soldierTicket.value = soldierTicketNo;
          sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
      })
 
      soldierPlus.addEventListener('click', () => {
-         let soldierTicketNo = Number(soldierTicket.innerHTML);
+         let soldierTicketNo = Number(soldierTicket.value);
          soldierTicketNo++;
-         soldierTicket.innerHTML = soldierTicketNo;
+         soldierTicket.value = soldierTicketNo;
          sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
       })
      </script>
