@@ -139,6 +139,7 @@ namespace prjMovieHolic.Controllers
         public IActionResult passwordEdit(CMemberViewModel vm)
         { 
             var memberData = _movieContext.TMembers.FirstOrDefault(t=>t.FMemberId==vm.FMemberId);
+            //bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, memberData.FPassword);
             if (memberData != null)
             {
                 var password = _movieContext.TMembers.FirstOrDefault(t => t.FPassword == vm.txtPreviousFPassword);
@@ -146,8 +147,8 @@ namespace prjMovieHolic.Controllers
                 bool passwordDoubleCheck = vm.txtNewFPassword.Equals(vm.txtNewFPasswordCheck);
                 if (password != null && passwordFormat==true && passwordDoubleCheck==true)
                 {
-                    string newPassword=CPasswordHasher.HashPassword(vm.txtNewFPasswordCheck);
-                    memberData.FPassword = newPassword;
+                    //string newPassword=CPasswordHasher.HashPassword(vm.txtNewFPasswordCheck);
+                    memberData.FPassword = vm.txtNewFPasswordCheck;
                     _movieContext.SaveChanges();
                     return RedirectToAction("memberList", new { id = vm.FMemberId });
                 }
