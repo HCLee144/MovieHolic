@@ -38,7 +38,7 @@
 }
 
     .position:hover {
-        background-color: rgb(182, 182, 182);
+        background-color: #105190;
         color: #10a5d6;
     }
 
@@ -65,11 +65,19 @@
     justify-content: space-between;
     font-weight: bold;
 }
+    .hotMoviePlaceLineMenu a{
+        text-decoration:none;
+    }
 
-.wrapper2 {
-    display: flex;
-    justify-content: space-between;
-}
+    .hotMoviePlaceLineMenu a:hover{
+        color:#eaeaea;
+    }
+
+
+    .wrapper2 {
+        display: flex;
+        justify-content: space-between;
+    }
 
 .movieCard a {
     text-decoration: none;
@@ -145,6 +153,9 @@
     justify-content: space-between;
     font-weight: bold;
 }
+    .notYetMoviePlaceLineMenu a:hover {
+        color: #eaeaea;
+    }
 
 .homePagebottom {
     /*background: #363636;*/
@@ -201,7 +212,7 @@
     width: 120px;
     height: 120px;
     font-size: 20px;
-    line-height: 100px;
+    line-height: 120px;
     text-align: center;
 }
 /*特別變色的圈圈是這一塊*/
@@ -215,7 +226,7 @@
     height: 120px;
     font-size: 24px;
     font-weight: 900;
-    line-height: 100px;
+    line-height: 120px;
     text-align: center;
 }
 /*流程圓圈到此結束*/
@@ -258,7 +269,19 @@ figure span {
     display: flex;
     border-bottom: 1px solid silver;
     margin-left: 30px;
+    overflow: auto;
+    max-height: 150px;
+    max-width: 430px;
 }
+
+    .pickDate::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
+    }
+
+    .pickDate::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
     .pickDate li {
         border: 1px solid silver;
@@ -266,6 +289,9 @@ figure span {
         margin-right: 15px;
         margin-bottom: 5px;
         font-size: 20px;
+        height: 50px;
+        width: 90px;
+        text-align: center;
     }
 
         .pickDate li:hover {
@@ -299,17 +325,24 @@ figure span {
 
 .chooseTime {
     border-bottom: 1px solid silver;
-    width: 500px;
+    width: 430px;
+    overflow: auto;
 }
 
-    .chooseTime a {
-        color: #111;
-        text-decoration: none;
+    .chooseTime::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
     }
 
-        .chooseTime a:hover {
-            color: #eaeaea;
-        }
+    .chooseTime::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
+
+    .chooseTime li {
+        width: 70px;
+        height: 30px;
+        text-align: center;
+    }
 
     .chooseTime li:hover {
         background-color: #10a5d6;

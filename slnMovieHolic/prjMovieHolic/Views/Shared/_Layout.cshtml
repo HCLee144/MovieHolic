@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/layout.css" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/style.css" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/myStyle.css" type="text/css" media="all">
-  
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
    
@@ -20,7 +20,7 @@
                         <header>
                                 <div class="wrapper">
                                     <!-- 帶有超連結的Logo-->
-                                    <h1><a href="index.html" id="logo"></a></h1>
+                                    <h1><a href="~/HOME/INDEX" id="logo"></a></h1>
                                     <!-- 會員登入 Login-->
                                     <form id="search" method="post">
                                         <div class="delete">
@@ -29,7 +29,7 @@
                                     <!-- 上面選單 Menu-->
                                     <nav>
                                         <ul id="menu">
-                                            <li id="active"><a href="StartOrder.html">快速訂票</a></li>
+                                        <li id="active">@Html.ActionLink("快速訂票","listsession","order",new{movieid=1},null)</li>
                                             <li><a href="#">最新消息</a></li>
                                             <li><a href="Services.html">電影資訊</a></li>
                                         <li>
@@ -45,7 +45,7 @@
                                             }
 
                                         </li>
-                                            <li class="end"><a href="Contact.html">聯絡我們</a></li>
+                                        <li class="end">@Html.ActionLink("電影評論","index","article")</li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -161,6 +161,7 @@
             });
         });
     </script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

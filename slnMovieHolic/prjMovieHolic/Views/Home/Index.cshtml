@@ -26,7 +26,7 @@
 
             <!--這是旁邊快速訂票浮動視窗-->
 
-            <div class="position"><a href="StartOrder.html">快速訂票</a></div>
+            <div class="position">@Html.ActionLink("快速訂票","listsession","order",new{movieid=1},null)</div>
 
 
 
@@ -35,7 +35,7 @@
             <div class="hotMoviePlaceLine">
                 <ul class="hotMoviePlaceLineMenu">
                     <li style="font-size: 26px;">現正熱映</li>
-                    <li><a href="" style="color: #13c5ff;">瀏覽所有電影-></a></li>
+                    <li><a href="">瀏覽所有電影-></a></li>
                 </ul>
             </div>
             <!-- content -->
@@ -83,7 +83,7 @@
             <div class="notYetMoviePlaceLine">
                 <ul class="notYetMoviePlaceLineMenu">
                     <li style="font-size: 26px;">即將上映</li>
-                    <li><a href="" style="color: #13c5ff;">瀏覽所有電影-></a></li>
+                    <li><a href="" >瀏覽所有電影-></a></li>
                 </ul>
             </div>
             <!-- 即將上映電影區塊-->
