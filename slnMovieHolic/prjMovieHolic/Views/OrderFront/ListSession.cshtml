@@ -41,8 +41,12 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
+                                        <input type="hidden" id="movieID" value="@Model.MovieID" />
                                         <h4>@Model.MovieName</h4>
-                                        <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
+                                        @{
+                                            string s = Model.MovieID.ToString() + ".jpg";
+                                        }
+                                        <img class="orderMovieImage" src="~/images/moviePosters/@Model.MovieID/@s" alt="">
                                         <ul>
                                             <li style="padding-top:10px"><span style="font-weight:bold;font-size:20px">英文</span> @Model.tMovie.FNameEng</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
@@ -134,7 +138,7 @@
 
 @section Scripts{
     <script>
-  
+        const movieID = document.querySelector('#movieID');
         const pickCinemaAndTime = document.querySelector('#pickCinemaAndTime');
         const nextStep = document.querySelector('#nextStep');
         const days = document.querySelectorAll('.day');
@@ -156,7 +160,7 @@
 
 
                 //呈現場次
-                const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day.innerHTML)
+                const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day.innerHTML+'&movieID='+movieID);
                 const datas = await response.json();
                 //console.log(datas);
 

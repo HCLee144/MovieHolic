@@ -37,6 +37,7 @@
                                     <li>
                                         <h4>影廳</h4>
                                         <h3>@Model.theaterName</h3>
+                                        <input type="hidden" id="theaterID" value="@Model.theaterID" />
                                     </li>
                                     <li>
                                         <h4>日期</h4>
@@ -48,7 +49,8 @@
                                     </li>
                                     <li class="addBorderRight">
                                         <h4>人數</h4>
-                 Microsoft              <h3>@Model.totalTickets</h3>
+                                        <input type="hidden" id="totalTickets" value="@Model.totalTickets" />
+                                        <h3>@Model.totalTickets</h3>
                                     </li>
                                 </ul>
                             </div>
@@ -60,452 +62,27 @@
                                     <p>已售出</p>
                                     <div class="sold"></div>
                                     <p>愛心座位</p>
+                                    <div id="showLeftSeats"></div>
                                 </div>
                                 <div class="screen">
                                     <h3>螢　　　　幕</h3>
 
                                 </div>
                                 <div class="soManySit">
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
-                                    <div class="rowSit">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sell2" type="button" name="" id="">
-                                        <input class="sold2" type="button" name="" id="">
-                                    </div>
+                                    @{
+                                        for (int i = 1; i <= 20; i++)
+                                        {
+                                            <div class="rowSit">
+                                                @for (int j = 1; j <= 20; j++)
+                                                {
+                                                    int seatName = (i - 1) * 20 + j;
+                                                    int seatStatus = Model.seatStatus[((i - 1) * 20) + j - 1];
+                                                    string[] classSeatStatus = new string[] { "class=sell1", "class=hidden2", "class=disabled3", "class=sold4" };
+                                                    <button type="button" onclick="clickSeatButton(event)" name="@seatName" @classSeatStatus[seatStatus-1]></button>
+                                                }
+                                            </div>
+                                        }
+                                    }
 
                                 </div>
                             </div>
@@ -518,3 +95,42 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        const theaterID = document.getElementById('theaterID');
+        const totalTickets = document.getElementById('totalTickets').value;
+        const showLeftSeats = document.getElementById('showLeftSeats');
+
+        function clickSeatButton(evt) {
+            const selectedSeat = evt.target.getAttribute("name");
+            const correctSeatID = (Number(theaterID.value) - 1) * 400 + Number(selectedSeat);
+            saveSeatIDinSession(correctSeatID, evt);
+        }
+
+        async function saveSeatIDinSession(correctSeatID, evt) {
+
+            if (evt.target.style.backgroundColor == 'green') {
+                const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets)+'&selected=1');
+                const data = await response.text();
+                evt.target.style.backgroundColor = '#eaeaea';
+                showLeftSeats.innerHTML = data;
+            }
+            else {
+                const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=0');
+                const data = await response.text();
+
+                if (data === '座位人數已滿')
+                    showLeftSeats.innerHTML = data;
+                else {
+                    showLeftSeats.innerHTML = data;
+                    evt.target.style.backgroundColor = 'green';
+                }
+            }
+
+        }
+
+
+
+    </script>
+}                                                    

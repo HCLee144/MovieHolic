@@ -6,6 +6,7 @@ namespace prjMovieHolic.ViewModels
     {
         //ListSession
         public TMovie tMovie { get; set; }
+        public int MovieID { get; set; }
         public string MovieName { get; set; }
         public string[] tTypeListNames { get; set; }
         public string TypeListNames { get; set; }
@@ -14,8 +15,6 @@ namespace prjMovieHolic.ViewModels
         public string[] tDirectorListNames { get; set; }
         public string DirectorListNames { get; set; }
         public string[] weekDays { get; set; }
-
-       
 
     }
 }

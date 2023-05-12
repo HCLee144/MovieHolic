@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using prjMovieHolic.Models;
 using prjMovieHolic.ViewModels;
 
@@ -24,6 +25,7 @@ namespace prjMovieHolic.Controllers
 
             CListSessionViewModel shoppingCart = new CListSessionViewModel();
             shoppingCart.tMovie = movie;
+            shoppingCart.MovieID = (int)movieID;
             shoppingCart.MovieName = movie.FNameCht;
 
             shoppingCart.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t=>t.FType.FNameCht).ToArray();
@@ -54,10 +56,10 @@ namespace prjMovieHolic.Controllers
             return View(shoppingCart);
         }
 
-        public IActionResult queryByDate(string date)
+        public IActionResult queryByDate(string date, int movieID)
         {
             string realDate = date.Substring(0, 5);
-            var sessions = movieContext.TSessions.Include(s=>s.FTheater).AsEnumerable().Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate);
+            var sessions = movieContext.TSessions.Include(s=>s.FTheater).AsEnumerable().Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate&&s.FMovieId==movieID);
 
             List<CShowSession> showSessions = new List<CShowSession>();
             foreach (var sessionItem in sessions)
@@ -148,23 +150,25 @@ namespace prjMovieHolic.Controllers
             //選到的日期
             vm.sessionDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("MM/dd");
             //選到的時間
-            vm.sessionDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("HH:mm");
+            vm.sessionTime = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("HH:mm");
             //全部票數
             vm.totalTickets = (x + y + z).ToString();
+            string s = vm.totalTickets;
 
             //選到的廳
             var theaterID=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FTheaterId;
+            vm.theaterID = theaterID.ToString();
             vm.theaterName = movieContext.TTheaters.FirstOrDefault(t => t.FTheaterId == theaterID).FTheater;
 
 
-            //所有這個場次的seatID
-            var seats=movieContext.TSessions.Include(s=>s.FTheater).ThenInclude(t=>t.TSeats).FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats.Select(s => s.FSeatId);
+            //所有這個場次的seat
+            var seats=movieContext.TSessions.Include(s=>s.FTheater).ThenInclude(t=>t.TSeats).FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats;
 
             //非座位區的所有ID
-            var nonSeats=seats.Where(s => s == 2);
+            var nonSeats=seats.Where(s => s.FSeatStatusId == 2).Select(s=>s.FSeatId);
 
             //愛心座位的所有ID
-            var diabledSeats = seats.Where(s => s == 3);
+            var diabledSeats = seats.Where(s => s.FSeatStatusId == 3).Select(s=>s.FSeatId);
 
             //已被選走的座位
             var selectedSeats=movieContext.TOrderDetails.Include(od=>od.FOrder).Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
@@ -196,6 +200,48 @@ namespace prjMovieHolic.Controllers
             vm.seatStatus = seat;
 
             return View(vm);
+        }
+
+        public IActionResult saveSeatIDinSession(int correctSeatID, int totalTickets, string selected)
+        {
+            //先call出之前的session
+            List<int> selectedSeats;
+            string json;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SelectedSeatID))
+            {
+                json = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
+                selectedSeats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json);
+            }
+            else
+                selectedSeats = new List<int>(); 
+
+            //判斷是否有被選擇過
+            if(selected=="1")
+            {
+                selectedSeats.Remove(correctSeatID);
+                json = System.Text.Json.JsonSerializer.Serialize(selectedSeats);
+                HttpContext.Session.SetString(CDictionary.SelectedSeatID, json);
+                int seatCount = totalTickets - selectedSeats.Count();
+                return Content("尚可選座位：" + seatCount);
+            }
+            else
+            {
+                if (selectedSeats.Count() < totalTickets)
+                {
+                    selectedSeats.Add(correctSeatID);
+                    json = System.Text.Json.JsonSerializer.Serialize(selectedSeats);
+                    HttpContext.Session.SetString(CDictionary.SelectedSeatID, json);
+                    int seatCount = totalTickets - selectedSeats.Count();
+                    return Content("尚可選座位：" + seatCount);
+                }
+                else
+                {
+                    return Content("座位人數已滿");
+                }
+            }
+
+           
+
         }
 
         [NonAction]

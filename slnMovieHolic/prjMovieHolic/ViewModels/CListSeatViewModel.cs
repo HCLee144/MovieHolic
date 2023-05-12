@@ -10,6 +10,7 @@
 
         //呈現在畫面上
         public string movieName { get; set; }
+        public string theaterID { get; set; }
         public string theaterName { get; set; }
         public string sessionDate { get; set; }
         public string sessionTime { get; set; }
