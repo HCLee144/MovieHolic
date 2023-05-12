@@ -139,12 +139,26 @@ namespace prjMovieHolic.Controllers
         public IActionResult ListSeat(CListSeatViewModel vm)
         {
             int n = vm.sessionID_seat;
-            string x = vm.normalCount_seat.ToString();
-            string y = vm.studentCount_seat.ToString();
-            string z = vm.soldierCount_seat.ToString();
+            int x = vm.normalCount_seat;
+            int y = vm.studentCount_seat;
+            int z = vm.soldierCount_seat;
+
+            //選到的電影
+            vm.movieName = movieContext.TSessions.Include(s=>s.FMovie).FirstOrDefault(s => s.FSessionId == n).FMovie.FNameCht;
+            //選到的日期
+            vm.sessionDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("MM/dd");
+            //選到的時間
+            vm.sessionDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("HH:mm");
+            //全部票數
+            vm.totalTickets = (x + y + z).ToString();
+
+            //選到的廳
+            var theaterID=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FTheaterId;
+            vm.theaterName = movieContext.TTheaters.FirstOrDefault(t => t.FTheaterId == theaterID).FTheater;
+
 
             //所有這個場次的seatID
-            var seats=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats.Select(s => s.FSeatId);
+            var seats=movieContext.TSessions.Include(s=>s.FTheater).ThenInclude(t=>t.TSeats).FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats.Select(s => s.FSeatId);
 
             //非座位區的所有ID
             var nonSeats=seats.Where(s => s == 2);
@@ -153,11 +167,33 @@ namespace prjMovieHolic.Controllers
             var diabledSeats = seats.Where(s => s == 3);
 
             //已被選走的座位
-            var selectedSeats=movieContext.TOrderDetails.Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
+            var selectedSeats=movieContext.TOrderDetails.Include(od=>od.FOrder).Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
 
             int[] seat = new int[400];
-
-
+            //假設數字1預設為未售，2為非座位，3為愛心座位，4為被選走座位
+            foreach (var item in nonSeats)
+            {
+                int changedSeatID = item - 400 * (theaterID - 1);
+                seat[changedSeatID - 1] = 2;
+            }
+            foreach (var item in diabledSeats)
+            {
+                int changedSeatID = item - 400 * (theaterID - 1);
+                seat[changedSeatID - 1] = 3;
+            }
+            foreach (var item in selectedSeats)
+            {
+                {
+                    int changedSeatID = item - 400 * (theaterID - 1);
+                    seat[changedSeatID - 1] = 4;
+                }
+            }
+            for(int i=0;i<seat.Length;i++)
+            {
+                if (seat[i] == 0)
+                    seat[i] = 1;
+            }
+            vm.seatStatus = seat;
 
             return View(vm);
         }

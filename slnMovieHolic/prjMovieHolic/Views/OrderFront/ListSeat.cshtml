@@ -4,7 +4,7 @@
 @{
 }
 
-
+@model prjMovieHolic.ViewModels.CListSeatViewModel
 <div id="page2">
     <div class="body1">
         <div class="">
@@ -32,23 +32,23 @@
                                 <ul>
                                     <li>
                                         <h4>片名</h4>
-                                        <h3>我的媽的發糕</h3>
+                                        <h3>@Model.movieName</h3>
                                     </li>
                                     <li>
                                         <h4>影廳</h4>
-                                        <h3>第　1　廳</h3>
+                                        <h3>@Model.theaterName</h3>
                                     </li>
                                     <li>
                                         <h4>日期</h4>
-                                        <h3>05.31</h3>
+                                        <h3>@Model.sessionDate</h3>
                                     </li>
                                     <li>
                                         <h4>時間</h4>
-                                        <h3>13:30</h3>
+                                        <h3>@Model.sessionTime</h3>
                                     </li>
                                     <li class="addBorderRight">
                                         <h4>人數</h4>
-                                        <h3>2</h3>
+                 Microsoft              <h3>@Model.totalTickets</h3>
                                     </li>
                                 </ul>
                             </div>
