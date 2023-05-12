@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 //using Newtonsoft.Json;
 using prjMovieHolic.Models;
 using prjMovieHolic.ViewModels;
@@ -19,20 +20,18 @@ namespace prjMovieHolic.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public IActionResult ViewSession(int? message)
         {
-            return View();
-        }
-        public IActionResult ViewSession()
-        {
+            if (message != null)
+                ViewBag.Error = message;
             return View();
         }
 
-        public IActionResult getChartDataForSessionByDate(CSessionBackViewModel vm)
+        public IActionResult getChartDataForSessionByDate(string? queryDate)
         {
             try
             {
-                DateTime date = DateTime.Parse(vm.queryDate);
+                DateTime date = DateTime.Parse(queryDate);
                 var rawDatas =
                     from s in _db.TSessions.AsEnumerable()
                     where s.FStartTime.Date == date.Date
@@ -67,16 +66,16 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return Json(null);
+                return RedirectToAction("ViewSession");
             }
         }
 
-        public IActionResult getSessionByTheaterAndStart(CSessionBackViewModel vm)
+        public IActionResult getSessionByTheaterAndStart(string? selectedSessionTheaterName, string? selectedSessionStartString)
         {
             try
             {
-                int TheaterID = _db.TTheaters.Where(t => t.FTheater == vm.selectedSessionTheaterName).Select(t => t.FTheaterId).FirstOrDefault();
-                DateTime startTime = DateTime.Parse(vm.selectedSessionStartString);
+                int TheaterID = _db.TTheaters.Where(t => t.FTheater == selectedSessionTheaterName).Select(t => t.FTheaterId).FirstOrDefault();
+                DateTime startTime = DateTime.Parse(selectedSessionStartString);
                 var session = _db.TSessions.Include(s => s.FMovie).Where(s => s.FTheaterId == TheaterID && s.FStartTime == startTime).FirstOrDefault();
                 if (session == null)
                 {
@@ -88,36 +87,105 @@ namespace prjMovieHolic.Controllers
                 datas.EndTime = session.FEndTime;
                 datas.hasOrder = _db.TOrders.Where(o => o.FSessionId == session.FSessionId).Any();
                 datas.MovieName = session.FMovie.FNameCht;
-                datas.MovieLength = session.FMovie.FShowLength+" 分鐘";
-                datas.MoviePosterPath =session.FMovie.FPosterPath;
+                datas.MovieLength = session.FMovie.FShowLength + " 分鐘";
+                datas.MoviePosterPath = session.FMovie.FPosterPath;
                 return Json(datas);
             }
             catch (Exception ex)
             {
-                return Json(null);
+                return RedirectToAction("ViewSession");
             }
         }
 
         public IActionResult loadSelectTheater()
         {
-            var q = _db.TTheaters.Select(t => new
+            try
             {
-                t.FTheaterId,
-                t.FTheater
-            }) ;
-            return Json(q);
+                var q = _db.TTheaters.Select(t => new
+                {
+                    t.FTheaterId,
+                    t.FTheater
+                });
+                return Json(q);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ViewSession");
+            }
         }
 
         public IActionResult loadSelectMovie(string? createDate)
         {
-            DateTime date = DateTime.Parse(createDate);
-            var q = _db.TMovies.Where(m => m.FScheduleStart <= date && m.FScheduleEnd > date).Select(m => new
+            try
             {
-                m.FId,
-                m.FNameCht,
-                m.FShowLength
-            });
-            return Json(q);
+                DateTime date = DateTime.Parse(createDate);
+                var q = _db.TMovies.Where(m => m.FScheduleStart <= date && m.FScheduleEnd > date).Select(m => new
+                {
+                    m.FId,
+                    m.FNameCht,
+                    m.FShowLength
+                });
+                return Json(q);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ViewSession");
+            }
         }
+
+        public IActionResult create(CSessionBackViewModel vm)
+        {
+            try
+            {
+                DateTime startTime = DateTime.Parse(vm.createDate) + vm.StartTime.TimeOfDay;
+                int length = (int)_db.TMovies.Where(m => m.FId == vm.MovieID).Select(m => m.FShowLength).First();
+                TimeSpan lengthMinute = TimeSpan.FromMinutes(length);
+                DateTime endTime = startTime + lengthMinute;
+
+                var q = _db.TSessions.Where(s => s.FStartTime.Date == startTime.Date && s.FTheaterId == vm.TheaterID)
+                    .Select(s => new { s.FStartTime, s.FEndTime });
+
+                bool isOverLapped = false;
+                TimeSpan span = TimeSpan.FromMinutes(5);
+                foreach (var s in q)
+                {
+                    if (startTime > (s.FStartTime - span) && startTime < (s.FEndTime + span))
+                    {
+                        isOverLapped = true;
+                        break;
+                    }
+                    if (endTime > (s.FStartTime - span) && endTime < (s.FEndTime + span))
+                    {
+                        isOverLapped = true;
+                        break;
+                    }
+                }
+                if (isOverLapped)
+                    return RedirectToAction("ViewSession", "SessionBack", new { message = 1 });
+
+                TSession session = new TSession();
+                session.FTheaterId = (int)vm.TheaterID;
+                session.FMovieId = (int)vm.MovieID;
+                session.FStartTime = startTime;
+                session.FEndTime = endTime;
+                _db.TSessions.Add(session);
+                _db.SaveChanges();
+                return RedirectToAction("ViewSession");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ViewSession");
+            }
+        }
+
+        public IActionResult delete(int? SessionID)
+        {
+            if (SessionID == null)
+                return RedirectToAction("ViewSession");
+            _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
+            _db.SaveChanges();
+            return RedirectToAction("ViewSession");
+        }
+
     }
 }

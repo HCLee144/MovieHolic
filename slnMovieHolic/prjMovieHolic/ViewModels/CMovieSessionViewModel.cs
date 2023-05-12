@@ -27,6 +27,8 @@ namespace prjMovieHolic.ViewModels
 
         public string? createDate { get; set; }
 
+        public int? message {  get; set; }
+
     }
 }
 
