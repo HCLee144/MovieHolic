@@ -51,7 +51,7 @@ namespace prjMovieHolic.Controllers
                 if (selectDays > 6)
                     selectDays = 0;
             }
-
+            //sessionCheck();
             shoppingCart.weekDays = wholeWeekDays.ToArray();
             return View(shoppingCart);
         }

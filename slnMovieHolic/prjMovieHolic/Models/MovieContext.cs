@@ -576,7 +576,6 @@ public partial class MovieContext : DbContext
                 .HasMaxLength(10)
                 .HasColumnName("fNickname");
             entity.Property(e => e.FPassword)
-                .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("fPassword");
             entity.Property(e => e.FPhone)

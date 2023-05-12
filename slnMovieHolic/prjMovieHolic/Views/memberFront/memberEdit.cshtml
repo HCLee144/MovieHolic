@@ -22,7 +22,7 @@
                                         <li><a href="#Reportage">我的最愛</a></li>
                                         <li><a href="#Advertising">我的優惠券</a></li>
                                         <li><a href="#Advertising">我的評論</a></li>
-                                        <li><a href="#Portrait">登出</a></li>
+                                        <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
                                 </div>
                             </article>
@@ -37,6 +37,14 @@
                                     <tr>
                                         <th>姓名</th>
                                         <td><input type="text" name="FName" value="@Model.FName" size="20"></td>
+                                    </tr>
+                                     <tr>
+                                         <th>暱稱</th>
+                                         <td><input type="text" name="FNickname" value="@Model.FNickname" size="20"></td>
+                                    </tr>
+                                     <tr>
+                                         <th>身分證字號</th>
+                                         <td><input type="text" name="Model.FIdcardNumber" value="@Model.FIdcardNumber" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>生日</th>
