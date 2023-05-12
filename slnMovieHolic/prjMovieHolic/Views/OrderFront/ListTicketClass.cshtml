@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button href="~/OrderFront/ListSeats" class="button toRight" type="submit">下一步</button>
+                            <button id="nextStep" class="button toRight" type="submit">下一步</button>
                         </div>
                     </section>
                 </div>
@@ -111,6 +111,8 @@
      const sumSoldierPrice=document.querySelector('#sumSoldierPrice');
      const soldierMinus=document.querySelector('#soldierMinus');
      const soldierPlus=document.querySelector('#soldierPlus');
+     
+     const nextStep=document.getElementById('nextStep'); 
      
      normalPlus.addEventListener('click',()=>{
          let normalTicketNo=Number(normalTicket.value);
@@ -159,9 +161,15 @@
          soldierTicket.value = soldierTicketNo;
          sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
       })
-     </script>
-    
 
+      nextStep.addEventListener('click',()=>{
+            if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value))>0)
+                window.location.replace('@Url.Content("~/OrderFront/ListSeat")');
+            else
+                alert ('尚未選擇票數');
+      })
+
+     </script>
      
 
  }
