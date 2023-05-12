@@ -123,7 +123,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="~/OrderFront/ListTicketClass" class="button toRight" id=" nextStep">下一步</a>
+                            @*<a href="~/OrderFront/ListTicketClass" class="button toRight" id=" nextStep">下一步</a>*@
+                            <a href="@(!ViewBag.Login ? Url.Content("~/memberFront/memberLogin") : Url.Content("~/OrderFront/ListTicketClass"))" class="button toRight" id="nextStep">下一步</a>
                         </div>
                     </section>
                 </div>

@@ -51,13 +51,16 @@
                                             <li><a href="Services.html">電影資訊</a></li>
                                         <li>
                                             @{
+
                                                 if (ViewBag.Login == true)
                                                 {
                                                     @Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)
                                                 }
                                                 else
                                                 {
-                                                    @Html.ActionLink("會員登入", "memberLogin","memberFront")
+                                                    
+                                                    @Html.ActionLink("會員登入", "memberLogin", "memberFront");
+
                                                 }
                                             }
 

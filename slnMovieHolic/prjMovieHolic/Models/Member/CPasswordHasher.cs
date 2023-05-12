@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
-namespace prjMovieHolic.Models
+namespace prjMovieHolic.Models.Member
 {
     public class CPasswordHasher
     {// todo 將新密碼加密

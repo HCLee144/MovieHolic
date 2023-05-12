@@ -3,12 +3,12 @@ using System.Net;
 using System.Text;
 using prjMovieHolic.ViewModels;
 
-namespace prjMovieHolic.Models
+namespace prjMovieHolic.Models.Member
 {
     public class CForgetPassword
     {
 
-        MovieContext _movieContext=new MovieContext();
+        MovieContext _movieContext = new MovieContext();
         public void getNewPasswordEmail(string email)
         {
 

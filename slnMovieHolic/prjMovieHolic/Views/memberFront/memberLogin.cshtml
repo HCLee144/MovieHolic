@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "memberLogin";
 }
-
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -16,14 +15,14 @@
                             <div class="logInBoxSmall">
                                 <form asp-action="memberLogin">
                                 <h6>帳號</h6>
-                                    <input type="text" name="txtAccount" value="0923906031">
+                                    <input type="text" name="txtAccount" id="txtAccount" value="0923906031">
                                 <h6>密碼</h6>
-                                    <input type="password" name="txtPassword" value="Xpe49cFb">
+                                    <input type="password" name="txtPassword" id="txtPassword" value="Xpe49cFb">
                                 <hr>
                                 <input type="checkbox" name="" id=""><span>保持登入</span>
                                 <hr>
                                 <hr>
-                                    <a href=""><input class="loginButton" type="submit" value="登入" /></a>
+                                    <a href=""><input class="loginButton" type="submit" id="submit" value="登入" /></a>
                                 </form>
                                 <hr>
                                 @Html.ActionLink("忘記密碼？","forgetPassword","memberFront")
@@ -41,3 +40,20 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        const txtAccount = document.querySelector('#txtAccount');
+        const txtPassword=document.querySelector('#txtPassword');
+        const submit = document.querySelector('#submit');
+        submit.addEventListener('click', async () => {
+            const response = await fetch(`@Url.Content("~/memberFront/IsLogin")?txtAccount=` + txtAccount.value + "&txtPassword=" +txtPassword.value, { method: 'POST' })
+            const data = await response.json();
+            console.log(data)
+            if (!data.success) {
+                // 登入失敗
+                alert(data.message);
+            }
+        })
+    </script>
+}
