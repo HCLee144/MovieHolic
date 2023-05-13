@@ -13,7 +13,7 @@ public partial class TMember
 
     public string FName { get; set; } = null!;
 
-    public string? FEmail { get; set; }
+    public string FEmail { get; set; } = null!;
 
     public byte FMembershipId { get; set; }
 

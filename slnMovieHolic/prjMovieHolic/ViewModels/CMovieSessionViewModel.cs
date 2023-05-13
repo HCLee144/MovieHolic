@@ -25,7 +25,11 @@ namespace prjMovieHolic.ViewModels
 
         public string? MoviePosterPath { get; set; }
 
+        public string? deleteDate { get; set; }
+
         public string? createDate { get; set; }
+
+        public int? message {  get; set; }
 
     }
 }

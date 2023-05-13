@@ -29,7 +29,24 @@
                                     <!-- 上面選單 Menu-->
                                     <nav>
                                         <ul id="menu">
-                                        <li id="active">@Html.ActionLink("快速訂票","listsession","order",new{movieid=1},null)</li>
+
+@*                                        @{
+                                            if (ViewBag.Login == true)
+                                            {
+                                                <li id="active">@Html.ActionLink("快速訂票","listsession","OrderFront",new{movieid=1},null)</li>
+                                                <li><a href="#">最新消息</a></li>
+                                                <li><a href="Services.html">電影資訊</a></li>
+                                                <li>@Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)</li>
+                                            }
+                                            else
+                                            {
+                                                <li>@Html.ActionLink("快速訂票", "memberLogin","memberFront")</li>
+                                                <li><a href="#">最新消息</a></li>
+                                                <li><a href="Services.html">電影資訊</a></li>
+                                                <li>@Html.ActionLink("會員登入", "memberLogin","memberFront")</li>
+                                            }
+                                        }*@
+                                        <li id="active">@Html.ActionLink("快速訂票","listsession","OrderFront",new{movieid=1},null)</li>
                                             <li><a href="#">最新消息</a></li>
                                             <li><a href="Services.html">電影資訊</a></li>
                                         <li>
