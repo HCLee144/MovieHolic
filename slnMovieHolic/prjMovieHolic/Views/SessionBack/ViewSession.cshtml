@@ -3,15 +3,14 @@
     Layout = "~/Views/Shared/BackLayout.cshtml";
 }
 
-<<<<<<< HEAD
 <div class="card">
     <div class="card-body">
         <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
             <h2 class="mb-3 mb-sm-0">場次管理</h2>
-           <div>
+            <div>
                 <input type="button" class="btn btn-secondary" style="float:right" id="createButton" value="新增場次" />
-           </div>            
-        </div>        
+            </div>
+        </div>
         <select id="selectDate" class="form-select" name="queryDate"></select>
         <div id="chartArea"></div>
         <input type="hidden" id="selectedSessionTheaterName" value="" />
@@ -43,39 +42,9 @@
                 <div><label>場次時間：</label><label id="sessionStart"></label></div>
                 <div><label>場次結束：</label><label id="sessionEnd"></label></div>
             </div>
-=======
-
-<div>
-<h2>場次管理</h2>
-    <input type="button" class="btn btn-secondary" style="float:right" id="createButton" value="新增場次"/>
-</div>
-
-<select id="selectDate" class="form-select" name="queryDate"></select>
-<div id="chartArea"></div>
-<input type="hidden" id="selectedSessionTheaterName" value="" />
-<input type="hidden" id="selectedSessionStartString" value="" />
-<div id="errorMessage">
-    @{
-        switch (ViewBag.error)
-        {
-            case 1:
-                @:<div class="alert alert-danger" role="alert">該場次與其他場次重疊！</div>
-             break;
-        }
-    }
-</div>
-<div id="sessionDisplay" style="display:flex" hidden>
-        <img src="" width=200 id="moviePoster" >
-        <div>
-            <div><label>電影名稱：</label><label id="movieName"></label></div>
-            <div><label>電影長度：</label><label id="movieLength"></label></div>
-            <div><label>場次時間：</label><label id="sessionStart"></label></div>
-            <div><label>場次結束：</label><label id="sessionEnd"></label></div>
->>>>>>> Session新增與刪除完成
         </div>
 
 
-<<<<<<< HEAD
         @using (Html.BeginForm("delete", "SessionBack", FormMethod.Post))
         {
             <div>
@@ -84,32 +53,6 @@
                 <input type="submit" value="刪除場次" class="btn btn-danger m-1" id="deleteButton" onclick="return confirm('確認要刪除場次？')" hidden />
             </div>
         }
-=======
-@using (Html.BeginForm("delete", "SessionBack", FormMethod.Post))
-{
-    <div>
-        <input type="hidden" name="SessionID" value=0 id="sessionID">
-        <input type="submit" value="刪除場次" class="btn btn-danger m-1" id="deleteButton" onclick="return confirm('確認要刪除場次？')" hidden />
-    </div>
-}
-<div class="row" id="createForm" hidden>
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label>選擇上映影廳</label>
-                <select id="selectTheater" class="form-select" name="TheaterID" required></select>
-            </div>
-            <div class="form-group">
-                <label>選擇上映電影</label>
-                <select id="selectMovie" class="form-select" name="MovieID" required></select>
-            </div>
-            <input type="hidden" value="" id="createDate" name="createDate"/>
-            <div class="form-group" >
-                <label>選擇上映時間</label>
-                <input type="time" id="selectStart" name="StartTime" class="form-select" required min="09:00" max="23:00" />
-            </div>
-            <div id="movieLengthHidden" hidden>
->>>>>>> Session新增與刪除完成
 
 
         <div class="row" id="createForm" hidden>
@@ -139,18 +82,7 @@
                     </div>
                 </form>
             </div>
-<<<<<<< HEAD
         </div>
-=======
-            <div class="form-group">
-                <label>預計結束時間</label>
-                <input type="time" id="selectEnd"  class="form-select" readonly>
-            </div>            
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" onclick="return confirm('確認要新增場次？')"/>
-            </div>
-        </form>
->>>>>>> Session新增與刪除完成
     </div>
 </div>
 
@@ -216,14 +148,9 @@
         CreateChart(date);
 
         //生成連續21天日期list
-<<<<<<< HEAD
         for (var i = 0; i < 21; i++) {
             var newDate = new Date(Now + i * 1000 * 60 * 60 * 24)
             date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
-=======
-        for(var i=0;i<21;i++){
-            date = `${NowYear}-${NowMonth}-${NowDate + i}`;
->>>>>>> Session新增與刪除完成
             let dateString = `<option value="${date}">${date}</option>`;
         @{
             if (ViewBag.date != null)
@@ -234,10 +161,6 @@
         }
                 selectDate.innerHTML += dateString;
         }
-<<<<<<< HEAD
-=======
-        selectDate.innerHTML += `<option value="2023-2-1">2023-2-1</option>`;
->>>>>>> Session新增與刪除完成
 
         //list在選擇後可以收到選擇日期的session list
         //javascript 沒有針對option的select事件
@@ -281,11 +204,7 @@
                             selectedSessionStartString.value = start;
                             const response = await fetch(`@Url.Content("~/SessionBack/getSessionByTheaterAndStart")?selectedSessionTheaterName=${theater}&selectedSessionStartString=${start}`);
                             let session = await response.json();
-<<<<<<< HEAD
                             if (session.sessionID == null) {
-=======
-                            if(session.sessionID== null){
->>>>>>> Session新增與刪除完成
                                 alert("查無場次，請重新整理");
                                 return;
                             }
@@ -342,7 +261,6 @@
         function reset() {
             errorMessage.innerHTML = "";
             sessionDisplay.setAttribute("hidden", true);
-<<<<<<< HEAD
             deleteButton.setAttribute("hidden", true);
             selectStart.value = "";
             selectEnd.value = "";
@@ -350,15 +268,6 @@
         }
         //上映影廳的select
         async function loadSelectTheater() {
-=======
-            deleteButton.setAttribute("hidden",true);
-            selectStart.value = "";
-            selectEnd.value = "";
-            document.querySelector('#createForm').setAttribute("hidden",true)
-        }
-        //上映影廳的select
-        async function loadSelectTheater(){
->>>>>>> Session新增與刪除完成
             const response = await fetch(`@Url.Content("~/SessionBack/loadSelectTheater")`);
             const datas = await response.json();
             datas.forEach(i => {
@@ -369,24 +278,14 @@
         loadSelectTheater();
 
         //上映電影的select
-<<<<<<< HEAD
         async function loadSelectMovie(date) {
-=======
-        async function loadSelectMovie(date){
->>>>>>> Session新增與刪除完成
             const response = await fetch(`@Url.Content("~/SessionBack/loadSelectMovie")?createDate=${createDate.value}`);
             const datas = await response.json();
             document.querySelector('#selectMovie').innerHTML = null;
             document.querySelector('#movieLengthHidden').innerHTML = null;
-<<<<<<< HEAD
             datas.forEach(i => {
                 selectMovie.innerHTML += `<option value="${i.fId}">${i.fNameCht}</option>`;
                 document.querySelector('#movieLengthHidden').innerHTML += `<input type="hidden" id="movie${i.fId}" value=${i.fShowLength}>`
-=======
-            datas.forEach(i=>{
-                selectMovie.innerHTML += `<option value="${i.fId}">${i.fNameCht}</option>`;
-                document.querySelector('#movieLengthHidden').innerHTML+= `<input type="hidden" id="movie${i.fId}" value=${i.fShowLength}>`
->>>>>>> Session新增與刪除完成
             })
         }
 
@@ -395,19 +294,11 @@
             calculateEndTime();
         })
 
-<<<<<<< HEAD
         selectMovie.addEventListener('change', () => {
             calculateEndTime();
         })
 
         function calculateEndTime() {
-=======
-        selectMovie.addEventListener('change',()=>{
-            calculateEndTime();
-        })
-
-        function calculateEndTime(){
->>>>>>> Session新增與刪除完成
             var hour = parseInt(selectStart.value.split(":")[0]);
             var minute = parseInt(selectStart.value.split(":")[1]);
             var length = parseInt(document.querySelector(`#movie${selectMovie.value}`).value);
@@ -419,11 +310,7 @@
                 }
                 hour = hour + Math.trunc(minutePlus / 60);
                 if (hour >= 24) {
-<<<<<<< HEAD
                     hour = hour - 24;
-=======
-                    hour = hour - 24;                    
->>>>>>> Session新增與刪除完成
                 }
                 if (hour < 10) {
                     hour = "0" + hour;
