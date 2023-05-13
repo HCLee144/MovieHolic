@@ -20,10 +20,12 @@ namespace prjMovieHolic.Controllers
             _db = db;
         }
 
-        public IActionResult ViewSession(int? message)
+        public IActionResult ViewSession(int? message, string? date)
         {
             if (message != null)
                 ViewBag.Error = message;
+            if(date != null)
+                ViewBag.Date = date;
             return View();
         }
 
@@ -33,40 +35,40 @@ namespace prjMovieHolic.Controllers
             {
                 DateTime date = DateTime.Parse(queryDate);
                 var rawDatas =
-                    from s in _db.TSessions.AsEnumerable()
+                    from s in _db.TSessions.Include(i=>i.FMovie).Include(i=>i.FTheater).AsEnumerable()
                     where s.FStartTime.Date == date.Date
-                    group s by s.FMovieId into g
+                    orderby s.FTheaterId
+                    group s by s.FMovie.FNameCht into g
                     select new
                     {
-                        movieID = g.Key,
+                        movieName = g.Key,
                         g
                     };
                 List<CDataForSessionChart> datas = new List<CDataForSessionChart>();
                 foreach (var rawData in rawDatas)
                 {
-                    string movieName = _db.TMovies.Where(m => m.FId == rawData.movieID).First().FNameCht;
-                    if (!datas.Where(data => data.name == movieName).Any())
+                    if (!datas.Where(data => data.name == rawData.movieName).Any())
                     {
-                        datas.Add(new CDataForSessionChart { name = movieName });
+                        datas.Add(new CDataForSessionChart { name = rawData.movieName });
                         //如果datas裡還沒有這個電影名的資料，新增物件
                     }
                     foreach (var session in rawData.g)
                     {
                         SessionTheaterAndTimeData sessionData = new SessionTheaterAndTimeData();
-                        sessionData.x = _db.TTheaters.Where(m => m.FTheaterId == session.FTheaterId).First().FTheater;
+                        sessionData.x = session.FTheater.FTheater;
                         sessionData.y = new long[]
                         {
                         new DateTimeOffset(session.FStartTime.AddHours(8)).ToUnixTimeMilliseconds(),
                          new DateTimeOffset(session.FEndTime.AddHours(8)).ToUnixTimeMilliseconds()
                         };
-                        datas.Where(data => data.name == movieName).First().data.Add(sessionData);
+                        datas.Where(data => data.name == rawData.movieName).First().data.Add(sessionData);
                     }
                 }
                 return Json(datas);
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession");
+                return Json(null);
             }
         }
 
@@ -93,7 +95,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession");
+                return Json(null);
             }
         }
 
@@ -110,7 +112,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession");
+                return Json(null);
             }
         }
 
@@ -129,7 +131,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession");
+                return Json(null);
             }
         }
 
@@ -161,7 +163,7 @@ namespace prjMovieHolic.Controllers
                     }
                 }
                 if (isOverLapped)
-                    return RedirectToAction("ViewSession", "SessionBack", new { message = 1 });
+                    return RedirectToAction("ViewSession", "SessionBack", new { message = 1, date = vm.createDate });
 
                 TSession session = new TSession();
                 session.FTheaterId = (int)vm.TheaterID;
@@ -170,21 +172,21 @@ namespace prjMovieHolic.Controllers
                 session.FEndTime = endTime;
                 _db.TSessions.Add(session);
                 _db.SaveChanges();
-                return RedirectToAction("ViewSession");
+                return RedirectToAction("ViewSession", "SessionBack", new { message = 2 ,date = vm.createDate});
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession");
+                return RedirectToAction("ViewSession", "SessionBack", new { message = 4,date= vm.createDate });
             }
         }
 
-        public IActionResult delete(int? SessionID)
+        public IActionResult delete(int? SessionID, string? deleteDate)
         {
             if (SessionID == null)
                 return RedirectToAction("ViewSession");
             _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
             _db.SaveChanges();
-            return RedirectToAction("ViewSession");
+            return RedirectToAction("ViewSession", "SessionBack", new { message = 3, date = deleteDate });
         }
 
     }
