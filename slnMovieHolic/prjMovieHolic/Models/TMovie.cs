@@ -37,6 +37,8 @@ public partial class TMovie
 
     public virtual ICollection<TActorList> TActorLists { get; set; } = new List<TActorList>();
 
+    public virtual ICollection<TArticle> TArticles { get; set; } = new List<TArticle>();
+
     public virtual ICollection<TCountryList> TCountryLists { get; set; } = new List<TCountryList>();
 
     public virtual ICollection<TDirectorList> TDirectorLists { get; set; } = new List<TDirectorList>();
@@ -45,9 +47,9 @@ public partial class TMovie
 
     public virtual ICollection<TMemberAction> TMemberActions { get; set; } = new List<TMemberAction>();
 
-    public virtual ICollection<TMovieCmt> TMovieCmts { get; set; } = new List<TMovieCmt>();
-
     public virtual ICollection<TSession> TSessions { get; set; } = new List<TSession>();
+
+    public virtual ICollection<TShortCmt> TShortCmts { get; set; } = new List<TShortCmt>();
 
     public virtual ICollection<TTypeList> TTypeLists { get; set; } = new List<TTypeList>();
 }

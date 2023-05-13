@@ -21,33 +21,36 @@
     .delete a {
         text-decoration: none;
     }
-
 /*浮動區塊*/
 .position {
+    background: -webkit-linear-gradient(#10a5d6,#eaeaea);
     background-color: #10a5d6;
-    width: 120px;
+    width: 200px;
     height: 120px;
-    border-radius: 100px;
-    color: #eaeaea;
-    font-size: 26px;
-    font-weight: 900;
-    line-height: 120px;
+    border-radius: 5px;
+    padding-top: 50px;
     text-align: center;
+    /*浮動視窗螢幕位置*/
     position: fixed;
     top: 700px;
     right: 30px;
 }
- .position:hover {
-    background-color: rgb(182, 182, 182);
-    color: #10a5d6;
 
- }
+    .position:hover {
+        background-color: #105190;
+    }
 
-.position a {
-    color: #eaeaea;
-    text-decoration: none;
-}
+    .position p {
+        color: #eaeaea;
+        font-size: 26px;
+        font-weight: 900;
+    }
 
+    .position select {
+        width: 180px;
+        height: 30px;
+        font-size: 20px;
+    }
 
 
 .myBr {
@@ -98,15 +101,36 @@
     color: #373737;
 }
 
+.likeAndBuy {
+    display: flex;
+}
+
+    .likeAndBuy p {
+        margin-top: 16px;
+        height: 32px;
+        padding: 0 10px;
+        font-size: 20px;
+        line-height: 32px;
+        margin-left: 70px;
+        color: #eaeaea;
+        background-color: #10a5d6;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .likeAndBuy a {
+        text-decoration: none;
+    }
+
 .buyNow {
     display: inline-block;
     color: #fff;
     line-height: 28px;
     text-decoration: none;
-    padding: 0 14px;
+    padding: 3px 14px;
     background: #10a5d6;
+    border-radius: 5px;
     margin-top: 15px;
-    margin-left: 94px;
 }
 
     .buyNow:hover {
@@ -152,7 +176,7 @@
         margin: 10px;
     }
 
-/*快速訂票的東西*/
+/*婷婷快速訂票的東西*/
 /*流程圓圈在這裡*/
 .orderStep {
     margin-bottom: 30px;
@@ -198,9 +222,6 @@
     line-height: 100px;
     text-align: center;
 }
-
-    .liInOrderstephere li {
-    }
 /*流程圓圈到此結束*/
 
 .orderBox {
@@ -219,6 +240,20 @@
     width: 350px;
 }
 
+figure ul {
+    padding-top: 7px;
+}
+
+figure li {
+    padding-top: 3px;
+    font-size: 20px;
+}
+
+figure span {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
 .pick {
     margin-left: 80px;
 }
@@ -227,7 +262,19 @@
     display: flex;
     border-bottom: 1px solid silver;
     margin-left: 30px;
+    overflow: auto;
+    max-height: 150px;
+    max-width: 430px;
 }
+
+    .pickDate::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
+    }
+
+    .pickDate::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
     .pickDate li {
         border: 1px solid silver;
@@ -235,6 +282,9 @@
         margin-right: 15px;
         margin-bottom: 5px;
         font-size: 20px;
+        height: 50px;
+        width: 90px;
+        text-align: center;
     }
 
         .pickDate li:hover {
@@ -244,6 +294,7 @@
 
     .pickDate a {
         text-decoration: none;
+        cursor: pointer; /*滑鼠手手回來了*/
     }
 
 .pickCinemaAndTime h3 {
@@ -267,22 +318,30 @@
 
 .chooseTime {
     border-bottom: 1px solid silver;
-    width: 1000px;
+    width: 430px;
+    overflow: auto;
 }
 
-    .chooseTime a {
-        color: #111;
-        text-decoration: none;
+    .chooseTime::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
     }
 
-        .chooseTime a:hover {
+    .chooseTime::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
+
+    .chooseTime li {
+        width: 70px;
+        height: 30px;
+        text-align: center;
+    }
+
+        .chooseTime li:hover {
+            background-color: #10a5d6;
             color: #eaeaea;
         }
-
-    .chooseTime li:hover {
-        background-color: #10a5d6;
-    }
-
+/*下一步按鍵的位置調整*/
 .toRight {
     background-color: #10a5d6;
     float: right;
@@ -291,9 +350,216 @@
     text-align: center;
     line-height: 50px;
     font-size: 22px;
-    margin-right: 10px;
+    margin-right: 15px;
 }
-/*會員開始*/
+/*已點項目小框框*/
+.alreadyOrder {
+    width: 430px;
+    margin-top: 52px;
+    margin-bottom: 20px;
+    padding-top: 8px;
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+
+    .alreadyOrder h3 {
+        padding: 5px;
+        font-size: 24px;
+        border-bottom: 1px silver solid;
+    }
+
+    .alreadyOrder li {
+        font-size: 20px;
+        margin-top: 10px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding-right: 12px;
+        border-bottom: 1px solid silver;
+    }
+
+    .alreadyOrder span {
+        font-weight: bolder;
+        padding: 20px;
+    }
+/*票種*/
+.pickTicket {
+    width: 450px;
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 30px;
+    font-size: 24px;
+    line-height: 28px;
+    padding-top: 20px;
+    border-bottom: 1px solid silver;
+}
+
+    .pickTicket h3 {
+        text-align: left;
+        border: 1px solid silver;
+        padding-top: 5px;
+        padding-left: 5px;
+        font-size: 24px;
+        line-height: 40px;
+    }
+
+.aa {
+    padding-right: 12px;
+}
+
+.Ticket ul {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid silver;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.Ticket li {
+    font-size: 20px;
+}
+
+.fontFat {
+    font-weight: bolder;
+}
+
+.Ticket button {
+    background-color: #10a5d6;
+    color: #eaeaea;
+    border-radius: 5px;
+    width: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-weight: bolder;
+}
+
+.labUsingCoupon {
+    line-height: 36px;
+}
+
+.txtUsingCoupon {
+    border: 1px solid silver;
+    border-radius: 5px;
+    width: 170px;
+    margin-right: 20px;
+}
+
+.btnGoToCoupon {
+    background-color: #10a5d6;
+    padding: 10px;
+    border-radius: 5px;
+    color: #eaeaea;
+}
+
+/*選擇座位*/
+.orderDetailOnChooseSit {
+    margin-bottom: 20px;
+}
+
+    .orderDetailOnChooseSit ul {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .orderDetailOnChooseSit li {
+        width: 180px;
+        height: 50px;
+        border-left: 1px solid silver;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .orderDetailOnChooseSit h3 {
+        font-size: 18px;
+    }
+
+    .orderDetailOnChooseSit h4 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+.addBorderRight {
+    border-right: 1px solid silver;
+}
+
+.Tingbox {
+    border: 1px solid silver;
+}
+
+.sellSold {
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 18px;
+}
+
+.sell {
+    width: 18px;
+    height: 18px;
+    background-color: #eaeaea;
+    border: 1px solid silver;
+    border-radius: 15px;
+}
+
+.sold {
+    width: 18px;
+    height: 18px;
+    background-color: dimgray;
+    border: 1px solid silver;
+    border-radius: 15px;
+}
+
+.sell2 {
+    width: 28px;
+    height: 28px;
+    background-color: #eaeaea;
+    border: 1px solid silver;
+    border-radius: 15px;
+    margin-right: 13px;
+}
+
+.sold2 {
+    width: 28px;
+    height: 28px;
+    background-color: dimgray;
+    border: 1px solid silver;
+    border-radius: 15px;
+    margin-right: 13px;
+}
+
+.screen {
+    background-color: aliceblue;
+    border-radius: 15px;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 36px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.soManySit {
+    background-color: lavender;
+    border-radius: 15px;
+    width: 100%;
+    height: 780px;
+    margin-bottom: 20px;
+    padding-top: 13px;
+}
+
+.rowSit {
+    margin-bottom: 5px;
+    margin-left: 13px;
+}
+
+/*上面大致是婷婷的區塊*/
+
+/*以下宜霈的會員開始*/
 .memCut {
     display: flex;
     justify-content: space-around;
@@ -345,6 +611,197 @@
     padding-right: 50px;
 }
 
+    .MemberPasswordChangeform input {
+        border: 1px solid silver;
+    }
+
     .MemberPasswordChangeform form {
         border-bottom: 1px solid silver;
     }
+
+
+/*登入畫面*/
+.logInBox {
+    margin-top: 80px;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.logInBoxSmall {
+    border: 3px solid silver;
+    border-radius: 15px;
+    width: 300px;
+    height: 400px;
+    padding-top: 20px;
+    display: inline-block;
+}
+
+    .logInBoxSmall h6 {
+        color: rgb(116, 114, 114);
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .logInBoxSmall input {
+        border: 1px solid silver;
+    }
+
+    .logInBoxSmall a {
+        text-decoration: none;
+    }
+
+        .logInBoxSmall a:hover {
+            color: #105190;
+        }
+
+    .logInBoxSmall p {
+        padding: 0;
+        margin: 0;
+        color: silver;
+    }
+
+    .logInBoxSmall input {
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+.loginButton {
+    background-color: #10a5d6;
+    width: 222px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 15px;
+    display: inline-block;
+    color: #eaeaea;
+}
+
+    .loginButton:hover {
+        background-color: #105190;
+    }
+
+.logInBoxSmall img:hover {
+    -webkit-filter: drop-shadow(2px 12px 7px silver);
+    filter: drop-shadow(2px 12px 7px silver)
+}
+
+/*優惠券部分*/
+
+.couponList {
+    width: 550px;
+}
+
+.tab_css {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+    .tab_css input {
+        display: none
+    }
+
+    .tab_css label {
+        margin: 0 5px 5px 0;
+        padding: 10px 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        background: #999;
+        color: #fff;
+        opacity: 0.5;
+    }
+
+.tab_content {
+    order: 1;
+    display: none;
+    width: 100%;
+    border-bottom: 3px solid #ddd;
+    line-height: 1.6;
+    font-size: .9em;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.tab_css input:checked + label, .tab_css label:hover {
+    opacity: 1;
+    font-weight: bold;
+}
+
+    .tab_css input:checked + label + .tab_content {
+        display: initial;
+    }
+
+
+
+/*妮妮的電影頁面*/
+
+
+
+.moviePage {
+    display: flex;
+}
+
+.posterPlace {
+    text-align: center;
+}
+
+    .posterPlace img {
+        width: 200px;
+    }
+
+.movie {
+    margin-left: 20px;
+}
+
+    .movie li {
+        font-size: 16px;
+    }
+
+    .movie h3 {
+        font-size: 32px;
+    }
+
+    .movie h4 {
+        font-size: 20px;
+        padding-bottom: 25px;
+    }
+
+.somethingAboutMovie ul {
+    display: flex;
+}
+
+.somethingAboutMovie li {
+    line-height: 20px;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.fatLi {
+    font-weight: bold;
+    width: 60px;
+    height: 30px;
+}
+
+.movieIntroduce {
+    letter-spacing: 2px;
+    color: dimgray;
+}
+
+.myButton {
+    background-color: #10a5d6;
+    border-radius: 5px;
+    color: #eaeaea;
+    width: 90px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.movieIntroduce input:hover {
+    background-color: #105190;
+}
+
+.video {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

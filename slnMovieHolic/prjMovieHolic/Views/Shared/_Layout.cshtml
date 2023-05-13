@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/layout.css" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/style.css" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/myStyle.css" type="text/css" media="all">
-  
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
    
@@ -20,7 +20,7 @@
                         <header>
                                 <div class="wrapper">
                                     <!-- 帶有超連結的Logo-->
-                                    <h1><a href="index.html" id="logo"></a></h1>
+                                    <h1><a href="~/HOME/INDEX" id="logo"></a></h1>
                                     <!-- 會員登入 Login-->
                                     <form id="search" method="post">
                                         <div class="delete">
@@ -29,11 +29,40 @@
                                     <!-- 上面選單 Menu-->
                                     <nav>
                                         <ul id="menu">
-                                            <li id="active"><a href="StartOrder.html">快速訂票</a></li>
+
+@*                                        @{
+                                            if (ViewBag.Login == true)
+                                            {
+                                                <li id="active">@Html.ActionLink("快速訂票","listsession","OrderFront",new{movieid=1},null)</li>
+                                                <li><a href="#">最新消息</a></li>
+                                                <li><a href="Services.html">電影資訊</a></li>
+                                                <li>@Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)</li>
+                                            }
+                                            else
+                                            {
+                                                <li>@Html.ActionLink("快速訂票", "memberLogin","memberFront")</li>
+                                                <li><a href="#">最新消息</a></li>
+                                                <li><a href="Services.html">電影資訊</a></li>
+                                                <li>@Html.ActionLink("會員登入", "memberLogin","memberFront")</li>
+                                            }
+                                        }*@
+                                        <li id="active">@Html.ActionLink("快速訂票","listsession","OrderFront",new{movieid=1},null)</li>
                                             <li><a href="#">最新消息</a></li>
                                             <li><a href="Services.html">電影資訊</a></li>
-                                            <li><a href="Member.html">會員登入</a></li>
-                                            <li class="end"><a href="Contact.html">聯絡我們</a></li>
+                                        <li>
+                                            @{
+                                                if (ViewBag.Login == true)
+                                                {
+                                                    @Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)
+                                                }
+                                                else
+                                                {
+                                                    @Html.ActionLink("會員登入", "memberLogin","memberFront")
+                                                }
+                                            }
+
+                                        </li>
+                                        <li class="end">@Html.ActionLink("電影評論","index","article")</li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -107,14 +136,14 @@
                     <a href="https://google.com.tw" target="_blank" title="瘋電影">MovieHolic瘋電影</a>
                 </span>
                 <ul id="icons">
-                    <li><a href="#" class="normaltip" title="Facebook"><img src="images/icon1.png" alt=""></a></li>
-                    <li><a href="#" class="normaltip" title="Delicious"><img src="images/icon2.png" alt=""></a></li>
+                  @*  <li><a href="#" class="normaltip" title="Facebook"><img src="~images/icon1.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Delicious"><img src="~images/icon2.png" alt=""></a></li>
                     <li>
-                        <a href="#" class="normaltip" title="Stumble Upon"><img src="images/icon3.png" alt=""></a>
+                        <a href="#" class="normaltip" title="Stumble Upon"><img src="~images/icon3.png" alt=""></a>
                     </li>
-                    <li><a href="#" class="normaltip" title="Twitter"><img src="images/icon4.png" alt=""></a></li>
-                    <li><a href="#" class="normaltip" title="Linkedin"><img src="images/icon5.png" alt=""></a></li>
-                    <li><a href="#" class="normaltip" title="Reddit"><img src="images/icon6.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Twitter"><img src="~images/icon4.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Linkedin"><img src="~images/icon5.png" alt=""></a></li>
+                    <li><a href="#" class="normaltip" title="Reddit"><img src="~images/icon6.png" alt=""></a></li>*@
                 </ul>
             </div>
             <!-- {%FOOTER_LINK} -->
@@ -149,6 +178,7 @@
             });
         });
     </script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
