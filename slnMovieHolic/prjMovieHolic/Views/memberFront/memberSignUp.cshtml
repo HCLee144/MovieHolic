@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "memberSignUp";
+}
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <h3 class="memberCreate">會員註冊</h3>
+                    <div class="line1 wrapper">
+                        <div class="wrapper tabs memCut">
+                            <div class="memberInformation">
+                                <form asp-action="memberSignUp">
+                                <table class="memberTable">
+                                    <tr>
+                                        <th>姓名</th>
+                                        <td><input type="text" name="FName" value="" size="20"></td>
+                                    </tr>
+                                    <tr>
+                                         <th>帳號（請輸入手機號碼）</th>
+                                         <td><input type="text" name="FPhone" value="" size="20"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>密碼</th>
+                                        <td><input type="text" name="FPhon" value="" size="20"></td>
+                                    </tr>
+                                        <tr>
+                                            <th>密碼</th>
+                                            <td><input type="text" name="Model.FIdcardNumber" value="" size="20"></td>
+                                        </tr>
+                                    <tr>
+                                        <th>生日</th>
+                                        <td><input type="text" name="FBirthDate" value="" size="20"></td>
+                                    </tr>
+                                    <tr>
+                                         <th>身分證字號</th>
+                                         <td><input type="text" name="Model.FIdcardNumber" value="" size="20"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td><input type="text" name="FEmail" value="" size="20"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>性別</th>
+                                        <td><input type="text" name="FGender" value="" size="20"></td>
+                                    </tr>
+                                </table>
+                                <hr />
+                                <input type="checkbox" name="" id=""><span style="font-size:15px">我同意 </span><a style="font-size:15px">個人資料使用條款</a>
+                                <br>
+                                <div class="MemberEditSubmit"><input class="button" type="submit" value="送出"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

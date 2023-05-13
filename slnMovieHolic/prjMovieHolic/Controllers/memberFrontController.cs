@@ -62,6 +62,20 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
             return RedirectToAction("Index","Home");
         }
+        //註冊會員
+        public IActionResult memberSignUp()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult memberSignUP(TMember member)
+        {
+            _movieContext.TMembers.Add(member);
+            _movieContext.SaveChanges();
+            return RedirectToAction("memberLogin");
+        }
+
+
         //忘記密碼
         public IActionResult forgetPassword()
         {   //step1 驗證是否有此帳號
@@ -139,9 +153,12 @@ namespace prjMovieHolic.Controllers
             {
                 memberData.FName = member.FName;
                 memberData.FNickname= member.FNickname;
-                memberData.FPhone = member.FPhone;
+                memberData.FBirthDate = member.FBirthDate;
+                memberData.FIdcardNumber = member.FIdcardNumber;
+                memberData.FGenderId = member.FGenderId;
                 memberData.FEmail = member.FEmail;
                 _movieContext.SaveChanges();
+                
             }
             return RedirectToAction("memberList", new { id = member.FMemberId });
         }
