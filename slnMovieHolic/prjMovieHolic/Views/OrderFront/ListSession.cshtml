@@ -38,17 +38,18 @@
                                 </ul>
                             </div>
                             <!--這裡開始訂票-->
+                            <h4 class="orderBoxH4">@Model.MovieName</h4>
+                            <p class="orderBoxP"> @Model.tMovie.FNameEng</p>
                             <div class="orderBox">
                                 <div>
                                     <figure>
                                         <input type="hidden" id="movieID" value="@Model.MovieID" />
-                                        <h4>@Model.MovieName</h4>
+                                       
                                         @{
                                             string s = Model.MovieID.ToString() + ".jpg";
                                         }
                                         <img class="orderMovieImage" src="~/images/moviePosters/@Model.MovieID/@s" alt="">
-                                        <ul>
-                                            <li style="padding-top:10px"><span style="font-weight:bold;font-size:20px">英文</span> @Model.tMovie.FNameEng</li>
+                                        <ul>                                      
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">類型</span>@Model.TypeListNames</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">導演</span>@Model.DirectorListNames</li>

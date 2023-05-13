@@ -56,26 +56,20 @@
                                             <ul>
                                                 <input type="hidden" value="@Model.oneNormalPrice" id="oneNormalPrice" />
                                                 <li class="fontFat">一般</li>
-                                                <li></li>
-                                                <li></li>
-                                                    <li>張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" value="0" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
-                                                <li id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
+                                                <li class="TicketQTY">張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" value="0" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
+                                                <li class="totalPrice" id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
                                             </ul>
                                             <ul>
                                                 <input type="hidden" value="@Model.oneStudentPrice" id="oneStudentPrice" />
                                                 <li class="fontFat">學生</li>
-                                                <li></li>
-                                                <li></li>
-                                                <li>張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
-                                                <li id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
+                                                <li class="TicketQTY">張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
+                                                <li class="totalPrice" id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
                                             </ul>
                                             <ul>
                                                 <input type="hidden" value="@Model.oneSoldierPrice" id="oneSoldierPrice" />
                                                 <li class="fontFat">軍警</li>
-                                                <li></li>
-                                                <li></li>
-                                                    <li>張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px" /><button id="soldierPlus" type="button">+</button></li>
-                                                <li id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
+                                                <li class="TicketQTY">張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px" /><button id="soldierPlus" type="button">+</button></li>
+                                                <li class="totalPrice" id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
                                             </ul>
                                         </div>
                                     </div>
