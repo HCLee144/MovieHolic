@@ -171,7 +171,7 @@
                     data["sessionIDandTime"].split(",").forEach(item => {
                         let sessionID = item.split("##")[0];
                         let sessionTime = item.split("##")[1];
-                        result += `<li name="${sessionID}" onclick="chooseSession(event)" class="ccc">${sessionTime}</li>`
+                        result += `<li name="${sessionID}" class="ccc" onclick="chooseSession(event)">${sessionTime}</li>`
                     })
 
                     result += `</ul>`
@@ -195,8 +195,10 @@
                 sessionBtns.forEach((item)=>
                 {
                 item.style.backgroundColor = '#eaeaea';
+                item.style.color='black';
                 })
             event.target.style.backgroundColor = '#10a5d6';
+            event.target.style.color='#eaeaea';
             }
 
          }

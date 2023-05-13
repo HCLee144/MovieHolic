@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using prjMovieHolic.Models;
 using prjMovieHolic.ViewModels;
+using System.Collections.Generic;
 
 namespace prjMovieHolic.Controllers
 {
@@ -254,8 +255,8 @@ namespace prjMovieHolic.Controllers
             CListOrderDetailsViewModel vm = new CListOrderDetailsViewModel();
 
             //選擇到的票種張數
-            string json=HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
-            string[] tickets = json.Split(",");
+            string json_tickets=HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
+            string[] tickets = json_tickets.Split(",");
             string[] ticketsNames = new string[] { "一般票", "學生票", "軍警票" };
             string selectedTickets="";
             for(int i=1;i<tickets.Length;i++)
@@ -280,7 +281,10 @@ namespace prjMovieHolic.Controllers
             vm.theaterName_od = selectedTheater;
 
             //選擇到的座位
-           
+            string json_seats=HttpContext.Session.GetString(CDictionary.SelectedSeatID);
+            List <int> selectedSeats= System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
+
+            
             return View();
         }
 
