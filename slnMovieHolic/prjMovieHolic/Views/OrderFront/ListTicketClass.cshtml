@@ -10,8 +10,7 @@
         margin: 0;
     }
 </style>
-@using(Html.BeginForm("ListSeat","OrderFront"))
-{
+
     <div id="page2">
     <div class="body1">
         <div class="">
@@ -45,7 +44,7 @@
                                 <div class="pick">
                                     <div class="alreadyOrder">
                                         <h3>已選項目</h3>
-                                            <input type="hidden" name="sessionID_seat" value="@Model.selectedSessionID">
+                                        <input type="hidden" name="sessionID_seat" id="sessionID_seat" value="@Model.selectedSessionID">
                                         <ul>
                                             <li><span>時間</span>@Model.selectedSessionDate</li>
                                             <li><span>影廳</span>@Model.selectedTheater</li>
@@ -67,7 +66,7 @@
                                                 <li class="fontFat">學生</li>
                                                 <li></li>
                                                 <li></li>
-                                                    <li>張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
+                                                <li>張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
                                                 <li id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
                                             </ul>
                                             <ul>
@@ -82,7 +81,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button id="nextStep" class="button toRight" type="submit">下一步</button>
+                            <button id="nextStep" class="button toRight">下一步</button>
                         </div>
                     </section>
                 </div>
@@ -90,7 +89,7 @@
         </div>
     </div>
 </div>
-}
+
 
  @section Scripts{
      <script>
@@ -112,7 +111,8 @@
      const soldierMinus=document.querySelector('#soldierMinus');
      const soldierPlus=document.querySelector('#soldierPlus');
      
-     const nextStep=document.getElementById('nextStep'); 
+     const nextStep=document.getElementById('nextStep');
+     const sessionID_seat = document.getElementById('sessionID_seat');
      
      normalPlus.addEventListener('click',()=>{
          let normalTicketNo=Number(normalTicket.value);
@@ -163,11 +163,15 @@
       })
 
       nextStep.addEventListener('click',()=>{
+            const params=`${sessionID_seat.value},${normalTicket.value},${studentTicket.value},${soldierTicket.value}`;
+
             if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value))>0)
-                window.location.replace('@Url.Content("~/OrderFront/ListSeat")');
+                window.location.replace('@Url.Content("~/OrderFront/ListSeat")?paras='+params);
             else
                 alert ('尚未選擇票數');
       })
+
+
 
      </script>
      

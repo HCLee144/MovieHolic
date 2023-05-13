@@ -103,22 +103,21 @@ namespace prjMovieHolic.Controllers
         public IActionResult ListTicketClass()
         {
             //顯示剛剛選的場次
-            CListTicketViewModel shoppingCart = new CListTicketViewModel();
+            CListTicketViewModel vm = new CListTicketViewModel();
             int sessionID = (int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
-            shoppingCart.selectedSessionID = sessionID;
+            vm.selectedSessionID = sessionID;
 
             var sessionTime = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime;
             string selectedSessionDateTime=sessionTime.ToString("MM/dd HH:mm");
-            shoppingCart.selectedSessionDate = selectedSessionDateTime;
+            vm.selectedSessionDate = selectedSessionDateTime;
 
             var theater = movieContext.TSessions.Include(s => s.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater;
             string selectedTheater = theater.FTheater;
-            shoppingCart.selectedTheater=selectedTheater;
+            vm.selectedTheater=selectedTheater;
 
             var movie = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == sessionID).FMovie;
             string movieName = movie.FNameCht;
-            shoppingCart.selectedMovieName = movieName;
-
+            vm.selectedMovieName = movieName;
 
             //顯示選的票種價錢
             decimal moviePrice = (decimal)movie.FPrice;
@@ -129,22 +128,28 @@ namespace prjMovieHolic.Controllers
             if (theater.FTheaterId == 1)
                 廳加價=movieContext.TTheaterClasses.FirstOrDefault(tc => tc.FTheaterClassId == 2).FPriceRate;
             decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
-            shoppingCart.oneNormalPrice = Convert.ToInt32(moviePrice*一般價 * 早場優惠 * 廳加價);
+            vm.oneNormalPrice = Convert.ToInt32(moviePrice*一般價 * 早場優惠 * 廳加價);
             decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
-            shoppingCart.oneStudentPrice = Convert.ToInt32(moviePrice * 學生價 * 早場優惠 * 廳加價);
+            vm.oneStudentPrice = Convert.ToInt32(moviePrice * 學生價 * 早場優惠 * 廳加價);
             decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-            shoppingCart.oneSoldierPrice = Convert.ToInt32(moviePrice * 軍警價 * 早場優惠 * 廳加價);
+            vm.oneSoldierPrice = Convert.ToInt32(moviePrice * 軍警價 * 早場優惠 * 廳加價);
 
-            return View(shoppingCart);
+            return View(vm);
         }
 
-        public IActionResult ListSeat(CListSeatViewModel vm)
+        public IActionResult ListSeat(string paras)
         {
-            int n = vm.sessionID_seat;
-            int x = vm.normalCount_seat;
-            int y = vm.studentCount_seat;
-            int z = vm.soldierCount_seat;
+            //將選的票種數量存進session
+            string json = System.Text.Json.JsonSerializer.Serialize(paras);
+            HttpContext.Session.SetString(CDictionary.SelectedTicketClass, json);
 
+            string[] strings=paras.Split(",");
+            int n = Convert.ToInt32(strings[0]);
+            int x = Convert.ToInt32(strings[1]);
+            int y = Convert.ToInt32(strings[2]);
+            int z = Convert.ToInt32(strings[3]);
+
+            CListSeatViewModel vm = new CListSeatViewModel();
             //選到的電影
             vm.movieName = movieContext.TSessions.Include(s=>s.FMovie).FirstOrDefault(s => s.FSessionId == n).FMovie.FNameCht;
             //選到的日期
@@ -242,6 +247,41 @@ namespace prjMovieHolic.Controllers
 
            
 
+        }
+
+        public IActionResult ListOrderDetails()
+        {
+            CListOrderDetailsViewModel vm = new CListOrderDetailsViewModel();
+
+            //選擇到的票種張數
+            string json=HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
+            string[] tickets = json.Split(",");
+            string[] ticketsNames = new string[] { "一般票", "學生票", "軍警票" };
+            string selectedTickets="";
+            for(int i=1;i<tickets.Length;i++)
+            {
+                if (Convert.ToInt32(tickets[i]) > 0)
+                    selectedTickets = $"{ticketsNames[i]}:{tickets[i]}張,";
+            }
+            if (selectedTickets.Trim().Substring(selectedTickets.Trim().Length - 1, 1) == ",")
+                selectedTickets = selectedTickets.Trim().Substring(0, selectedTickets.Trim().Length - 1);
+            vm.tickets_od = selectedTickets;
+
+            //選擇到的日期時間
+            int sessionID=(int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
+            string selectedMonth=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("MM");
+            string selectedDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("dd");
+            string selectedHour = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("HH");
+            string selectedMinute = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("mm");
+            vm.selecteDate_od = $"{selectedMonth}月{selectedDate}日  {selectedHour}時{selectedMinute}分";
+
+            //選擇到的廳院
+            string selectedTheater = movieContext.TSessions.Include(s => s.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater.FTheater;
+            vm.theaterName_od = selectedTheater;
+
+            //選擇到的座位
+           
+            return View();
         }
 
         [NonAction]
