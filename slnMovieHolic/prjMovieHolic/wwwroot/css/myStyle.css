@@ -1,3 +1,39 @@
+.OpenDialog {
+    border-radius: 5px;
+    color: azure;
+    width: 100px;
+    height: 40px;
+    background-color: #10a5d6;
+}
+
+.IamDialog {
+    width: 500px;
+    height: 200px;
+    border-radius: 15px;
+    margin: 500px auto;
+}
+
+    .IamDialog p {
+        color: #999;
+        font-size: 24px;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+.closeDialog {
+    border-radius: 5px;
+    color: azure;
+    width: 100px;
+    height: 40px;
+    background-color: #10a5d6;
+    margin-top: 30px;
+    margin-left: 190px;
+}
+
+
+
+
+
 @font-face {
     /*香菜體*/
     font-family: font1;
@@ -21,9 +57,10 @@
     .delete a {
         text-decoration: none;
     }
+
 /*浮動區塊*/
 .position {
-    background: -webkit-linear-gradient(#10a5d6,#eaeaea);
+    background: -webkit-linear-gradient(#10a5d6, #eaeaea);
     background-color: #10a5d6;
     width: 200px;
     height: 120px;
@@ -208,6 +245,7 @@
     line-height: 100px;
     text-align: center;
 }
+
 /*特別變色的圈圈是這一塊*/
 .liInOrderstephere {
     background-color: #105190;
@@ -222,6 +260,7 @@
     line-height: 100px;
     text-align: center;
 }
+
 /*流程圓圈到此結束*/
 
 .orderBox {
@@ -294,7 +333,8 @@ figure span {
 
     .pickDate a {
         text-decoration: none;
-        cursor: pointer; /*滑鼠手手回來了*/
+        cursor: pointer;
+        /*滑鼠手手回來了*/
     }
 
 .pickCinemaAndTime h3 {
@@ -341,6 +381,7 @@ figure span {
             background-color: #10a5d6;
             color: #eaeaea;
         }
+
 /*下一步按鍵的位置調整*/
 .toRight {
     background-color: #10a5d6;
@@ -352,6 +393,7 @@ figure span {
     font-size: 22px;
     margin-right: 15px;
 }
+
 /*已點項目小框框*/
 .alreadyOrder {
     width: 430px;
@@ -381,6 +423,7 @@ figure span {
         font-weight: bolder;
         padding: 20px;
     }
+
 /*票種*/
 .pickTicket {
     width: 450px;
@@ -564,10 +607,12 @@ figure span {
     display: flex;
     justify-content: space-around;
 }
+
 /*會員選單*/
 .memberMenu {
     width: 240px;
 }
+
 /*會員資料顯示區塊*/
 .memberInformation {
     width: 550px;
@@ -604,6 +649,15 @@ figure span {
 .MemberEditSubmit {
     text-align: right;
 }
+
+/*會員註冊標題樣式*/
+.memberCreate {
+    text-align: center;
+    font-size: 36px;
+    padding: 15px;
+}
+
+
 
 /*會員密碼修改盒子*/
 .MemberPasswordChangeform {
@@ -723,7 +777,8 @@ figure span {
     border-radius: 5px;
 }
 
-.tab_css input:checked + label, .tab_css label:hover {
+.tab_css input:checked + label,
+.tab_css label:hover {
     opacity: 1;
     font-weight: bold;
 }
