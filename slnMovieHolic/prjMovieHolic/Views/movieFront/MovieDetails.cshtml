@@ -1,0 +1,80 @@
+﻿@model prjMovieHolic.Models.TMovie
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="position" style="height: 170px;">
+    <p>快速訂票</p>
+    <select name="" id="">
+        <option value="">選擇電影</option>
+        <option value="">電影名稱電影名稱</option>
+        <option value="">基本上只能塞九個字</option>
+        <option value="">不然會變形喔</option>
+    </select>
+</div>
+
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <div class="wrapper">
+                    <div class="moviePage">
+                        <div class="posterPlace">
+                            <img src="~/@Model.FPosterPath" alt="">
+                        </div>
+                        <div class="movie">
+                            <h3>@Model.FNameCht</h3>
+                            <h4>@Model.FNameEng</h4>
+                            <div class="somethingAboutMovie">
+                                <ul>
+                                    <li class="fatLi">級　別</li>
+                                    <li><img src="~/@Model.FRating.FImagePath" alt="">　@Model.FRating.FNameCht</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">片　長</li>
+                                    <li>@Model.FShowLength　分鐘</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">上映日</li>
+                                    <li>@Model.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">類　型</li>
+                                    <li>不知道怎麼寫1</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">演　員</li>
+                                    <li>不知道怎麼寫2</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">導　演</li>
+                                    <li>不知道怎麼寫3</li>
+                                </ul>
+                            </div>
+                            <div class="movieIntroduce">
+                                <ul>
+                                    <li class="fatLi">簡　介</li>
+                                    <li id="">
+                                        @Model.FInteroduce
+                                    </li>
+                                </ul>
+                                <input class="myButton" type="button" value="更多／更少">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="myBr"></div>
+                    <div class="hotMoviePlaceLine">
+                        <ul class="hotMoviePlaceLineMenu">
+                            <li style="font-size: 26px;">預告片</li>
+                        </ul>
+                    </div>
+
+                    @Html.Raw(Model.FTrailerLink)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
