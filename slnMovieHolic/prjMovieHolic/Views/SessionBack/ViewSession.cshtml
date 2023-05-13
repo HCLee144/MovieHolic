@@ -19,7 +19,16 @@
         {
             case 1:
                 @:<div class="alert alert-danger" role="alert">該場次與其他場次重疊！</div>
-             break;
+                break;
+            case 2:
+                @:<div class="alert alert-primary" role = "alert" >場次新增完成</div>
+                break;
+            case 3:
+                @:<div class="alert alert-primary" role="alert">場次刪除完成</div>
+                break;
+            case 4:
+                @:<div class="alert alert-danger" role="alert">資料輸入異常，請重新嘗試！</div>
+                break;
         }
     }
 </div>
@@ -38,9 +47,12 @@
 {
     <div>
         <input type="hidden" name="SessionID" value=0 id="sessionID">
+        <input type="hidden" name="deleteDate" value=0 id="deleteDate">
         <input type="submit" value="刪除場次" class="btn btn-danger m-1" id="deleteButton" onclick="return confirm('確認要刪除場次？')" hidden />
     </div>
 }
+
+
 <div class="row" id="createForm" hidden>
     <div class="col-md-4">
         <form asp-action="Create">
@@ -98,6 +110,9 @@
         const movieLength = document.querySelector('#movieLength');
         const sessionStart = document.querySelector('#sessionStart');
         const sessionEnd = document.querySelector('#sessionEnd');
+
+        const deleteDate = document.querySelector('#deleteDate')
+
         const createDate = document.querySelector('#createDate');
         const selectMovie = document.querySelector('#selectMovie');
         const selectStart = document.querySelector('#selectStart');
@@ -109,21 +124,40 @@
         var chartData;       
         var chart= null;
 
+        const Now = new Date().getTime();
         const NowYear = new Date().getFullYear();
         const NowMonth = new Date().getMonth()+1;
         const NowDate = new Date().getDate();
-        var date = `${NowYear}/${NowMonth}/${NowDate}`;
+        var date = `${NowYear}-${NowMonth}-${NowDate}`;
+
+
+
+        @{
+            if (ViewBag.date != null)
+            {
+                @:date= "@ViewBag.date" ;
+            }
+        }
 
         createDate.value=date;
+        deleteDate.value= date;
+
         CreateChart(date);
 
         //生成連續21天日期list
         for(var i=0;i<21;i++){
-            date = `${NowYear}-${NowMonth}-${NowDate + i}`;
+            var newDate = new Date(Now+i*1000*60*60*24)
+            date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
             let dateString = `<option value="${date}">${date}</option>`;
+        @{
+            if (ViewBag.date != null)
+            {
+                @:if(date == "@ViewBag.date" )
+                    @:dateString = `<option value="${date}" selected>${date}</option>`
+                }
+            }       
             selectDate.innerHTML += dateString;
         }
-        selectDate.innerHTML += `<option value="2023-2-1">2023-2-1</option>`;
 
         //list在選擇後可以收到選擇日期的session list
         //javascript 沒有針對option的select事件
@@ -133,6 +167,7 @@
            let date = selectDate.options[selectDate.selectedIndex].value;
            await CreateChart(date);
            createDate.value = date;
+           deleteDate.value = date;
         })
 
         createButton.addEventListener('click',async(event)=>{
