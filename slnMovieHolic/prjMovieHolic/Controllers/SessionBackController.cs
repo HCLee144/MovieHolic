@@ -20,12 +20,19 @@ namespace prjMovieHolic.Controllers
             _db = db;
         }
 
+<<<<<<< HEAD
         public IActionResult ViewSession(int? message, string? date)
         {
             if (message != null)
                 ViewBag.Error = message;
             if(date != null)
                 ViewBag.Date = date;
+=======
+        public IActionResult ViewSession(int? message)
+        {
+            if (message != null)
+                ViewBag.Error = message;
+>>>>>>> Session新增與刪除完成
             return View();
         }
 
@@ -68,7 +75,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return Json(null);
+                return RedirectToAction("ViewSession");
             }
         }
 
@@ -95,7 +102,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return Json(null);
+                return RedirectToAction("ViewSession");
             }
         }
 
@@ -112,13 +119,18 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 return Json(null);
+=======
+                return RedirectToAction("ViewSession");
+>>>>>>> Session新增與刪除完成
             }
         }
 
         public IActionResult loadSelectMovie(string? createDate)
         {
             try
+<<<<<<< HEAD
             {
                 DateTime date = DateTime.Parse(createDate);
                 var q = _db.TMovies.Where(m => m.FScheduleStart <= date && m.FScheduleEnd > date).Select(m => new
@@ -132,6 +144,21 @@ namespace prjMovieHolic.Controllers
             catch (Exception ex)
             {
                 return Json(null);
+=======
+            {
+                DateTime date = DateTime.Parse(createDate);
+                var q = _db.TMovies.Where(m => m.FScheduleStart <= date && m.FScheduleEnd > date).Select(m => new
+                {
+                    m.FId,
+                    m.FNameCht,
+                    m.FShowLength
+                });
+                return Json(q);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ViewSession");
+>>>>>>> Session新增與刪除完成
             }
         }
 
@@ -163,7 +190,11 @@ namespace prjMovieHolic.Controllers
                     }
                 }
                 if (isOverLapped)
+<<<<<<< HEAD
                     return RedirectToAction("ViewSession", "SessionBack", new { message = 1, date = vm.createDate });
+=======
+                    return RedirectToAction("ViewSession", "SessionBack", new { message = 1 });
+>>>>>>> Session新增與刪除完成
 
                 TSession session = new TSession();
                 session.FTheaterId = (int)vm.TheaterID;
@@ -172,6 +203,7 @@ namespace prjMovieHolic.Controllers
                 session.FEndTime = endTime;
                 _db.TSessions.Add(session);
                 _db.SaveChanges();
+<<<<<<< HEAD
                 return RedirectToAction("ViewSession", "SessionBack", new { message = 2 ,date = vm.createDate});
             }
             catch (Exception ex)
@@ -181,12 +213,27 @@ namespace prjMovieHolic.Controllers
         }
 
         public IActionResult delete(int? SessionID, string? deleteDate)
+=======
+                return RedirectToAction("ViewSession");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ViewSession");
+            }
+        }
+
+        public IActionResult delete(int? SessionID)
+>>>>>>> Session新增與刪除完成
         {
             if (SessionID == null)
                 return RedirectToAction("ViewSession");
             _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
             _db.SaveChanges();
+<<<<<<< HEAD
             return RedirectToAction("ViewSession", "SessionBack", new { message = 3, date = deleteDate });
+=======
+            return RedirectToAction("ViewSession");
+>>>>>>> Session新增與刪除完成
         }
 
     }

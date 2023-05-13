@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model prjMovieHolic.ViewModels.CListOrderDetailsViewModel
+<div id="page2">
+    <div class="body1">
+        <div class="">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="wrapper">
+                            <!--步驟圈圈在這裡-->
+                            <div class="orderStep">
+                                <ul>
+                                    <li class="liInOrderstep">選擇時段</li>
+                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇票種</li>
+                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇座位</li>
+                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">配餐選擇</li>
+                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstephere">送出訂單</li>
+                                </ul>
+                            </div>
+                            <!--這裡開始訂票-->
+                            <div class="orderBox">
+                                <div>
+                                    <figure>
+                                        <h4>電影名稱電影名稱</h4>
+                                        <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
+                                    </figure>
+                                </div>
+                                <div class="pick">
+                                    <div class="alreadyOrder">
+                                        <h3>訂單內容</h3>
+                                        <ul>
+                                            <li><span>時　　間</span>@Model.selecteDate_od</li>
+                                            <li><span>影　　廳</span>@Model.theaterName_od</li>
+                                            <li><span>票種張數</span>@Model.tickets_od</li>
+                                            <li><span>總　　價</span>830</li>
+                                            <li><span>座　　位</span>X排Y位</li>
+                                            <li><span>套餐項目</span>甲賽</li>
+                                            <li><span class="labUsingCoupon">使用優惠</span><input class="txtUsingCoupon" type="text"><input class="btnGoToCoupon" type="button" value="查看優惠"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="button toRight">送出</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
