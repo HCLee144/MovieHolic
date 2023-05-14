@@ -1,0 +1,91 @@
+﻿@model prjMovieHolic.Models.TMovie
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TMovie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FId" class="control-label"></label>
+                <input asp-for="FId" class="form-control" />
+                <span asp-validation-for="FId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FSeriesId" class="control-label"></label>
+                <select asp-for="FSeriesId" class ="form-control" asp-items="ViewBag.FSeriesId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FRatingId" class="control-label"></label>
+                <select asp-for="FRatingId" class ="form-control" asp-items="ViewBag.FRatingId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FNameCht" class="control-label"></label>
+                <input asp-for="FNameCht" class="form-control" />
+                <span asp-validation-for="FNameCht" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FNameEng" class="control-label"></label>
+                <input asp-for="FNameEng" class="form-control" />
+                <span asp-validation-for="FNameEng" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FScheduleStart" class="control-label"></label>
+                <input asp-for="FScheduleStart" class="form-control" />
+                <span asp-validation-for="FScheduleStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FScheduleEnd" class="control-label"></label>
+                <input asp-for="FScheduleEnd" class="form-control" />
+                <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FShowLength" class="control-label"></label>
+                <input asp-for="FShowLength" class="form-control" />
+                <span asp-validation-for="FShowLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FInteroduce" class="control-label"></label>
+                <input asp-for="FInteroduce" class="form-control" />
+                <span asp-validation-for="FInteroduce" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FTrailerLink" class="control-label"></label>
+                <input asp-for="FTrailerLink" class="form-control" />
+                <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FPosterPath" class="control-label"></label>
+                <input asp-for="FPosterPath" class="form-control" />
+                <span asp-validation-for="FPosterPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FImagePath" class="control-label"></label>
+                <input asp-for="FImagePath" class="form-control" />
+                <span asp-validation-for="FImagePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FPrice" class="control-label"></label>
+                <input asp-for="FPrice" class="form-control" />
+                <span asp-validation-for="FPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
