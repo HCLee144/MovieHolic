@@ -31,8 +31,11 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
-                                        <h4>電影名稱電影名稱</h4>
-                                        <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
+                                        <h4>@Model.selectedMovieName_od</h4>
+                                        @{
+                                            string showMoviePoster = $"{Model.selectedMovieID_od}.jpg";
+                                        }
+                                        <img class="orderMovieImage" src="~/images//moviePosters/@Model.selectedMovieID_od/@showMoviePoster" >
                                     </figure>
                                 </div>
                                 <div class="pick">
@@ -43,14 +46,14 @@
                                             <li><span>影　　廳</span>@Model.theaterName_od</li>
                                             <li><span>票種張數</span>@Model.tickets_od</li>
                                             <li><span>總　　價</span>830</li>
-                                            <li><span>座　　位</span>X排Y位</li>
+                                            <li><span>座　　位</span>@Model.seats_od</li>
                                             <li><span>套餐項目</span>甲賽</li>
                                             <li><span class="labUsingCoupon">使用優惠</span><input class="txtUsingCoupon" type="text"><input class="btnGoToCoupon" type="button" value="查看優惠"></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="button toRight">送出</a>
+                            <button class="button toRight" id="nextStep">送出</button>
                         </div>
                     </section>
                 </div>
@@ -58,3 +61,12 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        const nextStep=document.querySelector('#nextStep');
+        nextStep.addEventListener('click',()=>{
+
+        })
+    </script>
+}

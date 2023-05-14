@@ -10,170 +10,177 @@
         margin: 0;
     }
 </style>
+<form id="listTicketClassForm" action="ListSeat" method="post">
 
     <div id="page2">
-    <div class="body1">
-        <div class="">
-            <div class="body3">
-                <div class="main">
-                    <!-- content -->
-                    <section id="content">
-                        <div class="wrapper">
-                            <!--步驟圈圈在這裡-->
-                            <div class="orderStep">
-                                <ul>
-                                     <li class="liInOrderstephere">選擇時段</li>
-                                     <li><img src="~/images/menu_marker.png" alt=""></li>
-                                     <li class="liInOrderstep">選擇票種</li>
-                                     <li><img src="~/images/menu_marker.png" alt=""></li>
-                                     <li class="liInOrderstep">選擇座位</li>
-                                     <li><img src="~/images/menu_marker.png" alt=""></li>
-                                     <li class="liInOrderstep">配餐選擇</li>
-                                     <li><img src="~/images/menu_marker.png" alt=""></li>
-                                     <li class="liInOrderstep">送出訂單</li>
-                                </ul>
-                            </div>
-                            <!--這裡開始訂票-->
-                            <div class="orderBox">
-                                <div>
-                                    <figure>
-                                        <h4>@Model.selectedMovieName</h4>
-                                        <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
-                                    </figure>
+        <div class="body1">
+            <div class="">
+                <div class="body3">
+                    <div class="main">
+                        <!-- content -->
+                        <section id="content">
+                            <div class="wrapper">
+                                <!--步驟圈圈在這裡-->
+                                <div class="orderStep">
+                                    <ul>
+                                        <li class="liInOrderstephere">選擇時段</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">選擇票種</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">選擇座位</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">配餐選擇</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">送出訂單</li>
+                                    </ul>
                                 </div>
-                                <div class="pick">
-                                    <div class="alreadyOrder">
-                                        <h3>已選項目</h3>
-                                        <input type="hidden" name="sessionID_seat" id="sessionID_seat" value="@Model.selectedSessionID">
-                                        <ul>
-                                            <li><span>時間</span>@Model.selectedSessionDate</li>
-                                            <li><span>影廳</span>@Model.selectedTheater</li>
-                                        </ul>
+                                <!--這裡開始訂票-->
+                                <div class="orderBox">
+                                    <div>
+                                        <figure>
+                                            <h4>@Model.selectedMovieName</h4>
+                                            <img class="orderMovieImage" src="~/images/aaa.jpg" alt="">
+                                        </figure>
                                     </div>
-                                    <div class="pickTicket">
-                                        <h3>選擇票種</h3>
-                                        <div class="Ticket">
+                                    <div class="pick">
+                                        <div class="alreadyOrder">
+                                            <h3>已選項目</h3>
+                                            <input type="hidden" name="sessionID_seat" id="sessionID_seat" value="@Model.selectedSessionID">
                                             <ul>
-                                                <input type="hidden" value="@Model.oneNormalPrice" id="oneNormalPrice" />
-                                                <li class="fontFat">一般</li>
-                                                <li></li>
-                                                <li></li>
+                                                <li><span>時間</span>@Model.selectedSessionDate</li>
+                                                <li><span>影廳</span>@Model.selectedTheater</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pickTicket">
+                                            <h3>選擇票種</h3>
+                                            <div class="Ticket">
+                                                <ul>
+                                                    <input type="hidden" value="@Model.oneNormalPrice" id="oneNormalPrice" />
+                                                    <li class="fontFat">一般</li>
+                                                    <li></li>
+                                                    <li></li>
                                                     <li>張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" value="0" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
-                                                <li id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
-                                            </ul>
-                                            <ul>
-                                                <input type="hidden" value="@Model.oneStudentPrice" id="oneStudentPrice" />
-                                                <li class="fontFat">學生</li>
-                                                <li></li>
-                                                <li></li>
-                                                <li>張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
-                                                <li id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
-                                            </ul>
-                                            <ul>
-                                                <input type="hidden" value="@Model.oneSoldierPrice" id="oneSoldierPrice" />
-                                                <li class="fontFat">軍警</li>
-                                                <li></li>
-                                                <li></li>
+                                                    <li id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
+                                                </ul>
+                                                <ul>
+                                                    <input type="hidden" value="@Model.oneStudentPrice" id="oneStudentPrice" />
+                                                    <li class="fontFat">學生</li>
+                                                    <li></li>
+                                                    <li></li>
+                                                    <li>張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
+                                                    <li id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
+                                                </ul>
+                                                <ul>
+                                                    <input type="hidden" value="@Model.oneSoldierPrice" id="oneSoldierPrice" />
+                                                    <li class="fontFat">軍警</li>
+                                                    <li></li>
+                                                    <li></li>
                                                     <li>張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px" /><button id="soldierPlus" type="button">+</button></li>
-                                                <li id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
-                                            </ul>
+                                                    <li id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <button id="nextStep" class="button toRight" type="submit">下一步</button>
                             </div>
-                            <button id="nextStep" class="button toRight">下一步</button>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+</form>
+
+@section Scripts{
+    <script>
+        const oneNormalPrice = document.querySelector('#oneNormalPrice');
+        const normalTicket = document.querySelector('#normalTicket');
+        const sumNormalPrice = document.querySelector('#sumNormalPrice');
+        const normalMinus = document.querySelector('#normalMinus');
+        const normalPlus = document.querySelector('#normalPlus');
+
+        const oneStudentPrice = document.querySelector('#oneStudentPrice');
+        const studentTicket = document.querySelector('#studentTicket');
+        const sumStudentPrice = document.querySelector('#sumStudentPrice');
+        const studentMinus = document.querySelector('#studentMinus');
+        const studentPlus = document.querySelector('#studentPlus');
+
+        const oneSoldierPrice = document.querySelector('#oneSoldierPrice');
+        const soldierTicket = document.querySelector('#soldierTicket');
+        const sumSoldierPrice = document.querySelector('#sumSoldierPrice');
+        const soldierMinus = document.querySelector('#soldierMinus');
+        const soldierPlus = document.querySelector('#soldierPlus');
+
+        const nextStep = document.getElementById('nextStep');
+        const sessionID_seat = document.getElementById('sessionID_seat');
+        const listTicketClassForm = document.getElementById('listTicketClassForm');
+
+        normalPlus.addEventListener('click', () => {
+            let normalTicketNo = Number(normalTicket.value);
+            normalTicketNo++;
+            normalTicket.value = normalTicketNo;
+            sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
+        })
+
+        normalMinus.addEventListener('click', () => {
+            let normalTicketNo = Number(normalTicket.value);
+            normalTicketNo--;
+            if (normalTicketNo < 0)
+                normalTicketNo = 0;
+            normalTicket.value = normalTicketNo;
+            sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
+        })
+
+        studentMinus.addEventListener('click', () => {
+            let studentTicketNo = Number(studentTicket.value);
+            studentTicketNo--;
+            if (studentTicketNo < 0)
+                studentTicketNo = 0;
+            studentTicket.value = studentTicketNo;
+            sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
+        })
+
+        studentPlus.addEventListener('click', () => {
+            let studentTicketNo = Number(studentTicket.value);
+            studentTicketNo++;
+            studentTicket.value = studentTicketNo;
+            sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
+        })
+
+        soldierMinus.addEventListener('click', () => {
+            let soldierTicketNo = Number(soldierTicket.value);
+            soldierTicketNo--;
+            if (soldierTicketNo < 0)
+                soldierTicketNo = 0;
+            soldierTicket.value = soldierTicketNo;
+            sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
+        })
+
+        soldierPlus.addEventListener('click', () => {
+            let soldierTicketNo = Number(soldierTicket.value);
+            soldierTicketNo++;
+            soldierTicket.value = soldierTicketNo;
+            sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
+        })
 
 
- @section Scripts{
-     <script>
-     const oneNormalPrice=document.querySelector('#oneNormalPrice');
-     const normalTicket=document.querySelector('#normalTicket');
-     const sumNormalPrice=document.querySelector('#sumNormalPrice');
-     const normalMinus=document.querySelector('#normalMinus');
-     const normalPlus=document.querySelector('#normalPlus');
+        nextStep.addEventListener('click', () => {
+            event.preventDefault();
+            
+            const params = `${sessionID_seat.value},${normalTicket.value},${studentTicket.value},${soldierTicket.value}`;
 
-     const oneStudentPrice=document.querySelector('#oneStudentPrice');
-     const studentTicket=document.querySelector('#studentTicket');
-     const sumStudentPrice=document.querySelector('#sumStudentPrice');
-     const studentMinus=document.querySelector('#studentMinus');
-     const studentPlus=document.querySelector('#studentPlus');
-
-     const oneSoldierPrice=document.querySelector('#oneSoldierPrice');
-     const soldierTicket = document.querySelector('#soldierTicket');
-     const sumSoldierPrice=document.querySelector('#sumSoldierPrice');
-     const soldierMinus=document.querySelector('#soldierMinus');
-     const soldierPlus=document.querySelector('#soldierPlus');
-     
-     const nextStep=document.getElementById('nextStep');
-     const sessionID_seat = document.getElementById('sessionID_seat');
-     
-     normalPlus.addEventListener('click',()=>{
-         let normalTicketNo=Number(normalTicket.value);
-         normalTicketNo++;
-         normalTicket.value=normalTicketNo;
-         sumNormalPrice.innerHTML='$'+(Number(oneNormalPrice.value)*normalTicketNo);
-     })
-
-     normalMinus.addEventListener('click', () => {
-         let normalTicketNo = Number(normalTicket.value);
-         normalTicketNo--;
-         if(normalTicketNo<0)
-            normalTicketNo=0;
-         normalTicket.value = normalTicketNo;
-         sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
-     })
-
-     studentMinus.addEventListener('click', () => {
-         let studentTicketNo = Number(studentTicket.value);
-         studentTicketNo--;
-         if(studentTicketNo<0)
-            studentTicketNo=0;
-         studentTicket.value = studentTicketNo;
-         sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
-     })
-
-     studentPlus.addEventListener('click', () => {
-         let studentTicketNo = Number(studentTicket.value);
-         studentTicketNo++;
-         studentTicket.value = studentTicketNo;
-         sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
-     })
-
-     soldierMinus.addEventListener('click', () => {
-         let soldierTicketNo = Number(soldierTicket.value);
-         soldierTicketNo--;
-         if(soldierTicketNo<0)
-            soldierTicketNo=0;
-         soldierTicket.value = soldierTicketNo;
-         sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
-     })
-
-     soldierPlus.addEventListener('click', () => {
-         let soldierTicketNo = Number(soldierTicket.value);
-         soldierTicketNo++;
-         soldierTicket.value = soldierTicketNo;
-         sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
-      })
-
-      nextStep.addEventListener('click',()=>{
-            const params=`${sessionID_seat.value},${normalTicket.value},${studentTicket.value},${soldierTicket.value}`;
-
-            if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value))>0)
-                window.location.replace('@Url.Content("~/OrderFront/ListSeat")?paras='+params);
+            if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value)) > 0)
+                //window.location.replace('@Url.Content("~/OrderFront/ListSeat")?paras=' + params);
+                listTicketClassForm.submit();
             else
-                alert ('尚未選擇票數');
-      })
+                alert('尚未選擇票數');
+        })
 
 
 
-     </script>
-     
+    </script>
+
 
  }

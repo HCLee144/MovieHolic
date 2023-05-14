@@ -73,56 +73,7 @@
                                     </div>
                                     <div class="pickCinemaAndTime" id="pickCinemaAndTime">
                                         <div>
-                                            <h3>1廳</h3>
-                                            <ul class="chooseTime">
-                                                
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <h3>2廳</h3>
-                                            <ul class="chooseTime">
-                                                
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                               
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <h3>3廳</h3>
-                                            <ul class="chooseTime">
-                                                
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <h3>4廳</h3>
-                                            <ul class="chooseTime">
-                                                
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                    <li>10:30</li>
-                                                    <li>13:10</li>
-                                                    <li>16:20</li>
-                                                
-                                            </ul>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -144,14 +95,27 @@
         const nextStep = document.querySelector('#nextStep');
         const days = document.querySelectorAll('.day');
 
+        chooseFirstDay();
+        async function chooseFirstDay()
+        {
+            const day1=document.querySelector('#day1');
+            day1.style.backgroundColor = '#10a5d6';
+            day1.style.color = '#eaeaea';
+
+            //抓第一天場次
+            const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day1.innerHTML + '&movieID=' + movieID);
+            const datas = await response.json();
+            let result=showSession(datas);
+            pickCinemaAndTime.innerHTML=result;
+        }
+
         days.forEach((day) => {
             
             day.addEventListener('click', async () => {
-                //改顏色
-                
+                //改顏色               
                 days.forEach((allDays)=>{
                 allDays.style.backgroundColor = '#eaeaea';
-                    allDays.style.color = '#10a5d6';
+                allDays.style.color = '#10a5d6';
                 })
 
                 const elementID=day.getAttribute('id');
@@ -159,29 +123,30 @@
                 element.style.backgroundColor ='#10a5d6';
                 element.style.color = '#eaeaea';
 
-
                 //呈現場次
                 const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day.innerHTML+'&movieID='+movieID);
                 const datas = await response.json();
-                //console.log(datas);
-
-                let result = `<div>`;
-                datas.forEach((data) => {
-                    result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
-                    data["sessionIDandTime"].split(",").forEach(item => {
-                        let sessionID = item.split("##")[0];
-                        let sessionTime = item.split("##")[1];
-                        result += `<li name="${sessionID}" class="ccc" onclick="chooseSession(event)">${sessionTime}</li>`
-                    })
-
-                    result += `</ul>`
-                })
-                result += `</div>`;
-                //console.log(result);
+                const result=showSession(datas);
+                
                 pickCinemaAndTime.innerHTML = result
             })
-
          })
+
+         function showSession(datas){
+            let result = `<div>`;
+            datas.forEach((data) => {
+                result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
+                data["sessionIDandTime"].split(",").forEach(item => {
+                    let sessionID = item.split("##")[0];
+                    let sessionTime = item.split("##")[1];
+                    result += `<li name="${sessionID}" class="ccc" onclick="chooseSession(event)">${sessionTime}</li>`;
+                })
+
+                result += `</ul>`
+            })
+            result += `</div>`;
+            return result;
+         }
 
         
          async function chooseSession(event)
@@ -192,15 +157,13 @@
             if(info==='Success')
             {
                 const sessionBtns = document.querySelectorAll('.ccc');
-                sessionBtns.forEach((item)=>
-                {
+                sessionBtns.forEach((item)=>{
                 item.style.backgroundColor = '#eaeaea';
                 item.style.color='black';
                 })
-            event.target.style.backgroundColor = '#10a5d6';
-            event.target.style.color='#eaeaea';
+                event.target.style.backgroundColor = '#10a5d6';
+                event.target.style.color='#eaeaea';
             }
-
          }
 
          nextStep.addEventListener('click',async()=>{
