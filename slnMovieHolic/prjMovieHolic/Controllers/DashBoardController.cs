@@ -8,5 +8,11 @@ namespace prjMovieHolic.Controllers
         {
             return View();
         }
+
+        public IActionResult getChartDataForMovieIncome()
+        {
+
+            return View();
+        }
     }
 }
