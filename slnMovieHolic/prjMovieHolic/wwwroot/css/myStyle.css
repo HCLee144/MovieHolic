@@ -400,6 +400,7 @@ figure span {
     line-height: 50px;
     font-size: 22px;
     margin-right: 15px;
+    margin-top: 15px;
     cursor: pointer;
 }
 
@@ -937,6 +938,7 @@ figure span {
 
 /*優惠券部分*/
 
+
 .couponList {
     width: 600px;
     height: 700px;
@@ -1063,6 +1065,63 @@ figure span {
     .usedCoupon a {
         cursor: no-drop;
     }
+
+/*這裡開始會員訂單查詢頁面*/
+
+.orderList {
+    width: 600px;
+    height: 700px;
+}
+
+.addBorder {
+    border: 3px solid silver;
+    padding: 2px;
+}
+
+.orderDetailBox {
+    border: 3px double silver;
+    padding: 15px;
+}
+
+    .orderDetailBox h3 {
+        font-size: 18px;
+    }
+
+    .orderDetailBox h4 {
+        font-size: 20px;
+    }
+
+    .orderDetailBox a {
+        display: inline-block;
+        background-color: #10a5d6;
+        padding: 6px;
+        color: #eaeaea;
+        border-radius: 5px;
+    }
+
+.orderDetaildelete {
+    background-color: brown;
+    width: 25px;
+    height: 40px;
+    color: #eaeaea;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.orderDetailBoxTop {
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderDetailBoxBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*以上大致是宜霈的部分*/
+
+
 
 
 
