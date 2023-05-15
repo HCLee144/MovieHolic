@@ -4,12 +4,6 @@ namespace prjMovieHolic.ViewModels
 {
     public class CSessionBackViewModel
     {
-        public string? queryDate { get; set; }
-
-        public string? selectedSessionTheaterName { get; set; }
-
-        public string? selectedSessionStartString { get; set; }
-
         public int? SessionID { get; set; }
         public int? TheaterID { get; set; }
 
@@ -25,11 +19,7 @@ namespace prjMovieHolic.ViewModels
 
         public string? MoviePosterPath { get; set; }
 
-        public string? deleteDate { get; set; }
-
         public string? createDate { get; set; }
-
-        public int? message {  get; set; }
 
     }
 }

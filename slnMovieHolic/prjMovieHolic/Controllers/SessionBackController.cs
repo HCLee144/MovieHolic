@@ -24,7 +24,7 @@ namespace prjMovieHolic.Controllers
         {
             if (message != null)
                 ViewBag.Error = message;
-            if(date != null)
+            if (date != null)
                 ViewBag.Date = date;
             return View();
         }
@@ -35,7 +35,7 @@ namespace prjMovieHolic.Controllers
             {
                 DateTime date = DateTime.Parse(queryDate);
                 var rawDatas =
-                    from s in _db.TSessions.Include(i=>i.FMovie).Include(i=>i.FTheater).AsEnumerable()
+                    from s in _db.TSessions.Include(i => i.FMovie).Include(i => i.FTheater).AsEnumerable()
                     where s.FStartTime.Date == date.Date
                     orderby s.FTheaterId
                     group s by s.FMovie.FNameCht into g
@@ -172,11 +172,11 @@ namespace prjMovieHolic.Controllers
                 session.FEndTime = endTime;
                 _db.TSessions.Add(session);
                 _db.SaveChanges();
-                return RedirectToAction("ViewSession", "SessionBack", new { message = 2 ,date = vm.createDate});
+                return RedirectToAction("ViewSession", "SessionBack", new { message = 2, date = vm.createDate });
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession", "SessionBack", new { message = 4,date= vm.createDate });
+                return RedirectToAction("ViewSession", "SessionBack", new { message = 4, date = vm.createDate });
             }
         }
 
