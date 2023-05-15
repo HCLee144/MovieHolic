@@ -89,7 +89,7 @@ namespace prjMovieHolic.Controllers
             bool userExists = _movieContext.TMembers.Where(o => o.FEmail == email).ToList().Any();
             if (!userExists)
             {
-                var message = new { text = "該電子郵件地址不存在。", type = "true" };
+                var message = new { text = "該電子郵件地址不存在。", type = "false" };
                 return View("forgetPassword",message);
             }
             else
@@ -222,6 +222,11 @@ namespace prjMovieHolic.Controllers
                 return Json(new { success = true, message = "修改密碼成功。" });
             }
             return Json(new { success = false, message = "密碼修改失敗，請重新輸入。" });
+        }
+        public IActionResult couponList(int? id)
+        {
+            var couponList = _movieContext.TCouponLists.Where(c => c.FMemberId == id);
+            return View();
         }
     }
 }

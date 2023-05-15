@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using prjMovieHolic.ViewModels;
+using System.Security.Cryptography;
 
 namespace prjMovieHolic.Models.Member
 {
@@ -36,7 +37,6 @@ namespace prjMovieHolic.Models.Member
                 client.Send(mms); //寄出信件
             }
 
-
             var member = (from p in _movieContext.TMembers
                           where p.FEmail == email
                           select p).ToList().FirstOrDefault();
@@ -45,20 +45,34 @@ namespace prjMovieHolic.Models.Member
             {
                 member.FPassword = newPassword;
                 _movieContext.SaveChanges();
-                string resetPassword = "您的密碼已重設。請檢查您的電子郵件。";
-
             }
-
-
         }
         private string GenerateRandomPassword()
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            var password = new string(Enumerable.Repeat(chars, 8)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            return password;
+            RandomNumberGenerator rng = RandomNumberGenerator.Create();
+
+            // Define the character set
+            string characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            // Define the length of the random string you want to generate
+            int stringLength = 8;
+
+            // Create a byte array to hold the random values
+            byte[] randomBytes = new byte[stringLength];
+
+            // Generate random values and store them in the byte array
+            rng.GetBytes(randomBytes);
+
+            // Convert the byte array to a string
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in randomBytes)
+            {
+                sb.Append(characterSet[b % characterSet.Length]);
+            }
+            string randomString = sb.ToString();
+            return randomString;
+
         }
     }
 

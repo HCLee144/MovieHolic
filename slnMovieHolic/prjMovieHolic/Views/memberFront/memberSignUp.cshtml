@@ -16,28 +16,28 @@
                                 <form asp-action="memberSignUp">
                                 <table class="memberTable">
                                     <tr>
-                                        <th>姓名</th>
-                                        <td><input type="text" name="FName" value="" size="20"></td>
-                                    </tr>
-                                    <tr>
                                          <th>帳號（請輸入手機號碼）</th>
                                          <td><input type="text" name="FPhone" value="" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>密碼</th>
-                                        <td><input type="text" name="FPhon" value="" size="20"></td>
+                                        <td><input type="text" name="FPassword" value="" size="20"></td>
                                     </tr>
-                                        <tr>
-                                            <th>密碼</th>
-                                            <td><input type="text" name="Model.FIdcardNumber" value="" size="20"></td>
-                                        </tr>
+                                     <tr>
+                                         <th>確認密碼</th>
+                                         <td><input type="text" name="FPasswordCheck" value="" size="20"></td>
+                                     </tr>
+                                      <tr>
+                                          <th>姓名</th>
+                                          <td><input type="text" name="FName" value="" size="20"></td>
+                                     </tr>
                                     <tr>
                                         <th>生日</th>
-                                        <td><input type="text" name="FBirthDate" value="" size="20"></td>
+                                            <td><input type="text" name="FBirthDate" value="" size="20" placeholder="請輸入西元年/月/日"></td>
                                     </tr>
                                     <tr>
                                          <th>身分證字號</th>
-                                         <td><input type="text" name="Model.FIdcardNumber" value="" size="20"></td>
+                                         <td><input type="text" name="FIdcardNumber" value="" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>Email</th>
@@ -45,11 +45,18 @@
                                     </tr>
                                     <tr>
                                         <th>性別</th>
-                                        <td><input type="text" name="FGender" value="" size="20"></td>
+                                            <td>
+                                                <input type="radio" name="FGenderId" value="1" /><span style="font-size:15px">男</span>
+                                                <input type="radio" name="FGenderId" value="2" /><span style="font-size:15px">女</span>
+                                                <input type="radio" name="FGenderId" value="3" /><span style="font-size:15px">非二元性別</span>
+                                            </td>
                                     </tr>
+                                    <input type="hidden" name="FCreatedDate" value="@DateTime.Now" />
+                                     <input type="hidden" name="FMembershipId" value="1" />
+                                     <input type="hidden" name="FNickName" value="" />
                                 </table>
                                 <hr />
-                                <input type="checkbox" name="" id=""><span style="font-size:15px">我同意 </span><a style="font-size:15px">個人資料使用條款</a>
+                                <input type="checkbox" name="" id=""><span style="font-size:15px">我同意</span><a style="font-size:15px">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit"><input class="button" type="submit" value="送出"></div>
                                 </form>

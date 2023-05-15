@@ -61,15 +61,15 @@
                                     </tr>
                                     <tr>
                                         <th>生日</th>
-                                        <td><input type="text" name="FBirthDate" value="@Model.FBirthDate.ToString().Substring(0,9)" size="20">
-                                                西元<select id="yy" name="FBirthDate" >
+                                        <td><input type="text" name="FBirthDate" value="@Model.FBirthDate.ToString().Substring(0,9)" size="20" placeholder="請依照西元年/月/日的格式輸入">
+                                              @*  西元<select id="yy" name="FBirthDate" >
                                                        @for (int year = 1940; year <= 2023; year++)
                                                              {
                                                                   <option value="@$"{year}-01-01"@(year == 2002 ? " selected" : "")>@year</option>
 }
                                                 </select>年
                                                 <select id="mm" name="FBirthDate"></select>月
-                                                <select id="dd" name="FBirthDate"></select>日
+                                                <select id="dd" name="FBirthDate"></select>日*@
                                         </td>
                                     </tr>
                                     <tr>
