@@ -5,10 +5,10 @@
         //電影收入stack長條圖
 
 
-        public string name { get; set; }
-        //電影名稱
+        public string? name { get; set; }
+        //series:電影名稱
 
-        public List<Data> data { get; set; }
+        public List<Data>? data { get; set; }
     }
 
     public class Data
