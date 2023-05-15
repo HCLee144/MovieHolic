@@ -40,17 +40,17 @@
                                         <input type="hidden" id="theaterID" value="@Model.theaterID" />
                                     </li>
                                     <li>
-                                        <h4>日期</h4>
-                                        <h3>@Model.sessionDate</h3>
+                                        <h4>日期時間</h4>
+                                        <h3>@Model.sessionDate  @Model.sessionTime</h3>
                                     </li>
                                     <li>
-                                        <h4>時間</h4>
-                                        <h3>@Model.sessionTime</h3>
-                                    </li>
-                                    <li class="addBorderRight">
                                         <h4>人數</h4>
                                         <input type="hidden" id="totalTickets" value="@Model.totalTickets" />
                                         <h3>@Model.totalTickets</h3>
+                                    </li>
+                                    <li class="addBorderRight">
+                                        <h4>座位</h4>
+                                        <h3>尚未選擇</h3>
                                     </li>
                                 </ul>
                             </div>
@@ -123,7 +123,7 @@
 
         async function saveSeatIDinSession(correctSeatID, evt) {
 
-            if (evt.target.style.backgroundColor == 'cornflowerblue') {
+            if (evt.target.style.backgroundColor == 'steelblue') {
                 const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets)+'&selected=1');
                 const data = await response.text();
                 evt.target.style.backgroundColor = '#eaeaea';
@@ -137,14 +137,14 @@
                     showLeftSeats.innerHTML = data;
                 else {
                     showLeftSeats.innerHTML = data;
-                    evt.target.style.backgroundColor = 'cornflowerblue';
+                    evt.target.style.backgroundColor = 'steelblue';
                 }
             }
         }
 
         nextStep.addEventListener('click',()=>{
             if(showLeftSeats.innerHTML=='尚可選座位：0'||showLeftSeats.innerHTML=='座位人數已滿')
-                window.location.replace('@Url.Content("~/OrderFront/ListTicketClass")');
+                window.location.replace('@Url.Content("~/OrderFront/ListProduct")');
             else
             {
                 formdialog.showModal();

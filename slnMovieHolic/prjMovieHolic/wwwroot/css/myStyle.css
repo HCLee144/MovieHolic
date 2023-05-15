@@ -705,6 +705,7 @@ figure span {
     padding: 10px;
     background-color: rgb(219, 218, 218);
     border-radius: 15px 15px 0 0;
+    display:inline;
 }
 
 .chooseDrink {
@@ -713,6 +714,7 @@ figure span {
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
+    padding-top:15px;
 }
 
 .foodPrice {
@@ -750,6 +752,7 @@ figure span {
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .chooseSweet {
@@ -759,18 +762,25 @@ figure span {
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .btnDrink {
     background-color: rgb(219, 218, 218);
+    border-radius:0 15px 0 0;
+    padding-top:5px;
 }
 
 .btnPOP {
     background-color: rgb(219, 218, 218);
+    border-radius: 0 15px 0 0;
+    padding-top: 5px;
 }
 
 .btnSweet {
-    background-color: silver;
+    background-color: rgb(219, 218, 218);
+    border-radius: 0 15px 0 0;
+    padding-top: 5px;
 }
 
 .chooseFoodQTY {

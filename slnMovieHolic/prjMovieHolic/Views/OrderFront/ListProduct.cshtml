@@ -1,0 +1,142 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model prjMovieHolic.ViewModels.CListProductViewModel
+
+<div id="page2">
+    <div class="body1">
+        <div class="">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="wrapper">
+                            <!--步驟圈圈在這裡-->
+                            <div class="orderStep">
+                                <ul>
+                                    <li class="liInOrderstep">選擇時段</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇票種</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇座位</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstephere">配餐選擇</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">送出訂單</li>
+                                </ul>
+                            </div>
+                            <!--這裡開始訂票-->
+                            <div class="orderDetailOnChooseFood">
+                                <ul>
+                                    <li>
+                                        <h4>片名</h4>
+                                        <h3>@Model.selectedMovieName</h3>
+                                    </li>
+                                    <li>
+                                        <h4>影廳</h4>
+                                        <h3>@Model.selectedTheaterName</h3>
+                                    </li>
+                                    <li>
+                                        <h4>日期時間</h4>
+                                        <h3>@Model.selectedSessionDate  @Model.selectedSessionTime</h3>
+                                    </li>
+                                    <li>
+                                        <h4>人數</h4>
+                                        <h3>@Model.ticketCounts</h3>
+                                    </li>
+                                    <li class="addBorderRight">
+                                        <h4>座位</h4>
+                                        @{
+                                            string s = "";
+                                            for (int i = 0; i < Model.selectedSeats.Count();)
+                                            {
+                                                if (i + 1 >= Model.selectedSeats.Count())
+                                                {
+                                                    s += $"<h3><span>{Model.selectedSeats[i]}</span></h3>";
+                                                    i++;
+                                                }
+                                                else
+                                                {
+                                                    int k = i + 1;
+                                                    s += $"<h3><span>{Model.selectedSeats[i]}   </span><span>{Model.selectedSeats[k]}</span></h3>";
+                                                    i += 2;
+                                                }
+
+                                            }
+                                        }
+                                        @Html.Raw(s)
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chooseFood">
+                                <h4>飲料</h4>
+                                <div class="chooseDrink">
+                                    @{
+                                        foreach (var item in Model.drinkCategory)
+                                        {
+                                            <div>
+                                                <h3>@item.FProductName</h3>
+                                                <div>
+                                                    <button class="btnDrink"><img src="~/images/aa.jpg" alt=""></button>
+                                                    <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
+                                                </div>
+                                                <div class="chooseFoodQTY">
+                                                    <button>-</button><span>　0　</span><button>+</button><span>總價：$000</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+
+                                <div class="snackName"><h4 class="snackName1">爆米花</h4><h4 class="snackName2">點心</h4></div>
+
+                                <div class="snack">
+                                    <div class="choosePOP">
+                                        @{
+                                            foreach (var item in Model.popcornCategory)
+                                            {
+                                                <div>
+                                                    <h3>@item.FProductName</h3>
+                                                    <div>
+                                                        <button class="btnPOP"><img src="~/images/aa.jpg" alt=""></button>
+                                                        <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
+
+                                                    </div>
+                                                    <div class="chooseFoodQTY">
+                                                        <button>-</button><span>　0　</span><button>+</button><span>總價：$000</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="chooseSweet">
+                                        @{
+                                            foreach (var item in Model.dessertCategory)
+                                            {
+                                                <div>
+                                                    <h3>@item.FProductName</h3>
+                                                    <div>
+                                                        <button class="btnSweet"><img src="~/images/aa.jpg" alt=""></button>
+                                                        <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
+
+                                                    </div>
+                                                    <div class="chooseFoodQTY">
+                                                        <button>-</button><span>　0　</span><button>+</button><span>總價：$000</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                </div>
+                            </div>
+                            <button id="nextStep" class="button toRight">下一步</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
