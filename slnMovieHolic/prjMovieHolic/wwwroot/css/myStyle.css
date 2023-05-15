@@ -515,16 +515,16 @@ figure span {
 }
 
 /*選擇座位*/
-.orderDetailOnChooseSit {
+.orderDetailOnChooseSeat {
     margin-bottom: 20px;
 }
 
-    .orderDetailOnChooseSit ul {
+    .orderDetailOnChooseSeat ul {
         display: flex;
         justify-content: space-between;
     }
 
-    .orderDetailOnChooseSit li {
+    .orderDetailOnChooseSeat li {
         width: 180px;
         height: 80px;
         border-left: 1px solid silver;
@@ -532,11 +532,11 @@ figure span {
         padding: 10px;
     }
 
-    .orderDetailOnChooseSit h3 {
+    .orderDetailOnChooseSeat h3 {
         font-size: 18px;
     }
 
-    .orderDetailOnChooseSit h4 {
+    .orderDetailOnChooseSeat h4 {
         font-size: 16px;
         font-weight: bold;
         margin-bottom: 5px;
