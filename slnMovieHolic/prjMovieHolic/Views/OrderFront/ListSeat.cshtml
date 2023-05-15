@@ -110,7 +110,7 @@
 
         async function saveSeatIDinSession(correctSeatID, evt) {
 
-            if (evt.target.style.backgroundColor == '#238154') {
+            if (window.getComputedStyle(evt.target).backgroundColor == 'rgb(16,81,144)') {
                 const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets)+'&selected=1');
                 const data = await response.text();
                 evt.target.style.backgroundColor = '#eaeaea';
@@ -124,7 +124,7 @@
                     showLeftSeats.innerHTML = data;
                 else {
                     showLeftSeats.innerHTML = data;
-                    evt.target.style.backgroundColor = '#238154';
+                    evt.target.style.backgroundColor = 'rgb(16,81,144)';
                 }
             }
 

@@ -93,6 +93,11 @@
 
 </form>
 
+<dialog id="IamDialog" class="IamDialog">
+    <p>尚未選擇票種</p>
+    <button id="closeDialog"  class="closeDialog">確認</button>
+</dialog>
+
 @section Scripts{
     <script>
         const oneNormalPrice = document.querySelector('#oneNormalPrice');
@@ -116,6 +121,9 @@
         const nextStep = document.getElementById('nextStep');
         const sessionID_seat = document.getElementById('sessionID_seat');
         const listTicketClassForm = document.getElementById('listTicketClassForm');
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
 
         normalPlus.addEventListener('click', () => {
             let normalTicketNo = Number(normalTicket.value);
@@ -172,10 +180,14 @@
             const params = `${sessionID_seat.value},${normalTicket.value},${studentTicket.value},${soldierTicket.value}`;
 
             if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value)) > 0)
-                //window.location.replace('@Url.Content("~/OrderFront/ListSeat")?paras=' + params);
                 listTicketClassForm.submit();
             else
-                alert('尚未選擇票數');
+               {
+                formdialog.showModal();
+                btnCloseDialog.addEventListener('click', () => {
+                    formdialog.close();
+                })
+               }
         })
 
 
