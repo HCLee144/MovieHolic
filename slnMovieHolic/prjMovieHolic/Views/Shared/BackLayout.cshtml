@@ -54,7 +54,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Statics" asp-action="List">
+                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="DashBoard" asp-action="DashBoard">
                                 <span>
                                     <i class="ti ti-timeline"></i>   @*<==========這是放Icon*@
                                 </span>
@@ -104,12 +104,8 @@
                 </nav>
             </header>
             <!--  Header End -->
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
+            <div class="container-fluid">               
                         @RenderBody()
-                    </div>
-                </div>
             </div>
         </div>
     </div>

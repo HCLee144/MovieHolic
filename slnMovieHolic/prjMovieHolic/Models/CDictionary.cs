@@ -9,5 +9,7 @@
 
         //Order System
         public static readonly string SelectedSessionID = "SelectedSessionID";
+        public static readonly string SelectedTicketClass = "SelectedTicketClass";
+        public static readonly string SelectedSeatID = "SelectedSeatID";
     }
 }
