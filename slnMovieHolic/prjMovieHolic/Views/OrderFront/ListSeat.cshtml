@@ -17,18 +17,18 @@
                             <div class="orderStep">
                                 <ul>
                                     <li class="liInOrderstep">選擇時段</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
                                     <li class="liInOrderstep">選擇票種</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
                                     <li class="liInOrderstephere">選擇座位</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
                                     <li class="liInOrderstep">配餐選擇</li>
-                                    <li><img src="images/menu_marker.png" alt=""></li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
                                     <li class="liInOrderstep">送出訂單</li>
                                 </ul>
                             </div>
                             <!--這裡開始訂票-->
-                            <div class="orderDetailOnChooseSit">
+                            <div class="orderDetailOnChooseSeat">
                                 <ul>
                                     <li>
                                         <h4>片名</h4>
@@ -56,17 +56,22 @@
                             </div>
                             <div class="Tingbox">
                                 <div class="sellSold">
-                                    <div class="sell"></div>
-                                    <p>未售出</p>
-                                    <div class="sold"></div>
-                                    <p>已售出</p>
-                                    <div class="sold"></div>
-                                    <p>愛心座位</p>
-                                    <div id="showLeftSeats"></div>
+                                    <div class="inSellSold">
+                                        <div class="sell"></div>
+                                        <p>未售出</p>
+                                    </div>                                    
+                                    <div class ="inSellSold">
+                                        <div class="sold"></div>
+                                        <p>已售出</p>
+                                    </div>                                    
+                                    <div class="inSellSold">
+                                        <div class="sold"></div>
+                                        <p>愛心座位</p>
+                                    </div>                                    
+                                    <div class="showLeftSeats" id="showLeftSeats"></div>
                                 </div>
                                 <div class="screen">
                                     <h3>螢　　　　幕</h3>
-
                                 </div>
                                 <div class="soManySit">
                                     @{
@@ -110,7 +115,7 @@
 
         async function saveSeatIDinSession(correctSeatID, evt) {
 
-            if (evt.target.style.backgroundColor == 'green') {
+            if (window.getComputedStyle(evt.target).backgroundColor == 'rgb(16,81,144)') {
                 const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets)+'&selected=1');
                 const data = await response.text();
                 evt.target.style.backgroundColor = '#eaeaea';
@@ -124,7 +129,7 @@
                     showLeftSeats.innerHTML = data;
                 else {
                     showLeftSeats.innerHTML = data;
-                    evt.target.style.backgroundColor = 'green';
+                    evt.target.style.backgroundColor = 'rgb(16,81,144)';
                 }
             }
 

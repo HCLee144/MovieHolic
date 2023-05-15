@@ -10,6 +10,7 @@
         margin: 0;
     }
 </style>
+<form id="listTicketClassForm" action="ListSeat" method="post">
 
     <div id="page2">
     <div class="body1">
@@ -90,90 +91,108 @@
     </div>
 </div>
 
+</form>
 
- @section Scripts{
-     <script>
-     const oneNormalPrice=document.querySelector('#oneNormalPrice');
-     const normalTicket=document.querySelector('#normalTicket');
-     const sumNormalPrice=document.querySelector('#sumNormalPrice');
-     const normalMinus=document.querySelector('#normalMinus');
-     const normalPlus=document.querySelector('#normalPlus');
+<dialog id="IamDialog" class="IamDialog">
+    <p>尚未選擇票種</p>
+    <button id="closeDialog"  class="closeDialog">確認</button>
+</dialog>
 
-     const oneStudentPrice=document.querySelector('#oneStudentPrice');
-     const studentTicket=document.querySelector('#studentTicket');
-     const sumStudentPrice=document.querySelector('#sumStudentPrice');
-     const studentMinus=document.querySelector('#studentMinus');
-     const studentPlus=document.querySelector('#studentPlus');
+@section Scripts{
+    <script>
+        const oneNormalPrice = document.querySelector('#oneNormalPrice');
+        const normalTicket = document.querySelector('#normalTicket');
+        const sumNormalPrice = document.querySelector('#sumNormalPrice');
+        const normalMinus = document.querySelector('#normalMinus');
+        const normalPlus = document.querySelector('#normalPlus');
 
-     const oneSoldierPrice=document.querySelector('#oneSoldierPrice');
-     const soldierTicket = document.querySelector('#soldierTicket');
-     const sumSoldierPrice=document.querySelector('#sumSoldierPrice');
-     const soldierMinus=document.querySelector('#soldierMinus');
-     const soldierPlus=document.querySelector('#soldierPlus');
-     
-     const nextStep=document.getElementById('nextStep');
-     const sessionID_seat = document.getElementById('sessionID_seat');
-     
-     normalPlus.addEventListener('click',()=>{
-         let normalTicketNo=Number(normalTicket.value);
-         normalTicketNo++;
-         normalTicket.value=normalTicketNo;
-         sumNormalPrice.innerHTML='$'+(Number(oneNormalPrice.value)*normalTicketNo);
-     })
+        const oneStudentPrice = document.querySelector('#oneStudentPrice');
+        const studentTicket = document.querySelector('#studentTicket');
+        const sumStudentPrice = document.querySelector('#sumStudentPrice');
+        const studentMinus = document.querySelector('#studentMinus');
+        const studentPlus = document.querySelector('#studentPlus');
 
-     normalMinus.addEventListener('click', () => {
-         let normalTicketNo = Number(normalTicket.value);
-         normalTicketNo--;
-         if(normalTicketNo<0)
-            normalTicketNo=0;
-         normalTicket.value = normalTicketNo;
-         sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
-     })
+        const oneSoldierPrice = document.querySelector('#oneSoldierPrice');
+        const soldierTicket = document.querySelector('#soldierTicket');
+        const sumSoldierPrice = document.querySelector('#sumSoldierPrice');
+        const soldierMinus = document.querySelector('#soldierMinus');
+        const soldierPlus = document.querySelector('#soldierPlus');
 
-     studentMinus.addEventListener('click', () => {
-         let studentTicketNo = Number(studentTicket.value);
-         studentTicketNo--;
-         if(studentTicketNo<0)
-            studentTicketNo=0;
-         studentTicket.value = studentTicketNo;
-         sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
-     })
+        const nextStep = document.getElementById('nextStep');
+        const sessionID_seat = document.getElementById('sessionID_seat');
+        const listTicketClassForm = document.getElementById('listTicketClassForm');
 
-     studentPlus.addEventListener('click', () => {
-         let studentTicketNo = Number(studentTicket.value);
-         studentTicketNo++;
-         studentTicket.value = studentTicketNo;
-         sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
-     })
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
 
-     soldierMinus.addEventListener('click', () => {
-         let soldierTicketNo = Number(soldierTicket.value);
-         soldierTicketNo--;
-         if(soldierTicketNo<0)
-            soldierTicketNo=0;
-         soldierTicket.value = soldierTicketNo;
-         sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
-     })
+        normalPlus.addEventListener('click', () => {
+            let normalTicketNo = Number(normalTicket.value);
+            normalTicketNo++;
+            normalTicket.value = normalTicketNo;
+            sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
+        })
 
-     soldierPlus.addEventListener('click', () => {
-         let soldierTicketNo = Number(soldierTicket.value);
-         soldierTicketNo++;
-         soldierTicket.value = soldierTicketNo;
-         sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
-      })
+        normalMinus.addEventListener('click', () => {
+            let normalTicketNo = Number(normalTicket.value);
+            normalTicketNo--;
+            if (normalTicketNo < 0)
+                normalTicketNo = 0;
+            normalTicket.value = normalTicketNo;
+            sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
+        })
 
-      nextStep.addEventListener('click',()=>{
-            const params=`${sessionID_seat.value},${normalTicket.value},${studentTicket.value},${soldierTicket.value}`;
+        studentMinus.addEventListener('click', () => {
+            let studentTicketNo = Number(studentTicket.value);
+            studentTicketNo--;
+            if (studentTicketNo < 0)
+                studentTicketNo = 0;
+            studentTicket.value = studentTicketNo;
+            sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
+        })
 
-            if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value))>0)
-                window.location.replace('@Url.Content("~/OrderFront/ListSeat")?paras='+params);
+        studentPlus.addEventListener('click', () => {
+            let studentTicketNo = Number(studentTicket.value);
+            studentTicketNo++;
+            studentTicket.value = studentTicketNo;
+            sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
+        })
+
+        soldierMinus.addEventListener('click', () => {
+            let soldierTicketNo = Number(soldierTicket.value);
+            soldierTicketNo--;
+            if (soldierTicketNo < 0)
+                soldierTicketNo = 0;
+            soldierTicket.value = soldierTicketNo;
+            sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
+        })
+
+        soldierPlus.addEventListener('click', () => {
+            let soldierTicketNo = Number(soldierTicket.value);
+            soldierTicketNo++;
+            soldierTicket.value = soldierTicketNo;
+            sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
+        })
+
+
+        nextStep.addEventListener('click', () => {
+            event.preventDefault();
+            
+            const params = `${sessionID_seat.value},${normalTicket.value},${studentTicket.value},${soldierTicket.value}`;
+
+            if ((Number(normalTicket.value) + Number(studentTicket.value) + Number(soldierTicket.value)) > 0)
+                listTicketClassForm.submit();
             else
-                alert ('尚未選擇票數');
-      })
+               {
+                formdialog.showModal();
+                btnCloseDialog.addEventListener('click', () => {
+                    formdialog.close();
+                })
+               }
+        })
 
 
 
-     </script>
-     
+    </script>
+
 
  }
