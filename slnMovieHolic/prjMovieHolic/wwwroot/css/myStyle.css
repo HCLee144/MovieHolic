@@ -1172,9 +1172,15 @@ figure span {
     text-align: center;
 }
 
-    .posterPlace img {
-        width: 200px;
-    }
+.niniImagesPlace{
+    width:200px;
+    height:300px;
+    background-color:antiquewhite;
+}
+
+.posterPlace img {
+    width: 200px;
+}
 
 .movie {
     margin-left: 20px;
@@ -1186,6 +1192,7 @@ figure span {
 
     .movie h3 {
         font-size: 32px;
+        line-height:32px;
     }
 
     .movie h4 {
