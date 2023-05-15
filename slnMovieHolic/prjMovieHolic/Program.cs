@@ -38,6 +38,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=MovieFront}/{action=MovieIndex}");
+    pattern: "{controller=OrderFront}/{action=ListSession}/{movieid=1}");
 
 app.Run();

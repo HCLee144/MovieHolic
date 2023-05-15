@@ -87,6 +87,11 @@
     </div>
 </div>
 
+<dialog id="IamDialog" @*class="IamDialog"*@>
+    <p>尚未選場次</p>
+    <button id="closeDialog" value="確認" @*class="closeDialog"*@>dialog</button>
+</dialog>
+
 @section Scripts{
     <script>
 
@@ -94,6 +99,9 @@
         const pickCinemaAndTime = document.querySelector('#pickCinemaAndTime');
         const nextStep = document.querySelector('#nextStep');
         const days = document.querySelectorAll('.day');
+   
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
 
         chooseFirstDay();
         async function chooseFirstDay()
@@ -171,8 +179,14 @@
             const info = await response.text();
             if(info=='有選到場次')
                 window.location.replace('@Url.Content("~/OrderFront/ListTicketClass")');
-            else
-                alert('尚未選場次');
+            else{ 
+                //alert('尚未選場次');
+                formdialog.showModal();
+                btnCloseDialog.addEventListener('click', () => {
+                    formdialog.close();
+                })
+            }
+         
          })
 
     </script>
