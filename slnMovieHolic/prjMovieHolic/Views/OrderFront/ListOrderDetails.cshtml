@@ -31,11 +31,11 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
-                                        <h4>@Model.selectedMovieName_od</h4>
+                                        <h4>@Model.selectedMovieName</h4>
                                         @{
-                                            string showMoviePoster = $"{Model.selectedMovieID_od}.jpg";
+                                            string showMoviePoster = $"{Model.selectedMovieID}.jpg";
                                         }
-                                        <img class="orderMovieImage" src="~/images//moviePosters/@Model.selectedMovieID_od/@showMoviePoster">
+                                        <img class="orderMovieImage" src="~/images//moviePosters/@Model.selectedMovieID/@showMoviePoster">
                                     </figure>
                                 </div>
                                 <div class="pick">

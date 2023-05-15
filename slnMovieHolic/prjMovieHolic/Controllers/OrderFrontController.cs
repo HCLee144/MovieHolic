@@ -105,25 +105,23 @@ namespace prjMovieHolic.Controllers
         {
             //顯示剛剛選的場次
             CListTicketViewModel vm = new CListTicketViewModel();
-            int sessionID = (int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
+            int sessionID = getSessionID();
             vm.selectedSessionID = sessionID;
 
-            var sessionTime = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime;
-            string selectedSessionDateTime=sessionTime.ToString("MM/dd HH:mm");
-            vm.selectedSessionDate = selectedSessionDateTime;
+            var sessionDateTime = getSessionDateTime(sessionID);
+            var selectedSessionHour = getSessionHour(sessionID);
+            vm.selectedSessionDateTime = sessionDateTime;
 
-            var theater = movieContext.TSessions.Include(s => s.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater;
-            string selectedTheater = theater.FTheater;
-            vm.selectedTheater=selectedTheater;
+            var theater = getTheater(sessionID);
+            vm.selectedTheater = theater.FTheater;
 
-            var movie = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == sessionID).FMovie;
-            string movieName = movie.FNameCht;
-            vm.selectedMovieName = movieName;
+            var movie = getSessionMovie(sessionID);
+            vm.selectedMovieName = movie.FNameCht;
 
             //顯示選的票種價錢
             decimal moviePrice = (decimal)movie.FPrice;
             decimal 早場優惠 = 1;
-            if (sessionTime.Hour <= 11)
+            if (int.Parse(selectedSessionHour) <= 11)
                 早場優惠=movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
             decimal 廳加價 = 1;
             if (theater.FTheaterId == 1)
@@ -207,6 +205,59 @@ namespace prjMovieHolic.Controllers
             return View(vm);
         }
 
+        public IActionResult ListProduct()
+        {
+            var product = movieContext.TProducts;
+
+            //將產品分門別類
+            CListFoodViewModel vm = new CListFoodViewModel();
+            List<CTProductWrap> drinks = new List<CTProductWrap>();
+            List<CTProductWrap> popcorns = new List<CTProductWrap>();
+            List<CTProductWrap> desserts = new List<CTProductWrap>();
+            foreach (var item in product)
+            {
+                if(item.FCategoryId==1)
+                {
+                    CTProductWrap productWrap = new CTProductWrap();
+                    productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
+                    productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
+                    productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                    productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
+                    productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
+                    drinks.Add(productWrap);
+                }
+                if(item.FCategoryId==2)
+                {
+                    CTProductWrap productWrap = new CTProductWrap();
+                    productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
+                    productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
+                    productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                    productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
+                    productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
+                    popcorns.Add(productWrap);
+                }
+                if (item.FCategoryId == 3)
+                {
+                    CTProductWrap productWrap = new CTProductWrap();
+                    productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
+                    productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
+                    productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                    productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
+                    productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
+                    desserts.Add(productWrap);
+                }
+            }
+
+            vm.drinkCategory = drinks;
+            vm.popcornCategory = popcorns;
+            vm.dessertCategory = desserts;
+
+
+
+            return View(vm);
+
+        }
+
         public IActionResult saveSeatIDinSession(int correctSeatID, int totalTickets, string selected)
         {
             //先call出之前的session
@@ -266,8 +317,8 @@ namespace prjMovieHolic.Controllers
 
             //選擇到的電影名稱、日期時間
             int sessionID=(int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
-            vm.selectedMovieName_od = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == sessionID).FMovie.FNameCht;
-            vm.selectedMovieID_od = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FMovieId;
+            vm.selectedMovieName = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == sessionID).FMovie.FNameCht;
+            vm.selectedMovieID = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FMovieId;
             string selectedMonth=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("MM");
             string selectedDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("dd");
             string selectedHour = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("HH");
@@ -300,7 +351,38 @@ namespace prjMovieHolic.Controllers
                 result += " "+item;
             }
             return result;
+       }
+        
+        int getSessionID()
+        {
+            int sessionID = (int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
+            return sessionID;
+        }
 
+        TMovie getSessionMovie(int sessionID)
+        {
+            var movie=movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == sessionID).FMovie;
+            return movie;
+        }
+        string getSessionDateTime(int sessionID)
+        {
+            string selectedMonth = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("MM");
+            string selectedDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("dd");
+            string selectedHour = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("HH");
+            string selectedMinute = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("mm");
+            string selecteDateTime = $"{selectedMonth}月{selectedDate}日  {selectedHour}時{selectedMinute}分";
+            return selecteDateTime;
+        }
+
+        string getSessionHour(int sessionID)
+        {
+            string selectedHour = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("HH");
+            return selectedHour;
+        }
+        TTheater getTheater(int sessionID)
+        {
+            var theater = movieContext.TSessions.Include(s => s.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater;
+            return theater;
         }
     }
 
@@ -309,4 +391,6 @@ namespace prjMovieHolic.Controllers
         public string theaterName { get; set; }
         public string sessionIDandTime { get; set; }
     }
+
+
 }

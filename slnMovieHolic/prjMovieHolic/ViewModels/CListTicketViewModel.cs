@@ -4,7 +4,7 @@
     {
         //ListTicketClass
         public int selectedSessionID { get; set; }
-        public string selectedSessionDate { get; set; }
+        public string selectedSessionDateTime { get; set; }
         public string selectedTheater { get; set; }
         public string selectedMovieName { get; set; }
 
