@@ -24,7 +24,7 @@ namespace prjMovieHolic.Controllers
         {
             var now = DateTime.Now;
             var nowShowingMovies = await _context.TMovies
-                .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now).Take(4)
+                .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now)
                 .ToListAsync();
 
             var upcomingMovies = await _context.TMovies

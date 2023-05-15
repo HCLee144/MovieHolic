@@ -112,6 +112,13 @@
     justify-content: space-between;
 }
 
+.movieCardBig {
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+}
+
 .movieCard a {
     text-decoration: none;
 }
@@ -126,16 +133,26 @@
 
 .movieCard img {
     width: 200px;
+    height: 300px;
+    margin-bottom: 10px;
 }
 
 .movieCard h3 {
     font-size: 22px;
     color: #373737;
+    width: 200px;
+    height: 45px;
 }
+
 
 .movieCard li {
     font-size: 18px;
     color: #373737;
+}
+
+.movieEnglishName {
+    width: 200px;
+    height: 40px;
 }
 
 .likeAndBuy {
@@ -148,7 +165,7 @@
         padding: 0 10px;
         font-size: 20px;
         line-height: 32px;
-        margin-left: 70px;
+        margin-left: 76px;
         color: #eaeaea;
         background-color: #10a5d6;
         border-radius: 5px;
@@ -1127,8 +1144,26 @@ figure span {
 
 /*妮妮的電影頁面*/
 
+/*電影牆*/
+
+.movieWallMovies {
+    display: flex;
+    overflow: scroll;
+}
+
+    .movieWallMovies::-webkit-scrollbar {
+        background: transparent;
+        height: 7px;
+    }
+
+    .movieWallMovies::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 
+
+
+/*電影介紹頁面*/
 .moviePage {
     display: flex;
 }
