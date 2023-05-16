@@ -551,9 +551,7 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tMember", "Members");
 
-            entity.Property(e => e.FMemberId)
-                .ValueGeneratedNever()
-                .HasColumnName("fMemberID");
+            entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
             entity.Property(e => e.FBirthDate)
                 .HasColumnType("date")
                 .HasColumnName("fBirthDate");
@@ -565,8 +563,8 @@ public partial class MovieContext : DbContext
                 .HasColumnName("fEmail");
             entity.Property(e => e.FGenderId).HasColumnName("fGenderID");
             entity.Property(e => e.FIdcardNumber)
-                .HasMaxLength(10)
-                .IsFixedLength()
+                .HasMaxLength(20)
+                .IsUnicode(false)
                 .HasColumnName("fIDCardNumber");
             entity.Property(e => e.FMembershipId).HasColumnName("fMembershipID");
             entity.Property(e => e.FName)

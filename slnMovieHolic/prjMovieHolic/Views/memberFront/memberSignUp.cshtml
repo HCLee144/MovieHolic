@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewData["Title"] = "memberSignUp";
+}
+<style>
+    .verify{
+        font-size:15px;
+        line-height:20px;
+    }
+/*    th {
+        line-height: 10px;
+    }*/
+</style>
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <h3 class="memberCreate">會員註冊</h3>
+                    <div class="line1 wrapper">
+                        <div class="wrapper tabs memCut">
+                            <div class="memberInformation">
+                                <form asp-action="memberSignUp">
+                                <table class="memberTable">
+                                    <tr>
+                                         <th>帳號</th>
+                                            <td>
+                                                <input type="text" name="FPhone" id="FPhone" value="" size="30" required placeholder="請輸入手機號碼">
+                                                <div id="accountVerify" class="verify"> </div>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <th>密碼</th>
+                                        <td><input type="password" name="FPassword" id="FPassword" value="" size="30" required>
+                                                <div id="passwordVerify" class="verify"> </div>
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                         <th>確認密碼</th>
+                                         <td><input type="password" name="FPasswordCheck" id="FPasswordCheck" value="" size="30"required>
+                                                <div id="passwordCheckVerify" class="verify"></div>
+                                            </td>
+                                     </tr>
+                                      <tr>
+                                          <th>姓名</th>
+                                          <td><input type="text" name="FName" value="" size="30"id="FName" required></td>
+                                     </tr>
+                                     <tr>
+                                          <th>性別</th>
+                                          <td>
+                                                <input type="radio" name="FGenderId" value="1" required/><label style="font-size:15px">男</label>
+                                                <input type="radio" name="FGenderId" value="2" /><label style="font-size:15px">女</label>
+                                                <input type="radio" name="FGenderId" value="3" /><label style="font-size:15px">非二元性別</label>
+                                          </td>
+                                     </tr>
+                                    <tr>
+                                        <th>生日</th>
+                                            <td><input type="text" name="FBirthDate" value="" size="30" id="FBirthDate" placeholder="請輸入西元年/月/日" required></td>
+                                    </tr>
+                                    <tr>
+                                         <th>身分證字號</th>
+                                         <td><input type="text" name="FIdcardNumber" value="" size="30" id="FIdcardNumber" required></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td><input type="text" name="FEmail" value="" size="20" id="FEmail" required></td>
+                                    </tr>
+                                    <input type="hidden" name="FCreatedDate" value="@DateTime.Now" />
+                                     <input type="hidden" name="FMembershipId" value="3" />
+                                     <input type="hidden" name="FNickName" value="" />
+                                </table>
+                                <hr />
+                                <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px">個人資料使用條款</a>
+                                <br>
+                                <div class="MemberEditSubmit">
+                                    <input class="button" type="submit" id="submit" value="送出">
+                                     <input class="button" type="button" id="loginDemo" value="Demo" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        const submit=document.querySelector('#submit');
+        const FPhone=document.querySelector('#FPhone');
+        const FPassword=document.querySelector('#FPassword');
+        const FPasswordCheck=document.querySelector('#FPasswordCheck');
+        const accountVeritfy=document.querySelector('#accountVerify');
+        const passwordVerify=document.querySelector('#passwordVerify');
+        const passwordCheckVerify = document.querySelector('#passwordCheckVerify');
+        const Demo=document.querySelector('#Demo');
+        
+
+        submit.addEventListener('click',function(){
+            alert('註冊成功，請重新登錄。');
+        })
+        FPhone.addEventListener('blur', async function(){
+            //驗證帳號是否重複
+            const response=await fetch('@Url.Content("~/memberFront/accountCheck")?FPhone='+FPhone.value,{method:"POST"})
+            const data=await response.text();
+            let message = '此帳號已註冊';
+            if (data === "False") {
+                message = ''
+            }
+            accountVeritfy.innerHTML = message;
+        })
+        FPassword.addEventListener('blur', async () => {
+            // 註冊密碼格式驗證
+            const response = await fetch(`@Url.Content("~/memberFront/passwordFormat")?newPassword=` + FPassword.value, { method: "POST" });
+            const data = await response.text();
+
+            let message = '請輸入8碼 ~16碼的密碼，密碼必須含大小寫英文字母及數字';
+            if (data === "True") {
+                message = ''
+            }
+            passwordVerify.innerHTML = message;
+        })
+        FPasswordCheck.addEventListener('blur', async () => {
+            // 新密碼反覆確認
+            const response = await fetch(`@Url.Content("~/memberFront/passwordDoubleCheck")?newPassword=` + FPassword.value + '&newPasswordCheck=' + FPasswordCheck.value, { method: "POST" });
+            const data = await response.text();
+            console.log(data);
+            let message = '請確認您的新密碼是否正確';
+            if (data === "True") {
+                message = ''
+            }
+            passwordCheckVerify.innerHTML = message;
+        })
+        submit.addEventListener('click', async () => {
+            //回傳註冊是否成功
+            const response = await fetch(`@Url.Content("~/memberFront/IsSignUp")?FPhone=` +
+                FPhone.value + "&FPassword=" + FPassword.value + "&FPasswordCheck=" + FPasswordCheck.value, { method: 'POST' })
+            const data = await response.json();
+            console.log(data)
+            if (data.success) {
+                // 成功註冊，顯示提示訊息
+                alert(data.message);
+            } else {
+                // 註冊失敗，顯示錯誤訊息
+                alert(data.message);
+            }
+        })
+
+
+
+
+        Demo.addEventListener('Demo', function(){
+           FPhone.value = '0983556965'
+           FPassword.value = '5CUSfTPO';
+           FPasswordCheck.value = '5CUSfTPO';
+           
+        })
+    </script>
+
+}

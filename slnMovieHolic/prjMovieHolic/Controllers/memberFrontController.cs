@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjMovieHolic.Models;
+using prjMovieHolic.Models.Member;
 using prjMovieHolic.ViewModels;
 using System.Drawing.Drawing2D;
 using System.Text.Json;
@@ -22,7 +23,7 @@ namespace prjMovieHolic.Controllers
         }
         [HttpPost]
         public IActionResult memberLogin(CMemberViewModel vm)
-        {
+        {//todo 登入判斷
             TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount));
             //bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
             if (user != null && user.FPassword.Equals(vm.txtPassword))
@@ -31,9 +32,29 @@ namespace prjMovieHolic.Controllers
                 HttpContext.Session.SetInt32(CDictionary.SK_LOGIN_USER,user.FMemberId);
                 ViewBag.Login = true;
                 ViewBag.userId = user.FMemberId;
-                return RedirectToAction("Index","Home");
+                string controller=HttpContext.Session.GetString(CDictionary.SK_CONTROLLER);
+                string view = HttpContext.Session.GetString(CDictionary.SK_VIEW);
+                if (controller != null && view != null)
+                    return RedirectToAction(view, controller);
+                else
+                    return RedirectToAction("memberList", "memberLogin");
+               
             }
             return View();
+        }
+        //登入：驗證是否成功登入
+        public IActionResult IsLogin(string txtAccount,string txtPassword)
+        {
+            bool isSent = _movieContext.TMembers.Where(t => t.FPhone==txtAccount && t.FPassword==txtPassword).ToList().Any();
+            if (!isSent)
+            {
+                return Json(new { success = false, message = "您輸入的帳號或密碼錯誤，請重新輸入。" });
+            }
+            else
+            {
+                return Json(new { success = true, message = "" });
+            }
+
         }
         //登出
         public IActionResult memberLogout()
@@ -41,7 +62,50 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
             return RedirectToAction("Index","Home");
         }
-         
+        //註冊會員
+        public IActionResult memberSignUp()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult memberSignUP(TMember member)
+        {
+            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
+            if (accountCheck == false)
+            {
+            _movieContext.TMembers.Add(member);
+            _movieContext.SaveChanges();
+                return RedirectToAction("memberLogin");
+            }
+            else
+                return View();
+        }
+        //註冊：驗證帳號是否已存在
+        public IActionResult accountCheck(string FPhone)
+        {
+            var accountCheck=_movieContext.TMembers.Any(t=>t.FPhone==FPhone);
+            return Content(accountCheck.ToString());
+        }
+        //註冊：回傳是否註冊成功
+        public IActionResult IsSignUp(string FPhone,string FPassword,string FPasswordCheck)
+        {
+            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
+            bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+            bool passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
+            if ( accountCheck==false && passwordFormat == true && passwordDoubleCheck == true)
+            {
+                return Json(new { success = true, message = "註冊成功。" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+            }
+                
+        }
+
+
+
+        //忘記密碼
         public IActionResult forgetPassword()
         {   //step1 驗證是否有此帳號
             //step2 寄信
@@ -54,22 +118,20 @@ namespace prjMovieHolic.Controllers
             bool userExists = _movieContext.TMembers.Where(o => o.FEmail == email).ToList().Any();
             if (!userExists)
             {
-                var message = new { text = "該電子郵件地址不存在。", type = "success" };
-                return View("forgetPassword", message);
+                var message = new { text = "該電子郵件地址不存在。", type = "false" };
+                return View("forgetPassword",message);
             }
             else
-            { //todo 已重新設定會跳轉頁面到登入 
+            { 
                 CForgetPassword CforgetPassword = new CForgetPassword();
                 CforgetPassword.getNewPasswordEmail(email);
                 return RedirectToAction("memberLogin");
             }
-
         }
-        //驗證是否成功
-        public IActionResult IsForgetPassword(string txtForgetPasswordEmail)
+        //忘記密碼：驗證是否有此會員
+        public IActionResult IsForgetPassword(string forgetPasswordEmail)
         {
-            CForgetPassword CforgetPassword = new CForgetPassword();
-            bool isSent = _movieContext.TMembers.Where(o => o.FEmail == txtForgetPasswordEmail).ToList().Any();
+            bool isSent = _movieContext.TMembers.Any(o => o.FEmail == forgetPasswordEmail);
             if (!isSent)
             {
                 return Json(new { success = false, message = "該電子郵件地址不存在。" });
@@ -120,12 +182,16 @@ namespace prjMovieHolic.Controllers
             {
                 memberData.FName = member.FName;
                 memberData.FNickname= member.FNickname;
-                memberData.FPhone = member.FPhone;
+                memberData.FBirthDate = member.FBirthDate;
+                memberData.FIdcardNumber = member.FIdcardNumber;
+                memberData.FGenderId = member.FGenderId;
                 memberData.FEmail = member.FEmail;
                 _movieContext.SaveChanges();
+                
             }
             return RedirectToAction("memberList", new { id = member.FMemberId });
         }
+
         //密碼修改
         public IActionResult passwordEdit(int? id)
         {
@@ -153,7 +219,7 @@ namespace prjMovieHolic.Controllers
                     return RedirectToAction("memberList", new { id = vm.FMemberId });
                 }
                 return View(memberData);
-            }//todo 修改失敗時要有提示字
+            }
             return View(memberData);
         }
         //舊密碼確認
@@ -174,6 +240,39 @@ namespace prjMovieHolic.Controllers
             bool doubleCheck= newPasswordCheck?.Equals(newPassword) ?? false;
             return Content(doubleCheck.ToString());
         }
+        //密碼修改：回傳密碼是否修改成功
+        public IActionResult IsPasswordEdit(string previousPassword,string newPassword, string newPasswordCheck)
+        {
+            var password = _movieContext.TMembers.FirstOrDefault(t => t.FPassword == previousPassword);
+            bool passwordFormat = !string.IsNullOrEmpty(newPassword) && Regex.IsMatch(newPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+            bool passwordDoubleCheck = newPassword.Equals(newPasswordCheck);
+            if (password != null && passwordFormat == true && passwordDoubleCheck == true)
+            {
+                return Json(new { success = true, message = "修改密碼成功。" });
+            }
+            return Json(new { success = false, message = "密碼修改失敗，請重新輸入。" });
+        }
+        //優惠卷顯示
+        public IActionResult couponList(int? id)
+        {
+			var couponList = _movieContext.TCouponLists.Include(c=>c.FCouponType).Where(c=>c.FMemberId==id & c.FCouponType.FCouponDueDate.Month==DateTime.Now.Month & c.FIsUsed==false)
+                .OrderByDescending(c=>c.FCouponType.FCouponDueDate).ToList();
+            var couponListExpired = _movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == id & c.FCouponType.FCouponDueDate.Month < DateTime.Now.Month & c.FIsUsed==false)
+                .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+            var couponListUsed= _movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == id & c.FIsUsed==true)
+				.OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+			var members = _movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
+            var movie = _movieContext.TMovies.FirstOrDefault(c => c.FId == 1);
 
+            var viewModel = new CCouponAndMemberViewModel
+            {
+                CouponList = couponList,
+                CouponListExpired = couponListExpired,
+                CouponListUsed = couponListUsed,
+				Member = members,
+                Movie=movie,
+			};
+			return View(viewModel);
+        }
     }
 }

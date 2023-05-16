@@ -17,10 +17,11 @@
                                 <div class="pad">
                                     <ul class="nav">
                                         <li>@Html.ActionLink("會員資料", "memberList","memberFront",new { id=Model.FMemberId },null)</li>
+                                        <li class="selected"><a>資料修改</a></li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Wedding">訂單查詢</a></li>
                                         <li><a href="#Reportage">我的最愛</a></li>
-                                        <li><a href="#Advertising">我的優惠券</a></li>
+                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Advertising">我的評論</a></li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
@@ -35,6 +36,10 @@
                                         <td>@Model.FMembership.FMembershipName</td>
                                     </tr>
                                     <tr>
+                                         <th>登入帳號</th>
+                                         <td>@Model.FPhone</td>
+                                    </tr>
+                                    <tr>
                                         <th>姓名</th>
                                         <td><input type="text" name="FName" value="@Model.FName" size="20"></td>
                                     </tr>
@@ -43,28 +48,40 @@
                                          <td><input type="text" name="FNickname" value="@Model.FNickname" size="20"></td>
                                     </tr>
                                      <tr>
+                                          <th>性別</th>
+                                            <td>
+                                                <input type="radio" name="FGenderId" value="1" @(Model.FGenderId == 1 ? "checked" : "") /><span style="font-size:15px">男</span>
+                                                <input type="radio" name="FGenderId" value="2" @(Model.FGenderId == 2 ? "checked" : "") /><span style="font-size:15px">女</span>
+                                                <input type="radio" name="FGenderId" value="3" @(Model.FGenderId == 3 ? "checked" : "")><span style="font-size:15px">非二元性別</span>
+                                          </td>
+                                     </tr>
+                                     <tr>
                                          <th>身分證字號</th>
-                                         <td><input type="text" name="Model.FIdcardNumber" value="@Model.FIdcardNumber" size="20"></td>
+                                         <td><input type="text" name="FIdcardNumber" value="@Model.FIdcardNumber" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>生日</th>
-                                        <td><input type="text" name="FBirthDate" value="@Model.FBirthDate.ToString().Substring(0,9)" size="20"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>電話</th>
-                                        <td><input type="text" name="Fphone" value="@Model.FPhone" size="20"></td>
+                                        <td><input type="text" name="FBirthDate" value="@Model.FBirthDate.ToString().Substring(0,9)" size="20" placeholder="請依照西元年/月/日的格式輸入">
+                                              @*  西元<select id="yy" name="FBirthDate" >
+                                                       @for (int year = 1940; year <= 2023; year++)
+                                                             {
+                                                                  <option value="@$"{year}-01-01"@(year == 2002 ? " selected" : "")>@year</option>
+}
+                                                </select>年
+                                                <select id="mm" name="FBirthDate"></select>月
+                                                <select id="dd" name="FBirthDate"></select>日*@
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Email</th>
                                         <td><input type="text" name="FEmail" value="@Model.FEmail" size="30"></td>
                                     </tr>
-                                    <tr>
-                                        <th>性別</th>
-                                        <td><input type="text" name="FGender" value="@Model.FGender.FGenderName" size="30"></td>
-                                    </tr>
                                 </table>
                                 <br>
-                                <div class="MemberEditSubmit"><input class="button" type="submit" value="送出"></div>
+                                <div class="MemberEditSubmit">
+                                    <input class="button" type="submit" id="submit" value="送出">
+                                    <a href="@Url.Action("memberList","memberFront",new{id=Model.FMemberId})"><input class="button" type="button" id="cancel" value="取消"></a>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -74,4 +91,30 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script>
+        const submit = document.querySelector('#submit');
+        submit.addEventListener('click', () => {
+            alert('會員資料修改成功！');
+        })
 
+        //const yy = document.getElementById('yy')
+        //const mm = document.getElementById('mm')
+        //const dd = document.getElementById('dd')
+
+        //function createOption(min, max) {
+        //    let option = '<option value="0">請選擇</option>'
+        //    for (i = min; i < max + 1; i++) {
+        //        option += `<option value="${i}">${i}</option>`
+        //    }
+        //    return option //務必加上回傳值
+        //}
+        //yy.innerHTML = createOption(1960, 2010)
+
+        //mm.innerHTML = createOption(1, 12)
+
+        //dd.innerHTML = createOption(1, 0)
+
+
+    </script>
+}

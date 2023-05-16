@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "memberLogin";
 }
-
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -16,17 +15,19 @@
                             <div class="logInBoxSmall">
                                 <form asp-action="memberLogin">
                                 <h6>帳號</h6>
-                                    <input type="text" name="txtAccount" value="0923906031">
+                                    <input type="text" name="txtAccount" id="txtAccount" value="">
                                 <h6>密碼</h6>
-                                    <input type="password" name="txtPassword" value="Xpe49cFb">
+                                    <input type="password" name="txtPassword" id="txtPassword" value="">
+                                    <p> @Html.ActionLink("忘記密碼？","forgetPassword","memberFront")   </p>
+                                    <hr />
+                                    <hr />
+                                @*<input type="checkbox" name="" id=""><span>保持登入</span>*@
+                                    <a href=""><input class="loginButton" type="submit" id="submit" value="登入" /></a>
+                                    <input class="loginButton" type="button" id="loginDemo" value="Demo" />
                                 <hr>
-                                <input type="checkbox" name="" id=""><span>保持登入</span>
-                                <hr>
-                                <hr>
-                                    <a href=""><input class="loginButton" type="submit" value="登入" /></a>
+                                    <span>還不是會員嗎？</span>@Html.ActionLink("註冊會員","memberSignUp","memberFront")
                                 </form>
                                 <hr>
-                                @Html.ActionLink("忘記密碼？","forgetPassword","memberFront")
                                 <hr>
                                 <p>————————OR————————</p>
                                 <hr>
@@ -41,3 +42,26 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        const txtAccount = document.querySelector('#txtAccount');
+        const txtPassword=document.querySelector('#txtPassword');
+        const submit = document.querySelector('#submit');
+        const loginDemo=document.querySelector('#loginDemo');
+        submit.addEventListener('click', async () => {
+            const response = await fetch(`@Url.Content("~/memberFront/IsLogin")?txtAccount=` + txtAccount.value + "&txtPassword=" +txtPassword.value, { method: 'POST' })
+            const data = await response.json();
+            console.log(data)
+            if (!data.success) {
+                // 登入失敗
+                alert(data.message);
+            }
+        })
+
+        loginDemo.addEventListener('click', function () {
+            txtAccount.value = '0923906031';
+            txtPassword.value = 'Xpe49cFb';
+        })
+    </script>
+}

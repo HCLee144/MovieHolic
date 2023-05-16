@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace prjMovieHolic.Controllers
 {
-    public class OrderFrontController : Controller
+    public class OrderFrontController : SuperFrontController
     {
         private MovieContext movieContext;
         public OrderFrontController(MovieContext db)
@@ -52,7 +52,13 @@ namespace prjMovieHolic.Controllers
                 if (selectDays > 6)
                     selectDays = 0;
             }
-            //sessionCheck();
+            //todo 存Action 同時View中也有修改
+            string controller = "OrderFront";
+            string view = "ListTicketClass";
+            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+            
+            sessionCheck();
             shoppingCart.weekDays = wholeWeekDays.ToArray();
             return View(shoppingCart);
         }
