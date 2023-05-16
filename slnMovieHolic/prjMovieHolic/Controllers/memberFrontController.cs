@@ -60,9 +60,9 @@ namespace prjMovieHolic.Controllers
         public IActionResult memberLogout()
         {
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("MovieIndex","movieFront");
         }
-        //註冊會員
+        //todo尚未驗證完成 註冊會員
         public IActionResult memberSignUp()
         {
             return View();
@@ -78,7 +78,10 @@ namespace prjMovieHolic.Controllers
                 return RedirectToAction("memberLogin");
             }
             else
+            {
                 return View();
+            }
+                
         }
         //註冊：驗證帳號是否已存在
         public IActionResult accountCheck(string FPhone)
@@ -86,7 +89,7 @@ namespace prjMovieHolic.Controllers
             var accountCheck=_movieContext.TMembers.Any(t=>t.FPhone==FPhone);
             return Content(accountCheck.ToString());
         }
-        //註冊：回傳是否註冊成功
+        //註冊：回傳是否註冊成功 
         public IActionResult IsSignUp(string FPhone,string FPassword,string FPasswordCheck)
         {
             var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
@@ -272,7 +275,28 @@ namespace prjMovieHolic.Controllers
 				Member = members,
                 Movie=movie,
 			};
+            sessionCheck();
 			return View(viewModel);
+        }
+        public IActionResult favoriteList(int? id)
+        {
+            var members=_movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
+            var memberActionNow=_movieContext.TMemberActions.Include(c=>c.FMovie)
+                .Where(c=>c.FMemberId==id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now).ToList();
+            var memberActionFuture= _movieContext.TMemberActions.Include(c => c.FMovie)
+                .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart > DateTime.Now) .ToList();
+            var memberActionExpired = _movieContext.TMemberActions.Include(c => c.FMovie)
+                .Where(c => c.FMemberId == id & c.FMovie.FScheduleEnd < DateTime.Now).ToList();
+            var viewModel = new CMovieAndMemberViewModel
+            {
+                Member = members,
+                MemberActionNow = memberActionNow,
+                MemberActionFuture = memberActionFuture,
+                MemberActionExpired = memberActionExpired
+                
+            };
+            sessionCheck();
+            return View(viewModel);
         }
     }
 }

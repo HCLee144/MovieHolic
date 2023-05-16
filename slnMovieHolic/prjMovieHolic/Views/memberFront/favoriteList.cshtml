@@ -1,0 +1,218 @@
+﻿@model prjMovieHolic.ViewModels.CMovieAndMemberViewModel
+@{
+    ViewData["Title"] = "favoriteList";
+}
+
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <div class="line1 wrapper">
+                        <div class="wrapper tabs memCut">
+                            <article class="memberMenu">
+                                <h3 style="font-size:20px">歡迎，@Model.Member.FName</h3>
+                                <div class="pad">
+                                    <ul class="nav">
+                                        <li>@Html.ActionLink("會員資料", "memberList","memberFront",new {id=Model.Member.FMemberId},null)</li>
+                                        <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li><a href="#Wedding">訂單查詢</a></li>
+                                        <li class="selected"><a>我的最愛</a></li>
+                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li><a href="#Advertising">我的評論</a></li>
+                                        <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
+                                    </ul>
+                                </div>
+                            </article>
+
+
+
+
+                            <div class="orderList">
+                                <div class="tabPlace">
+                                    <!-- TAB1 打包區塊 start -->
+                                    <input id="tab1" type="radio" name="tab" checked="checked" />
+                                    <label for="tab1">現正熱映</label>
+                                    <div class="tab_content">
+                                        <div class="likeMovie">
+                                            @foreach(var item in Model.MemberActionNow)
+                                            {
+                                                <div class="movieCardBig2">
+                                                    <article class="movieCard">
+                                                        <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
+                                                            <br>
+                                                            <figure>
+                                                                <img src="~/@item.FMovie.FPosterPath" alt="">
+                                                            </figure>
+                                                            <div>
+                                                                <h3>@item.FMovie.FNameCht</h3>
+                                                                <ul>
+                                                                    <li class="movieEnglishName">@item.FMovie.FNameEng</li>
+                                                                    <hr>
+                                                                    <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                    <li>片長：@item.FMovie.FShowLength 分鐘</li>
+                                                                </ul>
+                                                            </div>
+                                                        </a>
+                                                    </article>
+                                                    <div class="likeAndBuy">
+
+                                                        <div><a class="buyNow">Buy Now</a></div>
+                                                        <div>
+                                                            <p>❤</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                          
+                                        </div>
+
+
+                                    </div>
+                                    <!-- TAB1 打包區塊 end -->
+                                    <!-- TAB2 打包區塊 start -->
+                                    <input id="tab2" type="radio" name="tab" />
+                                    <label for="tab2">即將上映</label>
+                                    <div class="tab_content">
+                                        @foreach (var item in Model.MemberActionFuture)
+                                        {
+                                            <div class="movieCardBig2">
+                                                <article class="movieCard">
+                                                    <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
+                                                        <br>
+                                                        <figure>
+                                                            <img src="~/@item.FMovie.FPosterPath" alt="">
+                                                        </figure>
+                                                        <div>
+                                                            <h3>@item.FMovie.FNameCht</h3>
+                                                            <ul>
+                                                                <li class="movieEnglishName">@item.FMovie.FNameEng</li>
+                                                                <hr>
+                                                                <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                <li>片長：@item.FMovie.FShowLength 分鐘</li>
+                                                            </ul>
+                                                        </div>
+                                                    </a>
+                                                </article>
+                                                <div class="likeAndBuy">
+
+                                                    <div><a class="buyNow">Buy Now</a></div>
+                                                    <div>
+                                                        <p>❤</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="movieCardBig2">
+                                            <article class="movieCard">
+                                                <a href="/MovieFront/MovieDetails?id=.FId">
+                                                    <br>
+                                                    <figure>
+                                                        <img src="/images/aaa.jpg" alt="">
+                                                    </figure>
+                                                    <div>
+                                                        <h3>.FNameCht</h3>
+                                                        <ul>
+                                                            <li class="movieEnglishName">(.FNameEng)</li>
+                                                            <hr>
+                                                            <li>上映日期："yyyy/MM/d</li>
+                                                            <li>片長：分鐘</li>
+                                                        </ul>
+                                                    </div>
+                                                </a>
+                                            </article>
+                                            <div class="likeAndBuy">
+
+                                                <div class="buyNow2"><a>Buy Now</a></div>
+                                                <div>
+                                                    <p>❤</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <!-- TAB2 打包區塊 end -->
+                                    <!-- TAB3 打包區塊 start -->
+                                    <input id="tab3" type="radio" name="tab" />
+                                    <label for="tab3">已下檔</label>
+                                    <div class="tab_content">
+                                        @foreach (var item in Model.MemberActionExpired)
+                                        {
+                                            <div class="movieCardBig2">
+                                                <article class="movieCard">
+                                                    <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
+                                                        <br>
+                                                        <figure>
+                                                            <img src="~/@item.FMovie.FPosterPath" alt="">
+                                                        </figure>
+                                                        <div>
+                                                            <h3>@item.FMovie.FNameCht</h3>
+                                                            <ul>
+                                                                <li class="movieEnglishName">@item.FMovie.FNameEng</li>
+                                                                <hr>
+                                                                <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                <li>片長：@item.FMovie.FShowLength 分鐘</li>
+                                                            </ul>
+                                                        </div>
+                                                    </a>
+                                                </article>
+                                                <div class="likeAndBuy">
+
+                                                    <div><a class="buyNow">Buy Now</a></div>
+                                                    <div>
+                                                        <p>❤</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="movieCardBig2">
+                                            <article class="movieCard">
+                                                <a href="/MovieFront/MovieDetails?id=.FId">
+                                                    <br>
+                                                    <figure>
+                                                        <img src="/images/aaa.jpg" alt="">
+                                                    </figure>
+                                                    <div>
+                                                        <h3>.FNameCht</h3>
+                                                        <ul>
+                                                            <li class="movieEnglishName">(.FNameEng)</li>
+                                                            <hr>
+                                                            <li>上映日期："yyyy/MM/d</li>
+                                                            <li>片長：分鐘</li>
+                                                        </ul>
+                                                    </div>
+                                                </a>
+                                            </article>
+                                            <div class="likeAndBuy">
+
+                                                <div class="buyNow2"><a>Buy Now</a></div>
+                                                <div>
+                                                    <p>❤</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <!-- TAB3 打包區塊 end -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

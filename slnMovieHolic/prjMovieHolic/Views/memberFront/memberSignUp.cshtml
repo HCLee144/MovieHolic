@@ -76,7 +76,7 @@
                                 <br>
                                 <div class="MemberEditSubmit">
                                     <input class="button" type="submit" id="submit" value="送出">
-                                     <input class="button" type="button" id="loginDemo" value="Demo" />
+                                     <input class="button" type="button" id="SignUpDemo" value="Demo" />
                                     </div>
                                 </form>
                             </div>
@@ -96,12 +96,12 @@
         const accountVeritfy=document.querySelector('#accountVerify');
         const passwordVerify=document.querySelector('#passwordVerify');
         const passwordCheckVerify = document.querySelector('#passwordCheckVerify');
-        const Demo=document.querySelector('#Demo');
+        const SignUpDemo = document.querySelector('#SignUpDemo');
         
 
-        submit.addEventListener('click',function(){
-            alert('註冊成功，請重新登錄。');
-        })
+        //submit.addEventListener('click',function(){
+        //    alert('註冊成功，請重新登錄。');
+        //})
         FPhone.addEventListener('blur', async function(){
             //驗證帳號是否重複
             const response=await fetch('@Url.Content("~/memberFront/accountCheck")?FPhone='+FPhone.value,{method:"POST"})
@@ -149,13 +149,20 @@
             }
         })
 
+        const FName = document.querySelector('#FName');
+        const FBirthDate = document.querySelector('#FBirthDate');
+        const FEmail = document.querySelector('#FEmail');
+        const FIdcardNumber = document.querySelector('#FIdcardNumber');
 
 
-
-        Demo.addEventListener('Demo', function(){
+        SignUpDemo.addEventListener('click', function () {
            FPhone.value = '0983556965'
            FPassword.value = '5CUSfTPO';
            FPasswordCheck.value = '5CUSfTPO';
+           FName.value ='安妮亞';
+           FBirthDate.value = '2003/08/19';
+           FEmail.value = 'anya@gmail.com';
+           FIdcardNumber.value='G298546321';
            
         })
     </script>

@@ -16,16 +16,7 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult Index()
         {
-            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER)!= null;
-            ViewBag.Login = isUserLoggedIn;
-            ViewBag.UserId = userId;
-            //todo 製作Session把Action和Controller存進去
-            string controller = "Home";
-            string view = "Index";
-            //string json=JsonSerializer.Serialize(new { controller, view });
-            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER,controller);
-            HttpContext.Session.SetString(CDictionary.SK_VIEW,view);
+
             return View();
         }
 
