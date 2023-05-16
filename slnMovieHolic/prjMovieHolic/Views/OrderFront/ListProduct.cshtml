@@ -159,6 +159,12 @@
     </div>
 </div>
 
+
+<dialog id="IamDialog" class="IamDialog">
+    <p>尚未選擇票種</p>
+    <button id="closeDialog" class="closeDialog">確認</button>
+</dialog>
+
 @section Scripts{
     <script>
         const btnAdds = document.querySelectorAll('.QTYAdd');
@@ -189,8 +195,32 @@
                 if (productValue < 0)
                     productValue = 0;
                 productSpan.innerHTML = productValue;
-                totalSpan.innerHTML = '總價:'+productValue * Number(productPrice.value);
+                totalSpan.innerHTML = '總價:' + productValue * Number(productPrice.value);
             })
         })
+
+        nextStep.addEventListener('click', () => {
+
+            const productCount = [];
+            for (let i = 0; i < 9; i++) {
+                const x = document.getElementById('span' + (i + 1));
+                productCount[i] = x.innerHTML
+            }
+
+            let product="";
+            productCount.forEach((item)=>{
+                product+=item+',';
+            })
+            if(product.substring(product.length-1)==',')
+            product=product.substring(0,product.length-1);
+            saveProductCount(product);
+        })
+
+        async function saveProductCount(product) {
+            const response = await fetch('@Url.Content("~/OrderFront/saveProductCount")?products=' + product);
+            const data = await response.text();
+            if (data == "購買食物成功")
+                window.location.replace('@Url.Content("~/OrderFront/ListOrderDetails")')
+        }
     </script>
 }
