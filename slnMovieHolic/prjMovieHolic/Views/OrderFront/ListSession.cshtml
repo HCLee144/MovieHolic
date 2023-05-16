@@ -15,6 +15,8 @@
         }
     </style>
 }
+
+
 <div id="page2">
     <div class="body1">
         <div class="">
@@ -45,9 +47,7 @@
                                     <figure>
                                         <input type="hidden" id="movieID" value="@Model.MovieID" />
                                        
-                                        @{
-                                            string s = Model.MovieID.ToString() + ".jpg";
-                                        }
+                                        @{string s = Model.MovieID.ToString() + ".jpg";}
                                         <img class="orderMovieImage" src="~/images/moviePosters/@Model.MovieID/@s" alt="">
                                         <ul>                                      
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
@@ -88,7 +88,7 @@
     </div>
 </div>
 
-<dialog id="IamDialog" @*class="IamDialog"*@>
+<dialog id="IamDialog" class="IamDialog">
     <p>尚未選場次</p>
     <button id="closeDialog"  class="closeDialog">確認</button>
 </dialog>
@@ -181,7 +181,6 @@
             if(info=='有選到場次')
                 window.location.replace('@Url.Content("~/OrderFront/ListTicketClass")');
             else{ 
-                //alert('尚未選場次');
                 formdialog.showModal();
                 btnCloseDialog.addEventListener('click', () => {
                     formdialog.close();
