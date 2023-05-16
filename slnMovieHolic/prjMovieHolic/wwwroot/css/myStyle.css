@@ -429,7 +429,6 @@ figure span {
 /*已點項目小框框*/
 .alreadyOrder {
     width: 430px;
-    margin-top: 52px;
     margin-bottom: 20px;
     padding-top: 8px;
     border: 1px solid silver;
