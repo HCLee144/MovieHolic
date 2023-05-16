@@ -112,6 +112,13 @@
     justify-content: space-between;
 }
 
+.movieCardBig {
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+}
+
 .movieCard a {
     text-decoration: none;
 }
@@ -126,16 +133,26 @@
 
 .movieCard img {
     width: 200px;
+    height: 300px;
+    margin-bottom: 10px;
 }
 
 .movieCard h3 {
     font-size: 22px;
     color: #373737;
+    width: 200px;
+    height: 45px;
 }
+
 
 .movieCard li {
     font-size: 18px;
     color: #373737;
+}
+
+.movieEnglishName {
+    width: 200px;
+    height: 40px;
 }
 
 .likeAndBuy {
@@ -148,7 +165,7 @@
         padding: 0 10px;
         font-size: 20px;
         line-height: 32px;
-        margin-left: 70px;
+        margin-left: 76px;
         color: #eaeaea;
         background-color: #10a5d6;
         border-radius: 5px;
@@ -276,9 +293,9 @@
     line-height: 32px
 }
 
-.orderBoxP{
-    text-align:center;
-    font-size:20px;
+.orderBoxP {
+    text-align: center;
+    font-size: 20px;
 }
 
 .orderMovieImage {
@@ -381,7 +398,7 @@ figure span {
         width: 70px;
         height: 20px;
         text-align: center;
-        cursor:pointer;
+        cursor: pointer;
     }
 
         .chooseTime li:hover {
@@ -392,6 +409,7 @@ figure span {
 /*下一步按鍵的位置調整*/
 .toRight {
     background-color: #10a5d6;
+    border-radius: 10px;
     float: right;
     width: 100px;
     height: 50px;
@@ -399,8 +417,14 @@ figure span {
     line-height: 50px;
     font-size: 22px;
     margin-right: 15px;
-    cursor:pointer;
+    margin-top: 15px;
+    cursor: pointer;
 }
+
+    .toRight:hover {
+        background-color: #105190;
+        color: #eaeaea;
+    }
 
 /*已點項目小框框*/
 .alreadyOrder {
@@ -473,17 +497,17 @@ figure span {
 
 .fontFat {
     font-weight: bolder;
-    width:60px;
+    width: 60px;
 }
 
-.TicketQTY{
-    height:30px;
-    width:200px;
+.TicketQTY {
+    height: 30px;
+    width: 200px;
 }
 
-.totalPrice{
-    width:120px;
-    height:30px;
+.totalPrice {
+    width: 120px;
+    height: 30px;
 }
 
 .Ticket button {
@@ -551,13 +575,13 @@ figure span {
     margin-top: 20px;
     width: 700px;
     display: flex;
-    justify-content:flex-end;
+    justify-content: flex-end;
     font-size: 18px;
 }
 
-.inSellSold{
-    margin-right:20px;
-    display:flex;
+.inSellSold {
+    margin-right: 20px;
+    display: flex;
 }
 
 .sell {
@@ -576,8 +600,8 @@ figure span {
     border-radius: 15px;
 }
 
-.showLeftSeats{
-    width:150px;
+.showLeftSeats {
+    width: 150px;
 }
 
 
@@ -590,9 +614,11 @@ figure span {
     border-radius: 15px;
     margin-right: 13px;
 }
-.sell1:hover {
-    cursor:pointer;
-}
+
+    .sell1:hover {
+        cursor: pointer;
+    }
+
 .hidden2 {
     width: 28px;
     height: 28px;
@@ -600,8 +626,9 @@ figure span {
     border: 1px solid silver;
     border-radius: 15px;
     margin-right: 13px;
-    visibility:hidden;
+    visibility: hidden;
 }
+
 .disabled3 {
     width: 28px;
     height: 28px;
@@ -644,6 +671,157 @@ figure span {
 .rowSit {
     margin-bottom: 5px;
     margin-left: 13px;
+}
+
+/*訂餐頁面*/
+
+.orderDetailOnChooseFood {
+    margin-bottom: 20px;
+}
+
+    .orderDetailOnChooseFood ul {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .orderDetailOnChooseFood li {
+        width: 180px;
+        height: 80px;
+        border-left: 1px solid silver;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .orderDetailOnChooseFood h3 {
+        font-size: 18px;
+    }
+
+    .orderDetailOnChooseFood h4 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+
+.chooseFood img {
+    height: 150px;
+    width: 160px;
+    border-radius: 15px;
+}
+
+.chooseFood h4 {
+    font-size: 22px;
+    text-align: center;
+    color: #999;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.chooseFood h3 {
+    font-size: 16px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgb(219, 218, 218);
+    border-radius: 15px 15px 0 0;
+    display:inline;
+}
+
+.chooseDrink {
+    display: flex;
+    justify-content: space-around;
+    border: 4px dotted silver;
+    border-radius: 15px;
+    padding-bottom: 15px;
+    padding-top:15px;
+}
+
+.foodPrice {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(219, 218, 218);
+}
+
+    .foodPrice h6 {
+        font-size: 16px;
+        padding: 5px;
+    }
+
+.snack {
+    display: flex;
+    justify-content: space-between;
+}
+
+.snackName {
+    display: flex;
+}
+
+.snackName1 {
+    margin-left: 235px;
+}
+
+.snackName2 {
+    margin-left: 400px;
+}
+
+.choosePOP {
+    display: flex;
+    justify-content: space-around;
+    width: 550px;
+    border: 4px dotted silver;
+    border-radius: 15px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.chooseSweet {
+    display: flex;
+    justify-content: space-around;
+    width: 360px;
+    border: 4px dotted silver;
+    border-radius: 15px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.btnDrink {
+    background-color: rgb(219, 218, 218);
+    border-radius:0 15px 0 0;
+    padding-top:5px;
+}
+
+.btnPOP {
+    background-color: rgb(219, 218, 218);
+    border-radius: 0 15px 0 0;
+    padding-top: 5px;
+}
+
+.btnSweet {
+    background-color: rgb(219, 218, 218);
+    border-radius: 0 15px 0 0;
+    padding-top: 5px;
+}
+
+.chooseFoodQTY {
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    background-color: rgb(219, 218, 218);
+    border-radius: 0 0 15px 15px;
+}
+
+    .chooseFoodQTY button {
+        background-color: #10a5d6;
+        color: #eaeaea;
+        border-radius: 5px;
+    }
+
+        .chooseFoodQTY button:hover {
+            background-color: #105190;
+        }
+
+.space {
+    width: 100px;
+    height: 100px;
 }
 
 /*上面大致是婷婷的區塊*/
@@ -787,6 +965,7 @@ figure span {
 
 /*優惠券部分*/
 
+
 .couponList {
     width: 600px;
     height: 700px;
@@ -914,12 +1093,87 @@ figure span {
         cursor: no-drop;
     }
 
+/*這裡開始會員訂單查詢頁面*/
+
+.orderList {
+    width: 600px;
+    height: 700px;
+}
+
+.addBorder {
+    border: 3px solid silver;
+    padding: 2px;
+}
+
+.orderDetailBox {
+    border: 3px double silver;
+    padding: 15px;
+}
+
+    .orderDetailBox h3 {
+        font-size: 18px;
+    }
+
+    .orderDetailBox h4 {
+        font-size: 20px;
+    }
+
+    .orderDetailBox a {
+        display: inline-block;
+        background-color: #10a5d6;
+        padding: 6px;
+        color: #eaeaea;
+        border-radius: 5px;
+    }
+
+.orderDetaildelete {
+    background-color: brown;
+    width: 25px;
+    height: 40px;
+    color: #eaeaea;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.orderDetailBoxTop {
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderDetailBoxBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*以上大致是宜霈的部分*/
+
+
+
 
 
 /*妮妮的電影頁面*/
 
+/*電影牆*/
+
+.movieWallMovies {
+    display: flex;
+    overflow: scroll;
+}
+
+    .movieWallMovies::-webkit-scrollbar {
+        background: transparent;
+        height: 7px;
+    }
+
+    .movieWallMovies::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 
+
+
+/*電影介紹頁面*/
 .moviePage {
     display: flex;
 }
@@ -928,9 +1182,15 @@ figure span {
     text-align: center;
 }
 
-    .posterPlace img {
-        width: 200px;
-    }
+.niniImagesPlace{
+    width:200px;
+    height:300px;
+    background-color:antiquewhite;
+}
+
+.posterPlace img {
+    width: 200px;
+}
 
 .movie {
     margin-left: 20px;
@@ -942,6 +1202,7 @@ figure span {
 
     .movie h3 {
         font-size: 32px;
+        line-height:32px;
     }
 
     .movie h4 {

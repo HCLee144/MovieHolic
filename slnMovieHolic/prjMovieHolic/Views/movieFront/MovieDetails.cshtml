@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="position" style="height: 170px;">
+<div class="position" >
     <p>快速訂票</p>
     <select name="" id="">
         <option value="">選擇電影</option>
@@ -24,6 +24,8 @@
                     <div class="moviePage">
                         <div class="posterPlace">
                             <img src="~/@Model.FPosterPath" alt="">
+                            <hr /><hr /><hr /><hr /><hr />
+                            <div class="niniImagesPlace"></div>
                         </div>
                         <div class="movie">
                             <h3>@Model.FNameCht</h3>
@@ -71,8 +73,10 @@
                             <li style="font-size: 26px;">預告片</li>
                         </ul>
                     </div>
-
-                    @Html.Raw(Model.FTrailerLink)
+                    <div>
+                        <iframe class="video" width="921" height="497" src="@Model.FTrailerLink"
+                                title=@Model.FNameCht frameborder="0" allow="accelerometer; autoplay;
+                                clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
         </div>

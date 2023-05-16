@@ -40,17 +40,17 @@
                                         <input type="hidden" id="theaterID" value="@Model.theaterID" />
                                     </li>
                                     <li>
-                                        <h4>日期</h4>
-                                        <h3>@Model.sessionDate</h3>
+                                        <h4>日期時間</h4>
+                                        <h3>@Model.sessionDate  @Model.sessionTime</h3>
                                     </li>
                                     <li>
-                                        <h4>時間</h4>
-                                        <h3>@Model.sessionTime</h3>
-                                    </li>
-                                    <li class="addBorderRight">
                                         <h4>人數</h4>
                                         <input type="hidden" id="totalTickets" value="@Model.totalTickets" />
                                         <h3>@Model.totalTickets</h3>
+                                    </li>
+                                    <li class="addBorderRight">
+                                        <h4>座位</h4>
+                                        <h3>尚未選擇</h3>
                                     </li>
                                 </ul>
                             </div>
@@ -91,9 +91,8 @@
 
                                 </div>
                             </div>
-                            <a href="#" class="button toRight">下一步</a>
+                            <button id="nextStep" class="button toRight">下一步</button>
                         </div>
-
                     </section>
                 </div>
             </div>
@@ -101,11 +100,20 @@
     </div>
 </div>
 
+<dialog id="IamDialog" class="IamDialog">
+    <p>座位數與票數不符</p>
+    <button id="closeDialog" class="closeDialog">確認</button>
+</dialog>
+
 @section Scripts{
     <script>
         const theaterID = document.getElementById('theaterID');
         const totalTickets = document.getElementById('totalTickets').value;
         const showLeftSeats = document.getElementById('showLeftSeats');
+        const nextStep=document.getElementById('nextStep');
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
 
         function clickSeatButton(evt) {
             const selectedSeat = evt.target.getAttribute("name");
@@ -115,7 +123,7 @@
 
         async function saveSeatIDinSession(correctSeatID, evt) {
 
-            if (window.getComputedStyle(evt.target).backgroundColor == 'rgb(16,81,144)') {
+            if (evt.target.style.backgroundColor == 'steelblue') {
                 const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets)+'&selected=1');
                 const data = await response.text();
                 evt.target.style.backgroundColor = '#eaeaea';
@@ -129,12 +137,22 @@
                     showLeftSeats.innerHTML = data;
                 else {
                     showLeftSeats.innerHTML = data;
-                    evt.target.style.backgroundColor = 'rgb(16,81,144)';
+                    evt.target.style.backgroundColor = 'steelblue';
                 }
             }
-
         }
 
+        nextStep.addEventListener('click',()=>{
+            if(showLeftSeats.innerHTML=='尚可選座位：0'||showLeftSeats.innerHTML=='座位人數已滿')
+                window.location.replace('@Url.Content("~/OrderFront/ListProduct")');
+            else
+            {
+                formdialog.showModal();
+                btnCloseDialog.addEventListener('click', () => {
+                    formdialog.close();
+                })
+            }
+        })
 
 
     </script>
