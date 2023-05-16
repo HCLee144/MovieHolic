@@ -70,10 +70,39 @@ namespace prjMovieHolic.Controllers
         [HttpPost]
         public IActionResult memberSignUP(TMember member)
         {
+            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
+            if (accountCheck == false)
+            {
             _movieContext.TMembers.Add(member);
             _movieContext.SaveChanges();
-            return RedirectToAction("memberLogin");
+                return RedirectToAction("memberLogin");
+            }
+            else
+                return View();
         }
+        //註冊：驗證帳號是否已存在
+        public IActionResult accountCheck(string FPhone)
+        {
+            var accountCheck=_movieContext.TMembers.Any(t=>t.FPhone==FPhone);
+            return Content(accountCheck.ToString());
+        }
+        //註冊：回傳是否註冊成功
+        public IActionResult IsSignUp(string FPhone,string FPassword,string FPasswordCheck)
+        {
+            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
+            bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+            bool passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
+            if ( accountCheck==false && passwordFormat == true && passwordDoubleCheck == true)
+            {
+                return Json(new { success = true, message = "註冊成功。" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+            }
+                
+        }
+
 
 
         //忘記密碼
@@ -223,10 +252,27 @@ namespace prjMovieHolic.Controllers
             }
             return Json(new { success = false, message = "密碼修改失敗，請重新輸入。" });
         }
+        //優惠卷顯示
         public IActionResult couponList(int? id)
         {
-            var couponList = _movieContext.TCouponLists.Where(c => c.FMemberId == id);
-            return View();
+			var couponList = _movieContext.TCouponLists.Include(c=>c.FCouponType).Where(c=>c.FMemberId==id & c.FCouponType.FCouponDueDate.Month==DateTime.Now.Month & c.FIsUsed==false)
+                .OrderByDescending(c=>c.FCouponType.FCouponDueDate).ToList();
+            var couponListExpired = _movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == id & c.FCouponType.FCouponDueDate.Month < DateTime.Now.Month & c.FIsUsed==false)
+                .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+            var couponListUsed= _movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == id & c.FIsUsed==true)
+				.OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+			var members = _movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
+            var movie = _movieContext.TMovies.FirstOrDefault(c => c.FId == 1);
+
+            var viewModel = new CCouponAndMemberViewModel
+            {
+                CouponList = couponList,
+                CouponListExpired = couponListExpired,
+                CouponListUsed = couponListUsed,
+				Member = members,
+                Movie=movie,
+			};
+			return View(viewModel);
         }
     }
 }

@@ -17,12 +17,12 @@
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
-                                        <li><a>會員資料</a></li>
+                                        <li class="selected"><a>會員資料</a></li>
                                         <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Wedding">訂單查詢</a></li>
                                         <li><a href="#Reportage">我的最愛</a></li>
-                                        <li><a href="#Advertising">我的優惠券</a></li>
+                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Advertising">我的評論</a></li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
@@ -36,12 +36,20 @@
                                         <td>@Model.FMembership.FMembershipName</td>
                                     </tr>
                                     <tr>
+                                        <th>登入帳號</th>
+                                        <td>@Model.FPhone</td>
+                                    </tr>
+                                    <tr>
                                         <th>姓名</th>
                                         <td>@Model.FName</td>
                                     </tr>
                                     <tr>
                                         <th>暱稱</th>
                                         <td>@Model.FNickname</td>
+                                    </tr>
+                                    <tr>
+                                        <th>性別</th>
+                                        <td>@Model.FGender.FGenderName</td>
                                     </tr>
                                     <tr>
                                         <th>身分證字號</th>
@@ -52,17 +60,10 @@
                                         <td>@Model.FBirthDate.ToString().Substring(0,9)</td>
                                     </tr>
                                     <tr>
-                                        <th>電話</th>
-                                        <td>@Model.FPhone</td>
-                                    </tr>
-                                    <tr>
                                         <th>Email</th>
                                         <td>@Model.FEmail</td>
                                     </tr>
-                                    <tr>
-                                        <th>性別</th>
-                                        <td>@Model.FGender.FGenderName</td>
-                                    </tr>
+
                                 </table>
                             </div>
                         </div>

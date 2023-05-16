@@ -17,11 +17,11 @@
                                 <div class="pad">
                                     <ul class="nav">
                                         <li>@Html.ActionLink("會員資料", "memberList","memberFront",new { id=Model.FMemberId },null)</li>
-                                        <li><a>資料修改</a></li>
+                                        <li class="selected"><a>資料修改</a></li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Wedding">訂單查詢</a></li>
                                         <li><a href="#Reportage">我的最愛</a></li>
-                                        <li><a href="#Advertising">我的優惠券</a></li>
+                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li><a href="#Advertising">我的評論</a></li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
@@ -78,7 +78,10 @@
                                     </tr>
                                 </table>
                                 <br>
-                                <div class="MemberEditSubmit"><input class="button" type="submit" id="submit" value="送出"></div>
+                                <div class="MemberEditSubmit">
+                                    <input class="button" type="submit" id="submit" value="送出">
+                                    <a href="@Url.Action("memberList","memberFront",new{id=Model.FMemberId})"><input class="button" type="button" id="cancel" value="取消"></a>
+                                    </div>
                                 </form>
                             </div>
                         </div>
