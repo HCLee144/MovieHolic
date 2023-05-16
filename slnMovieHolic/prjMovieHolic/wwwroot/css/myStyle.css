@@ -1206,6 +1206,50 @@ figure span {
 }
 
 
+
+/*最愛電影頁面*/
+.likeMovie {
+    width: 670px;
+    display: flex;
+}
+
+.movieCardBig2 {
+    border: 1px solid silver;
+    width: 200px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+    .movieCardBig2 a {
+        color: #eaeaea;
+    }
+
+        .movieCardBig2 a:hover {
+            background-color: #105190;
+        }
+
+.buyNow2 {
+    display: inline-block;
+    color: #fff;
+    line-height: 28px;
+    text-decoration: none;
+    padding: 3px 14px;
+    background: #3a3939;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+    .buyNow2:hover {
+        background-color: #3a3939;
+        background: #3a3939;
+    }
+
+    .buyNow2 a:hover {
+        background-color: #3a3939;
+    }
+
+
 /*以上大致是宜霈的部分*/
 
 
