@@ -1098,6 +1098,7 @@ figure span {
 .tab_content::-webkit-scrollbar {
     background: transparent;
     width: 6px;
+    height:6px;
 }
 
 .tab_content::-webkit-scrollbar-thumb {
@@ -1228,7 +1229,7 @@ figure span {
 
 /*最愛電影頁面*/
 .likeMovie {
-    width: 670px;
+    width: 390px;
     display: flex;
 }
 
