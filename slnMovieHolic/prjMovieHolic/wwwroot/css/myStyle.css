@@ -972,9 +972,19 @@ figure span {
     }
 
     .MemberPasswordChangeform form {
+        padding-bottom:25px;
         border-bottom: 1px solid silver;
     }
 
+.ourButton {
+    background-color: #10a5d6;
+    width: 80px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 5px;
+    display: inline-block;
+    color: #eaeaea;
+}
 
 /*登入畫面*/
 .logInBox {
