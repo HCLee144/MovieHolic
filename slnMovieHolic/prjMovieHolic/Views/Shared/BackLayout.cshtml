@@ -54,13 +54,36 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="DashBoard" asp-action="DashBoard">
+                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="DashBoard" asp-action="Index">
                                 <span>
                                     <i class="ti ti-timeline"></i>   @*<==========這是放Icon*@
                                 </span>
-                                <span class="hide-menu">統計圖表</span>
+                                <span class="hide-menu">DashBoard</span>
                             </a>
                         </li>
+
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="true">
+                                <span>
+                                    <i class="ti ti-timeline"></i>   @*<==========這是放Icon*@
+                                </span>
+                                <span class="hide-menu">統計報表...</span>
+                            </div>
+                            <div class="collapse show" id="account-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Statisitics" asp-action="Member">會員相關</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Statics" asp-action="Member">電影相關</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Statics" asp-action="Member">客訴相關</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
                         @*<li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">EXTRA</span> <==========這是放大項(非必要)
@@ -104,8 +127,8 @@
                 </nav>
             </header>
             <!--  Header End -->
-            <div class="container-fluid">               
-                        @RenderBody()
+            <div class="container-fluid">
+                @RenderBody()
             </div>
         </div>
     </div>

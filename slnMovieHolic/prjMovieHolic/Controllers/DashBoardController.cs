@@ -13,7 +13,7 @@ namespace prjMovieHolic.Controllers
         {
             _db = db;
         }
-        public IActionResult DashBoard()
+        public IActionResult Index()
         {
             return View();
         }
