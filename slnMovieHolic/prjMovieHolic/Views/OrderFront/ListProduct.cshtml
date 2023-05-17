@@ -80,7 +80,7 @@
                                             <div>
                                                 <h3>@item.FProductName</h3>
                                                 <div>
-                                                    <button class="btnDrink"><img src="~/images/aa.jpg" alt=""></button>
+                                                    <button class="btnDrink"><img src="~/images/products/@item.FImagePath" alt=""></button>
                                                     <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
                                                 </div>
                                                 <div class="chooseFoodQTY">
@@ -98,26 +98,6 @@
                                             </div>
                                         }
                                     }              
-                                    <div>
-                                        <h3>可樂</h3>
-                                        <div>
-                                            <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
-                                            <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
-                                        </div>
-                                        <div class="chooseFoodQTY">
-                                            <button>-</button><span>　0　</span><button>+</button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h3>可樂</h3>
-                                        <div>
-                                            <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
-                                            <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
-                                        </div>
-                                        <div class="chooseFoodQTY">
-                                            <button>-</button><span>　0　</span><button>+</button>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="snackName"><h4 class="snackName1">爆米花</h4><h4 class="snackName2">點心</h4></div>
@@ -149,7 +129,7 @@
                                                 </div>
                                             }
                                         }
-                                        <div>
+                                        @*<div>
                                             <h3>可樂</h3>
                                             <div>
                                                 <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
@@ -158,7 +138,7 @@
                                             <div class="chooseFoodQTY">
                                                 <button>-</button><span>　0　</span><button>+</button>
                                             </div>
-                                        </div>
+                                        </div>*@
                                     </div>
                                     <div class="chooseSweet">
                                         @{
@@ -186,7 +166,7 @@
                                                 </div>
                                             }
                                         }
-                                        <div>
+                                        @*<div>
                                             <h3>可樂</h3>
                                             <div>
                                                 <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
@@ -195,7 +175,7 @@
                                             <div class="chooseFoodQTY">
                                                 <button>-</button><span>　0　</span><button>+</button>
                                             </div>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
                                 <button id="nextStep" class="button toRight">下一步</button>
@@ -250,7 +230,7 @@
         nextStep.addEventListener('click', () => {
 
             const productCount = [];
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 10; i++) {
                 const x = document.getElementById('span' + (i + 1));
                 productCount[i] = x.innerHTML
             }

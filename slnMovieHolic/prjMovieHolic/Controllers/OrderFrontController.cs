@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace prjMovieHolic.Controllers
 {
-    public class OrderFrontController : SuperFrontController
+    public class OrderFrontController : Controller
     {
         private MovieContext movieContext;
         public OrderFrontController(MovieContext db)
@@ -52,13 +52,7 @@ namespace prjMovieHolic.Controllers
                 if (selectDays > 6)
                     selectDays = 0;
             }
-            //todo 存Action 同時View中也有修改
-            string controller = "OrderFront";
-            string view = "ListTicketClass";
-            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
-            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
             
-            sessionCheck();
             shoppingCart.weekDays = wholeWeekDays.ToArray();
             return View(shoppingCart);
         }
@@ -336,9 +330,24 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.SetString(CDictionary.SelectedProductCount, json);
             return Content("購買食物成功");
         }
-
+        public bool sessionCheck()
+        {
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            bool isUserLoggedIn = userId != null;
+            return isUserLoggedIn;
+        }
         public IActionResult ListOrderDetails()
         {
+            //確認有沒有登入會員，if沒有，先登入會員
+            string controller = "OrderFront";
+            string view = "ListOrderDetails";
+            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+            bool verify_checkLogIn=sessionCheck();
+            if (!verify_checkLogIn)
+                return RedirectToAction("memberLogIn", "memberFront");
+
+
             CListOrderDetailsViewModel vm = new CListOrderDetailsViewModel();
 
             //選擇到的票種張數
@@ -359,6 +368,7 @@ namespace prjMovieHolic.Controllers
             int sessionID= getSessionID();
             var movie = getSessionMovie(sessionID);
             vm.selectedMovieName = movie.FNameCht;
+            vm.selectedMoviEngeName = movie.FNameEng;
             vm.selectedMovieID = movie.FId;
             vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);
 
@@ -387,6 +397,11 @@ namespace prjMovieHolic.Controllers
                 }
             }
             vm.set = showProducts;
+
+            //擁有的優惠券，假設memberID=1
+            var couponList = movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == 1 & c.FCouponType.FCouponDueDate.Month == DateTime.Now.Month & c.FIsUsed == false)
+                .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+            vm.CouponList = couponList;
 
             return View(vm);
         }

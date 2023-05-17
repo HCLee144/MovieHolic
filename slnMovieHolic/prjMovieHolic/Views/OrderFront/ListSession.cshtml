@@ -112,7 +112,7 @@
             day1.style.color = '#eaeaea';
 
             //抓第一天場次
-            const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day1.innerHTML + '&movieID=' + movieID);
+            const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day1.innerHTML + '&movieID=' + movieID.value);
             const datas = await response.json();
             let result=showSession(datas);
             pickCinemaAndTime.innerHTML=result;
@@ -133,7 +133,7 @@
                 element.style.color = '#eaeaea';
 
                 //呈現場次
-                const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day.innerHTML+'&movieID='+movieID);
+                const response = await fetch('@Url.Content("~/OrderFront/queryByDate")?date=' + day.innerHTML+'&movieID='+movieID.value);
                 const datas = await response.json();
                 const result=showSession(datas);
                 
