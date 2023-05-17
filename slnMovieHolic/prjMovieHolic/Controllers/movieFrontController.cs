@@ -30,12 +30,13 @@ namespace prjMovieHolic.Controllers
             var upcomingMovies = await _context.TMovies
                 .Where(m => m.FScheduleStart > now)
                 .ToListAsync();
-
-            var movieViewModel = new CMovieFrontViewModel
+                
+            CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 NowShowingMovies = nowShowingMovies,
-                UpcomingMovies = upcomingMovies
-            };
+                UpcomingMovies = upcomingMovies,
+               };
+
             return View(movieViewModel);
         }
 
@@ -56,7 +57,28 @@ namespace prjMovieHolic.Controllers
                 return NotFound();
             }
 
-            return View(tMovie);
+            var tTypeListNames = _context.TTypeLists.Where(t => t.FMovieId == id).Select(t => t.FType.FNameCht).ToArray();
+            var tDirectorListNames = _context.TDirectorLists.Where(t => t.FMovieId == id).Select(t => t.FDirector.FNameCht).ToArray();
+            var tActorListNames = _context.TActorLists.Where(t => t.FMovieId == id).Select(t => t.FActor.FNameCht).ToArray();
+
+            CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
+            {
+                tMovie = tMovie,
+                TypeListNames = getNames(tTypeListNames),
+                DirectorListNames = getNames(tDirectorListNames),
+                ActorListNames = getNames(tActorListNames)
+            };
+            return View(movieViewModel);
+        }
+
+        string getNames(Array data)
+        {
+            string result = "";
+            foreach (var item in data)
+            {
+                result += " " + item;
+            }
+            return result;
         }
 
         private bool TMovieExists(int id)
