@@ -19,7 +19,7 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <div class="memberInformation">
-                                <form asp-action="memberSignUp" id="SignUpForm">
+                                <form asp-action="memberSignUp" method="post">
                                 <table class="memberTable">
                                     <tr>
                                          <th>帳號</th>
@@ -102,16 +102,16 @@
         const radioFemale = document.querySelector('#radioFemale');
 
         //確認是否必填欄位都填了
-        SignUpForm.addEventListener("submit",function(event){
-            event.preventDefault();
-            if (FPhone=== ""||FPassword===""||FPasswordCheck==="") {
-                alert("請填寫必填欄位");
-                return;
-            }
+        //SignUpForm.addEventListener("submit",function(event){
+        //    event.preventDefault();
+        //    if (FPhone=== ""||FPassword===""||FPasswordCheck==="") {
+        //        alert("請填寫必填欄位");
+        //        return;
+        //    }
 
-            // 表單驗證通過，提交表單
-            this.submit();
-        })
+        //    // 表單驗證通過，提交表單
+        //    this.submit();
+        //})
 
 
 
