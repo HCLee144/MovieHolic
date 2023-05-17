@@ -80,8 +80,7 @@ namespace prjMovieHolic.Controllers
                     return RedirectToAction("memberLogin");
                 }
             }
-
-                return View();
+            return View();
                 
         }
         //註冊：驗證帳號是否已存在
