@@ -112,12 +112,29 @@
     justify-content: space-between;
 }
 
+.movieWallMovies {
+    display: flex;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+    .movieWallMovies::-webkit-scrollbar {
+        background: transparent;
+        height: 7px;
+    }
+
+    .movieWallMovies::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
+
+
 .movieCardBig {
     border: 1px solid silver;
-    padding: 5px;
+    padding: 0 8px 8px 8px;
     margin: 5px;
     border-radius: 10px;
 }
+
 
 .movieCard a {
     text-decoration: none;
@@ -185,10 +202,11 @@
     background: #10a5d6;
     border-radius: 5px;
     margin-top: 15px;
+    cursor:pointer;
 }
 
     .buyNow:hover {
-        background: #373737
+        background: #105190
     }
 
 .notYetMoviePlaceLine {
@@ -1063,6 +1081,7 @@ figure span {
     border-radius: 5px;
     max-height: 660px;
     overflow: scroll;
+    overflow-y:hidden;
 }
 
 .tabPlace input:checked + label,
@@ -1260,21 +1279,16 @@ figure span {
 
 /*電影牆*/
 
-.movieWallMovies {
+.movieWallMovies2 {
     display: flex;
-    overflow: scroll;
+    flex-wrap: wrap;
+    width:100%;
 }
 
-    .movieWallMovies::-webkit-scrollbar {
-        background: transparent;
-        height: 7px;
-    }
-
-    .movieWallMovies::-webkit-scrollbar-thumb {
-        background-color: silver;
-    }
-
-
+.movieCardBig2 {
+    width: 200px;
+    padding: 0 8px 8px 8px;
+}
 
 
 /*電影介紹頁面*/
@@ -1352,3 +1366,4 @@ figure span {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
