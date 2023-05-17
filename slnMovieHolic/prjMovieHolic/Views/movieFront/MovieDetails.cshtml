@@ -1,4 +1,4 @@
-﻿@model prjMovieHolic.Models.TMovie
+﻿@model prjMovieHolic.ViewModels.CMovieFrontViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -23,44 +23,44 @@
                 <div class="wrapper">
                     <div class="moviePage">
                         <div class="posterPlace">
-                            <img src="~/@Model.FPosterPath" alt="">
+                            <img src="~/@Model.tMovie.FPosterPath" alt="">
                             <hr /><hr /><hr /><hr /><hr />
                             <div class="niniImagesPlace"></div>
                         </div>
                         <div class="movie">
-                            <h3>@Model.FNameCht</h3>
-                            <h4>@Model.FNameEng</h4>
+                            <h3>@Model.tMovie.FNameCht</h3>
+                            <h4>@Model.tMovie.FNameEng</h4>
                             <div class="somethingAboutMovie">
                                 <ul>
                                     <li class="fatLi">級　別</li>
-                                    <li><img src="~/@Model.FRating.FImagePath" alt="">　@Model.FRating.FNameCht</li>
+                                    <li><img src="~/@Model.tMovie.FRating.FImagePath" alt="">　@Model.tMovie.FRating.FNameCht</li>
                                 </ul>
                                 <ul>
                                     <li class="fatLi">片　長</li>
-                                    <li>@Model.FShowLength　分鐘</li>
+                                    <li>@Model.tMovie.FShowLength　分鐘</li>
                                 </ul>
                                 <ul>
                                     <li class="fatLi">上映日</li>
-                                    <li>@Model.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                    <li>@Model.tMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
                                 </ul>
                                 <ul>
                                     <li class="fatLi">類　型</li>
-                                    <li>不知道怎麼寫1</li>
+                                    <li>@Model.TypeListNames</li>
                                 </ul>
                                 <ul>
                                     <li class="fatLi">演　員</li>
-                                    <li>不知道怎麼寫2</li>
+                                    <li>@Model.ActorListNames</li>
                                 </ul>
                                 <ul>
                                     <li class="fatLi">導　演</li>
-                                    <li>不知道怎麼寫3</li>
+                                    <li>@Model.DirectorListNames</li>
                                 </ul>
                             </div>
                             <div class="movieIntroduce">
                                 <ul>
                                     <li class="fatLi">簡　介</li>
                                     <li id="">
-                                        @Model.FInteroduce
+                                        @Model.tMovie.FInteroduce
                                     </li>
                                 </ul>
                                 <input class="myButton" type="button" value="更多／更少">
@@ -74,8 +74,8 @@
                         </ul>
                     </div>
                     <div>
-                        <iframe class="video" width="921" height="497" src="@Model.FTrailerLink"
-                                title=@Model.FNameCht frameborder="0" allow="accelerometer; autoplay;
+                        <iframe class="video" width="921" height="497" src="@Model.tMovie.FTrailerLink"
+                                title=@Model.tMovie.FNameCht frameborder="0" allow="accelerometer; autoplay;
                                 clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
