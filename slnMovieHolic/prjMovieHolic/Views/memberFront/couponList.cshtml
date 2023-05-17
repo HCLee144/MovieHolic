@@ -37,7 +37,7 @@
 										<li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li><a href="#Wedding">訂單查詢</a></li>
-										<li>@Html.ActionLink("我的最愛", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+										<li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li class="selected"><a>我的優惠券</a></li>
 										<li><a href="#Advertising">我的評論</a></li>
 										<li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
@@ -53,7 +53,7 @@
                                         
 										@foreach (var item in Model.CouponList)
 										{
-											<div class="coupon"@* onclick="location.href='@Url.Action("ListSession", "OrderFront")';"*@>
+											<div class="coupon">
 													<div class="couponName">
 														<img src="images/icons8-coupon-64.png" alt="">
 														<p>MovieHolic</p>
@@ -66,7 +66,7 @@
 															<h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
 														</div>
 													<div class="couponRule"><a href="">使用規則</a><hr><hr><hr><hr><hr><hr />
-														<a href="@Url.Action("ListSession", "OrderFront")">立即使用 > </a>
+														<a href="@Url.Action("ListSession", "OrderFront",new{ movieID=1})">立即使用 > </a>
 													</div>
 													</div>
 												
@@ -128,7 +128,6 @@
 											else
 											{   
                                                     <h3 class="couponNull">尚未使用優惠券</h3>
-												//<a href="https:www.google.com.tw/?hl=zh_TW">連結</a>
                                                     <h5 class="couponNullUsed">領取優惠券，立即使用享有購票優惠！</h5>
 											}
 

@@ -37,7 +37,7 @@ namespace prjMovieHolic.Controllers
                 if (controller != null && view != null)
                     return RedirectToAction(view, controller);
                 else
-                    return RedirectToAction("memberList", "memberLogin");
+                    return RedirectToAction("memberList", "memberFront", new {id=vm.FMemberId});
                
             }
             return View();
@@ -60,9 +60,9 @@ namespace prjMovieHolic.Controllers
         public IActionResult memberLogout()
         {
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
-            return RedirectToAction("MovieIndex","movieFront");
+            return RedirectToAction("Index","Home");
         }
-        //todo尚未驗證完成 註冊會員
+        //todo 尚未驗證完成 註冊會員
         public IActionResult memberSignUp()
         {
             return View();
@@ -70,17 +70,18 @@ namespace prjMovieHolic.Controllers
         [HttpPost]
         public IActionResult memberSignUP(TMember member)
         {
-            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
-            if (accountCheck == false)
+            if (ModelState.IsValid)
             {
-            _movieContext.TMembers.Add(member);
-            _movieContext.SaveChanges();
-                return RedirectToAction("memberLogin");
+                var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
+                if (accountCheck == false)
+                {
+                    _movieContext.TMembers.Add(member);
+                    _movieContext.SaveChanges();
+                    return RedirectToAction("memberLogin");
+                }
             }
-            else
-            {
+
                 return View();
-            }
                 
         }
         //註冊：驗證帳號是否已存在
@@ -94,7 +95,12 @@ namespace prjMovieHolic.Controllers
         {
             var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
             bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
-            bool passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
+            bool passwordDoubleCheck = false;
+            if (FPassword != null)
+            {
+                passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
+            }
+
             if ( accountCheck==false && passwordFormat == true && passwordDoubleCheck == true)
             {
                 return Json(new { success = true, message = "註冊成功。" });
@@ -278,6 +284,7 @@ namespace prjMovieHolic.Controllers
             sessionCheck();
 			return View(viewModel);
         }
+        //收藏頁面顯示
         public IActionResult favoriteList(int? id)
         {
             var members=_movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
@@ -297,6 +304,21 @@ namespace prjMovieHolic.Controllers
             };
             sessionCheck();
             return View(viewModel);
+        }
+        //todo 取消收藏
+        public IActionResult favoriteCancel(TMemberAction memberAction)
+        {
+            TMemberAction favorite = _movieContext.TMemberActions
+                .LastOrDefault(m => m.FMemberId == memberAction.FMemberId & m.FMovieId == memberAction.FMovieId);
+
+            if (favorite != null)
+            {
+                _movieContext.TMemberActions.Add(favorite);
+
+                _movieContext.SaveChanges();
+
+            }
+            return RedirectToAction("memberList", new { id = memberAction.FMemberId });
         }
     }
 }

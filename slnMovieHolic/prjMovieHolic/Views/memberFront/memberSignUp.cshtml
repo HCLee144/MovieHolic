@@ -7,9 +7,6 @@
         font-size:15px;
         line-height:20px;
     }
-/*    th {
-        line-height: 10px;
-    }*/
 </style>
 
 <div id="page2">
@@ -22,12 +19,12 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <div class="memberInformation">
-                                <form asp-action="memberSignUp">
+                                <form asp-action="memberSignUp" id="SignUpForm">
                                 <table class="memberTable">
                                     <tr>
                                          <th>帳號</th>
                                             <td>
-                                                <input type="text" name="FPhone" id="FPhone" value="" size="30" required placeholder="請輸入手機號碼">
+                                                <input type="text" name="FPhone" id="FPhone" value="" size="30" placeholder="請輸入手機號碼" required>
                                                 <div id="accountVerify" class="verify"> </div>
                                             </td>
                                     </tr>
@@ -97,11 +94,28 @@
         const passwordVerify=document.querySelector('#passwordVerify');
         const passwordCheckVerify = document.querySelector('#passwordCheckVerify');
         const SignUpDemo = document.querySelector('#SignUpDemo');
+        const SignUpForm = document.querySelector('#SignUpForm')
+        const FName = document.querySelector('#FName');
+        const FBirthDate = document.querySelector('#FBirthDate');
+        const FEmail = document.querySelector('#FEmail');
+        const FIdcardNumber = document.querySelector('#FIdcardNumber');
         
 
-        //submit.addEventListener('click',function(){
-        //    alert('註冊成功，請重新登錄。');
-        //})
+        //確認是否必填欄位都填了
+        SignUpForm.addEventListener("submit",function(event){
+            event.preventDefault();
+            if (FPhone=== ""||FPassword===""||FPasswordCheck==="") {
+                alert("請填寫必填欄位");
+                return;
+            }
+
+            // 表單驗證通過，提交表單
+            this.submit();
+        })
+
+
+
+
         FPhone.addEventListener('blur', async function(){
             //驗證帳號是否重複
             const response=await fetch('@Url.Content("~/memberFront/accountCheck")?FPhone='+FPhone.value,{method:"POST"})
@@ -149,12 +163,7 @@
             }
         })
 
-        const FName = document.querySelector('#FName');
-        const FBirthDate = document.querySelector('#FBirthDate');
-        const FEmail = document.querySelector('#FEmail');
-        const FIdcardNumber = document.querySelector('#FIdcardNumber');
-
-
+        //Demo
         SignUpDemo.addEventListener('click', function () {
            FPhone.value = '0983556965'
            FPassword.value = '5CUSfTPO';
