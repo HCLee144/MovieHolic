@@ -429,7 +429,6 @@ figure span {
 /*已點項目小框框*/
 .alreadyOrder {
     width: 430px;
-    margin-top: 52px;
     margin-bottom: 20px;
     padding-top: 8px;
     border: 1px solid silver;
@@ -535,6 +534,7 @@ figure span {
     background-color: #10a5d6;
     padding: 10px;
     border-radius: 5px;
+    font-size:16px;
     color: #eaeaea;
 }
 
@@ -550,7 +550,7 @@ figure span {
 
     .orderDetailOnChooseSeat li {
         width: 180px;
-        height: 80px;
+        height: 50px;
         border-left: 1px solid silver;
         text-align: center;
         padding: 10px;
@@ -584,6 +584,8 @@ figure span {
     display: flex;
 }
 
+
+
 .sell {
     width: 18px;
     height: 18px;
@@ -600,6 +602,21 @@ figure span {
     border-radius: 15px;
 }
 
+.loveSeat {
+    width: 18px;
+    height: 18px;
+    background-color:lightpink;
+    border: 1px solid silver;
+    border-radius: 15px;
+}
+
+.yourSeat {
+    width: 18px;
+    height: 18px;
+    background-color: steelblue;
+    border: 1px solid silver;
+    border-radius: 15px;
+}
 .showLeftSeats {
     width: 150px;
 }
@@ -686,7 +703,7 @@ figure span {
 
     .orderDetailOnChooseFood li {
         width: 180px;
-        height: 80px;
+        height: 50px;
         border-left: 1px solid silver;
         text-align: center;
         padding: 10px;
@@ -728,12 +745,23 @@ figure span {
 
 .chooseDrink {
     display: flex;
-    justify-content: space-around;
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top:15px;
+    overflow:scroll;
 }
+
+    .chooseDrink::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
+        width:6px;
+    }
+
+    .chooseDrink::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
+
 
 .foodPrice {
     display: flex;
@@ -765,28 +793,48 @@ figure span {
 
 .choosePOP {
     display: flex;
-    justify-content: space-around;
     width: 550px;
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top: 15px;
+    overflow:scroll;
 }
+
+    .choosePOP::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
+        width: 6px;
+    }
+
+    .choosePOP::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 .chooseSweet {
     display: flex;
-    justify-content: space-around;
     width: 360px;
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top: 15px;
+    overflow:scroll;
 }
+
+    .chooseSweet::-webkit-scrollbar {
+        background: transparent;
+        height: 6px;
+        width: 6px;
+    }
+
+    .chooseSweet::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 .btnDrink {
     background-color: rgb(219, 218, 218);
-    border-radius:0 15px 0 0;
-    padding-top:5px;
+    border-radius: 0 15px 0 0;
+    padding-top: 5px;
 }
 
 .btnPOP {
@@ -809,15 +857,27 @@ figure span {
     border-radius: 0 0 15px 15px;
 }
 
-    .chooseFoodQTY button {
-        background-color: #10a5d6;
-        color: #eaeaea;
-        border-radius: 5px;
-    }
+.chooseFoodQTY button {
+    background-color: #10a5d6;
+    color: #eaeaea;
+   border-radius: 5px;
+}
 
-        .chooseFoodQTY button:hover {
-            background-color: #105190;
-        }
+.chooseFoodQTY button:hover {
+    background-color: #105190;
+}
+
+.FoodQTYCutAdd{
+    display:flex;
+}
+
+.QTYCut {
+    margin-right: 18px;
+}
+
+.QTYAdd{
+    margin-left:18px;
+}
 
 .space {
     width: 100px;
@@ -1144,6 +1204,50 @@ figure span {
     display: flex;
     justify-content: space-between;
 }
+
+
+
+/*最愛電影頁面*/
+.likeMovie {
+    width: 670px;
+    display: flex;
+}
+
+.movieCardBig2 {
+    border: 1px solid silver;
+    width: 200px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+    .movieCardBig2 a {
+        color: #eaeaea;
+    }
+
+        .movieCardBig2 a:hover {
+            background-color: #105190;
+        }
+
+.buyNow2 {
+    display: inline-block;
+    color: #fff;
+    line-height: 28px;
+    text-decoration: none;
+    padding: 3px 14px;
+    background: #3a3939;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+    .buyNow2:hover {
+        background-color: #3a3939;
+        background: #3a3939;
+    }
+
+    .buyNow2 a:hover {
+        background-color: #3a3939;
+    }
 
 
 /*以上大致是宜霈的部分*/

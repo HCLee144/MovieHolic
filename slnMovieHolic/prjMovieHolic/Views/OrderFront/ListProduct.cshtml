@@ -90,12 +90,34 @@
                                                         string price = "price" + item.FProductId;
                                                     }
                                                     <input type="hidden" value="@item.FProductPrice" id="@price">
-                                                    <button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">　0　</span><button class="QTYAdd" id="@item.FProductId">+</button><span id="@totalName">單價為：@item.FProductPrice</span>
+                                                    <div class="FoodQTYCutAdd">
+                                                        <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
+                                                        <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         }
-                                    }
-
+                                    }              
+                                    <div>
+                                        <h3>可樂</h3>
+                                        <div>
+                                            <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                            <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                        </div>
+                                        <div class="chooseFoodQTY">
+                                            <button>-</button><span>　0　</span><button>+</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3>可樂</h3>
+                                        <div>
+                                            <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                            <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                        </div>
+                                        <div class="chooseFoodQTY">
+                                            <button>-</button><span>　0　</span><button>+</button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="snackName"><h4 class="snackName1">爆米花</h4><h4 class="snackName2">點心</h4></div>
@@ -119,11 +141,24 @@
                                                             string price = "price" + item.FProductId;
                                                         }
                                                         <input type="hidden" value="@item.FProductPrice" id="@price">
-                                                        <button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">　0　</span><button class="QTYAdd" id="@item.FProductId">+</button><span id="@totalName">單價為：@item.FProductPrice</span>
+                                                        <div class="FoodQTYCutAdd">
+                                                            <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
+                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             }
                                         }
+                                        <div>
+                                            <h3>可樂</h3>
+                                            <div>
+                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                            </div>
+                                            <div class="chooseFoodQTY">
+                                                <button>-</button><span>　0　</span><button>+</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="chooseSweet">
                                         @{
@@ -143,11 +178,24 @@
                                                             string price = "price" + item.FProductId;
                                                         }
                                                         <input type="hidden" value="@item.FProductPrice" id="@price">
-                                                        <button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">　0　</span><button class="QTYAdd" id="@item.FProductId">+</button><span id="@totalName">單價為：@item.FProductPrice</span>
+                                                        <div class="FoodQTYCutAdd">
+                                                            <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
+                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             }
                                         }
+                                        <div>
+                                            <h3>可樂</h3>
+                                            <div>
+                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                            </div>
+                                            <div class="chooseFoodQTY">
+                                                <button>-</button><span>　0　</span><button>+</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <button id="nextStep" class="button toRight">下一步</button>

@@ -28,10 +28,11 @@
                                 </ul>
                             </div>
                             <!--這裡開始訂票-->
+                            <h4 class="orderBoxH4">@Model.selectedMovieName</h4>
+                            <p class="orderBoxP"> 媽的發糕英文名稱</p>
                             <div class="orderBox">
                                 <div>
-                                    <figure>
-                                        <h4>@Model.selectedMovieName</h4>
+                                    <figure>                                        
                                         @{
                                             string showMoviePoster = $"{Model.selectedMovieID}.jpg";
                                         }
