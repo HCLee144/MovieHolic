@@ -29,7 +29,7 @@
                             </div>
                             <!--這裡開始訂票-->
                             <h4 class="orderBoxH4">@Model.selectedMovieName</h4>
-                            <p class="orderBoxP"> 媽的發糕英文名稱</p>
+                            <p class="orderBoxP">@Model.selectedMoviEngeName</p>
                             <div class="orderBox">
                                 <div>
                                     <figure>                                        
@@ -68,7 +68,7 @@
 
                                             }
                                             <li><span>套餐項目</span>@set</li>
-                                            <li><span class="labUsingCoupon">使用優惠</span><input class="txtUsingCoupon" type="text"><input class="btnGoToCoupon" type="button" id="btnGoToCoupon" value="查看優惠"></li>
+                                            <li><span class="labUsingCoupon">使用優惠</span><input id="txtUsingCoupon" class="txtUsingCoupon" type="text"><input class="btnGoToCoupon" type="button" id="btnGoToCoupon" value="查看優惠"></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -83,21 +83,28 @@
 </div>
 
 <dialog id="IamDialog" class="IamDialog">
-    <div class="coupon usedCoupon">
-        <div class="couponName">
-            <img src="images/icons8-coupon-64.png" alt="">
-            <p>MovieHolic</p>
-        </div>
-        <div class="couponDetail">
-            <div>
-                <h3>12 折</h3>
-                <h4>結帳立即享有 12 折</h4>
-                <h5>12 特惠</h5>
-                <h6>有效日期：12</h6>
+    @foreach (var item in Model.CouponList)
+    {
+        <div class="coupon">
+            <div class="couponName">
+                <img src="images/icons8-coupon-64.png" alt="">
+                <p>MovieHolic</p>
             </div>
-            <div class="couponRule"><a href="">使用規則</a></div>
+            <div class="couponDetail">
+                <div>
+                    <h3>@item.FCouponType.FCouponDiscount 折</h3>
+                    <h4>結帳立即享有 @item.FCouponType.FCouponDiscount 折</h4>
+                    <h5>@item.FCouponType.FCouponTypeName 特惠</h5>
+                    <h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
+                </div>
+                <div class="couponRule">
+                    <a href="">使用規則</a><hr><hr><hr><hr><hr><hr />
+                    <a id="@item.FCouponTypeId" name="@item.FCouponType.FCouponDiscount" onclick="chooseCoupon(event)")">立即使用 > </a>
+                </div>
+            </div>
+
         </div>
-    </div>
+    }
     <button id="closeDialog" class="closeDialog">確認</button>
 </dialog>
 
@@ -108,6 +115,7 @@
         const formdialog = document.getElementById('IamDialog');
         const btnCloseDialog = document.getElementById('closeDialog');
         const btnGoToCoupon = document.getElementById('btnGoToCoupon');
+        const txtUsingCoupon = document.getElementById('txtUsingCoupon');
 
         btnGoToCoupon.addEventListener('click',()=>{
             formdialog.showModal();
@@ -117,7 +125,15 @@
         })
 
 
-
+        function chooseCoupon(event)
+        {
+            const couponID=event.target.getAttribute('id');
+            const couponTypeName=event.target.getAttribute('name');
+            txtUsingCoupon.value=couponTypeName+'折';
+            console.log(couponID);
+            console.log(couponTypeName);
+            formdialog.close();
+        }
 
 
 

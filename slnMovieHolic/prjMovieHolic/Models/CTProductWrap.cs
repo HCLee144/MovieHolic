@@ -9,7 +9,7 @@
         }
         public TProduct product
         {
-            get{ return _product; }
+            get { return _product; }
             set { _product = value; }
         }
         public int FProductId
@@ -32,5 +32,12 @@
             get { return _product.FImage; }
             set { _product.FImage = value; }
         }
+        public string FImagePath
+        {
+            get { return _product.FImagePath; }
+            set { _product.FImagePath = value; }
+        }
+        public IFormFile photo {get; set;}
+
     }
 }

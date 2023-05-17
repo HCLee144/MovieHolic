@@ -37,7 +37,7 @@ namespace prjMovieHolic.Controllers
                 if (controller != null && view != null)
                     return RedirectToAction(view, controller);
                 else
-                    return RedirectToAction("memberList", "memberLogin");
+                    return RedirectToAction("memberList", "memberFront", new {id=vm.FMemberId});
                
             }
             return View();
