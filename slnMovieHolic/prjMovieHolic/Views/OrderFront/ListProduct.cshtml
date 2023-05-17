@@ -84,12 +84,40 @@
                                                     <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
                                                 </div>
                                                 <div class="chooseFoodQTY">
-                                                    <button>-</button><span>　0　</span><button>+</button><span>總價：$000</span>
+                                                    @{
+                                                        string totalName = "total" + item.FProductId;
+                                                        string spanName = "span" + item.FProductId;
+                                                        string price = "price" + item.FProductId;
+                                                    }
+                                                    <input type="hidden" value="@item.FProductPrice" id="@price">
+                                                    <div class="FoodQTYCutAdd">
+                                                        <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
+                                                        <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         }
-                                    }
-
+                                    }              
+                                    <div>
+                                        <h3>可樂</h3>
+                                        <div>
+                                            <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                            <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                        </div>
+                                        <div class="chooseFoodQTY">
+                                            <button>-</button><span>　0　</span><button>+</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3>可樂</h3>
+                                        <div>
+                                            <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                            <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                        </div>
+                                        <div class="chooseFoodQTY">
+                                            <button>-</button><span>　0　</span><button>+</button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="snackName"><h4 class="snackName1">爆米花</h4><h4 class="snackName2">點心</h4></div>
@@ -107,11 +135,30 @@
 
                                                     </div>
                                                     <div class="chooseFoodQTY">
-                                                        <button>-</button><span>　0　</span><button>+</button><span>總價：$000</span>
+                                                        @{
+                                                            string totalName = "total" + item.FProductId;
+                                                            string spanName = "span" + item.FProductId;
+                                                            string price = "price" + item.FProductId;
+                                                        }
+                                                        <input type="hidden" value="@item.FProductPrice" id="@price">
+                                                        <div class="FoodQTYCutAdd">
+                                                            <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
+                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             }
                                         }
+                                        <div>
+                                            <h3>可樂</h3>
+                                            <div>
+                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                            </div>
+                                            <div class="chooseFoodQTY">
+                                                <button>-</button><span>　0　</span><button>+</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="chooseSweet">
                                         @{
@@ -125,18 +172,103 @@
 
                                                     </div>
                                                     <div class="chooseFoodQTY">
-                                                        <button>-</button><span>　0　</span><button>+</button><span>總價：$000</span>
+                                                        @{
+                                                            string totalName = "total" + item.FProductId;
+                                                            string spanName = "span" + item.FProductId;
+                                                            string price = "price" + item.FProductId;
+                                                        }
+                                                        <input type="hidden" value="@item.FProductPrice" id="@price">
+                                                        <div class="FoodQTYCutAdd">
+                                                            <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
+                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             }
                                         }
+                                        <div>
+                                            <h3>可樂</h3>
+                                            <div>
+                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
+                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
+                                            </div>
+                                            <div class="chooseFoodQTY">
+                                                <button>-</button><span>　0　</span><button>+</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <button id="nextStep" class="button toRight">下一步</button>
                             </div>
-                            <button id="nextStep" class="button toRight">下一步</button>
-                        </div>
                     </section>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<dialog id="IamDialog" class="IamDialog">
+    <p>尚未選擇票種</p>
+    <button id="closeDialog" class="closeDialog">確認</button>
+</dialog>
+
+@section Scripts{
+    <script>
+        const btnAdds = document.querySelectorAll('.QTYAdd');
+        const btnCuts = document.querySelectorAll('.QTYCut');
+        const nextStep = document.getElementById('nextStep');
+
+        btnAdds.forEach((item) => {
+            item.addEventListener('click', () => {
+                let productID = item.getAttribute('id');
+                const productSpan = document.querySelector('#span' + productID);
+                const totalSpan = document.querySelector('#total' + productID);
+                const productPrice = document.querySelector('#price' + productID);
+                let productValue = Number(productSpan.innerHTML);
+                productValue++;
+                productSpan.innerHTML = productValue;
+                totalSpan.innerHTML = '總價:' + productValue * Number(productPrice.value);
+            })
+        })
+
+        btnCuts.forEach((item) => {
+            item.addEventListener('click', () => {
+                let productID = item.getAttribute('id');
+                const productSpan = document.querySelector('#span' + productID);
+                const totalSpan = document.querySelector('#total' + productID);
+                const productPrice = document.querySelector('#price' + productID);
+                let productValue = Number(productSpan.innerHTML);
+                productValue--;
+                if (productValue < 0)
+                    productValue = 0;
+                productSpan.innerHTML = productValue;
+                totalSpan.innerHTML = '總價:' + productValue * Number(productPrice.value);
+            })
+        })
+
+        nextStep.addEventListener('click', () => {
+
+            const productCount = [];
+            for (let i = 0; i < 9; i++) {
+                const x = document.getElementById('span' + (i + 1));
+                productCount[i] = x.innerHTML
+            }
+
+            let product="";
+            productCount.forEach((item)=>{
+                product+=item+',';
+            })
+            if(product.substring(product.length-1)==',')
+            product=product.substring(0,product.length-1);
+            saveProductCount(product);
+        })
+
+        async function saveProductCount(product) {
+            const response = await fetch('@Url.Content("~/OrderFront/saveProductCount")?products=' + product);
+            const data = await response.text();
+            if (data == "購買食物成功")
+                window.location.replace('@Url.Content("~/OrderFront/ListOrderDetails")')
+        }
+    </script>
+}

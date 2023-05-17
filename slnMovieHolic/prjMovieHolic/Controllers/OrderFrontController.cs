@@ -65,6 +65,7 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult queryByDate(string date, int movieID)
         {
+            //依據點選到的日期出現場次
             string realDate = date.Substring(0, 5);
             var sessions = movieContext.TSessions.Include(s=>s.FTheater).AsEnumerable().Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate&&s.FMovieId==movieID);
 
@@ -258,7 +259,6 @@ namespace prjMovieHolic.Controllers
             vm.popcornCategory = popcorns;
             vm.dessertCategory = desserts;
 
-
             //抓電影名字
             int sessionID = getSessionID();
             vm.selectedSessionID = sessionID;
@@ -285,9 +285,7 @@ namespace prjMovieHolic.Controllers
 
 
             //抓座位
-            string json_seats = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
-            List<int> seats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
-            List<string> showSeats=getSeatNames(seats, theater.FTheaterId);
+            List<string> showSeats=getSeatNames(theater.FTheaterId);
             vm.selectedSeats = showSeats;
 
             return View(vm);
@@ -332,6 +330,13 @@ namespace prjMovieHolic.Controllers
             }
         }
 
+        public IActionResult saveProductCount(string products)
+        {
+            string json=System.Text.Json.JsonSerializer.Serialize(products);
+            HttpContext.Session.SetString(CDictionary.SelectedProductCount, json);
+            return Content("購買食物成功");
+        }
+
         public IActionResult ListOrderDetails()
         {
             CListOrderDetailsViewModel vm = new CListOrderDetailsViewModel();
@@ -341,39 +346,48 @@ namespace prjMovieHolic.Controllers
             string[] tickets = json_tickets.Split(",");
             string[] ticketsNames = new string[] { "一般票", "學生票", "軍警票" };
             string selectedTickets="";
-            for(int i=1;i<tickets.Length;i++)
+            for(int i=0;i<tickets.Length;i++)
             {
                 if (Convert.ToInt32(tickets[i]) > 0)
                     selectedTickets = $"{ticketsNames[i]}:{tickets[i]}張,";
             }
             if (selectedTickets.Trim().Substring(selectedTickets.Trim().Length - 1, 1) == ",")
                 selectedTickets = selectedTickets.Trim().Substring(0, selectedTickets.Trim().Length - 1);
-            vm.tickets_od = selectedTickets;
+            vm.tickets = selectedTickets;
 
             //選擇到的電影名稱、日期時間
-            int sessionID=(int)HttpContext.Session.GetInt32(CDictionary.SelectedSessionID);
-            vm.selectedMovieName = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == sessionID).FMovie.FNameCht;
-            vm.selectedMovieID = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FMovieId;
-            string selectedMonth=movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("MM");
-            string selectedDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("dd");
-            string selectedHour = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("HH");
-            string selectedMinute = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == sessionID).FStartTime.ToString("mm");
-            vm.selecteDate_od = $"{selectedMonth}月{selectedDate}日  {selectedHour}時{selectedMinute}分";
+            int sessionID= getSessionID();
+            var movie = getSessionMovie(sessionID);
+            vm.selectedMovieName = movie.FNameCht;
+            vm.selectedMovieID = movie.FId;
+            vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);
 
             //選擇到的廳院
-            string selectedTheater = movieContext.TSessions.Include(s => s.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater.FTheater;
-            vm.theaterName_od = selectedTheater;
+            var theater = getTheater(sessionID);
+            string selectedTheater = theater.FTheater;
+            vm.theaterName = selectedTheater;
+            int theaterID = theater.FTheaterId;
 
             //選擇到的座位(correctSeatID)
-            string json_seats=HttpContext.Session.GetString(CDictionary.SelectedSeatID);
-            List<int> selectedSeats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
-            string showSeats = "";
-            foreach(var item in selectedSeats)
+            List<string> showSeats = getSeatNames(theaterID);
+            vm.seats = showSeats;
+
+            //選擇到的餐點
+            string json_set=HttpContext.Session.GetString(CDictionary.SelectedProductCount);
+            string product=System.Text.Json.JsonSerializer.Deserialize<string>(json_set);
+            string[] productCounts=product.Split(",");
+            var productNames = movieContext.TProducts.Select(p => p.FProductName).ToArray();
+            List<string> showProducts = new List<string>();
+            for(int i=0;i<productCounts.Length;i++)
             {
-                showSeats += $"第{item}個,";
+                if (Convert.ToInt32(productCounts[i].Trim())>0)
+                {
+                    string thisProduct = $"{productNames[i]}X{productCounts[i]}";
+                    showProducts.Add(thisProduct);
+                }
             }
-            vm.seats_od = showSeats;
-            
+            vm.set = showProducts;
+
             return View(vm);
         }
 
@@ -426,8 +440,10 @@ namespace prjMovieHolic.Controllers
             return theater;
         }
 
-        List<string> getSeatNames(List<int>seats,int theaterID)
+        List<string> getSeatNames(int theaterID)
         {
+            string json_seats = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
+            List<int> seats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
             List<string> list = new List<string>();
             foreach(var item in seats)
             {

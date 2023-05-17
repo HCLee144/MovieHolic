@@ -11,5 +11,6 @@
         public static readonly string SelectedSessionID = "SelectedSessionID";
         public static readonly string SelectedTicketClass = "SelectedTicketClass";
         public static readonly string SelectedSeatID = "SelectedSeatID";
+        public static readonly string SelectedProductCount = "SelectedProductCount";
     }
 }
