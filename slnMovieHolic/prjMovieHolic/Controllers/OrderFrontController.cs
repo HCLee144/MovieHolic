@@ -489,8 +489,9 @@ namespace prjMovieHolic.Controllers
                 orderDetail.FSeatId = seats[i];
                 orderDetail.FTicketClassId = ticketSelected[i];
                 movieContext.TOrderDetails.Add(orderDetail);
+                movieContext.SaveChanges();
             }
-            //movieContext.SaveChanges();
+           
             
             return Content("儲存成功");
         }
