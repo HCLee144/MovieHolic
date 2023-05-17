@@ -535,6 +535,7 @@ figure span {
     margin-left: 5px;
     margin-right: 5px;
     font-weight: bolder;
+    cursor: pointer:
 }
 
 .labUsingCoupon {
@@ -875,11 +876,12 @@ figure span {
     border-radius: 0 0 15px 15px;
 }
 
-.chooseFoodQTY button {
-    background-color: #10a5d6;
-    color: #eaeaea;
-   border-radius: 5px;
-}
+    .chooseFoodQTY button {
+        background-color: #10a5d6;
+        color: #eaeaea;
+        border-radius: 5px;
+        cursor: pointer:
+    }
 
 .chooseFoodQTY button:hover {
     background-color: #105190;
@@ -984,6 +986,12 @@ figure span {
     border-radius: 5px;
     display: inline-block;
     color: #eaeaea;
+    cursor:pointer:
+}
+
+.ourButton:hover{
+    color:#eaeaea;
+    background-color:#105190;
 }
 
 /*登入畫面*/
@@ -1040,6 +1048,7 @@ figure span {
     border-radius: 15px;
     display: inline-block;
     color: #eaeaea;
+    cursor: pointer:
 }
 
     .loginButton:hover {
@@ -1367,6 +1376,7 @@ figure span {
     width: 90px;
     margin-top: 10px;
     padding: 5px;
+    cursor: pointer:
 }
 
 .movieIntroduce input:hover {
