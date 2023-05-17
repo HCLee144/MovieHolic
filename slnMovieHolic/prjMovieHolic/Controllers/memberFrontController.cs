@@ -93,23 +93,26 @@ namespace prjMovieHolic.Controllers
         //註冊：回傳是否註冊成功 
         public IActionResult IsSignUp(string FPhone,string FPassword,string FPasswordCheck)
         {
-            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
-            bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
-            bool passwordDoubleCheck = false;
-            if (FPassword != null)
+            if (ModelState.IsValid)
             {
-                passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
-            }
+                var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
+                bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+                bool passwordDoubleCheck = false;
+                if (FPassword != null)
+                {
+                    passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
+                }
 
-            if ( accountCheck==false && passwordFormat == true && passwordDoubleCheck == true)
-            {
-                return Json(new { success = true, message = "註冊成功。" });
+                if (accountCheck == false && passwordFormat == true && passwordDoubleCheck == true)
+                {
+                    return Json(new { success = true, message = "註冊成功。" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+                }
             }
-            else
-            {
-                return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
-            }
-                
+            return View();   
         }
 
 
