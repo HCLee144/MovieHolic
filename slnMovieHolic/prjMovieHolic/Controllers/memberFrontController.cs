@@ -322,5 +322,17 @@ namespace prjMovieHolic.Controllers
             }
             return RedirectToAction("memberList", new { id = memberAction.FMemberId });
         }
+        public IActionResult orderList(int? id)
+        {
+            var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
+            var viewModel = new COrderAndMemberViewModel
+            {
+                Member = members,
+
+            };
+            sessionCheck();
+            return View(viewModel);
+        }
+
     }
 }

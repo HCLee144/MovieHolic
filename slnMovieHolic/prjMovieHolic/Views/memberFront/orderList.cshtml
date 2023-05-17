@@ -1,0 +1,127 @@
+﻿@model prjMovieHolic.ViewModels.COrderAndMemberViewModel
+@{
+    ViewData["Title"] = "orderList";
+}
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <div class="line1 wrapper">
+                        <div class="wrapper tabs memCut">
+                            <article class="memberMenu">
+                                <h3 style="font-size:20px">歡迎，@Model.Member.FName</h3>
+                                <hr />
+                                <div class="pad">
+                                    <ul class="nav">
+                                        <li>@Html.ActionLink("會員資料", "memberList","memberFront",new {id=Model.Member.FMemberId},null)</li>
+                                        <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li><a class="selected">訂單查詢</a></li>
+                                        <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li><a href="#Advertising">我的評論</a></li>
+                                        <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
+                                    </ul>
+                                </div>
+                            </article>
+
+
+
+
+                            <div class="orderList">
+                                <div class="tabPlace">
+                                    <!-- TAB1 打包區塊 start -->
+                                    <input id="tab1" type="radio" name="tab" checked="checked" />
+                                    <label for="tab1">已取票</label>
+                                    <div class="tab_content">
+                                        <div class="addBorder">
+                                            <div class="orderDetailBox">
+                                                <div class="orderDetailBoxTop">
+                                                    <div>
+                                                        <h3>第　1　廳</h3>
+                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
+                                                    </div>
+                                                    <div>
+                                                        <a href="">
+                                                            <h3>詳情</h3>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="orderDetailBoxBottom">
+                                                    <h3>2023/5/31_10:30</h3>
+                                                    <h3>$888</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- TAB1 打包區塊 end -->
+                                    <!-- TAB2 打包區塊 start -->
+                                    <input id="tab2" type="radio" name="tab" />
+                                    <label for="tab2">未取票</label>
+                                    <div class="tab_content">
+
+                                        <div class="addBorder">
+                                            <div class="orderDetailBox">
+                                                <div class="orderDetailBoxTop">
+                                                    <div>
+                                                        <h3>第　1　廳</h3>
+                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
+                                                    </div>
+                                                    <div>
+                                                        <a href="">
+                                                            <h3>詳情</h3>
+                                                        </a>
+                                                        <button class="orderDetaildelete">取消</button>
+                                                    </div>
+                                                </div>
+                                                <div class="orderDetailBoxBottom">
+                                                    <h3>2023/5/31_10:30</h3>
+                                                    <h3>$888</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- TAB2 打包區塊 end -->
+                                    <!-- TAB3 打包區塊 start -->
+                                    <input id="tab3" type="radio" name="tab" />
+                                    <label for="tab3">已取消</label>
+                                    <div class="tab_content">
+
+                                        <div class="addBorder">
+                                            <div class="orderDetailBox">
+                                                <div class="orderDetailBoxTop">
+                                                    <div>
+                                                        <h3>第　1　廳</h3>
+                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
+                                                    </div>
+                                                    <div>
+                                                        <a href="">
+                                                            <h3>詳情</h3>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="orderDetailBoxBottom">
+                                                    <h3>2023/5/31_10:30</h3>
+                                                    <h3>$888</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- TAB3 打包區塊 end -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
