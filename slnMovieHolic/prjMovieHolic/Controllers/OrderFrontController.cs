@@ -334,6 +334,8 @@ namespace prjMovieHolic.Controllers
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
             bool isUserLoggedIn = userId != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
             return isUserLoggedIn;
         }
         public IActionResult ListOrderDetails()
