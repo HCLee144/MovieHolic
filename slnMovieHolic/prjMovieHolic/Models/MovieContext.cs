@@ -115,7 +115,7 @@ public partial class MovieContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433; Initial Catalog=Movie; User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433;Initial Catalog=Movie;User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -705,9 +705,7 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tOrder", "Order");
 
-            entity.Property(e => e.FOrderId)
-                .ValueGeneratedNever()
-                .HasColumnName("fOrder_ID");
+            entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
             entity.Property(e => e.FCouponId).HasColumnName("fCoupon_ID");
             entity.Property(e => e.FCreditCardTypeId).HasColumnName("fCreditCardType_ID");
             entity.Property(e => e.FInvoiceNumber).HasColumnName("fInvoiceNumber");
@@ -745,9 +743,7 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tOrderDetail", "Order");
 
-            entity.Property(e => e.FOrderDetailId)
-                .ValueGeneratedNever()
-                .HasColumnName("fOrderDetail_ID");
+            entity.Property(e => e.FOrderDetailId).HasColumnName("fOrderDetail_ID");
             entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
             entity.Property(e => e.FSeatId).HasColumnName("fSeat_ID");
             entity.Property(e => e.FTicketClassId).HasColumnName("fTicketClass_ID");

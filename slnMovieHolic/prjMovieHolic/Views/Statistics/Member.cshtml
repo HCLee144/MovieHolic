@@ -46,9 +46,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-@*    <script>//會員年齡分布
+    <script>//會員年齡分布
+        var data = [@ViewBag.AgeData]
         var options = {
-            series: [],
+            series: data,
             chart: {
                 width: 380,
                 type: 'pie',
@@ -64,17 +65,10 @@
         var chartPieAge = new ApexCharts(document.querySelector("#chartPieAge"), options);
         chartPieAge.render();
 
-        async function loadMemberAge() {
-            var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberAgeCoulmn")');
-            var datas = await response.json();
-            chartAge.updateSeries(datas);
-        }
-        loadMemberAge();
-
-    </script>*@
+    </script>
 
     <script>        //會員性別分布
-        var data = [@ViewBag.data]
+        var data = [@ViewBag.GenderData]
 
         var options = {
             series: data,
@@ -91,18 +85,6 @@
 
         var chartPieGenger = new ApexCharts(document.querySelector("#chartPieGenger"), options);
         chartPieGenger.render();
-
-        //async function loadMemberGender() {
-        //    var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberGenderPie")');
-        //    var datas = await response.json();
-        //    console.log(datas);
-        //    chartAge.updateSeries(datas.data);
-        //}
-        //loadMemberGender();
-
-        //chartPieGenger.updateSeries({
-        //  data: [1, 2, 3]
-        //})
     </script>
 
     <script> //會員每年年齡分布

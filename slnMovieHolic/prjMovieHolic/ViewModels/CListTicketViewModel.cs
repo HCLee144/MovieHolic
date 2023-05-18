@@ -7,6 +7,7 @@
         public string selectedSessionDate { get; set; }
         public string selectedSessionTime { get; set; }
         public string selectedTheater { get; set; }
+        public int selectedMovieID { get; set; }
         public string selectedMovieName { get; set; }
         public string selectedMovieEngName { get; set; }
 

@@ -37,6 +37,17 @@ namespace prjMovieHolic.Controllers
                 UpcomingMovies = upcomingMovies,
                };
 
+            //已登入用
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+            string controller = "movieFront";
+            string view = "MovieIndex";
+            //string json=JsonSerializer.Serialize(new { controller, view });
+            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+
             return View(movieViewModel);
         }
 
@@ -68,6 +79,20 @@ namespace prjMovieHolic.Controllers
                 DirectorListNames = getNames(tDirectorListNames),
                 ActorListNames = getNames(tActorListNames)
             };
+
+            //已登入用
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+            string controller = "movieFront";
+            string view = "MovieIndex";
+            //string json=JsonSerializer.Serialize(new { controller, view });
+            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+
+
+
             return View(movieViewModel);
         }
 

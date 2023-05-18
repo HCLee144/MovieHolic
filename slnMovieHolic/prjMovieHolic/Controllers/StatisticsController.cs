@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Execution;
 using Microsoft.VisualBasic;
 using prjMovieHolic.Models;
 
@@ -14,37 +15,34 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult Member()
         {
-            ViewBag.data = getChartDataForMemberGenderPie();
-            //ViewBag.data = "1,2,3";
+            ViewBag.GenderData = getChartDataForMemberGenderPie();
+            ViewBag.AgeData= getChartDataForMemberAgePie();
             return View();
         }
 
-        public IActionResult getChartDataForMemberAgePie()
+        [NonAction]
+        public string getChartDataForMemberAgePie()
         {
-            List<int> datas = new List<int>();
-            return Json(datas);
+            string datas = "";
+            var q = _db.TMembers.AsEnumerable().OrderBy(member => member.FBirthDate).GroupBy(member => groupByAge((DateTime)member.FBirthDate, 0))
+                .Select(g=>new { g.Key,g }).ToList();
+            foreach (var item in q)
+            {
+                datas += item.g.Count() + ",";
+            }
+            return datas;
         }
 
-        //public IActionResult getChartDataForMemberGenderPie()
-        //{
-        //    SimpleData datas = new SimpleData();
-        //    datas.data = new List<int>();
-        //    var q = _db.TMembers.GroupBy(member => member.FGenderId);
-        //    foreach ( var item in q)
-        //    {
-        //        datas.data.Add(item.Count());
-        //    }
-        //    return Json(datas);
-        //}
 
+        [NonAction]
         public string getChartDataForMemberGenderPie()
         {
             string datas="";
             var q = _db.TMembers.AsEnumerable().OrderBy(member=>member.FGenderId).GroupBy(member => member.FGenderId)
-                .Select(g =>new { g.Key,g}).ToList();
+                .Select(g =>g).ToList();
             foreach(var item in q)
             {
-                datas += item.g.Count()+",";
+                datas += item.Count()+",";
             }
             return datas;
         }
