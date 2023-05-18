@@ -14,22 +14,6 @@
             <div class="ic">More Website Templates at <a href="https://www.webmoban.net">Website Template</a></div>
 
 
-           @* <!-- 點播機cover Flow-->
-            <!-- 放7張會顯示五張。放五張顯示三張-->
-            <div class="relative">
-                <div id="gallery">
-                    <ul id="myRoundabout">
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/bb.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                    </ul>
-                </div>
-            </div>*@
-            
 
             <!--這是旁邊快速訂票浮動視窗-->
 
@@ -47,7 +31,7 @@
             <!--熱門電影分隔線-->
             <div class="myBr"></div>
             <div class="hotMoviePlaceLine">
-                <ul class="hotMoviePlaceLineMenu">
+                <ul id="hotMovie" class="hotMoviePlaceLineMenu">
                     <li style="font-size: 26px;">現正熱映</li>
                     <li><a href=""></a></li>
                 </ul>
@@ -58,12 +42,12 @@
             <section id="">
                 <div class="line1">
                     <div class="line2 wrapper">
-                        <div class="movieWallMovies">
+                        <div class="movieWallMovies2">
                             
                             @foreach (var movie in Model.NowShowingMovies)
                             {
                                 <!-- 熱門電影1-->
-                                <div class="movieCardBig">
+                                <div class="movieCardBig2">
                                     <article class="movieCard">
                                         <a href="/MovieFront/MovieDetails?id=@movie.FId">
                                             <br>
@@ -101,7 +85,7 @@
             <div class="myBr"></div>
             <!--第二條分隔線-->
             <div class="notYetMoviePlaceLine">
-                <ul class="notYetMoviePlaceLineMenu">
+                <ul id="notYetMovie" class="notYetMoviePlaceLineMenu">
                     <li style="font-size: 26px;">即將上映</li>
                     <li><a href=""></a></li>
                 </ul>
@@ -110,7 +94,7 @@
             <section id="content">
                 <div class="line1">
                     <div class="line2 wrapper">
-                        <div class="movieWallMovies">
+                        <div class="movieWallMovies2">
                             @foreach (var movie in Model.UpcomingMovies)
                             {
                                 <!-- 電影1-->

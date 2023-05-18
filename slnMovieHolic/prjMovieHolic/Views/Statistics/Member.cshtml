@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Member";
+    Layout = "~/Views/Shared/BackLayout.cshtml";
+}
+
+@*Row*@
+<div class="row">
+    <div class="col-lg-6 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">會員年齡分布</h5>
+                </div>
+            </div>
+            <div id="chartPieAge">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">會員性別分布</h5>
+                </div>
+            </div>
+            <div id="chartPieGenger">
+            </div>
+        </div>
+    </div>
+</div>
+@*Row*@
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3 mb-sm-0">
+                <h5 class="card-title fw-semibold">會員年齡分布</h5>
+            </div>
+        </div>
+        <div id="chartColumnAge" style="min-height: 360px;">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+@*    <script>//會員年齡分布
+        var options = {
+            series: [],
+            chart: {
+                width: 380,
+                type: 'pie',
+            },
+            labels: ['under18', '19~30', '31~40', '41~50', '50~60','over 60'],
+            noData: {
+                text: "Loading Data...",
+                align: 'center',
+            }
+        
+        };
+
+        var chartPieAge = new ApexCharts(document.querySelector("#chartPieAge"), options);
+        chartPieAge.render();
+
+        async function loadMemberAge() {
+            var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberAgeCoulmn")');
+            var datas = await response.json();
+            chartAge.updateSeries(datas);
+        }
+        loadMemberAge();
+
+    </script>*@
+
+    <script>        //會員性別分布
+        var data = [@ViewBag.data]
+
+        var options = {
+            series: data,
+            chart: {
+                width: 380,
+                type: 'pie',
+            },
+            labels: ['male', 'female', 'other'],
+            noData: {
+                text: "Loading Data...",
+                align: 'center',
+            }
+        };
+
+        var chartPieGenger = new ApexCharts(document.querySelector("#chartPieGenger"), options);
+        chartPieGenger.render();
+
+        //async function loadMemberGender() {
+        //    var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberGenderPie")');
+        //    var datas = await response.json();
+        //    console.log(datas);
+        //    chartAge.updateSeries(datas.data);
+        //}
+        //loadMemberGender();
+
+        //chartPieGenger.updateSeries({
+        //  data: [1, 2, 3]
+        //})
+    </script>
+
+    <script> //會員每年年齡分布
+
+        var options = {
+            series: [],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                type: 'category'
+            },
+            fill: {
+                opacity: 1
+            },
+            noData: {
+                text: "Loading Data...",
+                align: 'center',
+            }
+        };
+
+        var chartAge = new ApexCharts(document.querySelector("#chartColumnAge"), options);
+        chartAge.render();
+
+        async function loadMemberAgeColumn() {
+            var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberAgeCoulmn")');
+            var datas = await response.json();
+            chartAge.updateSeries(datas);
+        }
+        loadMemberAgeColumn();
+
+    </script>
+}
