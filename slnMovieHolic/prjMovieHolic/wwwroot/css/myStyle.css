@@ -112,12 +112,29 @@
     justify-content: space-between;
 }
 
+.movieWallMovies {
+    display: flex;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+    .movieWallMovies::-webkit-scrollbar {
+        background: transparent;
+        height: 7px;
+    }
+
+    .movieWallMovies::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
+
+
 .movieCardBig {
     border: 1px solid silver;
-    padding: 5px;
+    padding: 0 8px 8px 8px;
     margin: 5px;
     border-radius: 10px;
 }
+
 
 .movieCard a {
     text-decoration: none;
@@ -185,10 +202,11 @@
     background: #10a5d6;
     border-radius: 5px;
     margin-top: 15px;
+    cursor:pointer;
 }
 
     .buyNow:hover {
-        background: #373737
+        background: #105190
     }
 
 .notYetMoviePlaceLine {
@@ -517,6 +535,7 @@ figure span {
     margin-left: 5px;
     margin-right: 5px;
     font-weight: bolder;
+    cursor: pointer:
 }
 
 .labUsingCoupon {
@@ -857,11 +876,12 @@ figure span {
     border-radius: 0 0 15px 15px;
 }
 
-.chooseFoodQTY button {
-    background-color: #10a5d6;
-    color: #eaeaea;
-   border-radius: 5px;
-}
+    .chooseFoodQTY button {
+        background-color: #10a5d6;
+        color: #eaeaea;
+        border-radius: 5px;
+        cursor: pointer:
+    }
 
 .chooseFoodQTY button:hover {
     background-color: #105190;
@@ -954,9 +974,25 @@ figure span {
     }
 
     .MemberPasswordChangeform form {
+        padding-bottom:25px;
         border-bottom: 1px solid silver;
     }
 
+.ourButton {
+    background-color: #10a5d6;
+    width: 80px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 5px;
+    display: inline-block;
+    color: #eaeaea;
+    cursor:pointer:
+}
+
+.ourButton:hover{
+    color:#eaeaea;
+    background-color:#105190;
+}
 
 /*登入畫面*/
 .logInBox {
@@ -1012,6 +1048,7 @@ figure span {
     border-radius: 15px;
     display: inline-block;
     color: #eaeaea;
+    cursor: pointer;
 }
 
     .loginButton:hover {
@@ -1063,6 +1100,7 @@ figure span {
     border-radius: 5px;
     max-height: 660px;
     overflow: scroll;
+    overflow-y:hidden;
 }
 
 .tabPlace input:checked + label,
@@ -1079,6 +1117,7 @@ figure span {
 .tab_content::-webkit-scrollbar {
     background: transparent;
     width: 6px;
+    height:6px;
 }
 
 .tab_content::-webkit-scrollbar-thumb {
@@ -1209,7 +1248,7 @@ figure span {
 
 /*最愛電影頁面*/
 .likeMovie {
-    width: 670px;
+    width: 390px;
     display: flex;
 }
 
@@ -1260,21 +1299,16 @@ figure span {
 
 /*電影牆*/
 
-.movieWallMovies {
+.movieWallMovies2 {
     display: flex;
-    overflow: scroll;
+    flex-wrap: wrap;
+    width:100%;
 }
 
-    .movieWallMovies::-webkit-scrollbar {
-        background: transparent;
-        height: 7px;
-    }
-
-    .movieWallMovies::-webkit-scrollbar-thumb {
-        background-color: silver;
-    }
-
-
+.movieCardBig2 {
+    width: 200px;
+    padding: 0 8px 8px 8px;
+}
 
 
 /*電影介紹頁面*/
@@ -1342,6 +1376,7 @@ figure span {
     width: 90px;
     margin-top: 10px;
     padding: 5px;
+    cursor: pointer:
 }
 
 .movieIntroduce input:hover {
@@ -1352,3 +1387,4 @@ figure span {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+

@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/BackLayout.cshtml";
+}
+
+
+@*Row1*@
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">電影票房收入(收入金額)</h5>
+                </div>
+            </div>
+            <div id="chartMovieIncome" style="min-height: 360px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Row2*@
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">電影票房收入(電影比例)</h5>
+                </div>
+            </div>
+            <div id="chartMovieProportion" style="min-height: 360px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+
+        var optionsIncome = {
+            series:[],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '10px',
+                                fontWeight: 900
+                            }
+                        }
+                    }
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                type: 'category'
+            },
+            noData: {
+                text: "Loading Data...",
+                align: 'center',
+            }            
+        };
+
+        var chartIncome = new ApexCharts(document.querySelector("#chartMovieIncome"), optionsIncome);
+        chartIncome.render();
+
+        var optionsProportion = {
+            series: [],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                stackType: '100%',
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            xaxis: {
+                type: 'category'
+            },
+            noData: {
+                text: "Loading Data...",
+                align: 'center',
+            }
+        };
+
+        var chartProportion = new ApexCharts(document.querySelector("#chartMovieProportion"), optionsProportion);
+        chartProportion.render();
+
+
+        async function loadMovieIncome(){
+            var response = await fetch('@Url.Content("~/DashBoard/getChartDataForMovieIncome")');
+            var datas = await response.json();
+            chartIncome.updateSeries(datas);
+            chartProportion.updateSeries(datas);
+        }
+        loadMovieIncome();
+ 
+    </script>
+}

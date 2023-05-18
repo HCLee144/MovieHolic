@@ -4,6 +4,11 @@ body{
     background: -webkit-linear-gradient(bottom ,#b9b8b8,rgb(243, 243, 243)) ;
 }
 
+a{
+    text-decoration:none;
+    cursor:pointer;
+}
+
 header{
     background-color: #111;
     height: 50px;
@@ -41,22 +46,26 @@ header{
 }
 .topMenu ul{
     display: flex;
-    margin-right: 30px;
-    
+    margin-right: 30px;    
 }
+
 .topMenu li{
     margin-left: 20px;
 }
+
 .topMenu a{
     color: #eaeaea;
     text-decoration: none;
     font-weight: bolder;
 }
 
-#searchBotton{
-    background-color: #13c5ff;
+#searchBotton {
     width: 50px;
     color: #eaeaea;
+    background-color: #10a5d6;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
 }
 
 /*這邊開始是中間淺色主體部分*/

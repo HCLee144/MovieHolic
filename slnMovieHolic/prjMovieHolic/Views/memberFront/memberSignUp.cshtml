@@ -19,7 +19,7 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <div class="memberInformation">
-                                <form asp-action="memberSignUp" id="SignUpForm">
+                                <form asp-action="memberSignUp" method="post">
                                 <table class="memberTable">
                                     <tr>
                                          <th>帳號</th>
@@ -69,11 +69,11 @@
                                      <input type="hidden" name="FNickName" value="" />
                                 </table>
                                 <hr />
-                                <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px">個人資料使用條款</a>
+                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit">
-                                    <input class="button" type="submit" id="submit" value="送出">
-                                     <input class="button" type="button" id="SignUpDemo" value="Demo" />
+                                        <input class="ourButton" type="submit" id="submit" value="送出">
+                                        <input class="ourButton" type="button" id="SignUpDemo" value="Demo" />
                                     </div>
                                 </form>
                             </div>
@@ -102,16 +102,16 @@
         const radioFemale = document.querySelector('#radioFemale');
 
         //確認是否必填欄位都填了
-        SignUpForm.addEventListener("submit",function(event){
-            event.preventDefault();
-            if (FPhone=== ""||FPassword===""||FPasswordCheck==="") {
-                alert("請填寫必填欄位");
-                return;
-            }
+        //SignUpForm.addEventListener("submit",function(event){
+        //    event.preventDefault();
+        //    if (FPhone=== ""||FPassword===""||FPasswordCheck==="") {
+        //        alert("請填寫必填欄位");
+        //        return;
+        //    }
 
-            // 表單驗證通過，提交表單
-            this.submit();
-        })
+        //    // 表單驗證通過，提交表單
+        //    this.submit();
+        //})
 
 
 

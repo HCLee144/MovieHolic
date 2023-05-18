@@ -13,6 +13,7 @@
     }
 
     .favoriteNullUsed {
+        width:180px;
         font-size: 15px;
         text-align: center;
         text-decoration: underline;
@@ -66,35 +67,57 @@
                                     <label for="tab1">現正熱映</label>
                                     <div class="tab_content">
                                         <div class="likeMovie">
-                                            @foreach(var item in Model.MemberActionNow)
-                                            {
-                                                <div class="movieCardBig2">
-                                                    <article class="movieCard">
-                                                        <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
-                                                            <br>
-                                                            <figure>
-                                                                <img src="~/@item.FMovie.FPosterPath" alt="">
-                                                            </figure>
-                                                            <div>
-                                                                <h3>@item.FMovie.FNameCht</h3>
-                                                                <ul>
-                                                                    <li class="movieEnglishName">@item.FMovie.FNameEng</li>
-                                                                    <hr>
-                                                                    <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
-                                                                    <li>片長：@item.FMovie.FShowLength 分鐘</li>
-                                                                </ul>
-                                                            </div>
-                                                        </a>
-                                                    </article>
-                                                    <div class="likeAndBuy">
+                                            @{
+                                                if (Model.MemberActionNow.Count > 0)
+                                                {
+                                                    @foreach (var item in Model.MemberActionNow)
+                                                    {
+                                                        <div class="movieCardBig2">
+                                                            <article class="movieCard">
+                                                                <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
+                                                                    <br>
+                                                                    <figure>
+                                                                        <img src="~/@item.FMovie.FPosterPath" alt="">
+                                                                    </figure>
+                                                                    <div>
+                                                                        <h3>@item.FMovie.FNameCht</h3>
+                                                                        <ul>
+                                                                            <li class="movieEnglishName">@item.FMovie.FNameEng</li>
+                                                                            <hr>
+                                                                            <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                            <li>片長：@item.FMovie.FShowLength 分鐘</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </a>
+                                                            </article>
+                                                            <div class="likeAndBuy">
 
-                                                        <div><a class="buyNow" href="@Url.Action("ListSession", "OrderFront",new{movieID=item.FMovieId})">Buy Now</a></div>
+                                                                <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
+                                                                <div>
+                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="movieCardBig3">
                                                         <div>
-                                                            <p style="color:#FF2D2D">❤</p>
+                                                            <h3 class="favoriteNull"></h3>
+                                                            <h5 class="favoriteNullUsed"></h5>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <div class="movieCardBig3">
+                                                        <div>
+                                                            <h3 class="favoriteNull">尚無收藏電影</h3>
+
+                                                            <h5 class="favoriteNullUsed">快將喜歡的電影加入收藏！</h5>
+                                                        </div>
+                                                    </div>
+                                                }
                                             }
+                                           
                                           
                                         </div>
 
@@ -105,7 +128,7 @@
                                     <input id="tab2" type="radio" name="tab" />
                                     <label for="tab2">即將上映</label>
                                     <div class="tab_content">
-                                        <div class="likeMovie">
+                                        <div class="likeMovie" id="favorite">
                                             @{
                                                 if (Model.MemberActionFuture.Count > 0)
                                                 {
@@ -133,7 +156,7 @@
 
                                                                 <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
                                                                 <div>
-                                                                    <p style="color:#FF2D2D">❤</p>
+                                                                    <p id="heart" style="color:#FF2D2D">❤</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -191,7 +214,7 @@
 
                                                         <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
                                                         <div>
-                                                            <p style="color:#FF2D2D">❤</p>
+                                                            <p id="heart" style="color:#FF2D2D">❤</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -214,10 +237,30 @@
 </div>
 @section Scripts{
     <script>
+        const heart=document.querySelector("#heart");
+        const favorite=document.querySelector('#favorite');
 
+        function cancelFavorite() {
+            var memberId = @Model.Member.FMemberId;
+            var movieId = document.getElementById('heart').getAttribute('data-movie-id');
+            
+            $.ajax({
+                url: '/memberFront/favoriteCancel',
+                type: 'POST',
+                data: { FMemberId: memberId, FMovieId: movieId },
+                success: function (response) {
+                    // 成功處理回應的程式碼
+                    // 例如，重新載入喜愛清單
+                    alert('取消收藏成功')
+                    location.reload();
 
-
-
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤的程式碼
+                    alert('失敗')
+                }
+            });
+        }
 
     </script>
 }

@@ -23,7 +23,7 @@ namespace prjMovieHolic.Controllers
         }
         [HttpPost]
         public IActionResult memberLogin(CMemberViewModel vm)
-        {//todo 登入判斷
+        {//todo 登入判斷包含id
             TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount));
             //bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
             if (user != null && user.FPassword.Equals(vm.txtPassword))
@@ -68,10 +68,10 @@ namespace prjMovieHolic.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult memberSignUP(TMember member)
+        public IActionResult memberSignUp(TMember member)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
                 if (accountCheck == false)
                 {
@@ -79,7 +79,7 @@ namespace prjMovieHolic.Controllers
                     _movieContext.SaveChanges();
                     return RedirectToAction("memberLogin");
                 }
-            }
+            //}
             return View();
                 
         }
@@ -90,29 +90,29 @@ namespace prjMovieHolic.Controllers
             return Content(accountCheck.ToString());
         }
         //註冊：回傳是否註冊成功 
-        public IActionResult IsSignUp(string FPhone,string FPassword,string FPasswordCheck)
-        {
-            if (ModelState.IsValid)
-            {
-                var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
-                bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
-                bool passwordDoubleCheck = false;
-                if (FPassword != null)
-                {
-                    passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
-                }
+        //public IActionResult IsSignUp(string FPhone, string FPassword, string FPasswordCheck)
+        //{
+        //    //if (ModelState.IsValid)
+        //    //{
+        //        var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
+        //        bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+        //        bool passwordDoubleCheck = false;
+        //        if (FPassword != null)
+        //        {
+        //            passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
+        //        }
 
-                if (accountCheck == false && passwordFormat == true && passwordDoubleCheck == true)
-                {
-                    return Json(new { success = true, message = "註冊成功。" });
-                }
-                else
-                {
-                    return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
-                }
-            }
-            return View();   
-        }
+        //        if (accountCheck != true && passwordFormat == true && passwordDoubleCheck == true)
+        //        {
+        //            return Json(new { success = true, message = "註冊成功。" });
+        //        }
+        //        else
+        //        {
+        //            return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+        //        }
+        //    //}
+        //    //return View();
+        //}
 
 
 
@@ -291,11 +291,11 @@ namespace prjMovieHolic.Controllers
         {
             var members=_movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
             var memberActionNow=_movieContext.TMemberActions.Include(c=>c.FMovie)
-                .Where(c=>c.FMemberId==id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now).ToList();
+                .Where(c=>c.FMemberId==id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now & c.FActionTypeId==1).ToList();
             var memberActionFuture= _movieContext.TMemberActions.Include(c => c.FMovie)
-                .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart > DateTime.Now) .ToList();
+                .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart > DateTime.Now & c.FActionTypeId==1) .ToList();
             var memberActionExpired = _movieContext.TMemberActions.Include(c => c.FMovie)
-                .Where(c => c.FMemberId == id & c.FMovie.FScheduleEnd < DateTime.Now).ToList();
+                .Where(c => c.FMemberId == id & c.FMovie.FScheduleEnd < DateTime.Now & c.FActionTypeId==1).ToList();
             var viewModel = new CMovieAndMemberViewModel
             {
                 Member = members,
@@ -308,26 +308,27 @@ namespace prjMovieHolic.Controllers
             return View(viewModel);
         }
         //todo 取消收藏
-        public IActionResult favoriteCancel(TMemberAction memberAction)
+        public IActionResult favoriteCancel(int FMemberId, int FMovieId)
         {
             TMemberAction favorite = _movieContext.TMemberActions
-                .LastOrDefault(m => m.FMemberId == memberAction.FMemberId & m.FMovieId == memberAction.FMovieId);
+                .FirstOrDefault(m => m.FMemberId == FMemberId & m.FMovieId == FMovieId);
 
             if (favorite != null)
             {
-                _movieContext.TMemberActions.Add(favorite);
-
+                favorite.FActionTypeId = 2;
+                favorite.FTimeStamp= DateTime.Now;
                 _movieContext.SaveChanges();
-
             }
-            return RedirectToAction("memberList", new { id = memberAction.FMemberId });
+            return RedirectToAction("favoriteList", new { id = FMemberId });
         }
         public IActionResult orderList(int? id)
         {
             var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
+            var orders=_movieContext.TOrders.Include(c=>c.FSession.FMovie).Include(c=>c.FSession).ThenInclude(c=>c.FTheater).Where(c=>c.FMemberId==id).ToList();
             var viewModel = new COrderAndMemberViewModel
             {
                 Member = members,
+                Order = orders,
 
             };
             sessionCheck();

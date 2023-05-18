@@ -37,25 +37,29 @@
                                     <input id="tab1" type="radio" name="tab" checked="checked" />
                                     <label for="tab1">已取票</label>
                                     <div class="tab_content">
-                                        <div class="addBorder">
-                                            <div class="orderDetailBox">
-                                                <div class="orderDetailBoxTop">
-                                                    <div>
-                                                        <h3>第　1　廳</h3>
-                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
+                                        @foreach(var item in Model.Order)
+                                        {
+                                            <div class="addBorder">
+                                                <div class="orderDetailBox">
+                                                    <div class="orderDetailBoxTop">
+                                                        <div>
+                                                            <h3>@item.FSession.FTheater.FTheater</h3>
+                                                            <h4>@item.FSession.FMovie.FNameCht</h4>
+                                                        </div>
+                                                        <div>
+                                                            <a href="">
+                                                                <h3>詳情</h3>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <a href="">
-                                                            <h3>詳情</h3>
-                                                        </a>
+                                                    <div class="orderDetailBoxBottom">
+                                                        <h3>@item.FSession.FStartTime.ToString("yyyy/MM/dd hh:mm")</h3>
+                                                        <h3>$@item.FTotalPrice</h3>
                                                     </div>
-                                                </div>
-                                                <div class="orderDetailBoxBottom">
-                                                    <h3>2023/5/31_10:30</h3>
-                                                    <h3>$888</h3>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
+
 
                                     </div>
                                     <!-- TAB1 打包區塊 end -->
