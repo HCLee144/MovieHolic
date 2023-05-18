@@ -12,7 +12,6 @@ namespace prjMovieHolic.ViewModels
         public string tickets { get; set; }
         public List<string> seats { get; set; }
         public List<string> set { get; set; }
-        public string discount { get; set; }
         public string totalPrice{get;set;}
 
         public List<TCouponList> CouponList { get; set; }
