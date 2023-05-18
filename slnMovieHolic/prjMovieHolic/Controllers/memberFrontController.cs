@@ -23,7 +23,7 @@ namespace prjMovieHolic.Controllers
         }
         [HttpPost]
         public IActionResult memberLogin(CMemberViewModel vm)
-        {//登入判斷
+        {//todo 登入判斷包含id
             TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount));
             //bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
             if (user != null && user.FPassword.Equals(vm.txtPassword))
