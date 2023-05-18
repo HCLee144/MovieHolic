@@ -123,6 +123,7 @@ namespace prjMovieHolic.Controllers
             vm.selectedTheater = theater.FTheater;
 
             var movie = getSessionMovie(sessionID);
+            vm.selectedMovieID = movie.FId;
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMovieEngName = movie.FNameEng;
 
@@ -185,7 +186,11 @@ namespace prjMovieHolic.Controllers
 
             //已被選走的座位
             var selectedSeats = movieContext.TOrderDetails.Include(od => od.FOrder).Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
+            var selectedSeats1 = movieContext.TOrderDetails.Include(od => od.FOrder).Where(od => od.FOrder.FSessionId == n).ToList();
 
+
+            var orders = movieContext.TOrders.ToList();
+            var od = movieContext.TOrderDetails.ToList();
             int[] seat = new int[400];
             //假設數字1預設為未售，2為非座位，3為愛心座位，4為被選走座位
             foreach (var item in nonSeats)
@@ -460,7 +465,7 @@ namespace prjMovieHolic.Controllers
             order.FTotalPrice = totalPrice;
 
             movieContext.TOrders.Add(order);
-            //movieContext.SaveChanges();
+            movieContext.SaveChanges();
 
             //新增orderDetails資料
             //查總共票數(座位)
@@ -481,17 +486,31 @@ namespace prjMovieHolic.Controllers
 
             string json_seats = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
             List<int> seats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
-            for(int i=0;i<seats.Count;i++)
+            int orderID = movieContext.TOrders.OrderByDescending(od => od.FOrderId).Select(od => od.FOrderId).FirstOrDefault();
+            for (int i=0;i<seats.Count;i++)
             {
                 TOrderDetail orderDetail = new TOrderDetail();
-                int orderID = movieContext.TOrders.OrderByDescending(od => od.FOrderId).Select(od => od.FOrderId).FirstOrDefault();
                 orderDetail.FOrderId = orderID;
                 orderDetail.FSeatId = seats[i];
                 orderDetail.FTicketClassId = ticketSelected[i];
                 movieContext.TOrderDetails.Add(orderDetail);
                 movieContext.SaveChanges();
             }
-           
+
+            //新增orderStatus資料
+            TOrderStatus orderStatus = new TOrderStatus();
+            orderStatus.FOrderStatus = "已訂票";
+            orderStatus.FChangedTime = DateTime.Now;
+            movieContext.TOrderStatuses.Add(orderStatus);
+            movieContext.SaveChanges();
+
+            //新增orderStatusLog資料
+            TOrderStatusLog orderStatusLog = new TOrderStatusLog();
+            orderStatusLog.FOrderId = orderID;
+            int orderStatusID = movieContext.TOrderStatuses.OrderByDescending(od => od.FOrderStatusId).Select(od => od.FOrderStatusId).FirstOrDefault();
+            orderStatusLog.FOrderStatusId = orderStatusID;
+            movieContext.TOrderStatusLogs.Add(orderStatusLog);
+            movieContext.SaveChanges();
             
             return Content("儲存成功");
         }
