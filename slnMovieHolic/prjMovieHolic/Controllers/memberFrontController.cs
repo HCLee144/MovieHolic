@@ -321,10 +321,12 @@ namespace prjMovieHolic.Controllers
             }
             return RedirectToAction("favoriteList", new { id = FMemberId });
         }
-        public IActionResult orderList(int? id)
+        public IActionResult orderList()
         {
+            int id=(int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); 
+
             var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
-            var orders=_movieContext.TOrders.Include(c=>c.FSession.FMovie).Include(c=>c.FSession).ThenInclude(c=>c.FTheater).Where(c=>c.FMemberId==id).ToList();
+            var orders=_movieContext.TOrders.Include(c=>c.FSession.FMovie).Include(c=>c.FSession).ThenInclude(c=>c.FTheater).Where(c=>c.FMemberId==id).OrderByDescending(o=>o.FOrderId).ToList();
             var viewModel = new COrderAndMemberViewModel
             {
                 Member = members,
