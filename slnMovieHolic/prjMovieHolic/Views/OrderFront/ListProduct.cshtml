@@ -129,16 +129,7 @@
                                                 </div>
                                             }
                                         }
-                                        @*<div>
-                                            <h3>可樂</h3>
-                                            <div>
-                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
-                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
-                                            </div>
-                                            <div class="chooseFoodQTY">
-                                                <button>-</button><span>　0　</span><button>+</button>
-                                            </div>
-                                        </div>*@
+                                        
                                     </div>
                                     <div class="chooseSweet">
                                         @{
@@ -166,16 +157,7 @@
                                                 </div>
                                             }
                                         }
-                                        @*<div>
-                                            <h3>可樂</h3>
-                                            <div>
-                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
-                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
-                                            </div>
-                                            <div class="chooseFoodQTY">
-                                                <button>-</button><span>　0　</span><button>+</button>
-                                            </div>
-                                        </div>*@
+                                       
                                     </div>
                                 </div>
                                 <button id="nextStep" class="button toRight">下一步</button>
@@ -232,13 +214,14 @@
             const productCount = [];
             for (let i = 0; i < 10; i++) {
                 const x = document.getElementById('span' + (i + 1));
-                productCount[i] = x.innerHTML
+                productCount.push(x.innerHTML);
             }
 
             let product="";
-            productCount.forEach((item)=>{
-                product+=item+',';
-            })
+            for(let i=0;i<productCount.length;i++){
+                product+=productCount[i]+',';
+            }
+
             if(product.substring(product.length-1)==',')
             product=product.substring(0,product.length-1);
             saveProductCount(product);

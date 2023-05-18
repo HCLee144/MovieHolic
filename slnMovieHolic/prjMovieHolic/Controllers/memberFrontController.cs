@@ -331,11 +331,9 @@ namespace prjMovieHolic.Controllers
             {
                 Member = members,
                 Order = orders,
-
             };
             sessionCheck();
             return View(viewModel);
         }
-
     }
 }

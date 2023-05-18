@@ -395,10 +395,9 @@ namespace prjMovieHolic.Controllers
             vm.seats = showSeats;
 
             //選擇到的餐點
-            string json_set = HttpContext.Session.GetString(CDictionary.SelectedProductCount);
-            string product = System.Text.Json.JsonSerializer.Deserialize<string>(json_set);
-            string[] productCounts = product.Split(",");
+            string[] productCounts = getProductCounts();
             var productNames = movieContext.TProducts.Select(p => p.FProductName).ToArray();
+            var productPrices = movieContext.TProducts.Select(p => p.FProductPrice).ToArray();
             List<string> showProducts = new List<string>();
             for (int i = 0; i < productCounts.Length; i++)
             {
@@ -417,7 +416,7 @@ namespace prjMovieHolic.Controllers
             vm.CouponList = couponList;
 
             //總價
-            int total = 0;
+            int ticketFee = 0;
             decimal 電影基本價 = (decimal)movie.FPrice;
             int 一般票張數 = Convert.ToInt32(tickets[0]);
             int 學生票張數 = Convert.ToInt32(tickets[1]);
@@ -433,19 +432,25 @@ namespace prjMovieHolic.Controllers
             if (一般票張數 > 0)
             {
                 decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
-                total += Convert.ToInt32(電影基本價 * 一般價 * 早場優惠 * 廳加價 * 一般票張數* 會員優惠);
+                ticketFee += Convert.ToInt32(電影基本價 * 一般價 * 早場優惠 * 廳加價 * 一般票張數* 會員優惠);
             }
             if (學生票張數 > 0)
             {
                 decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
-                total += Convert.ToInt32(電影基本價 * 學生價 * 早場優惠 * 廳加價 * 學生票張數* 會員優惠);
+                ticketFee += Convert.ToInt32(電影基本價 * 學生價 * 早場優惠 * 廳加價 * 學生票張數* 會員優惠);
             }
             if (軍警票張數 > 0)
             {
                 decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-                total += Convert.ToInt32(電影基本價 * 軍警價 * 早場優惠 * 廳加價 * 學生票張數* 會員優惠);
+                ticketFee += Convert.ToInt32(電影基本價 * 軍警價 * 早場優惠 * 廳加價 * 學生票張數* 會員優惠);
             }
-            vm.totalPrice = total.ToString();
+
+            //產品總價
+            int productFee = 0;
+            for (int i = 0; i < productCounts.Length; i++)
+                productFee+=productPrices[i] * Convert.ToInt32(productCounts[i]);
+            
+            vm.totalPrice = (ticketFee+productFee).ToString();
 
             return View(vm);
         }
@@ -511,7 +516,44 @@ namespace prjMovieHolic.Controllers
             orderStatusLog.FOrderStatusId = orderStatusID;
             movieContext.TOrderStatusLogs.Add(orderStatusLog);
             movieContext.SaveChanges();
-            
+
+            //新增產品收據資料
+            string[] productCounts = getProductCounts();
+            bool buyProducts = false;
+            foreach (var item in productCounts)
+            { 
+                if (Convert.ToInt32(item) > 0)
+                {
+                    buyProducts = true;
+                    break;
+                }
+            }
+
+            if(buyProducts)
+            {
+                TReceipt receipt = new TReceipt();
+                receipt.FMemberId = memID;
+                receipt.FReceiptDate = DateTime.Now;
+                receipt.FOrderId = orderID;
+                movieContext.TReceipts.Add(receipt);
+                movieContext.SaveChanges();
+
+                //新增ReceiptDetails
+                var receiptID = movieContext.TReceipts.OrderByDescending(r => r.FReceiptId).Select(r=>r.FReceiptId).FirstOrDefault();
+                for(int i=0;i<productCounts.Length;i++)
+                {
+                    if (Convert.ToInt32(productCounts[i])>0)
+                    {
+                        TReceiptDetail receiptDetail = new TReceiptDetail();
+                        receiptDetail.FReceiptId = receiptID;
+                        receiptDetail.FProductId = i + 1;
+                        receiptDetail.FQty = Convert.ToInt32(productCounts[i]);
+                        movieContext.TReceiptDetails.Add(receiptDetail);
+                        movieContext.SaveChanges();
+                    }
+                }
+            }
+           
             return Content("儲存成功");
         }
 
@@ -592,6 +634,14 @@ namespace prjMovieHolic.Controllers
         int getMemberID()
         {
             return (int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); ;
+        }
+
+        string[]  getProductCounts()
+        {
+            string json_set = HttpContext.Session.GetString(CDictionary.SelectedProductCount);
+            string product = System.Text.Json.JsonSerializer.Deserialize<string>(json_set);
+            string[] productCounts = product.Split(",");
+            return productCounts;
         }
 
         public bool sessionCheck()
