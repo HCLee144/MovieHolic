@@ -1196,8 +1196,23 @@ figure span {
 
 .orderList {
     width: 600px;
-    height: 700px;
+    height: 600px;
 }
+
+.orderLa{
+    height:550px;
+    overflow:scroll;
+}
+
+    .orderLa::-webkit-scrollbar {
+        background: transparent;
+        width: 6px;
+        height: 6px;
+    }
+
+    .orderLa::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 .addBorder {
     border: 3px solid silver;
