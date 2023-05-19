@@ -12,5 +12,8 @@
         public static readonly string SelectedTicketClass = "SelectedTicketClass";
         public static readonly string SelectedSeatID = "SelectedSeatID";
         public static readonly string SelectedProductCount = "SelectedProductCount";
+
+        //BackEnd LogIn
+        public static readonly string SK_BackSys_LogIn = "SK_BackSys_LogIn";
     }
 }
