@@ -116,7 +116,7 @@
 </dialog>
 
 <dialog id="getMoney" class="IamDialog">
-    <p>訂票成功</p>
+    <p>訂票成功，已將訂單明細寄到您的信箱</p>
     <button id="confirm" class="closeDialog">關閉</button>
 </dialog>
 
@@ -143,7 +143,7 @@
         })
 
         nextStep.addEventListener('click', async () => {
-            const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDB")?totalprice=' + totalPrice.innerHTML + '&couponID=' + Number(couponID));
+            const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDBandSendEmail")?totalprice=' + totalPrice.innerHTML + '&couponID=' + Number(couponID));
             const data = await response.text();
             if (data == '儲存成功') {
                 getMoney.showModal();

@@ -4,6 +4,17 @@ using Newtonsoft.Json;
 using prjMovieHolic.Models;
 using prjMovieHolic.ViewModels;
 using System.Collections.Generic;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
+using System.Drawing;
+using System.Net.NetworkInformation;
+
+
+using ZXing.Common;
+using ZXing;
+using ZXing.QrCode;
+
 
 namespace prjMovieHolic.Controllers
 {
@@ -17,6 +28,9 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListSession(int? movieID)
         {
+
+            var session = movieContext.TSessions.Where(x => x.FMovieId == 36).ToList();
+            string x = "";
             //判斷會員登入或會員中心
             bool verify_checkLogIn = sessionCheck();
 
@@ -340,6 +354,12 @@ namespace prjMovieHolic.Controllers
             }
         }
 
+        public IActionResult showSelectedSeat()
+        {
+            List<string> seatNames=getSeatNames(getTheater(getSessionID()).FTheaterId);
+            return Json(seatNames);
+        }
+
         public IActionResult saveProductCount(string products)
         {
             string json = System.Text.Json.JsonSerializer.Serialize(products);
@@ -432,30 +452,30 @@ namespace prjMovieHolic.Controllers
             if (一般票張數 > 0)
             {
                 decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
-                ticketFee += Convert.ToInt32(電影基本價 * 一般價 * 早場優惠 * 廳加價 * 一般票張數* 會員優惠);
+                ticketFee += Convert.ToInt32(電影基本價 * 一般價 * 早場優惠 * 廳加價 * 一般票張數 * 會員優惠);
             }
             if (學生票張數 > 0)
             {
                 decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
-                ticketFee += Convert.ToInt32(電影基本價 * 學生價 * 早場優惠 * 廳加價 * 學生票張數* 會員優惠);
+                ticketFee += Convert.ToInt32(電影基本價 * 學生價 * 早場優惠 * 廳加價 * 學生票張數 * 會員優惠);
             }
             if (軍警票張數 > 0)
             {
                 decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-                ticketFee += Convert.ToInt32(電影基本價 * 軍警價 * 早場優惠 * 廳加價 * 學生票張數* 會員優惠);
+                ticketFee += Convert.ToInt32(電影基本價 * 軍警價 * 早場優惠 * 廳加價 * 學生票張數 * 會員優惠);
             }
 
             //產品總價
             int productFee = 0;
             for (int i = 0; i < productCounts.Length; i++)
-                productFee+=productPrices[i] * Convert.ToInt32(productCounts[i]);
-            
-            vm.totalPrice = (ticketFee+productFee).ToString();
+                productFee += productPrices[i] * Convert.ToInt32(productCounts[i]);
+
+            vm.totalPrice = (ticketFee + productFee).ToString();
 
             return View(vm);
         }
 
-        public IActionResult SaveOrdertoDB(int totalPrice,int? couponID)
+        public IActionResult SaveOrdertoDBandSendEmail(int totalPrice, int? couponID)
         {
             //新增order資料
             TOrder order = new TOrder();
@@ -465,7 +485,7 @@ namespace prjMovieHolic.Controllers
             order.FMemberId = memID;
             order.FPayTypeId = 1;//先用現金付款
             order.FOrderDate = DateTime.Now;
-            if(couponID!=null)
+            if (couponID != null)
                 order.FCouponId = couponID;
             order.FTotalPrice = totalPrice;
 
@@ -477,22 +497,22 @@ namespace prjMovieHolic.Controllers
             string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
             string[] tickets = json_tickets.Split(",");
             int[] ticketCounts = new int[tickets.Length];
-            for(int i=0;i<tickets.Length;i++)
-                ticketCounts[i]=int.Parse(tickets[i]);
-                
+            for (int i = 0; i < tickets.Length; i++)
+                ticketCounts[i] = int.Parse(tickets[i]);
+
             //將票種轉陣列
             int[] ticketSelected = new int[(ticketCounts[0] + ticketCounts[1] + ticketCounts[2])];
-            for(int i = 0; i < ticketCounts[0];i++)
+            for (int i = 0; i < ticketCounts[0]; i++)
                 ticketSelected[i] = 1;
             for (int i = 0; i < ticketCounts[1]; i++)
-                ticketSelected[i+ticketCounts[0]] = 2;
+                ticketSelected[i + ticketCounts[0]] = 2;
             for (int i = 0; i < ticketCounts[2]; i++)
-                ticketSelected[i + ticketCounts[0]+ticketCounts[1]] = 5;
+                ticketSelected[i + ticketCounts[0] + ticketCounts[1]] = 5;
 
             string json_seats = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
             List<int> seats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
             int orderID = movieContext.TOrders.OrderByDescending(od => od.FOrderId).Select(od => od.FOrderId).FirstOrDefault();
-            for (int i=0;i<seats.Count;i++)
+            for (int i = 0; i < seats.Count; i++)
             {
                 TOrderDetail orderDetail = new TOrderDetail();
                 orderDetail.FOrderId = orderID;
@@ -521,7 +541,7 @@ namespace prjMovieHolic.Controllers
             string[] productCounts = getProductCounts();
             bool buyProducts = false;
             foreach (var item in productCounts)
-            { 
+            {
                 if (Convert.ToInt32(item) > 0)
                 {
                     buyProducts = true;
@@ -529,7 +549,7 @@ namespace prjMovieHolic.Controllers
                 }
             }
 
-            if(buyProducts)
+            if (buyProducts)
             {
                 TReceipt receipt = new TReceipt();
                 receipt.FMemberId = memID;
@@ -539,10 +559,10 @@ namespace prjMovieHolic.Controllers
                 movieContext.SaveChanges();
 
                 //新增ReceiptDetails
-                var receiptID = movieContext.TReceipts.OrderByDescending(r => r.FReceiptId).Select(r=>r.FReceiptId).FirstOrDefault();
-                for(int i=0;i<productCounts.Length;i++)
+                var receiptID = movieContext.TReceipts.OrderByDescending(r => r.FReceiptId).Select(r => r.FReceiptId).FirstOrDefault();
+                for (int i = 0; i < productCounts.Length; i++)
                 {
-                    if (Convert.ToInt32(productCounts[i])>0)
+                    if (Convert.ToInt32(productCounts[i]) > 0)
                     {
                         TReceiptDetail receiptDetail = new TReceiptDetail();
                         receiptDetail.FReceiptId = receiptID;
@@ -553,7 +573,8 @@ namespace prjMovieHolic.Controllers
                     }
                 }
             }
-           
+
+            SendEmail();
             return Content("儲存成功");
         }
 
@@ -636,7 +657,7 @@ namespace prjMovieHolic.Controllers
             return (int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); ;
         }
 
-        string[]  getProductCounts()
+        string[] getProductCounts()
         {
             string json_set = HttpContext.Session.GetString(CDictionary.SelectedProductCount);
             string product = System.Text.Json.JsonSerializer.Deserialize<string>(json_set);
@@ -651,6 +672,82 @@ namespace prjMovieHolic.Controllers
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
             return isUserLoggedIn;
+        }
+
+
+        /*Bitmap CreateQRCode(string content, int width, int height)
+        {
+            //var writer = new BarcodeWriter();
+            var writer = new BarcodeWriterPixelData();
+            writer.Format = BarcodeFormat.QR_CODE;
+            QrCodeEncodingOptions options = new QrCodeEncodingOptions();
+            options.Height = height;
+            options.Width = width;
+            options.Margin = 1;
+            options.CharacterSet = "UTF-8";
+            options.ErrorCorrection = ZXing.QrCode.Internal.ErrorCorrectionLevel.M;
+            options.DisableECI = true;
+            Bitmap QRCode = writer.Write(content);
+
+            string attimg = Environment.CurrentDirectory + @"\qr.png";
+            //QRCode.Save(attimg);
+           
+            return QRCode;
+        }*/
+
+        void SendEmail()
+        {
+            string GoogleID = "iSpanMovieTheater@gmail.com";
+            string TempPassword = "yrxrcgvlwhtufszp";
+            string ReceiveEmail = "6121smile@gmail.com";
+
+            string SmtpServer = "smtp.gmail.com";
+            int SmtpPort = 587;
+
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress(GoogleID, "MovieHolic");
+            mail.Subject = "您已成功訂購電影票";
+
+            //信件內容
+            int memID = getMemberID();
+            int sessionID = getSessionID();
+            string memName = movieContext.TMembers.FirstOrDefault(m => m.FMemberId == memID).FName;
+            string movieName = getSessionMovie(sessionID).FNameCht;
+            string movieTime = getSessionDate(sessionID) + "  " + getSessionTime(sessionID);
+            List<string> seatNames = getSeatNames(getTheater(sessionID).FTheaterId);
+            string seats = "";
+            foreach (var item in seatNames)
+                seats += item + "、";
+            if (seats.Substring(seats.Length - 1, 1) == "、")
+                seats = seats.Substring(0, seats.Length - 1);
+
+            string bodyContent = $"<p>親愛的 {memName}：<br><br>非常感謝您選擇我們的MovieHolic觀賞電影！" +
+                $"我們已收到您的訂購並確認您的票價和座位資訊。以下是您的訂購詳細信息：<br><br>" +
+                $"電影名稱：{movieName}<br>放映時間：{movieTime}<br>座位號碼：{seats}<br>" +
+                $"請在放映前提前到達電影院，您可以使用此郵件作為入場證明。前15分鐘到達，以確保有足夠的時間順利入場。<br>" +
+                $"如有任何疑問或需要進一步協助，請隨時與我們的客服部門聯繫，他們將樂意為您提供幫助。<br>" +
+                $"再次感謝您選擇我們的電影院，我們期待為您提供一次愉快的觀影體驗！<br>祝您有美好的觀影時光！<br><br>" +
+                $"誠摯的祝福，<br>MovieHolic 瘋電影</p>  <img src=\"cid:fs_logo01.png\">";
+            mail.Body = bodyContent;
+            
+            
+            AlternateView alternateView = AlternateView.CreateAlternateViewFromString(bodyContent, null, "text/html");
+            LinkedResource res = new LinkedResource("wwwroot/images/fs_logo01.png", "image/png");
+            res.ContentId = "fs_logo01";
+            alternateView.LinkedResources.Add(res);
+            mail.AlternateViews.Add(alternateView);
+            
+            
+            mail.IsBodyHtml = true;
+            mail.SubjectEncoding = Encoding.UTF8;
+            mail.To.Add(new MailAddress(ReceiveEmail));
+
+            using (SmtpClient client = new SmtpClient(SmtpServer, SmtpPort))
+            {
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential(GoogleID, TempPassword);
+                client.Send(mail);
+            }
         }
     }
 
