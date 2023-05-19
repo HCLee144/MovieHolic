@@ -27,19 +27,19 @@ namespace prjMovieHolic.Controllers
             if (movie == null)
                 return RedirectToAction("Index", "Home");
 
-            CListSessionViewModel shoppingCart = new CListSessionViewModel();
-            shoppingCart.tMovie = movie;
-            shoppingCart.MovieID = (int)movieID;
-            shoppingCart.MovieName = movie.FNameCht;
+            CListSessionViewModel vm = new CListSessionViewModel();
+            vm.tMovie = movie;
+            vm.MovieID = (int)movieID;
+            vm.MovieName = movie.FNameCht;
 
-            shoppingCart.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t => t.FType.FNameCht).ToArray();
-            shoppingCart.TypeListNames = getNames(shoppingCart.tTypeListNames);
+            vm.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t => t.FType.FNameCht).ToArray();
+            vm.TypeListNames = getNames(vm.tTypeListNames);
 
-            shoppingCart.tDirectorListNames = movie.TDirectorLists.Where(t => t.FMovieId == movieID).Select(t => t.FDirector.FNameCht).ToArray();
-            shoppingCart.DirectorListNames = getNames(shoppingCart.tDirectorListNames);
+            vm.tDirectorListNames = movie.TDirectorLists.Where(t => t.FMovieId == movieID).Select(t => t.FDirector.FNameCht).ToArray();
+            vm.DirectorListNames = getNames(vm.tDirectorListNames);
 
-            shoppingCart.tActorListNames = movie.TActorLists.Where(t => t.FMovieId == movieID).Select(t => t.FActor.FNameCht).ToArray();
-            shoppingCart.ActorListNames = getNames(shoppingCart.tActorListNames);
+            vm.tActorListNames = movie.TActorLists.Where(t => t.FMovieId == movieID).Select(t => t.FActor.FNameCht).ToArray();
+            vm.ActorListNames = getNames(vm.tActorListNames);
 
             string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
@@ -56,8 +56,8 @@ namespace prjMovieHolic.Controllers
                     selectDays = 0;
             }
 
-            shoppingCart.weekDays = wholeWeekDays.ToArray();
-            return View(shoppingCart);
+            vm.weekDays = wholeWeekDays.ToArray();
+            return View(vm);
         }
 
         public IActionResult queryByDate(string date, int movieID)
