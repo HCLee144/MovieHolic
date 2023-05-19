@@ -36,8 +36,21 @@
         //人數
     }
 
-    public class SimpleData
+    public class PieData
     {
-        public List<int> data { get; set; }
+        public List<int> series { get; set; }
+        public List<string> labels { get; set; }
+    }
+
+    public class SimpleBarData
+    {
+        public List<Data> data { get; set; }
+    }
+
+    public class Data
+    {
+        //長條圖的data
+        public string x { get;set; }
+        public int y { get; set; }
     }
 }

@@ -80,6 +80,15 @@
         var chartIncome = new ApexCharts(document.querySelector("#chartMovieIncome"), optionsIncome);
         chartIncome.render();
 
+        async function loadMovieIncome() {
+            var response = await fetch('@Url.Content("~/DashBoard/getChartDataForSimpleIncome")');
+            var datas = await response.json();
+            chartIncome.updateSeries(datas);
+        }
+        loadMovieIncome();
+    </script>
+
+    <script>
         var optionsProportion = {
             series: [],
             chart: {
@@ -115,13 +124,12 @@
         chartProportion.render();
 
 
-        async function loadMovieIncome(){
+        async function loadMoviePortionIncome(){
             var response = await fetch('@Url.Content("~/DashBoard/getChartDataForMovieIncome")');
             var datas = await response.json();
-            chartIncome.updateSeries(datas);
             chartProportion.updateSeries(datas);
         }
-        loadMovieIncome();
+        loadMoviePortionIncome();
  
     </script>
 }

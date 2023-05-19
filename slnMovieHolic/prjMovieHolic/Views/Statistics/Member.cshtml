@@ -46,37 +46,46 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-    <script>//會員年齡分布
-        var data = [@ViewBag.AgeData]
+
+    <script>
+        //會員年齡分布
         var options = {
-            series: data,
+            series: [],
             chart: {
                 width: 380,
-                type: 'pie',
+                type: 'pie'
             },
-            labels: ['under18', '19~30', '31~40', '41~50', '50~60','over 60'],
             noData: {
                 text: "Loading Data...",
                 align: 'center',
             }
-        
         };
 
         var chartPieAge = new ApexCharts(document.querySelector("#chartPieAge"), options);
         chartPieAge.render();
 
+
+        async function loadPieAge() {
+            var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberAgePie")');
+            var data = await response.json();
+            chartPieAge.updateOptions({
+                series: data.series,
+                labels: data.labels,
+            })
+        }
+        loadPieAge();
+
     </script>
 
-    <script>        //會員性別分布
-        var data = [@ViewBag.GenderData]
+    <script>
+        //會員性別分布
 
         var options = {
-            series: data,
+            series: [],
             chart: {
                 width: 380,
-                type: 'pie',
+                type: 'pie'
             },
-            labels: ['male', 'female', 'other'],
             noData: {
                 text: "Loading Data...",
                 align: 'center',
@@ -85,9 +94,20 @@
 
         var chartPieGenger = new ApexCharts(document.querySelector("#chartPieGenger"), options);
         chartPieGenger.render();
+
+        async function loadPieGender() {
+            var response = await fetch('@Url.Content("~/Statistics/getChartDataForMemberGenderPie")');
+            var data = await response.json();
+            chartPieGenger.updateOptions({
+                series: data.series,
+                labels: data.labels,
+            })
+        }
+        loadPieGender();
     </script>
 
-    <script> //會員每年年齡分布
+    <script>
+        //會員每年年齡分布
 
         var options = {
             series: [],

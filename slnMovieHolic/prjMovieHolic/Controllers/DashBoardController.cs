@@ -18,41 +18,27 @@ namespace prjMovieHolic.Controllers
             return View();
         }
 
-        //public IActionResult getChartDataForMovieIncome()
-        //{
-        //    DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date; //昨天的場次，從今日的0時之前
-        //    DateTime dateWeekAgo = DateTime.Now.AddDays(-7).Date;
-        //    var q = _db.TOrders.Include(i => i.FSession).Include(i => i.FSession.FMovie).AsEnumerable()
-        //        .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= dateWeekAgo))
-        //        .OrderByDescending(i=>i.FSession.FMovie.FScheduleStart)
-        //        .GroupBy(i => i.FSession.FMovie.FNameCht).Select(g=> new {g.Key,group = g}).ToList();
-        //    List<CDataForMovieIncome> chartData = new List<CDataForMovieIncome>();
-        //    foreach(var group in q)
-        //    {
-        //        CDataForMovieIncome movieData = new CDataForMovieIncome();
-        //        //按照電影分series
-        //        movieData.name = group.Key;
-        //        //每部電影按照前一天到前七天計算票房總合
-        //        movieData.data = new List<IncomeDataPerDay>();
-        //        foreach(var order in group.group)
-        //        {
-        //            IncomeDataPerDay income=null;
-        //            if (!movieData.data.Where(data => data.x == order.FSession.FStartTime.ToString("MM-dd")).Any())
-        //            {
-        //                income = new IncomeDataPerDay();
-        //                income.x = order.FSession.FStartTime.ToString("MM-dd");
-        //                income.y = (int)order.FTotalPrice;
-        //                movieData.data.Add(income);
-        //            }
-        //            else
-        //            {
-        //                movieData.data.Where(data => data.x == order.FSession.FStartTime.ToString("MM-dd")).First().y += (int)order.FTotalPrice;
-        //            }
-        //        }
-        //        chartData.Add(movieData);
-        //    }
-        //    return Json(chartData);
-        //}
+        public IActionResult getChartDataForSimpleIncome()
+        {
+            DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date;
+            DateTime dateWeekAgo = DateTime.Now.AddDays(-7).Date;
+            var q = _db.TOrders.Include(i => i.FSession).AsEnumerable()
+                .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= dateWeekAgo))
+                .OrderByDescending(i=>i.FSession.FStartTime.Date)
+                .GroupBy(i => i.FSession.FStartTime.Date).Select(g => new {g.Key, group=g}).ToList();
+            SimpleBarData datas = new SimpleBarData();
+            datas.data = new List<Data>();
+            foreach (var item in q)
+            {
+                Data data = new Data();
+                data.x = item.Key.ToString("MM/dd");
+                data.y = (int)item.group.Select(i=>i.FTotalPrice).Sum() ;
+                datas.data.Add(data);
+            }
+            return Json(datas);
+        }
+
+       
         public IActionResult getChartDataForMovieIncome()
         {
             DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date; 
