@@ -34,6 +34,8 @@ namespace prjMovieHolic.Controllers
                 ViewBag.userId = user.FMemberId;
                 string controller=HttpContext.Session.GetString(CDictionary.SK_CONTROLLER);
                 string view = HttpContext.Session.GetString(CDictionary.SK_VIEW);
+                ViewBag.Controller = controller;
+                ViewBag.View = view;
                 if (controller != null && view != null)
                     return RedirectToAction(view, controller);
                 else
@@ -180,7 +182,7 @@ namespace prjMovieHolic.Controllers
                 return View(memberData);
             }
             else
-                return RedirectToAction("memberList");
+                return RedirectToAction("memberList",new {id=id});
         }
         [HttpPost]
         public IActionResult memberEdit(TMember member)
@@ -200,7 +202,7 @@ namespace prjMovieHolic.Controllers
                 _movieContext.SaveChanges();
                 
             }
-            return RedirectToAction("memberList", new { id = member.FMemberId });
+            return RedirectToAction("memberList", new {id=member.FMemberId});
         }
 
         //密碼修改
@@ -307,7 +309,7 @@ namespace prjMovieHolic.Controllers
             sessionCheck();
             return View(viewModel);
         }
-        //todo 取消收藏
+        //取消收藏
         public IActionResult favoriteCancel(int FMemberId, int FMovieId)
         {
             TMemberAction favorite = _movieContext.TMemberActions
@@ -326,11 +328,11 @@ namespace prjMovieHolic.Controllers
             int id=(int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); 
 
             var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
-            var orders=_movieContext.TOrders.Include(c=>c.FSession.FMovie).Include(c=>c.FSession).ThenInclude(c=>c.FTheater).Where(c=>c.FMemberId==id).OrderByDescending(o=>o.FOrderId).ToList();
+            var orderPicked=_movieContext.TOrders.Include(c=>c.FSession.FMovie).Include(c=>c.FSession).ThenInclude(c=>c.FTheater).Where(c=>c.FMemberId==id).OrderByDescending(o=>o.FOrderId).ToList();
             var viewModel = new COrderAndMemberViewModel
             {
                 Member = members,
-                Order = orders,
+                OrderPicked = orderPicked,
 
             };
             sessionCheck();
