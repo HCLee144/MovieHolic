@@ -63,15 +63,15 @@
                                     <div class="inSellSold">
                                         <div class="sell"></div>
                                         <p>未售出</p>
-                                    </div>                                    
-                                    <div class ="inSellSold">
+                                    </div>
+                                    <div class="inSellSold">
                                         <div class="sold"></div>
                                         <p>已售出</p>
-                                    </div>                                    
+                                    </div>
                                     <div class="inSellSold">
                                         <div class="loveSeat"></div>
                                         <p>愛心座位</p>
-                                    </div> 
+                                    </div>
                                     <div class="showLeftSeats" id="showLeftSeats"></div>
                                 </div>
                                 <div class="screen">
@@ -114,7 +114,7 @@
         const theaterID = document.getElementById('theaterID');
         const totalTickets = document.getElementById('totalTickets').value;
         const showLeftSeats = document.getElementById('showLeftSeats');
-        const nextStep=document.getElementById('nextStep');
+        const nextStep = document.getElementById('nextStep');
 
         const formdialog = document.getElementById('IamDialog');
         const btnCloseDialog = document.getElementById('closeDialog');
@@ -128,29 +128,35 @@
         async function saveSeatIDinSession(correctSeatID, evt) {
 
             if (evt.target.style.backgroundColor == 'steelblue') {
-                const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets)+'&selected=1');
+                const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=1');
                 const data = await response.text();
                 evt.target.style.backgroundColor = '#eaeaea';
                 showLeftSeats.innerHTML = data;
             }
             else {
-                const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=0');
-                const data = await response.text();
 
-                if (data === '座位人數已滿')
-                    showLeftSeats.innerHTML = data;
+                if (getComputedStyle(evt.target).backgroundColor === 'rgb(105, 105, 105)') 
+                    showLeftSeats.innerHTML = '位置已被選走囉，下次請早:))))';
+
                 else {
-                    showLeftSeats.innerHTML = data;
-                    evt.target.style.backgroundColor = 'steelblue';
+                    const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=0');
+                    const data = await response.text();
+
+                    if (data === '座位人數已滿')
+                        showLeftSeats.innerHTML = data;
+                    else {
+                        showLeftSeats.innerHTML = data;
+                        evt.target.style.backgroundColor = 'steelblue';
+                    }
                 }
+
             }
         }
 
-        nextStep.addEventListener('click',()=>{
-            if(showLeftSeats.innerHTML=='尚可選座位：0'||showLeftSeats.innerHTML=='座位人數已滿')
+        nextStep.addEventListener('click', () => {
+            if (showLeftSeats.innerHTML == '尚可選座位：0' || showLeftSeats.innerHTML == '座位人數已滿')
                 window.location.replace('@Url.Content("~/OrderFront/ListProduct")');
-            else
-            {
+            else {
                 formdialog.showModal();
                 btnCloseDialog.addEventListener('click', () => {
                     formdialog.close();

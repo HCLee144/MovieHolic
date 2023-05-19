@@ -37,6 +37,7 @@
                                     <input id="tab1" type="radio" name="tab" checked="checked" />
                                     <label for="tab1">已取票</label>
                                     <div class="tab_content">
+                                        <div class="orderLa">
                                         @foreach(var item in Model.Order)
                                         {
                                             <div class="addBorder">
@@ -59,7 +60,7 @@
                                                 </div>
                                             </div>
                                         }
-
+                                        </div>
 
                                     </div>
                                     <!-- TAB1 打包區塊 end -->
@@ -67,7 +68,7 @@
                                     <input id="tab2" type="radio" name="tab" />
                                     <label for="tab2">未取票</label>
                                     <div class="tab_content">
-
+                                        <div class="orderLa">
                                         <div class="addBorder">
                                             <div class="orderDetailBox">
                                                 <div class="orderDetailBoxTop">
@@ -88,14 +89,14 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        </div>
                                     </div>
                                     <!-- TAB2 打包區塊 end -->
                                     <!-- TAB3 打包區塊 start -->
                                     <input id="tab3" type="radio" name="tab" />
                                     <label for="tab3">已取消</label>
                                     <div class="tab_content">
-
+                                        <div class="orderLa">
                                         <div class="addBorder">
                                             <div class="orderDetailBox">
                                                 <div class="orderDetailBoxTop">
@@ -115,7 +116,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        </div>
                                     </div>
                                     <!-- TAB3 打包區塊 end -->
                                 </div>

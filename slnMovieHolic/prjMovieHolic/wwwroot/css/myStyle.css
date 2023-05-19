@@ -69,7 +69,7 @@
     text-align: center;
     /*浮動視窗螢幕位置*/
     position: fixed;
-    top: 700px;
+    top: 400px;
     right: 30px;
 }
 
@@ -965,7 +965,7 @@ figure span {
 
 /*會員密碼修改盒子*/
 .MemberPasswordChangeform {
-    padding-top: 90px;
+    padding-top: 20px;
     padding-right: 50px;
 }
 
@@ -1196,8 +1196,23 @@ figure span {
 
 .orderList {
     width: 600px;
-    height: 700px;
+    height: 600px;
 }
+
+.orderLa{
+    height:550px;
+    overflow:scroll;
+}
+
+    .orderLa::-webkit-scrollbar {
+        background: transparent;
+        width: 6px;
+        height: 6px;
+    }
+
+    .orderLa::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 .addBorder {
     border: 3px solid silver;

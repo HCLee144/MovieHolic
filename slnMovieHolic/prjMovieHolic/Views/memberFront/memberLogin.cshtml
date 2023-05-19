@@ -23,7 +23,9 @@
                                     <hr />
                                 @*<input type="checkbox" name="" id=""><span>保持登入</span>*@
                                     <a href=""><input class="loginButton" type="submit" id="submit" value="登入" /></a>
-                                    <input class="loginButton" type="button" id="loginDemo" value="Demo" />
+                                    <input class="ourButton" type="button" id="loginDemo" value="Demo" />
+                                    <input class="ourButton" type="button" id="loginDemo2" value="Demo2" />
+                                    <input class="ourButton" type="button" id="loginDemo3" value="Demo3" />
                                 <hr>
                                     <span>還不是會員嗎？</span>@Html.ActionLink("註冊會員","memberSignUp","memberFront")
                                 </form>
@@ -31,9 +33,9 @@
                                 <hr>
                                 <p>————————OR————————</p>
                                 <hr>
-                                <a href=""><img src="/images/icons8-facebook-48.png" alt=""></a>
-                                <a href=""><img src="/images/icons8-twitter-circled-48.png" alt=""></a>
-                                <a href=""><img src="/images/icons8-google-plus-48.png" alt=""></a>
+                                <a href=""><img src="~/images/icons8-facebook-48.png" alt=""></a>
+                                <a href=""><img src="~/images/icons8-twitter-circled-48.png" alt=""></a>
+                                <a href=""><img src="~/images/icons8-google-plus-48.png" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -49,6 +51,8 @@
         const txtPassword=document.querySelector('#txtPassword');
         const submit = document.querySelector('#submit');
         const loginDemo=document.querySelector('#loginDemo');
+        const loginDemo2 = document.querySelector('#loginDemo2');
+        const loginDemo3 = document.querySelector('#loginDemo3');
         submit.addEventListener('click', async () => {
             const response = await fetch(`@Url.Content("~/memberFront/IsLogin")?txtAccount=` + txtAccount.value + "&txtPassword=" +txtPassword.value, { method: 'POST' })
             const data = await response.json();
@@ -63,5 +67,16 @@
             txtAccount.value = '0923906031';
             txtPassword.value = 'Xpe49cFb';
         })
+        loginDemo2.addEventListener('click', function () {
+            txtAccount.value = '0923906031';
+            txtPassword.value = '8M43Td24';
+        })
+        loginDemo3.addEventListener('click', function () {
+            txtAccount.value = '0983556965';
+            txtPassword.value = '5CUSfTPO';
+        })
+
+
+
     </script>
 }
