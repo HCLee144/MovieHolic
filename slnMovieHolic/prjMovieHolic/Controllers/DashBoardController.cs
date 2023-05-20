@@ -5,7 +5,7 @@ using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
 {
-    public class DashBoardController : Controller
+    public class DashBoardController : BackSuperController
     {
         private readonly MovieContext _db;
 

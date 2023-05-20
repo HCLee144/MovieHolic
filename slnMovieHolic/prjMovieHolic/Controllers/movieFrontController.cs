@@ -10,7 +10,7 @@ using prjMovieHolic.ViewModels;
 
 namespace prjMovieHolic.Controllers
 {
-    public class movieFrontController : Controller
+    public class movieFrontController : SuperFrontController
     {
         private readonly MovieContext _context;
 
@@ -38,10 +38,7 @@ namespace prjMovieHolic.Controllers
                };
 
             //已登入用
-            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
-            ViewBag.Login = isUserLoggedIn;
-            ViewBag.UserId = userId;
+            sessionCheck();
             string controller = "movieFront";
             string view = "MovieIndex";
             //string json=JsonSerializer.Serialize(new { controller, view });
@@ -81,10 +78,7 @@ namespace prjMovieHolic.Controllers
             };
 
             //已登入用
-            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
-            ViewBag.Login = isUserLoggedIn;
-            ViewBag.UserId = userId;
+            sessionCheck();
             string controller = "movieFront";
             string view = "MovieIndex";
             //string json=JsonSerializer.Serialize(new { controller, view });

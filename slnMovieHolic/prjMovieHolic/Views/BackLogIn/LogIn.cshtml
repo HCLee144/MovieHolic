@@ -1,51 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "manageLogin";
 }
-<!--  Body Wrapper -->
-<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-     data-sidebar-position="fixed" data-header-position="fixed">
-    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
-        <div class="d-flex align-items-center justify-content-center w-100">
-            <div class="row justify-content-center w-100">
-                <div class="col-md-8 col-lg-6 col-xxl-3">
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">
-                            </a>
-                            <p class="text-center">Your Social Campaigns</p>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                </div>
-                                <div class="mb-4">
-                                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1">
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
-                                        <label class="form-check-label text-dark" for="flexCheckChecked">
-                                            Remeber this Device
-                                        </label>
-                                    </div>
-                                    <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a>
-                                </div>
-                                <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</a>
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
-                                    <a class="text-primary fw-bold ms-2" href="./authentication-register.html">Create an account</a>
-                                </div>
-                            </form>
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <div class="line1 wrapper">
+                        <div class="logInBox">
+                            <h3 style="font-size:20px">後台管理登入</h3>
+                            <hr>
+                            <div class="logInBoxSmall">
+                                <form asp-action="LogIn">
+                                    <h6>帳號</h6>
+                                    <input type="text" name="txtAccount" id="txtAccount" value="">
+                                    <h6>密碼</h6>
+                                    <input type="password" name="txtPassword" id="txtPassword" value="">
+                                    <hr />
+                                    <hr />
+                                    <a href=""><input class="loginButton" type="submit" id="submit" value="登入" /></a>
+                                    <input class="loginButton" type="button" id="loginDemo" value="Demo" />
+                                    <hr>
+                                </form>
+                                <hr>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </div>
 </div>
-<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+@section Scripts{
+    <script>
+        const txtAccount = document.querySelector('#txtAccount');
+        const txtPassword = document.querySelector('#txtPassword');
+        const submit = document.querySelector('#submit');
+        const loginDemo = document.querySelector('#loginDemo');
+        submit.addEventListener('click', async () => {
+            const response = await fetch(`@Url.Content("~/BackLogIn/IsLogin")?txtAccount=` + txtAccount.value + "&txtPassword=" + txtPassword.value, { method: 'POST' })
+            const data = await response.json();
+            console.log(data)
+            if (!data.success) {
+                // 登入失敗
+                alert(data.message);
+            }
+        })
+
+        loginDemo.addEventListener('click', function () {
+            txtAccount.value = 'neil0101';
+            txtPassword.value = '0001';
+        })
+    </script>
+}

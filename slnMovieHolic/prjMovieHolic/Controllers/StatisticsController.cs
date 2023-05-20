@@ -5,7 +5,7 @@ using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
 {
-    public class StatisticsController : Controller
+    public class StatisticsController : BackSuperController
     {
         private readonly MovieContext _db;
 
