@@ -42,15 +42,22 @@
         public List<string> labels { get; set; }
     }
 
-    public class SimpleBarData
+    
+    public class SimpleBarDataValues
     {
-        public List<Data> data { get; set; }
+        public SimpleBarDataValues()
+        {
+            data = new List<int>();
+        }
+        public List<int> data { get; set; }
     }
 
-    public class Data
+    public class SimpleBarDataLabels
     {
-        //長條圖的data
-        public string x { get;set; }
-        public int y { get; set; }
+        public SimpleBarDataLabels()
+        {
+            categories = new List<string>();
+        }
+       public List<string> categories { get; set; }
     }
 }

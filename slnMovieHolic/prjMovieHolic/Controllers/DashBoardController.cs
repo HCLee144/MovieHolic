@@ -18,27 +18,43 @@ namespace prjMovieHolic.Controllers
             return View();
         }
 
-        public IActionResult getChartDataForSimpleIncome()
+        public IActionResult getChartDataForSimpleIncomeByDay()
         {
             DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date;
-            DateTime dateWeekAgo = DateTime.Now.AddDays(-7).Date;
+            DateTime startdate = DateTime.Now.AddDays(-7).Date;
             var q = _db.TOrders.Include(i => i.FSession).AsEnumerable()
-                .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= dateWeekAgo))
+                .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
                 .OrderByDescending(i=>i.FSession.FStartTime.Date)
-                .GroupBy(i => i.FSession.FStartTime.Date).Select(g => new {g.Key, group=g}).ToList();
-            SimpleBarData datas = new SimpleBarData();
-            datas.data = new List<Data>();
+                .GroupBy(i => i.FSession.FStartTime.Date.ToString("MM/dd")).Select(g => new {g.Key, group=g}).ToList();
+            SimpleBarDataValues dataList = new SimpleBarDataValues();
+            SimpleBarDataLabels labelList = new SimpleBarDataLabels();
             foreach (var item in q)
             {
-                Data data = new Data();
-                data.x = item.Key.ToString("MM/dd");
-                data.y = (int)item.group.Select(i=>i.FTotalPrice).Sum() ;
-                datas.data.Add(data);
+                dataList.data.Add((int)item.group.Sum(i => i.FTotalPrice));
+                labelList.categories.Add(item.Key);
             }
-            return Json(datas);
+            return Json(new {data=dataList,labels=labelList });
         }
 
-       
+        public IActionResult getChartDataForSimpleIncomeByMonth()
+        {
+            DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date;
+            DateTime startdate = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(-5); //先找這個月第一天，再找六個月前第一天
+            var q = _db.TOrders.Include(i => i.FSession).AsEnumerable()
+                .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
+                .OrderByDescending(i => i.FSession.FStartTime.Date)
+                .GroupBy(i => i.FSession.FStartTime.ToString("yyyy/MM")).Select(g => new { g.Key, group = g }).ToList();
+            SimpleBarDataValues dataList = new SimpleBarDataValues();
+            SimpleBarDataLabels labelList = new SimpleBarDataLabels();
+            foreach (var item in q)
+            {
+                dataList.data.Add((int)item.group.Sum(i => i.FTotalPrice));
+                labelList.categories.Add(item.Key);
+            }
+            return Json(new { data = dataList, labels = labelList });
+        }
+
+
         public IActionResult getChartDataForMovieIncome()
         {
             DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date; 
@@ -67,8 +83,7 @@ namespace prjMovieHolic.Controllers
                 foreach (var order in group.group)
                 {
                     int span = (dateYesterDay-order.FSession.FStartTime.Date).Days;
-                    movieData.data[span].y += (int)order.FTotalPrice;
-                    
+                    movieData.data[span].y += (int)order.FTotalPrice;                    
                 }
                 chartData.Add(movieData);
             }

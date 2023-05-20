@@ -6,16 +6,22 @@
 
 @*Row1*@
 <div class="row">
+    <div class="col">
     <div class="card">
         <div class="card-body">
             <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                <div class="mb-3 mb-sm-0">
                     <h5 class="card-title fw-semibold">電影票房收入(收入金額)</h5>
-                </div>
+                    <div>
+                        <input type="radio" name="selectTimeSpan" onclick="loadMovieIncomeByDay()" checked />
+                        <label>按日期顯示</label>
+                        <input type="radio" name="selectTimeSpan" onclick="loadMovieIncomeByMonth()"/>
+                        <label>按月份顯示</label>
+                    </div>
             </div>
             <div id="chartMovieIncome" style="min-height: 360px;">
             </div>
         </div>
+    </div>
     </div>
 </div>
 
@@ -39,11 +45,12 @@
     <script>
 
         var optionsIncome = {
-            series:[],
+            series: [{
+                data: []
+            }],
             chart: {
-                type: 'bar',
                 height: 350,
-                stacked: true,
+                type: 'bar',
                 toolbar: {
                     show: false
                 },
@@ -53,39 +60,54 @@
             },
             plotOptions: {
                 bar: {
-                    horizontal: false,
+                    borderRadius: 10,
                     dataLabels: {
-                        total: {
-                            enabled: true,
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 900
-                            }
-                        }
-                    }
-                },
+                        position: 'top', 
+                    },
+                }
             },
             dataLabels: {
-                enabled: false
+                enabled: true,
+                formatter: function (val) {
+                    return val + "元";
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
             },
             xaxis: {
-                type: 'category'
+                categories: [],                 
             },
             noData: {
                 text: "Loading Data...",
                 align: 'center',
-            }            
+            }
         };
+
 
         var chartIncome = new ApexCharts(document.querySelector("#chartMovieIncome"), optionsIncome);
         chartIncome.render();
 
-        async function loadMovieIncome() {
-            var response = await fetch('@Url.Content("~/DashBoard/getChartDataForSimpleIncome")');
+        async function loadMovieIncomeByDay() {
+            var response = await fetch('@Url.Content("~/DashBoard/getChartDataForSimpleIncomeByDay")');
             var datas = await response.json();
-            chartIncome.updateSeries(datas);
+            await chartIncome.updateOptions({
+                series: [datas.data],
+                xaxis:datas.labels,
+            },true,true,true);
         }
-        loadMovieIncome();
+        loadMovieIncomeByDay();
+
+        async function loadMovieIncomeByMonth() {
+            var response = await fetch('@Url.Content("~/DashBoard/getChartDataForSimpleIncomeByMonth")');
+            var datas = await response.json();
+            await chartIncome.updateOptions({
+                series: [datas.data],
+                xaxis: datas.labels,
+            },true,true,true);
+        }
     </script>
 
     <script>
@@ -106,7 +128,7 @@
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    }
+                }
             },
             dataLabels: {
                 enabled: true
@@ -124,12 +146,12 @@
         chartProportion.render();
 
 
-        async function loadMoviePortionIncome(){
+        async function loadMoviePortionIncome() {
             var response = await fetch('@Url.Content("~/DashBoard/getChartDataForMovieIncome")');
             var datas = await response.json();
-            chartProportion.updateSeries(datas);
+            await chartProportion.updateSeries(datas);
         }
         loadMoviePortionIncome();
- 
+
     </script>
 }
