@@ -3,10 +3,19 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    //if (ViewBag.Login == true)
+    //{
+    //    string userId = ViewBag.UserId.ToString();
+    //}
+    
 }
+<style>
+
+
+
+</style>
 
 <h1></h1>
-
 <div id="page1">
     <div class="body1">
         <div class="main">
@@ -85,7 +94,7 @@
 
                                         <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
                                         <div>
-                                            <p>❤</p>
+                                            <p id="heart" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId');" data-movie-id="@movie.FId">❤</p>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +145,7 @@
 
                                         <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
                                         <div>
-                                            <p>❤</p>
+                                            <p id="heart" onclick="checkLoginAndToggleFavorite(`2`)" data-movie-id="@movie.FId">❤</p>
                                         </div>
                                     </div>
                                 </div>
@@ -148,3 +157,138 @@
         </div>
     </div>
 </div>
+<dialog id="IamDialog" class="IamDialog">
+    <p>請先登入會員！</p>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+
+@section Scripts{
+    <script>
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        //請先登入
+
+
+        function checkLoginAndToggleFavorite(userId) {
+            console.log(userId);
+            if (typeof userId === "undefined" || userId === null) {
+                login();
+            } else {
+                toggleFavorite();
+            }
+        }
+
+        //function isLoggedIn() {
+        //    // 檢查使用者登入狀態的邏輯
+        //    @ViewBag.Login ==true;
+        //}
+
+        function toggleFavorite() {
+            var heartIcon = document.getElementById('heart');
+            var movieId = heartIcon.getAttribute('data-movie-id');
+            var isFavorite = checkIfFavorite(movieId);
+
+            if (isFavorite) {
+                cancelFavorite();
+                heartIcon.classList.remove('active');
+            } else {
+                addToFavorites(movieId);
+                heartIcon.classList.add('active');
+            }
+        }
+
+        function checkIfFavorite(movieId) {
+            // 檢查影片是否已經被收藏的邏輯
+        }
+
+        function addToFavorites(movieId) {
+            // 加入收藏的邏輯
+        }
+
+        // 從收藏中移除的邏輯
+        //function cancelFavorite() {
+        //    var memberId = Model.tmember.FMemberId;
+        //    var movieId = document.getElementById('heart').getAttribute('data-movie-id');
+
+        //    $.ajax({
+        //        url: '/memberFront/favoriteCancel',
+        //        type: 'POST',
+        //        data: { FMemberId: memberId, FMovieId: movieId },
+        //        success: function (response) {
+        //            // 成功處理回應的程式碼
+        //            // 例如，重新載入喜愛清單
+        //            alert('取消收藏成功')
+        //            location.reload();
+
+        //        },
+        //        error: function (xhr, status, error) {
+        //            // 處理錯誤的程式碼
+        //            alert('失敗')
+        //        }
+        //    });
+
+        function login() {
+            // 執行登入操作的邏輯
+                formdialog.showModal();
+                btnCloseDialog.addEventListener('click', () => {
+                    // 關閉 <dialog>
+                    formdialog.close();
+                    window.location.href = "/memberFront/memberLogin";
+
+                });
+        }
+
+
+
+
+
+
+
+        //function cancelFavorite() {
+        //    var memberId = Model.tmember.FMemberId;
+        //    var movieId = document.getElementById('heart').getAttribute('data-movie-id');
+
+        //    $.ajax({
+        //        url: '/memberFront/favoriteCancel',
+        //        type: 'POST',
+        //        data: { FMemberId: memberId, FMovieId: movieId },
+        //        success: function (response) {
+        //            // 成功處理回應的程式碼
+        //            // 例如，重新載入喜愛清單
+        //            alert('取消收藏成功')
+        //            location.reload();
+
+        //        },
+        //        error: function (xhr, status, error) {
+        //            // 處理錯誤的程式碼
+        //            alert('失敗')
+        //        }
+        //    });
+        ////新增收藏
+        //function cancelFavorite() {
+        //    var memberId = Model.tmember.FMemberId;
+        //    var movieId = document.getElementById('heart').getAttribute('data-movie-id');
+
+        //    $.ajax({
+        //        url: '/memberFront/favoriteCancel',
+        //        type: 'POST',
+        //        data: { FMemberId: memberId, FMovieId: movieId },
+        //        success: function (response) {
+        //            // 成功處理回應的程式碼
+        //            // 例如，重新載入喜愛清單
+        //            alert('取消收藏成功')
+        //            location.reload();
+
+        //        },
+        //        error: function (xhr, status, error) {
+        //            // 處理錯誤的程式碼
+        //            alert('失敗')
+        //        }
+        //    });
+
+
+    </script>
+}
+
+

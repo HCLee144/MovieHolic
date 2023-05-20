@@ -323,6 +323,11 @@ namespace prjMovieHolic.Controllers
             }
             return RedirectToAction("favoriteList", new { id = FMemberId });
         }
+
+      
+
+
+        //訂單查詢
         public IActionResult orderList()
         {
             int id=(int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); 
