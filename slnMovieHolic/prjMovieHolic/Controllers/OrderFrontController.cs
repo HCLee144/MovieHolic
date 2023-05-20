@@ -28,7 +28,6 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListSession(int? movieID)
         {
-
             var session = movieContext.TSessions.Where(x => x.FMovieId == 36).ToList();
             string x = "";
             //判斷會員登入或會員中心
@@ -58,7 +57,7 @@ namespace prjMovieHolic.Controllers
             string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
             //將session時間取出星期幾(原先英文，轉數字)
-            int selectDays = Convert.ToInt32(movie.TSessions.Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
+            int selectDays = Convert.ToInt32(movie.TSessions.Where(s=>s.FStartTime.Date>DateTime.Now.Date.AddDays(1)).Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
 
             //將星期幾跟陣列對應，轉中文，連續取七天
             List<string> wholeWeekDays = new List<string>();
@@ -524,7 +523,7 @@ namespace prjMovieHolic.Controllers
 
             //新增orderStatus資料
             TOrderStatus orderStatus = new TOrderStatus();
-            orderStatus.FOrderStatus = "已訂票";
+            orderStatus.FOrderStatus = "未取票";
             orderStatus.FChangedTime = DateTime.Now;
             movieContext.TOrderStatuses.Add(orderStatus);
             movieContext.SaveChanges();

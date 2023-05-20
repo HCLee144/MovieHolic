@@ -65,7 +65,7 @@
                                               {
                                                   string showDay = $"day{i + 1}";
                                                   <a>
-                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.Where(s=>s.FStartTime>DateTime.Now).FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
+                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.Where(s=>s.FStartTime>DateTime.Now.AddDays(1)).FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
                                                   </a>
                                              }
                                         }

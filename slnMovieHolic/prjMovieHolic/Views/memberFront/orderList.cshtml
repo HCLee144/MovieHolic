@@ -35,10 +35,10 @@
                                 <div class="tabPlace">
                                     <!-- TAB1 打包區塊 start -->
                                     <input id="tab1" type="radio" name="tab" checked="checked" />
-                                    <label for="tab1">已取票</label>
+                                    <label for="tab1">未取票</label>
                                     <div class="tab_content">
                                         <div class="orderLa">
-                                        @foreach(var item in Model.Order)
+                                        @foreach(var item in Model.Order_未取票)
                                         {
                                             <div class="addBorder">
                                                 <div class="orderDetailBox">
@@ -51,44 +51,48 @@
                                                             <a href="">
                                                                 <h3>詳情</h3>
                                                             </a>
+                                                            @Html.ActionLink("取消","cancelTicket","OrderFront",new{orderID=item.FOrderId},new{onclick="return confirm('確認要退票嗎')",@class="orderDetaildelete"})
+                                                                <h3 class="orderDetaildelete"><a href="" @*class="orderDetaildelete"*@ id="cancelLink" name="@item.FOrderId">取消</a></h3>
                                                         </div>
                                                     </div>
                                                     <div class="orderDetailBoxBottom">
                                                         <h3>@item.FSession.FStartTime.ToString("yyyy/MM/dd hh:mm")</h3>
-                                                        <h3>$@item.FTotalPrice</h3>
+                                                        <h3>NT$@item.FTotalPrice</h3>
                                                     </div>
                                                 </div>
                                             </div>
                                         }
                                         </div>
-
                                     </div>
                                     <!-- TAB1 打包區塊 end -->
                                     <!-- TAB2 打包區塊 start -->
                                     <input id="tab2" type="radio" name="tab" />
-                                    <label for="tab2">未取票</label>
+                                    <label for="tab2">已取票</label>
                                     <div class="tab_content">
                                         <div class="orderLa">
-                                        <div class="addBorder">
-                                            <div class="orderDetailBox">
-                                                <div class="orderDetailBoxTop">
-                                                    <div>
-                                                        <h3>第　1　廳</h3>
-                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
-                                                    </div>
-                                                    <div>
-                                                        <a href="">
-                                                            <h3>詳情</h3>
-                                                        </a>
-                                                        <button class="orderDetaildelete">取消</button>
+                                            @foreach (var item in Model.Order_已取票)
+                                            {
+                                                <div class="addBorder">
+                                                    <div class="orderDetailBox">
+                                                        <div class="orderDetailBoxTop">
+                                                            <div>
+                                                                <h3>@item.FSession.FTheater.FTheater</h3>
+                                                                <h4>@item.FSession.FMovie.FNameCht</h4>
+                                                            </div>
+                                                            <div>
+                                                                <a href="">
+                                                                    <h3>詳情</h3>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="orderDetailBoxBottom">
+                                                            <h3>@item.FSession.FStartTime.ToString("yyyy/MM/dd hh:mm")</h3>
+                                                            <h3>NT$@item.FTotalPrice</h3>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="orderDetailBoxBottom">
-                                                    <h3>2023/5/31_10:30</h3>
-                                                    <h3>$888</h3>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            }
+                                       
                                         </div>
                                     </div>
                                     <!-- TAB2 打包區塊 end -->
@@ -97,25 +101,28 @@
                                     <label for="tab3">已取消</label>
                                     <div class="tab_content">
                                         <div class="orderLa">
-                                        <div class="addBorder">
-                                            <div class="orderDetailBox">
-                                                <div class="orderDetailBoxTop">
-                                                    <div>
-                                                        <h3>第　1　廳</h3>
-                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
-                                                    </div>
-                                                    <div>
-                                                        <a href="">
-                                                            <h3>詳情</h3>
-                                                        </a>
+                                            @foreach (var item in Model.Order_已取消)
+                                            {
+                                                <div class="addBorder">
+                                                    <div class="orderDetailBox">
+                                                        <div class="orderDetailBoxTop">
+                                                            <div>
+                                                                <h3>@item.FSession.FTheater.FTheater</h3>
+                                                                <h4>@item.FSession.FMovie.FNameCht</h4>
+                                                            </div>
+                                                            <div>
+                                                                <a href="">
+                                                                    <h3>詳情</h3>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="orderDetailBoxBottom">
+                                                            <h3>@item.FSession.FStartTime.ToString("yyyy/MM/dd hh:mm")</h3>
+                                                            <h3>NT$@item.FTotalPrice</h3>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="orderDetailBoxBottom">
-                                                    <h3>2023/5/31_10:30</h3>
-                                                    <h3>$888</h3>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            }
                                         </div>
                                     </div>
                                     <!-- TAB3 打包區塊 end -->
@@ -130,3 +137,8 @@
     </div>
 </div>
 
+@section Scripts{
+    <script>
+
+    </script>
+}
