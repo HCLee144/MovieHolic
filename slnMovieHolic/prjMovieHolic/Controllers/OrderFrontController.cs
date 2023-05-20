@@ -577,6 +577,77 @@ namespace prjMovieHolic.Controllers
             return Content("儲存成功");
         }
 
+        public IActionResult ListOrderBook(string orderStatusDescribe)
+        {
+            int memberID = getMemberID();
+
+            var orderStatus_取票狀態 = movieContext.TOrderStatuses.Where(od => od.FOrderStatus == orderStatusDescribe).
+                Select(od => od.FOrderStatusId).ToList();
+            List<TOrderStatusLog> order_取票狀態 = new List<TOrderStatusLog>();
+            foreach (var item in orderStatus_取票狀態)
+                order_取票狀態.Add(movieContext.TOrderStatusLogs.
+                    FirstOrDefault(osl => osl.FOrderStatusId == item));
+            List<TOrder> this會員的取票 = new List<TOrder>();
+            foreach (var item in order_取票狀態)
+            {
+                var mightNull取票狀態 = movieContext.TOrders.Include(o => o.FSession).
+                    ThenInclude(s => s.FTheater).
+                    Include(o => o.FSession).ThenInclude(s => s.FMovie).
+                    FirstOrDefault(o => o.FMemberId == memberID & o.FOrderId == item.FOrderId);
+                if (mightNull取票狀態 != null)
+                    this會員的取票.Add(mightNull取票狀態);
+            }
+
+            List<CticketData> ticketDatas = new List<CticketData>();
+            foreach(var item in this會員的取票)
+            {
+                CticketData data = new CticketData();
+                data.orderID = item.FOrderId;
+                data.theaterName = item.FSession.FTheater.FTheater;
+                data.movieName = item.FSession.FMovie.FNameCht;
+                data.sessionStartTime = item.FSession.FStartTime.ToString("MM/dd HH:mm");
+                data.totalPrice = (int)item.FTotalPrice;
+                ticketDatas.Add(data);
+            }
+
+            return Json(ticketDatas);
+        }
+
+        public IActionResult ShowOrderDetails(int orderID)
+        {
+            var orderDetails=movieContext.TOrderDetails.Where(od => od.FOrderId == orderID).Select(od=>new { od.FSeatId,od.FTicketClass.FTicketClass }).ToList();
+            int theaterID = movieContext.TOrders.Include(o=>o.FSession).FirstOrDefault(o => o.FOrderId == orderID).FSession.FTheaterId;
+
+            List<string> listSeatNames = new List<string>();
+            foreach (var item in orderDetails)
+            {
+                int row;
+                int col;
+                int seatIDinTheater = item.FSeatId - (theaterID - 1) * 400;
+                if ((seatIDinTheater) % 20 != 0)
+                {
+                    row = (seatIDinTheater) / 20 + 1;
+                    col = (seatIDinTheater) % 20;
+                }
+                else
+                {
+                    row = (seatIDinTheater) / 20;
+                    col = 20;
+                }
+                listSeatNames.Add($"{row}排{col}");
+            }
+
+            List<COrderDetailData> showOrderDetail = new List<COrderDetailData>();
+            for(int i=0;i<listSeatNames.Count;i++)
+            {
+                COrderDetailData data = new COrderDetailData();
+                data.seatName = listSeatNames[i];
+                data.ticketClassName = orderDetails[i].FTicketClass;
+                showOrderDetail.Add(data);
+            }
+            return Json(showOrderDetail);
+        }
+
         [NonAction]
         string getNames(Array data)
         {
@@ -756,5 +827,18 @@ namespace prjMovieHolic.Controllers
         public string sessionIDandTime { get; set; }
     }
 
+    public class CticketData
+    {
+        public int orderID { get; set; }
+        public string theaterName { get; set; }
+        public string movieName { get; set; }
+        public string sessionStartTime { get; set; }
+        public int totalPrice { get; set; }
+    }
 
+    public class COrderDetailData
+    {
+        public string seatName { get; set; }
+        public string ticketClassName { get; set; }
+    }
 }
