@@ -52,7 +52,7 @@
                                                                 <h3>詳情</h3>
                                                             </a>
                                                             @Html.ActionLink("取消","cancelTicket","OrderFront",new{orderID=item.FOrderId},new{onclick="return confirm('確認要退票嗎')",@class="orderDetaildelete"})
-                                                                <h3 class="orderDetaildelete"><a href="" @*class="orderDetaildelete"*@ id="cancelLink" name="@item.FOrderId">取消</a></h3>
+                                                                <h3 ><a href="" @*class="orderDetaildelete"*@ id="cancelLink" name="@item.FOrderId">取消</a></h3>
                                                         </div>
                                                     </div>
                                                     <div class="orderDetailBoxBottom">
