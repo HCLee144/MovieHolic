@@ -57,7 +57,7 @@ namespace prjMovieHolic.Controllers
             string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
             //將session時間取出星期幾(原先英文，轉數字)
-            int selectDays = Convert.ToInt32(movie.TSessions.Where(s=>s.FStartTime.Date>DateTime.Now.Date.AddDays(1)).Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
+            int selectDays = Convert.ToInt32(movie.TSessions.Where(s=>s.FStartTime.Date>DateTime.Now.Date).Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
 
             //將星期幾跟陣列對應，轉中文，連續取七天
             List<string> wholeWeekDays = new List<string>();
@@ -359,15 +359,25 @@ namespace prjMovieHolic.Controllers
             return Json(seatNames);
         }
 
-        public IActionResult saveProductCount(string products)
+        public void saveProductCount(List<CProductInfo> productInfos)
         {
-            string json = System.Text.Json.JsonSerializer.Serialize(products);
+            string json = System.Text.Json.JsonSerializer.Serialize(productInfos);
             HttpContext.Session.SetString(CDictionary.SelectedProductCount, json);
-            return Content("購買食物成功");
         }
 
-        public IActionResult ListOrderDetails()
+        public IActionResult TryAndError(List<Item> myList)
         {
+
+            // 在這裡可以使用myList獲取List<Item>資料
+            int c = myList.Count;
+            return View();
+            
+        }
+
+        public IActionResult ListOrderDetails(List<CProductInfo> products)
+        {
+            saveProductCount(products);
+
             //確認有沒有登入會員，if沒有，先登入會員
             string controller = "OrderFront";
             string view = "ListOrderDetails";
@@ -574,6 +584,7 @@ namespace prjMovieHolic.Controllers
             }
 
             SendEmail();
+            ClearAllSession();
             return Content("儲存成功");
         }
 
@@ -646,6 +657,19 @@ namespace prjMovieHolic.Controllers
                 showOrderDetail.Add(data);
             }
             return Json(showOrderDetail);
+        }
+
+        public IActionResult deleteOrder(int orderID)
+        {
+           var deleted =movieContext.TOrderDetails.FirstOrDefault(od => od.FOrderId == orderID);
+           movieContext.TOrderDetails.Remove(deleted);
+
+           var orderStatusLog=movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
+           var orderStatus =movieContext.TOrderStatuses.FirstOrDefault(os => os.FOrderStatusId == orderStatusLog.FOrderStatusId);
+           orderStatus.FOrderStatus = "已取消";
+           
+           movieContext.SaveChanges();
+           return Content("Success");
         }
 
         [NonAction]
@@ -818,6 +842,14 @@ namespace prjMovieHolic.Controllers
                 client.Credentials = new NetworkCredential(GoogleID, TempPassword);
                 client.Send(mail);
             }
+        }
+
+        void ClearAllSession()
+        {
+            HttpContext.Session.Remove(CDictionary.SelectedSessionID);
+            HttpContext.Session.Remove(CDictionary.SelectedTicketClass);
+            HttpContext.Session.Remove(CDictionary.SelectedSeatID);
+            HttpContext.Session.Remove(CDictionary.SelectedProductCount);
         }
     }
 

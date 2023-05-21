@@ -18,4 +18,17 @@ namespace prjMovieHolic.ViewModels
         public List<string> selectedSeats { get; set; }
 
     }
+
+    public class CProductInfo
+    {
+        public int productID { get; set; }
+        public string productCount { get; set; }
+    }
+
+    public class Item
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        // 其他屬性
+    }
 }

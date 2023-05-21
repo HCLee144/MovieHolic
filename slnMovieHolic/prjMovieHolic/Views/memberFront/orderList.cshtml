@@ -74,6 +74,7 @@
     <table>
         <thead>
             <tr>
+                <td>序號</td>
                 <td>座位</td>
                 <td>票種</td>
             </tr>
@@ -82,6 +83,14 @@
         </tbody>
     </table>
     <button id="closeDialog"  class="closeDialog">確認</button>
+</dialog>
+
+<dialog id="cancelDialog" class="IamDialog">
+    <p id="cancelParagraph">
+        確定要退票嗎？
+    </p>
+    <button id="confirmDialog" class="closeDialog">確定</button>
+    <button id="closeCancelDialog" class="closeDialog">取消</button>
 </dialog>
 
 @section Scripts{
@@ -97,12 +106,18 @@
         const btnCloseDialog = document.getElementById('closeDialog');
         const dialogBody=document.getElementById('dialogBody');
 
+        const cancelDialog = document.getElementById('cancelDialog');
+        const cancelParagraph = document.getElementById('cancelParagraph');
+        const confirmDialog = document.getElementById('confirmDialog');
+        const closeCancelDialog = document.getElementById('closeCancelDialog');
+
+
         window.onload = async ()=> {
-            divBook.innerHTML=await ListOrderTicket('未取票');
+            divBook.innerHTML=await ListOrderBookTicket('未取票');
         }
  
         OrderBook.addEventListener('click',async ()=>{
-            result=await ListOrderTicket('未取票');
+            result=await ListOrderBookTicket('未取票');
              divBook.innerHTML=result;
         });
         OrderGet.addEventListener('click',async ()=>{
@@ -114,8 +129,8 @@
              divCancel.innerHTML=result;
         });
       
-
-        async function ListOrderTicket(od)
+        //未取票
+        async function ListOrderBookTicket(od)
         {
             const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe='+od);
             const data = await response.json();
@@ -124,9 +139,28 @@
             data.forEach((item)=>{
                 result+=`<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
                 result+=`<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
-                result+=`</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3></div></div><div class="orderDetailBoxBottom">`;
-                result+=`<h3>${item["sessionStartTime"]}</h3><h3>${item["totalPrice"]}</h3>`;
+                result += `</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3>`;
+                result += `<button id=${item["orderID"]} class="orderDetaildelete" onclick="cancelTicket(event)">取消</button></div></div><div class="orderDetailBoxBottom">`;
+                result+=`<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
                 result+=`</div></div></div>`        
+            })
+            console.log(result);
+            return result;
+        }
+
+        //已取票、已取消
+        async function ListOrderTicket(od) {
+            const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe=' + od);
+            const data = await response.json();
+            console.log(data);
+            let result = '';
+            data.forEach((item) => {
+                result += `<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
+                result += `<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
+                result += `</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3></div></div>`;
+                result += `<div class="orderDetailBoxBottom">`;
+                result += `<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
+                result += `</div></div></div>`
             })
             console.log(result);
             return result;
@@ -150,16 +184,42 @@
         {
             const response=await fetch('@Url.Content("~/OrderFront/ShowOrderDetails")?orderID='+orderID);
             const data=await response.json();
-            console.log(data);
 
             let result='';
+            let i=1;
             data.forEach((item)=>{
-                result+=`<tr><td>${item["seatName"]}</td>`;   
+                result+=`<tr><td>${i}</td>`;
+                result += `<td>${item["seatName"]}</td>`;
                 result+=`<td>${item["ticketClassName"]}</td></tr>`;  
+                i++;
             })
             console.log(result);
 
             return result;
+        }
+
+        function cancelTicket(event)
+        {
+            cancelDialog.showModal();
+            confirmDialog.addEventListener('click', async() => {
+                const orderID = event.target.getAttribute('id');
+                const response=await deleteOrder(orderID);
+                
+                const result = await ListOrderBookTicket('未取票');
+                divBook.innerHTML = result;
+
+                cancelDialog.close();
+            })
+            closeCancelDialog.addEventListener('click', () => {
+                cancelDialog.close();
+            })
+        }
+
+        async function deleteOrder(orderID) {
+            const response = await fetch('@Url.Content("~/OrderFront/deleteOrder")?orderID=' + orderID);
+            const data = await response.text();
+            if(data=='Success')
+                return '退票成功';
         }
     </script>
 }
