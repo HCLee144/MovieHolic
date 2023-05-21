@@ -6,187 +6,214 @@
 
 @model prjMovieHolic.ViewModels.CListProductViewModel
 
-<div id="page2">
-    <div class="body1">
-        <div class="">
-            <div class="body3">
-                <div class="main">
-                    <!-- content -->
-                    <section id="content">
-                        <div class="wrapper">
-                            <!--步驟圈圈在這裡-->
-                            <div class="orderStep">
-                                <ul>
-                                    <li class="liInOrderstep">選擇時段</li>
-                                    <li><img src="~/images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstep">選擇票種</li>
-                                    <li><img src="~/images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstep">選擇座位</li>
-                                    <li><img src="~/images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstephere">配餐選擇</li>
-                                    <li><img src="~/images/menu_marker.png" alt=""></li>
-                                    <li class="liInOrderstep">送出訂單</li>
-                                </ul>
-                            </div>
-                            <!--這裡開始訂票-->
-                            <div class="orderDetailOnChooseFood">
-                                <ul>
-                                    <li>
-                                        <h4>片名</h4>
-                                        <h3>@Model.selectedMovieName</h3>
-                                    </li>
-                                    <li>
-                                        <h4>影廳</h4>
-                                        <h3>@Model.selectedTheaterName</h3>
-                                    </li>
-                                    <li>
-                                        <h4>日期時間</h4>
-                                        <h3>@Model.selectedSessionDate  @Model.selectedSessionTime</h3>
-                                    </li>
-                                    <li>
-                                        <h4>人數</h4>
-                                        <h3>@Model.ticketCounts</h3>
-                                    </li>
-                                    <li class="addBorderRight">
-                                        <h4>座位</h4>
-                                        @{
-                                            string s = "";
-                                            for (int i = 0; i < Model.selectedSeats.Count();)
-                                            {
-                                                if (i + 1 >= Model.selectedSeats.Count())
+@section Styles{
+    <style>
+        .chooseFoodQTY a {
+            background-color: #10a5d6;
+            color: #eaeaea;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .QTYCut {
+            margin-right: 1px;
+        }
+
+        .QTYAdd {
+            margin-left: 1px;
+        }
+
+        .spanCount{
+            text-align:center;
+            background-color: rgb(219, 218, 218)
+        }
+    </style>
+}
+
+@{int i= 0;}
+<form action="ListOrderDetails" method="post">
+    <div id="page2">
+        <div class="body1">
+            <div class="">
+                <div class="body3">
+                    <div class="main">
+                        <!-- content -->
+                        <section id="content">
+                            <div class="wrapper">
+                                <!--步驟圈圈在這裡-->
+                                <div class="orderStep">
+                                    <ul>
+                                        <li class="liInOrderstep">選擇時段</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">選擇票種</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">選擇座位</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstephere">配餐選擇</li>
+                                        <li><img src="~/images/menu_marker.png" alt=""></li>
+                                        <li class="liInOrderstep">送出訂單</li>
+                                    </ul>
+                                </div>
+                                <!--這裡開始訂票-->
+                                <div class="orderDetailOnChooseFood">
+                                    <ul>
+                                        <li>
+                                            <h4>片名</h4>
+                                            <h3>@Model.selectedMovieName</h3>
+                                        </li>
+                                        <li>
+                                            <h4>影廳</h4>
+                                            <h3>@Model.selectedTheaterName</h3>
+                                        </li>
+                                        <li>
+                                            <h4>日期時間</h4>
+                                            <h3>@Model.selectedSessionDate  @Model.selectedSessionTime</h3>
+                                        </li>
+                                        <li>
+                                            <h4>人數</h4>
+                                            <h3>@Model.ticketCounts</h3>
+                                        </li>
+                                        <li class="addBorderRight">
+                                            <h4>座位</h4>
+                                            @{
+                                                string s = "";
+                                                for (int i = 0; i < Model.selectedSeats.Count();)
                                                 {
-                                                    s += $"<h3><span>{Model.selectedSeats[i]}</span></h3>";
+                                                    if (i + 1 >= Model.selectedSeats.Count())
+                                                    {
+                                                        s += $"<h3><span>{Model.selectedSeats[i]}</span></h3>";
+                                                        i++;
+                                                    }
+                                                    else
+                                                    {
+                                                        int k = i + 1;
+                                                        s += $"<h3><span>{Model.selectedSeats[i]}   </span><span>{Model.selectedSeats[k]}</span></h3>";
+                                                        i += 2;
+                                                    }
+
+                                                }
+                                            }
+                                            @Html.Raw(s)
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="chooseFood">
+                                    <h4>飲料</h4>
+                                    <div class="chooseDrink">
+                                        @{
+                                            foreach (var item in Model.drinkCategory)
+                                            {
+                                                <div>
+                                                    <h3>@item.FProductName</h3>
+                                                    <input type="hidden" name="products[@i].productID" value="@item.FProductId">
+                                                    <div>
+                                                        <button class="btnDrink"><img src="~/images/products/@item.FImagePath" alt=""></button>
+                                                        <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
+                                                    </div>
+                                                    <div class="chooseFoodQTY">
+                                                        @{
+                                                            string totalName = "total" + item.FProductId;
+                                                            string spanName = "span" + item.FProductId;
+                                                            string price = "price" + item.FProductId;
+                                                        }
+                                                        <input type="hidden" value="@item.FProductPrice" id="@price">
+                                                        <div class="FoodQTYCutAdd">
+                                                            <div style="width:85px;">
+                                                                <a class="QTYCut" id="@item.FProductId">-</a>
+                                                                <input type="text" class="spanCount" name="products[@i].productCount" readonly id="@spanName" size="1" value="0">
+                                                                <a class="QTYAdd" id="@item.FProductId">+</a>
+                                                            </div>
+                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                i++;
+                                            }
+                                        }
+                                    </div>
+
+                                    <div class="snackName"><h4 class="snackName1">爆米花</h4><h4 class="snackName2">點心</h4></div>
+
+                                    <div class="snack">
+                                        <div class="choosePOP">
+                                            @{
+                                                foreach (var item in Model.popcornCategory)
+                                                {
+                                                    <div>
+                                                        <h3>@item.FProductName</h3>
+                                                        <input type="hidden" name="products[@i].productID" value="@item.FProductId">
+                                                        <div>
+                                                            <button class="btnPOP"><img src="~/images/products/@item.FImagePath" alt=""></button>
+                                                            <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
+
+                                                        </div>
+                                                        <div class="chooseFoodQTY">
+                                                            @{
+                                                                string totalName = "total" + item.FProductId;
+                                                                string spanName = "span" + item.FProductId;
+                                                                string price = "price" + item.FProductId;
+                                                            }
+                                                            <input type="hidden" value="@item.FProductPrice" id="@price">
+                                                            <div class="FoodQTYCutAdd">
+                                                                <div style="width:85px;">
+                                                                    <a class="QTYCut" id="@item.FProductId">-</a>
+                                                                    <input type="text" class="spanCount" name="products[@i].productCount" readonly id="@spanName" size="1" value="0">
+                                                                    <a class="QTYAdd" id="@item.FProductId">+</a>
+                                                                </div>
+                                                                <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                 i++;
+                                                }
+                                            }
+
+                                        </div>
+                                        <div class="chooseSweet">
+                                            @{
+                                                foreach (var item in Model.dessertCategory)
+                                                {
+                                                    <div>
+                                                        <h3>@item.FProductName</h3>
+                                                        <input type="hidden" name="products[@i].productID" value="@item.FProductId">
+                                                        <div>
+                                                            <button class="btnSweet"><img src="~/images/products/@item.FImagePath" alt=""></button>
+                                                            <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
+
+                                                        </div>
+                                                        <div class="chooseFoodQTY">
+                                                            @{
+                                                                string totalName = "total" + item.FProductId;
+                                                                string spanName = "span" + item.FProductId;
+                                                                string price = "price" + item.FProductId;
+                                                            }
+                                                            <input type="hidden" value="@item.FProductPrice" id="@price">
+                                                            <div class="FoodQTYCutAdd">
+                                                                <div style="width:85px;">
+                                                                    <a class="QTYCut" id="@item.FProductId">-</a>
+                                                                    <input type="text" class="spanCount" name="products[@i].productCount" readonly id="@spanName" size="1" value="0">
+                                                                    <a class="QTYAdd" id="@item.FProductId">+</a>
+                                                                </div>
+                                                                <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     i++;
                                                 }
-                                                else
-                                                {
-                                                    int k = i + 1;
-                                                    s += $"<h3><span>{Model.selectedSeats[i]}   </span><span>{Model.selectedSeats[k]}</span></h3>";
-                                                    i += 2;
-                                                }
-
                                             }
-                                        }
-                                        @Html.Raw(s)
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="chooseFood">
-                                <h4>飲料</h4>
-                                <div class="chooseDrink">
-                                    @{
-                                        foreach (var item in Model.drinkCategory)
-                                        {
-                                            <div>
-                                                <h3>@item.FProductName</h3>
-                                                <div>
-                                                    <button class="btnDrink"><img src="~/images/products/@item.FImagePath" alt=""></button>
-                                                    <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
-                                                </div>
-                                                <div class="chooseFoodQTY">
-                                                    @{
-                                                        string totalName = "total" + item.FProductId;
-                                                        string spanName = "span" + item.FProductId;
-                                                        string price = "price" + item.FProductId;
-                                                    }
-                                                    <input type="hidden" value="@item.FProductPrice" id="@price">
-                                                    <div class="FoodQTYCutAdd">
-                                                        <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
-                                                        <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                    }              
-                                </div>
 
-                                <div class="snackName"><h4 class="snackName1">爆米花</h4><h4 class="snackName2">點心</h4></div>
-
-                                <div class="snack">
-                                    <div class="choosePOP">
-                                        @{
-                                            foreach (var item in Model.popcornCategory)
-                                            {
-                                                <div>
-                                                    <h3>@item.FProductName</h3>
-                                                    <div>
-                                                        <button class="btnPOP"><img src="~/images/aa.jpg" alt=""></button>
-                                                        <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
-
-                                                    </div>
-                                                    <div class="chooseFoodQTY">
-                                                        @{
-                                                            string totalName = "total" + item.FProductId;
-                                                            string spanName = "span" + item.FProductId;
-                                                            string price = "price" + item.FProductId;
-                                                        }
-                                                        <input type="hidden" value="@item.FProductPrice" id="@price">
-                                                        <div class="FoodQTYCutAdd">
-                                                            <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
-                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        }
-                                        @*<div>
-                                            <h3>可樂</h3>
-                                            <div>
-                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
-                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
-                                            </div>
-                                            <div class="chooseFoodQTY">
-                                                <button>-</button><span>　0　</span><button>+</button>
-                                            </div>
-                                        </div>*@
+                                        </div>
                                     </div>
-                                    <div class="chooseSweet">
-                                        @{
-                                            foreach (var item in Model.dessertCategory)
-                                            {
-                                                <div>
-                                                    <h3>@item.FProductName</h3>
-                                                    <div>
-                                                        <button class="btnSweet"><img src="~/images/aa.jpg" alt=""></button>
-                                                        <div class="foodPrice"><h6>單價</h6><h6>@item.FProductPrice</h6></div>
-
-                                                    </div>
-                                                    <div class="chooseFoodQTY">
-                                                        @{
-                                                            string totalName = "total" + item.FProductId;
-                                                            string spanName = "span" + item.FProductId;
-                                                            string price = "price" + item.FProductId;
-                                                        }
-                                                        <input type="hidden" value="@item.FProductPrice" id="@price">
-                                                        <div class="FoodQTYCutAdd">
-                                                            <div style="width:85px;"><button class="QTYCut" id="@item.FProductId">-</button><span id="@spanName">0</span><button class="QTYAdd" id="@item.FProductId">+</button></div>
-                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        }
-                                        @*<div>
-                                            <h3>可樂</h3>
-                                            <div>
-                                                <button class="btnDrink"><img src="/images/可樂.jpg" alt=""></button>
-                                                <div class="foodPrice"><h6>單價</h6><h6>$000</h6></div>
-                                            </div>
-                                            <div class="chooseFoodQTY">
-                                                <button>-</button><span>　0　</span><button>+</button>
-                                            </div>
-                                        </div>*@
-                                    </div>
+                                    <button id="nextStep" class="button toRight">下一步</button>
                                 </div>
-                                <button id="nextStep" class="button toRight">下一步</button>
                             </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+</form>
 
 <dialog id="IamDialog" class="IamDialog">
     <p>尚未選擇票種</p>
@@ -197,17 +224,18 @@
     <script>
         const btnAdds = document.querySelectorAll('.QTYAdd');
         const btnCuts = document.querySelectorAll('.QTYCut');
-        const nextStep = document.getElementById('nextStep');
+        //const nextStep = document.getElementById('nextStep');
 
         btnAdds.forEach((item) => {
             item.addEventListener('click', () => {
                 let productID = item.getAttribute('id');
+                console.log(productID);
                 const productSpan = document.querySelector('#span' + productID);
                 const totalSpan = document.querySelector('#total' + productID);
                 const productPrice = document.querySelector('#price' + productID);
-                let productValue = Number(productSpan.innerHTML);
+                let productValue = Number(productSpan.value);
                 productValue++;
-                productSpan.innerHTML = productValue;
+                productSpan.value = productValue;
                 totalSpan.innerHTML = '總價:' + productValue * Number(productPrice.value);
             })
         })
@@ -218,37 +246,38 @@
                 const productSpan = document.querySelector('#span' + productID);
                 const totalSpan = document.querySelector('#total' + productID);
                 const productPrice = document.querySelector('#price' + productID);
-                let productValue = Number(productSpan.innerHTML);
+                let productValue = Number(productSpan.value);
                 productValue--;
                 if (productValue < 0)
                     productValue = 0;
-                productSpan.innerHTML = productValue;
+                productSpan.value = productValue;
                 totalSpan.innerHTML = '總價:' + productValue * Number(productPrice.value);
             })
         })
 
-        nextStep.addEventListener('click', () => {
+                //nextStep.addEventListener('click', () => {
 
-            const productCount = [];
-            for (let i = 0; i < 10; i++) {
-                const x = document.getElementById('span' + (i + 1));
-                productCount[i] = x.innerHTML
-            }
+                //    const productCount = [];
+                //    for (let i = 0; i < 10; i++) {
+                //        const x = document.getElementById('span' + (i + 1));
+                //        productCount.push(x.innerHTML);
+                //    }
 
-            let product="";
-            productCount.forEach((item)=>{
-                product+=item+',';
-            })
-            if(product.substring(product.length-1)==',')
-            product=product.substring(0,product.length-1);
-            saveProductCount(product);
-        })
+                //    let product="";
+                //    for(let i=0;i<productCount.length;i++){
+                //        product+=productCount[i]+',';
+                //    }
 
-        async function saveProductCount(product) {
-            const response = await fetch('@Url.Content("~/OrderFront/saveProductCount")?products=' + product);
-            const data = await response.text();
-            if (data == "購買食物成功")
-                window.location.replace('@Url.Content("~/OrderFront/ListOrderDetails")')
-        }
+                //    if(product.substring(product.length-1)==',')
+                //    product=product.substring(0,product.length-1);
+                //    saveProductCount(product);
+                //})
+
+                //async function saveProductCount(product) {
+                //    const response = await fetch('@Url.Content("~/OrderFront/saveProductCount")?products=' + product);
+                //    const data = await response.text();
+                //    if (data == "購買食物成功")
+                //        window.location.replace('@Url.Content("~/OrderFront/ListOrderDetails")')
+                //}
     </script>
 }

@@ -333,16 +333,58 @@ namespace prjMovieHolic.Controllers
             int id=(int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); 
 
             var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
-            var orderPicked=_movieContext.TOrders.Include(c=>c.FSession.FMovie).Include(c=>c.FSession).ThenInclude(c=>c.FTheater).Where(c=>c.FMemberId==id).OrderByDescending(o=>o.FOrderId).ToList();
+
+            //var orderStatus_未取票 = _movieContext.TOrderStatuses.Where(od => od.FOrderStatus == "未取票").Select(od => od.FOrderStatusId).ToList();
+            //List<TOrderStatusLog> order_未取票 = new List<TOrderStatusLog>();
+            //foreach(var item in orderStatus_未取票)
+            //    order_未取票.Add(_movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderStatusId == item));
+            //List<TOrder> this會員的未取票 = new List<TOrder>();
+            //foreach (var item in order_未取票)
+            //{
+            //    var mightNull未取票 = _movieContext.TOrders.Include(o => o.FSession).ThenInclude(s => s.FTheater).
+            //        Include(o => o.FSession).ThenInclude(s => s.FMovie).
+            //        FirstOrDefault(o => o.FMemberId == members.FMemberId & o.FOrderId == item.FOrderId);
+            //    if(mightNull未取票!=null)
+            //    this會員的未取票.Add(mightNull未取票);
+            //}
+
+            //var orderStatus_已取票 = _movieContext.TOrderStatuses.Where(od => od.FOrderStatus == "已取票").Select(od => od.FOrderStatusId).ToList();
+            //List<TOrderStatusLog> order_已取票 = new List<TOrderStatusLog>();
+            //foreach (var item in orderStatus_已取票)
+            //    order_已取票.Add(_movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderStatusId == item));
+            //List<TOrder> this會員的已取票 = new List<TOrder>();
+            //foreach (var item in order_已取票)
+            //{
+            //    var mightNull已取票 = _movieContext.TOrders.Include(o => o.FSession).ThenInclude(s => s.FTheater).
+            //        Include(o => o.FSession).ThenInclude(s => s.FMovie).
+            //        FirstOrDefault(o => o.FMemberId == members.FMemberId & o.FOrderId == item.FOrderId);
+            //    if (mightNull已取票 != null)
+            //        this會員的已取票.Add(mightNull已取票);
+            //}
+
+            //var orderStatus_已取消 = _movieContext.TOrderStatuses.Where(od => od.FOrderStatus == "已取消").Select(od => od.FOrderStatusId).ToList();
+            //List<TOrderStatusLog> order_已取消 = new List<TOrderStatusLog>();
+            //foreach (var item in orderStatus_已取消)
+            //    order_已取票.Add(_movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderStatusId == item));
+            //List<TOrder> this會員的已取消 = new List<TOrder>();
+            //foreach (var item in order_已取消)
+            //{
+            //    var mightNull已取消 = _movieContext.TOrders.Include(o => o.FSession).ThenInclude(s => s.FTheater).
+            //        Include(o => o.FSession).ThenInclude(s => s.FMovie).
+            //        FirstOrDefault(o => o.FMemberId == members.FMemberId & o.FOrderId == item.FOrderId);
+            //    if (mightNull已取消 != null)
+            //        this會員的已取票.Add(mightNull已取消);
+            //}
+
             var viewModel = new COrderAndMemberViewModel
             {
                 Member = members,
-                OrderPicked = orderPicked,
-
+                //Order_未取票 = this會員的未取票,
+                //Order_已取票 = this會員的已取票,
+                //Order_已取消 = this會員的已取消,
             };
             sessionCheck();
             return View(viewModel);
         }
-
     }
 }

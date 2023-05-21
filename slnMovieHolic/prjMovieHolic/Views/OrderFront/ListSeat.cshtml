@@ -50,7 +50,7 @@
                                     </li>
                                     <li class="addBorderRight">
                                         <h4>座位</h4>
-                                        <h3>尚未選擇</h3>
+                                        <h3 id="seatNames">尚未選擇</h3>
                                     </li>
                                 </ul>
                             </div>
@@ -114,6 +114,7 @@
         const theaterID = document.getElementById('theaterID');
         const totalTickets = document.getElementById('totalTickets').value;
         const showLeftSeats = document.getElementById('showLeftSeats');
+        const seatNames = document.getElementById('seatNames');
         const nextStep = document.getElementById('nextStep');
 
         const formdialog = document.getElementById('IamDialog');
@@ -132,7 +133,8 @@
                 const data = await response.text();
                 evt.target.style.backgroundColor = '#eaeaea';
                 showLeftSeats.innerHTML = data;
-            }
+                showSelectedSeat();
+            } 
             else {
 
                 if (getComputedStyle(evt.target).backgroundColor === 'rgb(105, 105, 105)') 
@@ -147,10 +149,28 @@
                     else {
                         showLeftSeats.innerHTML = data;
                         evt.target.style.backgroundColor = 'steelblue';
+                        showSelectedSeat();
                     }
                 }
 
             }
+        }
+
+        async function showSelectedSeat()
+        {
+            //更改上面的座位顯示
+            const response = await fetch('@Url.Content("~/OrderFront/showSelectedSeat")');
+            const datas = await response.json();
+            let showSeat = "";
+            let i=0;
+            datas.forEach((item) => {
+                if(i%2!=0)
+                showSeat += item+'<br>';
+                else 
+                showSeat+=item+'  ';
+                i++;
+            })
+            seatNames.innerHTML = showSeat;
         }
 
         nextStep.addEventListener('click', () => {

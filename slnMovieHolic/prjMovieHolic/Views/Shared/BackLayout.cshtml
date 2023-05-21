@@ -17,7 +17,7 @@
             <!-- Sidebar scroll-->
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="./index.html" class="text-nowrap logo-img">
+                    <a class="text-nowrap logo-img" aria-expanded="false" asp-area="" asp-controller="DashBoard" asp-action="Index">
                         <img src="~/BackTheme/assets/images/Logo.jpg" width="180" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -28,6 +28,14 @@
                 <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
                     <ul id="sidebarnav">
                         <li class="sidebar-item">
+                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="DashBoard" asp-action="Index">
+                                <span>
+                                    <i class="ti ti-layout-dashboard"></i>   @*<==========這是放Icon*@
+                                </span>
+                                <span class="hide-menu">首頁(Dashboard)</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Movie" asp-action="List">
                                 <span>
                                     <i class="ti ti-movie"></i>   @*<==========這是放Icon*@
@@ -35,7 +43,6 @@
                                 <span class="hide-menu">電影管理</span>
                             </a>
                         </li>
-
                         <li class="sidebar-item">
                             <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="SessionBack" asp-action="ViewSession">
                                 <span>
@@ -44,7 +51,6 @@
                                 <span class="hide-menu">場次管理</span>
                             </a>
                         </li>
-
                         <li class="sidebar-item">
                             <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Complaint" asp-action="List">
                                 <span>
@@ -54,22 +60,13 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="DashBoard" asp-action="Index">
-                                <span>
-                                    <i class="ti ti-timeline"></i>   @*<==========這是放Icon*@
-                                </span>
-                                <span class="hide-menu">DashBoard</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <div class="sidebar-link" class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="true">
+                            <div class="sidebar-link collapse" class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-timeline"></i>   @*<==========這是放Icon*@
                                 </span>
                                 <span class="hide-menu">統計報表...</span>
                             </div>
-                            <div class="collapse show" id="account-collapse" style="">
+                            <div class="collapse" id="account-collapse" style="">
                                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                     <li class="sidebar-item">
                                         <a class="sidebar-link" aria-expanded="false" asp-area="" asp-controller="Statistics" asp-action="Member">會員相關</a>
@@ -83,7 +80,14 @@
                                 </ul>
                             </div>
                         </li>
-
+                        <li class="sidebar-item" style="position:absolute;bottom:50px">
+                            <a class="sidebar-link" onclick="return confirm('確定登出？')" aria-expanded="false" asp-area="" asp-controller="BackLogIn" asp-action="LogOut">
+                                <span>
+                                    <i class="ti ti-logout"></i>   @*<==========這是放Icon*@
+                                </span>
+                                <span class="hide-menu">登出</span>
+                            </a>
+                        </li>
                         @*<li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">EXTRA</span> <==========這是放大項(非必要)

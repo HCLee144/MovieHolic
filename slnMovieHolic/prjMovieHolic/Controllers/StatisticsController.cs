@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Execution;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
 {
-    public class StatisticsController : Controller
+    public class StatisticsController : BackSuperController
     {
         private readonly MovieContext _db;
 
@@ -20,31 +21,35 @@ namespace prjMovieHolic.Controllers
             return View();
         }
 
-        [NonAction]
-        public string getChartDataForMemberAgePie()
+        public IActionResult getChartDataForMemberAgePie()
         {
-            string datas = "";
-            var q = _db.TMembers.AsEnumerable().OrderBy(member => member.FBirthDate).GroupBy(member => groupByAge((DateTime)member.FBirthDate, 0))
-                .Select(g=>new { g.Key,g }).ToList();
+            PieData datas = new PieData();
+            datas.series = new List<int>();
+            datas.labels = new List<string>();
+            var q = _db.TMembers.AsEnumerable().OrderByDescending(member => member.FBirthDate).GroupBy(member => groupByAge((DateTime)member.FBirthDate, 0))
+                .Select(g => new { g.Key, g }).ToList();
             foreach (var item in q)
             {
-                datas += item.g.Count() + ",";
+                datas.series.Add(item.g.Count());
+                datas.labels.Add(item.Key);
             }
-            return datas;
+            return Json(datas);
         }
 
 
-        [NonAction]
-        public string getChartDataForMemberGenderPie()
+        public IActionResult getChartDataForMemberGenderPie()
         {
-            string datas="";
-            var q = _db.TMembers.AsEnumerable().OrderBy(member=>member.FGenderId).GroupBy(member => member.FGenderId)
-                .Select(g =>g).ToList();
+            PieData datas = new PieData();
+            datas.series = new List<int>();
+            datas.labels = new List<string>();
+            var q = _db.TMembers.Include(member=>member.FGender).AsEnumerable().OrderBy(member=>member.FGenderId).GroupBy(member => member.FGender.FGenderName)
+                .Select(g =>new { g.Key, g}).ToList();
             foreach(var item in q)
             {
-                datas += item.Count()+",";
+                datas.series.Add(item.g.Count());
+                datas.labels.Add(item.Key.ToString());
             }
-            return datas;
+            return Json(datas);
         }
 
         public IActionResult getChartDataForMemberAgeCoulmn()
