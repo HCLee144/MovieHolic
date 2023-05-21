@@ -4,37 +4,82 @@
 }
 
 
-@*Row1*@
+@*Row*@
 <div class="row">
-    <div class="col">
-    <div class="card">
-        <div class="card-body">
-            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <h5 class="card-title fw-semibold">電影票房收入(收入金額)</h5>
+    <div class="col-lg-8 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <h5 class="card-title fw-semibold">票房收入</h5>
                     <div>
                         <input type="radio" name="selectTimeSpan" onclick="loadMovieIncomeByDay()" checked />
                         <label>按日期顯示</label>
-                        <input type="radio" name="selectTimeSpan" onclick="loadMovieIncomeByMonth()"/>
+                        <input type="radio" name="selectTimeSpan" onclick="loadMovieIncomeByMonth()" />
                         <label>按月份顯示</label>
                     </div>
-            </div>
-            <div id="chartMovieIncome" style="min-height: 360px;">
+                </div>
+                <div id="chartMovieIncome">
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-lg-4">
+        <div class="card w-100">
+            <div class="card-body">
+                <h5>年目標(票房收入10,000,000元)</h5>
+            </div>
+            <div id="chartYearlyGoal">
+            </div>
+        </div>
     </div>
 </div>
-
-@*Row2*@
+@*Row*@
 <div class="row">
-    <div class="card">
-        <div class="card-body">
-            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+    <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body">
                 <div class="mb-3 mb-sm-0">
-                    <h5 class="card-title fw-semibold">電影票房收入(電影比例)</h5>
+                    <h5 class="card-title fw-semibold">會員人數</h5>
+                </div>
+                <h2 style="text-align:center">@ViewBag.MemberCount</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <div class="mb-3 mb-sm-0">
+                        <h5 class="card-title fw-semibold">會員人數</h5>
+                    </div>
                 </div>
             </div>
-            <div id="chartMovieProportion" style="min-height: 360px;">
+        </div>
+    </div>
+    <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <div class="mb-3 mb-sm-0">
+                        <h5 class="card-title fw-semibold">會員人數</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Row*@
+<div class="row">
+    <div class="col-lg-12 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <div class="mb-3 mb-sm-0">
+                        <h5 class="card-title fw-semibold">一周內各電影票房收入比例</h5>
+                    </div>
+                </div>
+                <div id="chartMovieProportion" style="min-height: 360px;">
+                </div>
             </div>
         </div>
     </div>
@@ -43,6 +88,7 @@
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
+        //時間段(每日/每月)的票房總收入
 
         var optionsIncome = {
             series: [{
@@ -62,7 +108,7 @@
                 bar: {
                     borderRadius: 10,
                     dataLabels: {
-                        position: 'top', 
+                        position: 'top',
                     },
                 }
             },
@@ -78,7 +124,7 @@
                 }
             },
             xaxis: {
-                categories: [],                 
+                categories: [],
             },
             noData: {
                 text: "Loading Data...",
@@ -95,8 +141,8 @@
             var datas = await response.json();
             await chartIncome.updateOptions({
                 series: [datas.data],
-                xaxis:datas.labels,
-            },true,true,true);
+                xaxis: datas.labels,
+            }, true, true, true);
         }
         loadMovieIncomeByDay();
 
@@ -106,11 +152,41 @@
             await chartIncome.updateOptions({
                 series: [datas.data],
                 xaxis: datas.labels,
-            },true,true,true);
+            }, true, true, true);
         }
     </script>
 
     <script>
+        //年收入目標
+        var options = {
+            series: [@ViewBag.YearSum],
+            chart: {
+                height: 350,
+                type: 'radialBar',
+            },
+            labels: ['@ViewBag.YearLabel1'],
+            plotOptions: {
+                radialBar: {
+                    hollow: {
+                        size: '70%',
+                    },
+                    dataLabels: {
+                        value: {
+                            formatter: function (val) {
+                                return val + '% ' + '@ViewBag.YearLabel2'
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        var chartYearlyGoal = new ApexCharts(document.querySelector("#chartYearlyGoal"), options);
+        chartYearlyGoal.render();
+    </script>
+
+    <script>
+        //一周內每天每部電影票房比例
         var optionsProportion = {
             series: [],
             chart: {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using prjMovieHolic.Models;
+using System.Runtime.CompilerServices;
 
 namespace prjMovieHolic.Controllers
 {
@@ -15,6 +16,16 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult Index()
         {
+            var sum = _db.TOrders.Include(o => o.FSession).AsEnumerable().Where(o => o.FSession.FStartTime.Year == DateTime.Now.Year).Select(o => o.FTotalPrice).Sum();
+            if (sum != null)
+            {
+                ViewBag.YearSum =  sum * 100 / 10000000;
+                ViewBag.YearLabel1 = $"Until {DateTime.Now.ToString("MM/dd")}:";
+                ViewBag.YearLabel2 = $"{sum:C3}";
+            }
+            var memberCount = _db.TMembers.Count();
+            if (memberCount > 0)
+                ViewBag.MemberCount = memberCount+ "人";
             return View();
         }
 
