@@ -36,8 +36,28 @@
         //人數
     }
 
-    public class SimpleData
+    public class PieData
     {
+        public List<int> series { get; set; }
+        public List<string> labels { get; set; }
+    }
+
+    
+    public class SimpleBarDataValues
+    {
+        public SimpleBarDataValues()
+        {
+            data = new List<int>();
+        }
         public List<int> data { get; set; }
+    }
+
+    public class SimpleBarDataLabels
+    {
+        public SimpleBarDataLabels()
+        {
+            categories = new List<string>();
+        }
+       public List<string> categories { get; set; }
     }
 }
