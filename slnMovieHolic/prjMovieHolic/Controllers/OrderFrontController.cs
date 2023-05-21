@@ -55,7 +55,11 @@ namespace prjMovieHolic.Controllers
                 if (selectDays > 6)
                     selectDays = 0;
             }
-
+            string controller = "OrderFront";
+            string view = "ListSession";
+            //string json=JsonSerializer.Serialize(new { controller, view });
+            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
             shoppingCart.weekDays = wholeWeekDays.ToArray();
             return View(shoppingCart);
         }

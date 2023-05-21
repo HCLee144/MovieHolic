@@ -93,33 +93,37 @@ namespace prjMovieHolic.Controllers
         //}
 
         //加入收藏
-        public IActionResult favoriteAdd(TMemberAction memberAction)
+        public IActionResult favoriteAdd(int FMemberId, int FMovieId)
         {
-            //確認有沒有登入會員，if沒有，先登入會員
-            //string controller = "Home";
-            //string view = "Index";
-            //HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
-            //HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
-            //bool verify_checkLogIn = sessionCheck();
-            //if (!verify_checkLogIn)
-            //    return RedirectToAction("memberLogIn", "memberFront");
-
-
 
             TMemberAction favorite = _context.TMemberActions.Include(m=>m.FMovie).Include(m=>m.FMember)
-                .FirstOrDefault(m => m.FMemberId == memberAction.FMemberId & m.FMovieId == memberAction.FMovieId);
+                .FirstOrDefault(m => m.FMemberId == FMemberId & m.FMovieId == FMovieId);
 
             if (favorite != null)
             {
                 TMemberAction action = new TMemberAction();
-                action.FMemberId = memberAction.FMemberId;
-                action.FMovieId = memberAction.FMemberId;
-                action.FMemberActionId = 1;
-                action.FTimeStamp = memberAction.FTimeStamp;
+                action.FMemberId = FMemberId;
+                action.FMovieId = FMovieId;
+                action.FActionTypeId = 1;
+                action.FTimeStamp = DateTime.Now;
                 _context.TMemberActions.Add(action);
                 _context.SaveChanges();
             }
+          
             return RedirectToAction("Index");
+        }
+        public IActionResult IsFavorite(int FMemberId, int FMovieId)
+        {
+            var favorite = _context.TMemberActions.Any(m => m.FMemberId == FMemberId & m.FMovieId == FMovieId);
+            if (favorite)
+            {
+                return Content("已收藏");
+            }
+            else
+            {
+                return Content("未收藏");
+            }
+
         }
     }
 }
