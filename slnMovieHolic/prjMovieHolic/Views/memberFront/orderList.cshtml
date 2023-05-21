@@ -73,6 +73,7 @@
 <dialog id="IamDialog" class="IamDialog">
     <table>
         <thead>
+            <tr>訂單明細</tr>
             <tr>
                 <td>序號</td>
                 <td>座位</td>
@@ -80,6 +81,13 @@
             </tr>
         </thead>
         <tbody id="dialogBody">
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>餐點明細</tr>
+        </thead>
+        <tbody id="dialogFoodBody">
         </tbody>
     </table>
     <button id="closeDialog"  class="closeDialog">確認</button>
@@ -105,6 +113,7 @@
         const formdialog = document.getElementById('IamDialog');
         const btnCloseDialog = document.getElementById('closeDialog');
         const dialogBody=document.getElementById('dialogBody');
+        const dialogFoodBody = document.getElementById('dialogFoodBody');
 
         const cancelDialog = document.getElementById('cancelDialog');
         const cancelParagraph = document.getElementById('cancelParagraph');
@@ -169,9 +178,11 @@
         async function showOrderDetails(event)
         {
             const id=event.target.getAttribute('id');
-            const data=await callOrderDetail(id);
-            
-            dialogBody.innerHTML=data;
+            const orderDetaildata=await callOrderDetail(id);
+            const receiptDetaildata = await callReceiptDetail(id);
+
+            dialogBody.innerHTML = orderDetaildata;
+            dialogFoodBody.innerHTML=receiptDetaildata;
             formdialog.showModal();
             btnCloseDialog.addEventListener('click', () => {
             formdialog.close();
@@ -192,6 +203,19 @@
                 result += `<td>${item["seatName"]}</td>`;
                 result+=`<td>${item["ticketClassName"]}</td></tr>`;  
                 i++;
+            })
+            console.log(result);
+
+            return result;
+        }
+        async function callReceiptDetail(orderID) 
+        {
+            const response = await fetch('@Url.Content("~/OrderFront/ShowReceiptDetails")?orderID=' + orderID);
+            const data = await response.json();
+            
+            let result = '';
+            data.forEach((item) => {
+                result += `<td>${item["productName"]}x${item["productCount"]}</td>`;
             })
             console.log(result);
 
