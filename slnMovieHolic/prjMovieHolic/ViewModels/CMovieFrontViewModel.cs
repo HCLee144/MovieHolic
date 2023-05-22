@@ -16,5 +16,7 @@ namespace prjMovieHolic.ViewModels
 
         //新增首頁電影收藏用
         public TMember tmember { get; set; }
+        public List<TMemberAction> isFavoriteNow { get; set; }
+        public List<TMemberAction> isFavotiteComing { get; set; }
     }
 }

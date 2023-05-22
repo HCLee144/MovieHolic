@@ -51,7 +51,7 @@
                                         <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li class="selected"><a>我的收藏</a></li>
                                         <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-                                        <li><a href="#Advertising">我的評論</a></li>
+                                        <li>@Html.ActionLink("我的評論", "commentList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
                                 </div>
@@ -179,7 +179,7 @@
                                                 }
 
                                             }
-                                            
+
                                         </div>
 
                                     </div>
@@ -189,35 +189,57 @@
                                     <label for="tab3">已下檔</label>
                                     <div class="tab_content">
                                         <div class="likeMovie">
-                                            @foreach (var item in Model.MemberActionExpired)
-                                            {
-                                                <div class="movieCardBig2">
-                                                    <article class="movieCard">
-                                                        <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
-                                                            <br>
-                                                            <figure>
-                                                                <img src="~/@item.FMovie.FPosterPath" alt="">
-                                                            </figure>
-                                                            <div>
-                                                                <h3>@item.FMovie.FNameCht</h3>
-                                                                <ul>
-                                                                    <li class="movieEnglishName">@item.FMovie.FNameEng</li>
-                                                                    <hr>
-                                                                    <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
-                                                                    <li>片長：@item.FMovie.FShowLength 分鐘</li>
-                                                                </ul>
-                                                            </div>
-                                                        </a>
-                                                    </article>
-                                                    <div class="likeAndBuy">
+                                            @{
+                                                if (Model.MemberActionExpired.Count > 0)
+                                                {
+                                                    @foreach (var item in Model.MemberActionExpired)
+                                                    {
+                                                        <div class="movieCardBig2">
+                                                            <article class="movieCard">
+                                                                <a href="/MovieFront/MovieDetails?id=@item.FMovieId">
+                                                                    <br>
+                                                                    <figure>
+                                                                        <img src="~/@item.FMovie.FPosterPath" alt="">
+                                                                    </figure>
+                                                                    <div>
+                                                                        <h3>@item.FMovie.FNameCht</h3>
+                                                                        <ul>
+                                                                            <li class="movieEnglishName">@item.FMovie.FNameEng</li>
+                                                                            <hr>
+                                                                            <li>上映日期：@item.FMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                            <li>片長：@item.FMovie.FShowLength 分鐘</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </a>
+                                                            </article>
+                                                            <div class="likeAndBuy">
 
-                                                        <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
+                                                                <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
+                                                                <div>
+                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="movieCardBig3">
                                                         <div>
-                                                            <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
+                                                            <h3 class="favoriteNull"></h3>
+                                                            <h5 class="favoriteNullUsed"></h5>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <div class="movieCardBig3">
+                                                        <div>
+                                                            <h3 class="favoriteNull">尚無收藏電影</h3>
+
+                                                            <h5 class="favoriteNullUsed">快將喜歡的電影加入收藏！</h5>
+                                                        </div>
+                                                    </div>
+                                                }
                                             }
+                                            
 
 
                                         </div>
