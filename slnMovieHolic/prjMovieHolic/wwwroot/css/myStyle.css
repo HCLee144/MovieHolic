@@ -923,25 +923,25 @@ figure span {
     line-height: 36px;
 }
 
-    .pad {
-        padding-top: 20px;
-    }
-
-    .nav{
-        border:5px dotted #ddd;
-        border-radius:15px;
-        padding:5px;
-    }
-
-.nav li {
-    font-size: 20px;
-    margin-bottom: 5px;
-    font-weight: bold;
+.pad {
+    padding-top: 20px;
 }
 
-.nav a {
-    text-decoration: none;
+.nav {
+    border: 5px dotted #ddd;
+    border-radius: 15px;
+    padding: 5px;
 }
+
+    .nav li {
+        font-size: 20px;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .nav a {
+        text-decoration: none;
+    }
 
 /*會員資料顯示區塊*/
 .memberInformation {
@@ -955,7 +955,7 @@ figure span {
 
 .momberPageTitle h3 {
     line-height: 36px;
-    text-align:center;
+    text-align: center;
     font-size: 36px;
     color: #13c5ff;
 }
@@ -971,7 +971,7 @@ figure span {
 
     .memberTable th {
         border-bottom: 1px solid silver;
-        text-align:left;
+        text-align: left;
     }
 
     .memberTable td {
@@ -1021,8 +1021,8 @@ figure span {
     display: inline-block;
     color: #eaeaea;
     cursor: pointer;
-    font-size:20px;
-    line-height:20px;
+    font-size: 20px;
+    line-height: 20px;
 }
 
     .ourButton:hover {
@@ -1105,37 +1105,37 @@ figure span {
 }
 
 .tabPlace {
-    margin-top:10px;
+    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    position:relative;
+    position: relative;
 }
 
 .titleRelative {
-  position:relative;
+    position: relative;
 }
 
-.titleAbsolut{
-position:absolute;
- top:0px;
- right:0px;
+.titleAbsolut {
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 .tabPlace input {
     display: none
 }
 
-    .tabPlace label {
-        margin: 0 5px 5px 0;
-        padding: 10px 16px;
-        cursor: pointer;
-        border-radius: 5px;
-        background: #999;
-        color: #fff;
-        opacity: 0.5;
-        font-size:20px;
-    }
+.tabPlace label {
+    margin: 0 5px 5px 0;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #999;
+    color: #fff;
+    opacity: 0.5;
+    font-size: 20px;
+}
 
 .tab_content {
     order: 1;
@@ -1149,6 +1149,9 @@ position:absolute;
     border-radius: 5px;
     max-height: 660px;
     overflow: scroll;
+}
+
+.overflowYHidden {
     overflow-y: hidden;
 }
 
@@ -1307,6 +1310,69 @@ position:absolute;
     display: flex;
     justify-content: space-between;
 }
+
+
+/*-----評論部分----*/
+
+.commentBox {
+    display: flex;
+}
+
+.hheight {
+    height: 520px;
+}
+
+.addBorder2:hover {
+    background-color: #999;
+}
+
+.addBorder2 {
+    border: 3px solid silver;
+    padding: 2px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.commentDetailBox {
+    border: 3px double silver;
+    padding: 12px;
+    height: 90px;
+    width: 240px;
+}
+
+    .commentDetailBox h3 {
+        font-size: 18px;
+    }
+
+    .commentDetailBox h4 {
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .commentDetailBox a {
+        display: inline-block;
+        background-color: #10a5d6;
+        padding: 6px;
+        color: #eaeaea;
+        border-radius: 5px;
+    }
+
+.commentDetaildelete {
+    background-color: brown;
+    width: 25px;
+    height: 40px;
+    color: #eaeaea;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.commentDetailBoxTop {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
 
 
 
