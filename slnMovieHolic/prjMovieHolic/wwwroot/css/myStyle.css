@@ -154,15 +154,14 @@
     margin-bottom: 10px;
 }
 
-.movieCard{
-    position:relative;
+.movieCard {
+    position: relative;
 }
 
-.movieRatingInCard{
-    
-    position:absolute;
-    left:0px;
-    bottom:139px;
+.movieRatingInCard {
+    position: absolute;
+    left: 0px;
+    bottom: 139px;
 }
 
 .movieCard h3 {
@@ -1256,8 +1255,8 @@ figure span {
 .orderLa {
     height: 550px;
     overflow: scroll;
-    padding-right:15px;
-    overflow-x:hidden;
+    padding-right: 15px;
+    overflow-x: hidden;
 }
 
     .orderLa::-webkit-scrollbar {
@@ -1420,8 +1419,8 @@ figure span {
             background-color: #105190;
         }
 
-.moviecardH3{
-    margin-bottom:22px;
+.moviecardH3 {
+    margin-bottom: 22px;
 }
 
 .buyNow2 {
@@ -1490,28 +1489,28 @@ figure span {
     margin-left: 20px;
 }
 
-.fiveStar{
-    display:flex;
-    margin-bottom:10px;
+.fiveStar {
+    display: flex;
+    margin-bottom: 10px;
 }
 
-    .fiveStar h3{
-        margin-left:30px;
+    .fiveStar h3 {
+        margin-left: 30px;
     }
 
-    .movie li {
-        font-size: 16px;
-    }
+.movie li {
+    font-size: 16px;
+}
 
-    .movie h3 {
-        font-size: 32px;
-        line-height: 32px;
-    }
+.movie h3 {
+    font-size: 32px;
+    line-height: 32px;
+}
 
-    .movie h4 {
-        font-size: 20px;
-        padding-bottom: 25px;
-    }
+.movie h4 {
+    font-size: 20px;
+    padding-bottom: 25px;
+}
 
 .somethingAboutMovie ul {
     display: flex;
@@ -1529,14 +1528,14 @@ figure span {
     height: 30px;
 }
 
-    .fatLi a{
-        cursor:pointer;
+    .fatLi a {
+        cursor: pointer;
     }
 
-    .movieIntroduce {
-        letter-spacing: 2px;
-        color: dimgray;
-    }
+.movieIntroduce {
+    letter-spacing: 2px;
+    color: dimgray;
+}
 
 .myButton {
     background-color: #10a5d6;
@@ -1556,3 +1555,23 @@ figure span {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+/*電影類別頁面*/
+
+
+.movieType a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 22px;
+    margin-right: 11px;
+    margin-bottom: 6px;
+    padding: 15px;
+    cursor: pointer;
+    border: 4px dotted silver;
+    border-radius: 5px;
+}
+
+    .movieType a:hover {
+        background-color: #105190;
+        color: #eaeaea;
+    }
