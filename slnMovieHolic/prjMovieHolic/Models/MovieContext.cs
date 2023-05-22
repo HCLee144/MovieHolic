@@ -115,7 +115,7 @@ public partial class MovieContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433;Initial Catalog=Movie;User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=NeilLiuTW.asuscomm.com, 1433; Initial Catalog=Movie; User ID=movieTeam; Password=m2023Team; TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -864,9 +864,7 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tReceipt", "Products");
 
-            entity.Property(e => e.FReceiptId)
-                .ValueGeneratedNever()
-                .HasColumnName("fReceipt_ID");
+            entity.Property(e => e.FReceiptId).HasColumnName("fReceipt_ID");
             entity.Property(e => e.FMemberId).HasColumnName("fMember_ID");
             entity.Property(e => e.FOrderId).HasColumnName("fOrder_ID");
             entity.Property(e => e.FReceiptDate)
@@ -886,9 +884,7 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tReceiptDetail", "Products");
 
-            entity.Property(e => e.FReceiptDetailId)
-                .ValueGeneratedNever()
-                .HasColumnName("fReceiptDetail_ID");
+            entity.Property(e => e.FReceiptDetailId).HasColumnName("fReceiptDetail_ID");
             entity.Property(e => e.FProductId).HasColumnName("fProduct_ID");
             entity.Property(e => e.FQty).HasColumnName("fQty");
             entity.Property(e => e.FReceiptId).HasColumnName("fReceipt_ID");

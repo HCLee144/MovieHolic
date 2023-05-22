@@ -202,7 +202,7 @@
     background: #10a5d6;
     border-radius: 5px;
     margin-top: 15px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
     .buyNow:hover {
@@ -535,7 +535,7 @@ figure span {
     margin-left: 5px;
     margin-right: 5px;
     font-weight: bolder;
-    cursor: pointer:
+    cursor: pointer;
 }
 
 .labUsingCoupon {
@@ -553,7 +553,7 @@ figure span {
     background-color: #10a5d6;
     padding: 10px;
     border-radius: 5px;
-    font-size:16px;
+    font-size: 16px;
     color: #eaeaea;
 }
 
@@ -624,7 +624,7 @@ figure span {
 .loveSeat {
     width: 18px;
     height: 18px;
-    background-color:lightpink;
+    background-color: lightpink;
     border: 1px solid silver;
     border-radius: 15px;
 }
@@ -636,6 +636,7 @@ figure span {
     border: 1px solid silver;
     border-radius: 15px;
 }
+
 .showLeftSeats {
     width: 150px;
 }
@@ -759,7 +760,7 @@ figure span {
     padding: 10px;
     background-color: rgb(219, 218, 218);
     border-radius: 15px 15px 0 0;
-    display:inline;
+    display: inline;
 }
 
 .chooseDrink {
@@ -767,14 +768,14 @@ figure span {
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
-    padding-top:15px;
-    overflow:scroll;
+    padding-top: 15px;
+    overflow: scroll;
 }
 
     .chooseDrink::-webkit-scrollbar {
         background: transparent;
         height: 6px;
-        width:6px;
+        width: 6px;
     }
 
     .chooseDrink::-webkit-scrollbar-thumb {
@@ -817,7 +818,7 @@ figure span {
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top: 15px;
-    overflow:scroll;
+    overflow: scroll;
 }
 
     .choosePOP::-webkit-scrollbar {
@@ -837,7 +838,7 @@ figure span {
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top: 15px;
-    overflow:scroll;
+    overflow: scroll;
 }
 
     .chooseSweet::-webkit-scrollbar {
@@ -880,23 +881,23 @@ figure span {
         background-color: #10a5d6;
         color: #eaeaea;
         border-radius: 5px;
-        cursor: pointer:
+        cursor: pointer;
     }
 
-.chooseFoodQTY button:hover {
-    background-color: #105190;
-}
+        .chooseFoodQTY button:hover {
+            background-color: #105190;
+        }
 
-.FoodQTYCutAdd{
-    display:flex;
+.FoodQTYCutAdd {
+    display: flex;
 }
 
 .QTYCut {
     margin-right: 18px;
 }
 
-.QTYAdd{
-    margin-left:18px;
+.QTYAdd {
+    margin-left: 18px;
 }
 
 .space {
@@ -917,6 +918,31 @@ figure span {
     width: 240px;
 }
 
+.welcome {
+    font-size: 36px;
+    line-height: 36px;
+}
+
+.pad {
+    padding-top: 20px;
+}
+
+.nav {
+    border: 5px dotted #ddd;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+    .nav li {
+        font-size: 20px;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .nav a {
+        text-decoration: none;
+    }
+
 /*會員資料顯示區塊*/
 .memberInformation {
     width: 550px;
@@ -924,8 +950,15 @@ figure span {
 
     .memberInformation p {
         text-align: right;
-        font-size: 16px;
+        font-size: 20px;
     }
+
+.momberPageTitle h3 {
+    line-height: 36px;
+    text-align: center;
+    font-size: 36px;
+    color: #13c5ff;
+}
 
 .memberTable {
     width: 550px;
@@ -938,6 +971,7 @@ figure span {
 
     .memberTable th {
         border-bottom: 1px solid silver;
+        text-align: left;
     }
 
     .memberTable td {
@@ -948,6 +982,7 @@ figure span {
     .memberTable input {
         border: 1px solid silver;
         border-radius: 5px;
+        font-size: 20px;
     }
 
 .MemberEditSubmit {
@@ -965,8 +1000,7 @@ figure span {
 
 /*會員密碼修改盒子*/
 .MemberPasswordChangeform {
-    padding-top: 20px;
-    padding-right: 50px;
+    padding-top: 60px;
 }
 
     .MemberPasswordChangeform input {
@@ -974,7 +1008,7 @@ figure span {
     }
 
     .MemberPasswordChangeform form {
-        padding-bottom:25px;
+        padding-bottom: 25px;
         border-bottom: 1px solid silver;
     }
 
@@ -986,13 +1020,15 @@ figure span {
     border-radius: 5px;
     display: inline-block;
     color: #eaeaea;
-    cursor:pointer:
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 20px;
 }
 
-.ourButton:hover{
-    color:#eaeaea;
-    background-color:#105190;
-}
+    .ourButton:hover {
+        color: #eaeaea;
+        background-color: #105190;
+    }
 
 /*登入畫面*/
 .logInBox {
@@ -1069,10 +1105,13 @@ figure span {
 }
 
 .tabPlace {
+    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
 }
+
 
     .tabPlace input {
         display: none
@@ -1086,6 +1125,7 @@ figure span {
         background: #999;
         color: #fff;
         opacity: 0.5;
+        font-size: 20px;
     }
 
 .tab_content {
@@ -1100,7 +1140,10 @@ figure span {
     border-radius: 5px;
     max-height: 660px;
     overflow: scroll;
-    overflow-y:hidden;
+}
+
+.overflowYHidden {
+    overflow-y: hidden;
 }
 
 .tabPlace input:checked + label,
@@ -1117,7 +1160,7 @@ figure span {
 .tab_content::-webkit-scrollbar {
     background: transparent;
     width: 6px;
-    height:6px;
+    height: 6px;
 }
 
 .tab_content::-webkit-scrollbar-thumb {
@@ -1196,12 +1239,12 @@ figure span {
 
 .orderList {
     width: 600px;
-    height: 600px;
+    height: 700px;
 }
 
-.orderLa{
-    height:550px;
-    overflow:scroll;
+.orderLa {
+    height: 550px;
+    overflow: scroll;
 }
 
     .orderLa::-webkit-scrollbar {
@@ -1260,16 +1303,97 @@ figure span {
 }
 
 
+/*-----評論部分----*/
 
-/*最愛電影頁面*/
-.likeMovie {
-    width: 390px;
+.commentBox {
     display: flex;
 }
+
+.hheight {
+    height: 620px;
+}
+
+.addBorder2:hover {
+    background-color: #999;
+}
+
+.addBorder2 {
+    border: 3px solid silver;
+    padding: 2px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.commentDetailBox {
+    border: 3px double silver;
+    padding: 12px;
+    height: 90px;
+    width: 240px;
+}
+
+    .commentDetailBox h3 {
+        font-size: 18px;
+    }
+
+    .commentDetailBox h4 {
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .commentDetailBox a {
+        display: inline-block;
+        background-color: #10a5d6;
+        padding: 6px;
+        color: #eaeaea;
+        border-radius: 5px;
+    }
+
+.commentDetaildelete {
+    background-color: brown;
+    width: 25px;
+    height: 40px;
+    color: #eaeaea;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.commentDetailBoxTop {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+/*最愛電影頁面*/
+.overflowXHidden {
+    overflow-x: hidden;
+}
+
+.likeMovie {
+    height: 600px;
+    width: 590px;
+    display: flex;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+    .likeMovie::-webkit-scrollbar {
+        background: transparent;
+        width: 6px;
+        height: 6px;
+    }
+
+    .likeMovie::-webkit-scrollbar-thumb {
+        background-color: silver;
+    }
 
 .movieCardBig2 {
     border: 1px solid silver;
     width: 200px;
+    height: 540px;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
@@ -1317,7 +1441,7 @@ figure span {
 .movieWallMovies2 {
     display: flex;
     flex-wrap: wrap;
-    width:100%;
+    width: 100%;
 }
 
 .movieCardBig2 {
@@ -1335,10 +1459,10 @@ figure span {
     text-align: center;
 }
 
-.niniImagesPlace{
-    width:200px;
-    height:300px;
-    background-color:antiquewhite;
+.niniImagesPlace {
+    width: 200px;
+    height: 300px;
+    background-color: antiquewhite;
 }
 
 .posterPlace img {
@@ -1355,7 +1479,7 @@ figure span {
 
     .movie h3 {
         font-size: 32px;
-        line-height:32px;
+        line-height: 32px;
     }
 
     .movie h4 {
@@ -1391,7 +1515,7 @@ figure span {
     width: 90px;
     margin-top: 10px;
     padding: 5px;
-    cursor: pointer:
+    cursor: pointer;
 }
 
 .movieIntroduce input:hover {
@@ -1402,4 +1526,3 @@ figure span {
     margin-top: 20px;
     margin-bottom: 20px;
 }
-

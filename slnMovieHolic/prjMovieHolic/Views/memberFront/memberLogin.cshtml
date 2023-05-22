@@ -13,7 +13,7 @@
                             <h3 style="font-size:20px">會員登入</h3>
                             <hr>
                             <div class="logInBoxSmall">
-                                <form asp-action="memberLogin">
+                                <form asp-action="memberLogin" id="yourForm">
                                 <h6>帳號</h6>
                                     <input type="text" name="txtAccount" id="txtAccount" value="">
                                 <h6>密碼</h6>
@@ -45,6 +45,15 @@
     </div>
 </div>
 
+<dialog id="IamDialog" class="IamDialog">
+    <p>登入成功</p>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogFail" class="IamDialog">
+    <p>您輸入的帳號或密碼錯誤，請重新輸入</p>
+    <button id="closeDialogFail" class="closeDialog">確定</button>
+</dialog>
+
 @section Scripts{
     <script>
         const txtAccount = document.querySelector('#txtAccount');
@@ -53,15 +62,51 @@
         const loginDemo=document.querySelector('#loginDemo');
         const loginDemo2 = document.querySelector('#loginDemo2');
         const loginDemo3 = document.querySelector('#loginDemo3');
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const formdialogFail = document.getElementById('IamDialogFail');
+        const btnCloseDialogFail = document.getElementById('closeDialogFail');
+
+
         submit.addEventListener('click', async () => {
+
             const response = await fetch(`@Url.Content("~/memberFront/IsLogin")?txtAccount=` + txtAccount.value + "&txtPassword=" +txtPassword.value, { method: 'POST' })
             const data = await response.json();
             console.log(data)
             if (!data.success) {
                 // 登入失敗
-                alert(data.message);
+                alert('登入失敗')
             }
         })
+
+        //btnCloseDialog.addEventListener('click', async () => {
+        //    // 提交表單資料到 Controller
+        //    const form = document.querySelector('#yourForm');
+        //    const formData = new FormData(form);
+
+        //    const response = await fetch('@Url.Content("~/memberFront/memberLogin")', {
+        //        method: 'POST',
+        //        // 設定適當的 headers 和 body，包含需要傳遞的資料
+        //        body: formData,
+
+
+        //    });
+        //    var controller = '@(ViewBag.Controller)';
+        //    var view = '@(ViewBag.View)';
+        //    console.log(controller);
+        //    console.log(view);
+        //    // 關閉 <dialog>
+        //    formdialog.close();
+
+        //    var url = '/' + controller + '/' + view;
+        //    window.location.href = url;
+            
+
+        //});
+
+
+
 
         loginDemo.addEventListener('click', function () {
             txtAccount.value = '0923906031';

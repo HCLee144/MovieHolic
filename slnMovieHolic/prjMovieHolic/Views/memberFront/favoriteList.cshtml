@@ -41,7 +41,7 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
-                                <h3 style="font-size:20px">歡迎，@Model.Member.FName</h3>
+                                <h3 class="welcome">歡迎，@Model.Member.FName</h3>
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
@@ -59,8 +59,8 @@
 
 
 
-
                             <div class="orderList">
+                                <div class="momberPageTitle"><h3>我的收藏</h3></div>
                                 <div class="tabPlace">
                                     <!-- TAB1 打包區塊 start -->
                                     <input id="tab1" type="radio" name="tab" checked="checked" />
@@ -156,7 +156,7 @@
 
                                                                 <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
                                                                 <div>
-                                                                    <p id="heart" style="color:#FF2D2D">❤</p>
+                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -214,7 +214,7 @@
 
                                                         <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
                                                         <div>
-                                                            <p id="heart" style="color:#FF2D2D">❤</p>
+                                                            <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
                                                         </div>
                                                     </div>
                                                 </div>

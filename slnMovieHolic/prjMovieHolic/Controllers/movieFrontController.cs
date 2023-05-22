@@ -104,5 +104,9 @@ namespace prjMovieHolic.Controllers
         {
           return (_context.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
         }
+
+      
+
     }
+
 }

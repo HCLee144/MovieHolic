@@ -2,7 +2,11 @@
 @{
     ViewData["Title"] = "memberEdit";
 }
-
+<style>
+    li{
+        font-size:30px,
+    }
+</style>
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -12,7 +16,7 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
-                                <h3 style="font-size:20px">歡迎，@Model.FName</h3>
+                                <h3 class="welcome">歡迎，@Model.FName</h3>
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
@@ -28,7 +32,8 @@
                                 </div>
                             </article>
                             <div class="memberInformation">
-                                <form asp-action="memberEdit">
+                                <div class="momberPageTitle"><h3>資料修改</h3></div>
+                                <form asp-action="memberEdit"  id="yourForm">
                                     <input type="hidden" value="@Model.FMemberId" name="FMemberId" />
                                     <table class="memberTable">
                                     <tr>
@@ -50,9 +55,9 @@
                                      <tr>
                                           <th>性別</th>
                                             <td>
-                                                <input type="radio" name="FGenderId" value="1" @(Model.FGenderId == 1 ? "checked" : "") /><span style="font-size:15px">男</span>
-                                                <input type="radio" name="FGenderId" value="2" @(Model.FGenderId == 2 ? "checked" : "") /><span style="font-size:15px">女</span>
-                                                <input type="radio" name="FGenderId" value="3" @(Model.FGenderId == 3 ? "checked" : "")><span style="font-size:15px">非二元性別</span>
+                                                <input type="radio" name="FGenderId" value="1" @(Model.FGenderId == 1 ? "checked" : "") /><span style="font-size:20px">男</span>
+                                                <input type="radio" name="FGenderId" value="2" @(Model.FGenderId == 2 ? "checked" : "") /><span style="font-size:20px">女</span>
+                                                <input type="radio" name="FGenderId" value="3" @(Model.FGenderId == 3 ? "checked" : "")><span style="font-size:20px">非二元性別</span>
                                           </td>
                                      </tr>
                                      <tr>
@@ -91,12 +96,40 @@
         </div>
     </div>
 </div>
+
+<dialog id="IamDialog" class="IamDialog">
+    <p>會員資料修改成功！</p>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+
 @section Scripts{
     <script>
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+
         const submit = document.querySelector('#submit');
-        submit.addEventListener('click', () => {
-            alert('會員資料修改成功！');
+        submit.addEventListener('click', (event) => {
+            event.preventDefault();
+            formdialog.showModal();
         })
+
+        btnCloseDialog.addEventListener('click', async () => {
+            // 提交表單資料到 Controller
+            const form = document.querySelector('#yourForm');
+            const formData = new FormData(form);
+
+            const response = await fetch('@Url.Content("~/memberFront/memberEdit")', {
+                method: 'POST',
+                body: formData,
+            });
+            // 關閉 <dialog>
+            formdialog.close();
+            window.location.href = "/memberFront/memberList?id=" + @Model.FMemberId;
+
+        });
+
+
 
         //const yy = document.getElementById('yy')
         //const mm = document.getElementById('mm')

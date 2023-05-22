@@ -12,14 +12,14 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
-                                <h3 style="font-size:20px">歡迎，@Model.Member.FName</h3>
+                                <h3 class="welcome">歡迎，@Model.Member.FName</h3>
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
                                         <li>@Html.ActionLink("會員資料", "memberList","memberFront",new {id=Model.Member.FMemberId},null)</li>
                                         <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
-                                        <li><a class="selected">訂單查詢</a></li>
+                                        <li class="selected"><a>訂單查詢</a></li>
                                         <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li><a href="#Advertising">我的評論</a></li>
@@ -29,93 +29,34 @@
                             </article>
 
 
-
-
                             <div class="orderList">
+                                <div class="momberPageTitle"><h3>訂單查詢</h3></div>
                                 <div class="tabPlace">
                                     <!-- TAB1 打包區塊 start -->
                                     <input id="tab1" type="radio" name="tab" checked="checked" />
-                                    <label for="tab1">已取票</label>
+                                    <label id="OrderBook" for="tab1">未取票</label>
                                     <div class="tab_content">
-                                        <div class="orderLa">
-                                        @foreach(var item in Model.Order)
-                                        {
-                                            <div class="addBorder">
-                                                <div class="orderDetailBox">
-                                                    <div class="orderDetailBoxTop">
-                                                        <div>
-                                                            <h3>@item.FSession.FTheater.FTheater</h3>
-                                                            <h4>@item.FSession.FMovie.FNameCht</h4>
-                                                        </div>
-                                                        <div>
-                                                            <a href="">
-                                                                <h3>詳情</h3>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="orderDetailBoxBottom">
-                                                        <h3>@item.FSession.FStartTime.ToString("yyyy/MM/dd hh:mm")</h3>
-                                                        <h3>$@item.FTotalPrice</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
+                                        <div class="orderLa" id="divBook">
+                                 
                                         </div>
-
                                     </div>
                                     <!-- TAB1 打包區塊 end -->
                                     <!-- TAB2 打包區塊 start -->
                                     <input id="tab2" type="radio" name="tab" />
-                                    <label for="tab2">未取票</label>
+                                    <label id="OrderGet" for="tab2">已取票</label>
                                     <div class="tab_content">
-                                        <div class="orderLa">
-                                        <div class="addBorder">
-                                            <div class="orderDetailBox">
-                                                <div class="orderDetailBoxTop">
-                                                    <div>
-                                                        <h3>第　1　廳</h3>
-                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
-                                                    </div>
-                                                    <div>
-                                                        <a href="">
-                                                            <h3>詳情</h3>
-                                                        </a>
-                                                        <button class="orderDetaildelete">取消</button>
-                                                    </div>
-                                                </div>
-                                                <div class="orderDetailBoxBottom">
-                                                    <h3>2023/5/31_10:30</h3>
-                                                    <h3>$888</h3>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="orderLa" id="divGet">
+                                            
+                                       
                                         </div>
                                     </div>
                                     <!-- TAB2 打包區塊 end -->
                                     <!-- TAB3 打包區塊 start -->
                                     <input id="tab3" type="radio" name="tab" />
-                                    <label for="tab3">已取消</label>
+                                    <label for="tab3" id="OrderCancel">已取消</label>
                                     <div class="tab_content">
-                                        <div class="orderLa">
-                                        <div class="addBorder">
-                                            <div class="orderDetailBox">
-                                                <div class="orderDetailBoxTop">
-                                                    <div>
-                                                        <h3>第　1　廳</h3>
-                                                        <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
-                                                    </div>
-                                                    <div>
-                                                        <a href="">
-                                                            <h3>詳情</h3>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="orderDetailBoxBottom">
-                                                    <h3>2023/5/31_10:30</h3>
-                                                    <h3>$888</h3>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="orderLa" id="divCancel">
+                                            
                                         </div>
                                     </div>
                                     <!-- TAB3 打包區塊 end -->
@@ -130,3 +71,180 @@
     </div>
 </div>
 
+<dialog id="IamDialog" class="IamDialog">
+    <table>
+        <thead>
+            <tr>訂單明細</tr>
+            <tr>
+                <td>序號</td>
+                <td>座位</td>
+                <td>票種</td>
+            </tr>
+        </thead>
+        <tbody id="dialogBody">
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>餐點明細</tr>
+        </thead>
+        <tbody id="dialogFoodBody">
+        </tbody>
+    </table>
+    <button id="closeDialog"  class="closeDialog">確認</button>
+</dialog>
+
+<dialog id="cancelDialog" class="IamDialog">
+    <p id="cancelParagraph">
+        確定要退票嗎？
+    </p>
+    <button id="confirmDialog" class="closeDialog">確定</button>
+    <button id="closeCancelDialog" class="closeDialog">取消</button>
+</dialog>
+
+@section Scripts{
+    <script>
+        const OrderBook=document.getElementById('OrderBook');
+        const OrderGet=document.getElementById('OrderGet');
+        const OrderCancel=document.getElementById('OrderCancel');
+        const divBook=document.getElementById('divBook');
+        const divGet=document.getElementById('divGet');
+        const divCancel=document.getElementById('divCancel');
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const dialogBody=document.getElementById('dialogBody');
+        const dialogFoodBody = document.getElementById('dialogFoodBody');
+
+        const cancelDialog = document.getElementById('cancelDialog');
+        const cancelParagraph = document.getElementById('cancelParagraph');
+        const confirmDialog = document.getElementById('confirmDialog');
+        const closeCancelDialog = document.getElementById('closeCancelDialog');
+
+
+        window.onload = async ()=> {
+            divBook.innerHTML=await ListOrderBookTicket('未取票');
+        }
+ 
+        OrderBook.addEventListener('click',async ()=>{
+            result=await ListOrderBookTicket('未取票');
+             divBook.innerHTML=result;
+        });
+        OrderGet.addEventListener('click',async ()=>{
+            result=await ListOrderTicket('已取票');
+             divGet.innerHTML=result;
+        });
+        OrderCancel.addEventListener('click',async ()=>{
+            result=await ListOrderTicket('已取消');
+             divCancel.innerHTML=result;
+        });
+      
+        //未取票
+        async function ListOrderBookTicket(od)
+        {
+            const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe='+od);
+            const data = await response.json();
+            console.log(data);
+            let result='';
+            data.forEach((item)=>{
+                result+=`<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
+                result+=`<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
+                result += `</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3>`;
+                result += `<button id=${item["orderID"]} class="orderDetaildelete" onclick="cancelTicket(event)">取消</button></div></div><div class="orderDetailBoxBottom">`;
+                result+=`<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
+                result+=`</div></div></div>`        
+            })
+            console.log(result);
+            return result;
+        }
+
+        //已取票、已取消
+        async function ListOrderTicket(od) {
+            const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe=' + od);
+            const data = await response.json();
+            console.log(data);
+            let result = '';
+            data.forEach((item) => {
+                result += `<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
+                result += `<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
+                result += `</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3></div></div>`;
+                result += `<div class="orderDetailBoxBottom">`;
+                result += `<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
+                result += `</div></div></div>`
+            })
+            console.log(result);
+            return result;
+        }
+
+        async function showOrderDetails(event)
+        {
+            const id=event.target.getAttribute('id');
+            const orderDetaildata=await callOrderDetail(id);
+            const receiptDetaildata = await callReceiptDetail(id);
+
+            dialogBody.innerHTML = orderDetaildata;
+            dialogFoodBody.innerHTML=receiptDetaildata;
+            formdialog.showModal();
+            btnCloseDialog.addEventListener('click', () => {
+            formdialog.close();
+            })
+            
+            console.log(id);
+        }
+
+        async function callOrderDetail(orderID)
+        {
+            const response=await fetch('@Url.Content("~/OrderFront/ShowOrderDetails")?orderID='+orderID);
+            const data=await response.json();
+
+            let result='';
+            let i=1;
+            data.forEach((item)=>{
+                result+=`<tr><td>${i}</td>`;
+                result += `<td>${item["seatName"]}</td>`;
+                result+=`<td>${item["ticketClassName"]}</td></tr>`;  
+                i++;
+            })
+            console.log(result);
+
+            return result;
+        }
+        async function callReceiptDetail(orderID) 
+        {
+            const response = await fetch('@Url.Content("~/OrderFront/ShowReceiptDetails")?orderID=' + orderID);
+            const data = await response.json();
+            
+            let result = '';
+            data.forEach((item) => {
+                result += `<td>${item["productName"]}x${item["productCount"]}</td>`;
+            })
+            console.log(result);
+
+            return result;
+        }
+
+        function cancelTicket(event)
+        {
+            cancelDialog.showModal();
+            confirmDialog.addEventListener('click', async() => {
+                const orderID = event.target.getAttribute('id');
+                const response=await deleteOrder(orderID);
+                
+                const result = await ListOrderBookTicket('未取票');
+                divBook.innerHTML = result;
+
+                cancelDialog.close();
+            })
+            closeCancelDialog.addEventListener('click', () => {
+                cancelDialog.close();
+            })
+        }
+
+        async function deleteOrder(orderID) {
+            const response = await fetch('@Url.Content("~/OrderFront/deleteOrder")?orderID=' + orderID);
+            const data = await response.text();
+            if(data=='Success')
+                return '退票成功';
+        }
+    </script>
+}

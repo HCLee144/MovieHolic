@@ -15,7 +15,7 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult Edit()
         {
-            int id = 15;
+            int id = 9;
             var prod=movieContext.TProducts.FirstOrDefault(p => p.FProductId == id);
             CTProductWrap productWrap = new CTProductWrap();
             productWrap.product = prod;
@@ -24,7 +24,7 @@ namespace prjMovieHolic.Controllers
         [HttpPost]
         public IActionResult Edit(CTProductWrap product)
         {
-            product.FProductId = 15;
+            product.FProductId = 9;
             var prod = movieContext.TProducts.FirstOrDefault(p => p.FProductId == product.FProductId);
             if(prod!=null)
             {
