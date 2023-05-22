@@ -1318,6 +1318,7 @@ figure span {
 
 .commentBox {
     display: flex;
+    flex-wrap:wrap;
 }
 
 .hheight {
@@ -1337,9 +1338,9 @@ figure span {
 
 .commentDetailBox {
     border: 3px double silver;
-    padding: 12px;
+    padding: 10px;
     height: 90px;
-    width: 240px;
+    width: 235px;
 }
 
     .commentDetailBox h3 {
