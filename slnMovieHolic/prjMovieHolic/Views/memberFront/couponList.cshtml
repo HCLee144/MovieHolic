@@ -40,7 +40,7 @@
 										<li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li class="selected"><a>我的優惠券</a></li>
-										<li><a href="#Advertising">我的評論</a></li>
+										<li>@Html.ActionLink("我的評論", "commentList","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
 									</ul>
 								</div>
@@ -52,29 +52,40 @@
 									<!-- TAB1 打包區塊 start -->
 									<input id="tab1" type="radio" name="tab" checked="checked" />
 									<label for="tab1">最　新</label>
-                                    <div class="tab_content overflowXHidden overflowYHidden">
-                                        
-										@foreach (var item in Model.CouponList)
-										{
-											<div class="coupon">
-													<div class="couponName">
-														<img src="~/images/icons8-coupon-64.png" alt="">
-														<p>MovieHolic</p>
-													</div>
-													<div class="couponDetail">
-														<div>
-															<h3>@item.FCouponType.FCouponDiscount 折</h3>
-															<h4>結帳立即享有 @item.FCouponType.FCouponDiscount 折</h4>
-															<h5>@item.FCouponType.FCouponTypeName 特惠</h5>
-															<h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
+									<div class="tab_content overflowXHidden overflowYHidden">
+										@{
+											if (Model.CouponList.Count > 0)
+											{
+												@foreach (var item in Model.CouponList)
+												{
+													<div class="coupon">
+														<div class="couponName">
+															<img src="~/images/icons8-coupon-64.png" alt="">
+															<p>MovieHolic</p>
 														</div>
-													<div class="couponRule"><a href="">使用規則</a><hr><hr><hr><hr><hr><hr />
-														<a href="@Url.Action("ListSession", "OrderFront",new{ movieID=1})">立即使用 > </a>
+														<div class="couponDetail">
+															<div>
+																<h3>@item.FCouponType.FCouponDiscount 折</h3>
+																<h4>結帳立即享有 @item.FCouponType.FCouponDiscount 折</h4>
+																<h5>@item.FCouponType.FCouponTypeName 特惠</h5>
+																<h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
+															</div>
+															<div class="couponRule">
+																<a href="">使用規則</a><hr><hr><hr><hr><hr><hr />
+																<a href="@Url.Action("ListSession", "OrderFront",new{ movieID=1})">立即使用 > </a>
+															</div>
+														</div>
+
 													</div>
-													</div>
-												
-										    </div>					
+												}
+											}
+											else
+											{
+												<h3 class="couponNull">尚無最新優惠券</h3>
+												<h5 class="couponNullUsed">持續關注最新優惠活動，享有購票優惠！</h5>
+											}
 										}
+										
 										
 									</div>
 									<!-- TAB1 打包區塊 end -->
@@ -82,24 +93,35 @@
 									<input id="tab2" type="radio" name="tab" />
 									<label for="tab2">無　效</label>
 									<div class="tab_content overflowXHidden overflowYHidden">
-										@foreach(var item in Model.CouponListExpired)
-										{
-												<div class="coupon usedCoupon" >
-													<div class="couponName">
-														<img src="~/images/icons8-coupon-64.png" alt="">
-														<p>MovieHolic</p>
-													</div>
-													<div class="couponDetail">
-														<div>
-															<h3>@item.FCouponType.FCouponDiscount 折</h3>
-															<h4>結帳立即享有 @item.FCouponType.FCouponDiscount 折</h4>
-															<h5>@item.FCouponType.FCouponTypeName 特惠</h5>
-															<h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
+										@{
+											if (Model.CouponListExpired.Count > 0)
+											{
+												@foreach (var item in Model.CouponListExpired)
+												{
+													<div class="coupon usedCoupon">
+														<div class="couponName">
+															<img src="~/images/icons8-coupon-64.png" alt="">
+															<p>MovieHolic</p>
 														</div>
-														<div class="couponRule"><a href="">使用規則</a></div>
+														<div class="couponDetail">
+															<div>
+																<h3>@item.FCouponType.FCouponDiscount 折</h3>
+																<h4>結帳立即享有 @item.FCouponType.FCouponDiscount 折</h4>
+																<h5>@item.FCouponType.FCouponTypeName 特惠</h5>
+																<h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
+															</div>
+															<div class="couponRule"><a href="">使用規則</a></div>
+														</div>
 													</div>
-												</div>
+												}
+											}
+											else
+											{
+												<h3 class="couponNull">尚無無效優惠券</h3>
+												<h5 class="couponNullUsed">持續關注最新優惠活動，享有購票優惠！</h5>
+											}
 										}
+										
 									</div>
 									<!-- TAB2 打包區塊 end -->
 									<!-- TAB3 打包區塊 start -->

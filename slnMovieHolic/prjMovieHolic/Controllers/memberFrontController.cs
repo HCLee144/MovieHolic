@@ -386,5 +386,15 @@ namespace prjMovieHolic.Controllers
             sessionCheck();
             return View(viewModel);
         }
+        public IActionResult commentList(int? id)
+        {
+            var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
+            var viewModel = new CCommentAndMemberViewModel
+            {
+                Member=members,
+            };
+            sessionCheck();
+            return View(viewModel);
+        }
     }
 }
