@@ -779,6 +779,7 @@ figure span {
     padding-bottom: 15px;
     padding-top: 15px;
     overflow: scroll;
+    overflow-y:hidden;
 }
 
     .chooseDrink::-webkit-scrollbar {
@@ -791,6 +792,9 @@ figure span {
         background-color: silver;
     }
 
+.productBox{
+    margin:5px;
+}
 
 .foodPrice {
     display: flex;
@@ -822,12 +826,13 @@ figure span {
 
 .choosePOP {
     display: flex;
-    width: 550px;
+    width: 545px;
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top: 15px;
     overflow: scroll;
+    overflow-y: hidden;
 }
 
     .choosePOP::-webkit-scrollbar {
@@ -842,12 +847,13 @@ figure span {
 
 .chooseSweet {
     display: flex;
-    width: 360px;
+    width: 365px;
     border: 4px dotted silver;
     border-radius: 15px;
     padding-bottom: 15px;
     padding-top: 15px;
     overflow: scroll;
+    overflow-y: hidden;
 }
 
     .chooseSweet::-webkit-scrollbar {
@@ -902,11 +908,13 @@ figure span {
 }
 
 .QTYCut {
-    margin-right: 18px;
+    display:inline-block;
+    width:20px;
 }
 
 .QTYAdd {
-    margin-left: 18px;
+    display: inline-block;
+    width: 20px;
 }
 
 .space {
@@ -1292,6 +1300,7 @@ figure span {
         padding: 6px;
         color: #eaeaea;
         border-radius: 5px;
+        font-size: 20px;
     }
 
 .orderDetaildelete {
@@ -1301,6 +1310,7 @@ figure span {
     color: #eaeaea;
     border-radius: 5px;
     cursor: pointer;
+    margin-left:3px;
 }
 
 .orderDetailBoxTop {
