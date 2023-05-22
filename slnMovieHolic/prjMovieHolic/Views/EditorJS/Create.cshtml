@@ -18,19 +18,28 @@
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/@@editorjs/editorjs@@latest"></script>
     <script src="~/js/EditorJS/simple-image.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/image@@2.3.0"></script>
+
+
     <script>
         const editor = new EditorJS({
             autofocus: true,
             tools: {
                 image: {
-                    class: SimpleImage,
-                    inlineToolbar: ['link']
-                }}
+                    class: ImageTool,
+                    config: {
+                        endpoints: {
+                            byFile: '../api/ImageUploader/upload-image', // Your backend file uploader endpoint
+                            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                        }
+                    }
+                }
+            }
         });
-
+        
         const saveButton = document.getElementById('save-button');
         const output = document.getElementById('output');
-
+     
         saveButton.addEventListener('click', () => {
             editor.save().then(savedData => {
                 output.innerHTML = JSON.stringify(savedData, null, 4);
