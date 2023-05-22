@@ -115,5 +115,10 @@ namespace prjMovieHolic.Controllers
             }
         }
 
+
+        public IActionResult Complaints()
+        {
+            return View();
+        }
     }
 }

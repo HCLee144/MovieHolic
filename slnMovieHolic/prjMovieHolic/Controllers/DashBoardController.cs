@@ -16,17 +16,56 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult Index()
         {
-            var sum = _db.TOrders.Include(o => o.FSession).AsEnumerable().Where(o => o.FSession.FStartTime.Year == DateTime.Now.Year).Select(o => o.FTotalPrice).Sum();
+            loadYearlyIncome();
+            loadYearlyMember();
+            loadMonthlyIncome();
+            return View();
+        }
+
+        [NonAction]
+        public void loadMonthlyIncome()
+        {
+            DateTime thisMonthFirst = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
+            DateTime lastYear = DateTime.Now.AddYears(-1).Date;
+            DateTime lastYearFirst = thisMonthFirst.AddYears(-1).Date;
+            decimal sum = (int)_db.TOrders.Include(o => o.FSession).AsEnumerable()
+                .Where(o => (o.FSession.FStartTime.Date >= thisMonthFirst && o.FSession.FStartTime.Date < DateTime.Now.Date)).Select(o => o.FTotalPrice).Sum();
+            ViewBag.MonthlyIncome = $"{DateTime.Now.ToString("yyyy/MM")}月 目前營收 {sum:C0} 元";
+            if (sum >= 0)
+            {
+                decimal sumLast = (int)_db.TOrders.Include(o => o.FSession).AsEnumerable()
+                                .Where(o => (o.FSession.FStartTime.Date >= lastYearFirst && o.FSession.FStartTime.Date < lastYear)).Select(o => o.FTotalPrice).Sum();
+                if(sumLast > 0)
+                {
+                    decimal growRate = ((sum - sumLast) / sumLast)*100;
+                    ViewBag.growRate = growRate;
+                }                
+            }
+        }
+
+
+        [NonAction]
+        public void loadYearlyMember()
+        {
+            int memberCount = _db.TMembers.Count();
+            if (memberCount > 0)
+                ViewBag.MemberCount = memberCount + "人";
+            int memberLastYear = _db.TMembers.Where(m => m.FCreatedDate.Year <= DateTime.Now.Year - 1).Count();
+            if (memberLastYear > 0)
+                ViewBag.MemberLastYear = $"去年({DateTime.Now.Year - 1})以前會員人數共 {memberLastYear} 人";
+        }
+
+        [NonAction]
+        public void loadYearlyIncome()
+        {
+            var sum = _db.TOrders.Include(o => o.FSession).AsEnumerable()
+                .Where(o => o.FSession.FStartTime.Year == DateTime.Now.Year).Select(o => o.FTotalPrice).Sum();
             if (sum != null)
             {
-                ViewBag.YearSum =  sum * 100 / 10000000;
+                ViewBag.YearSum = sum * 100 / 10000000;
                 ViewBag.YearLabel1 = $"Until {DateTime.Now.ToString("MM/dd")}:";
-                ViewBag.YearLabel2 = $"{sum:C3}";
+                ViewBag.YearLabel2 = $"{sum:C0}";
             }
-            var memberCount = _db.TMembers.Count();
-            if (memberCount > 0)
-                ViewBag.MemberCount = memberCount+ "人";
-            return View();
         }
 
         public IActionResult getChartDataForSimpleIncomeByDay()
@@ -35,8 +74,8 @@ namespace prjMovieHolic.Controllers
             DateTime startdate = DateTime.Now.AddDays(-7).Date;
             var q = _db.TOrders.Include(i => i.FSession).AsEnumerable()
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
-                .OrderByDescending(i=>i.FSession.FStartTime.Date)
-                .GroupBy(i => i.FSession.FStartTime.Date.ToString("MM/dd")).Select(g => new {g.Key, group=g}).ToList();
+                .OrderByDescending(i => i.FSession.FStartTime.Date)
+                .GroupBy(i => i.FSession.FStartTime.Date.ToString("MM/dd")).Select(g => new { g.Key, group = g }).ToList();
             SimpleBarDataValues dataList = new SimpleBarDataValues();
             SimpleBarDataLabels labelList = new SimpleBarDataLabels();
             foreach (var item in q)
@@ -44,7 +83,7 @@ namespace prjMovieHolic.Controllers
                 dataList.data.Add((int)item.group.Sum(i => i.FTotalPrice));
                 labelList.categories.Add(item.Key);
             }
-            return Json(new {data=dataList,labels=labelList });
+            return Json(new { data = dataList, labels = labelList });
         }
 
         public IActionResult getChartDataForSimpleIncomeByMonth()
@@ -68,7 +107,7 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult getChartDataForMovieIncome()
         {
-            DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date; 
+            DateTime dateYesterDay = DateTime.Now.AddDays(-1).Date;
             DateTime dateWeekAgo = DateTime.Now.AddDays(-7).Date;
             var q = _db.TOrders.Include(i => i.FSession).Include(i => i.FSession.FMovie).AsEnumerable()
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= dateWeekAgo))
@@ -82,7 +121,7 @@ namespace prjMovieHolic.Controllers
                 movieData.name = group.Key;
                 //每部電影按照前一天到前七天計算票房總合
                 movieData.data = new List<IncomeDataPerDay>();
-                for(int i = 0; i < 7; i++)
+                for (int i = 0; i < 7; i++)
                 {
                     IncomeDataPerDay income = new IncomeDataPerDay()
                     {
@@ -93,8 +132,8 @@ namespace prjMovieHolic.Controllers
                 }
                 foreach (var order in group.group)
                 {
-                    int span = (dateYesterDay-order.FSession.FStartTime.Date).Days;
-                    movieData.data[span].y += (int)order.FTotalPrice;                    
+                    int span = (dateYesterDay - order.FSession.FStartTime.Date).Days;
+                    movieData.data[span].y += (int)order.FTotalPrice;
                 }
                 chartData.Add(movieData);
             }
