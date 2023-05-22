@@ -204,7 +204,7 @@
             data.forEach((item)=>{
                 result+=`<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
                 result+=`<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
-                result += `</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3>`;
+                result += `</div><div><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a>`;
                 result += `<button id=${item["orderID"]} class="orderDetaildelete" onclick="cancelTicket(event)">取消</button></div></div><div class="orderDetailBoxBottom">`;
                 result+=`<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
                 result+=`</div></div></div>`        

@@ -16,11 +16,11 @@
         }
 
         .QTYCut {
-            margin-right: 1px;
+
         }
 
         .QTYAdd {
-            margin-left: 1px;
+
         }
 
         .spanCount{
@@ -103,7 +103,7 @@
                                         @{
                                             foreach (var item in Model.drinkCategory)
                                             {
-                                                <div>
+                                                <div class="productBox">
                                                     <h3>@item.FProductName</h3>
                                                     <input type="hidden" name="products[@index].productID" value="@item.FProductId">
                                                     <div>
@@ -118,12 +118,12 @@
                                                         }
                                                         <input type="hidden" value="@item.FProductPrice" id="@price">
                                                         <div class="FoodQTYCutAdd">
-                                                            <div style="width:85px;">
+                                                            <div style="width:90px;">
                                                                 <a class="QTYCut" id="@item.FProductId">-</a>
                                                                 <input type="text" class="spanCount" name="products[@index].productCount" readonly id="@spanName" size="1" value="0">
                                                                 <a class="QTYAdd" id="@item.FProductId">+</a>
                                                             </div>
-                                                            <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                            <div style="width:70px;"><span id="@totalName">單價：@item.FProductPrice</span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -139,7 +139,7 @@
                                             @{
                                                 foreach (var item in Model.popcornCategory)
                                                 {
-                                                    <div>
+                                                    <div class="productBox">
                                                         <h3>@item.FProductName</h3>
                                                         <input type="hidden" name="products[@index].productID" value="@item.FProductId">
                                                         <div>
@@ -155,12 +155,12 @@
                                                             }
                                                             <input type="hidden" value="@item.FProductPrice" id="@price">
                                                             <div class="FoodQTYCutAdd">
-                                                                <div style="width:85px;">
+                                                                <div style="width:90px;">
                                                                     <a class="QTYCut" id="@item.FProductId">-</a>
                                                                     <input type="text" class="spanCount" name="products[@index].productCount" readonly id="@spanName" size="1" value="0">
                                                                     <a class="QTYAdd" id="@item.FProductId">+</a>
                                                                 </div>
-                                                                <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                                <div style="width:70px;"><span id="@totalName">單價：@item.FProductPrice</span></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -173,7 +173,7 @@
                                             @{
                                                 foreach (var item in Model.dessertCategory)
                                                 {
-                                                    <div>
+                                                    <div class="productBox">
                                                         <h3>@item.FProductName</h3>
                                                         <input type="hidden" name="products[@index].productID" value="@item.FProductId">
                                                         <div>
@@ -189,12 +189,12 @@
                                                             }
                                                             <input type="hidden" value="@item.FProductPrice" id="@price">
                                                             <div class="FoodQTYCutAdd">
-                                                                <div style="width:85px;">
+                                                                <div style="width:90px;">
                                                                     <a class="QTYCut" id="@item.FProductId">-</a>
                                                                     <input type="text" class="spanCount" name="products[@index].productCount" readonly id="@spanName" size="1" value="0">
                                                                     <a class="QTYAdd" id="@item.FProductId">+</a>
                                                                 </div>
-                                                                <div style="width:75px;"><span id="@totalName">單價為：@item.FProductPrice</span></div>
+                                                                <div style="width:70px;"><span id="@totalName">單價：@item.FProductPrice</span></div>
                                                             </div>
                                                         </div>
                                                     </div>
