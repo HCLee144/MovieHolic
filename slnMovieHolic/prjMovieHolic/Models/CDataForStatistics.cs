@@ -4,14 +4,14 @@
 
     public class PieData
     {
-        public List<int> series { get; set; }
-        public List<string> labels { get; set; }
+        public List<int> series { get; set; } = new List<int>();
+        public List<string> labels { get; set; } = new List<string>();
     }
 
     
-    public class BarSimpleValues
+    public class BarSimpleDatas
     {
-        public BarSimpleValues()
+        public BarSimpleDatas()
         {
             data = new List<int>();
         }

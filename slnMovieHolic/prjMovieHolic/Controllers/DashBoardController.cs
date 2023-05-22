@@ -76,7 +76,7 @@ namespace prjMovieHolic.Controllers
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
                 .OrderByDescending(i => i.FSession.FStartTime.Date)
                 .GroupBy(i => i.FSession.FStartTime.Date.ToString("MM/dd")).Select(g => new { g.Key, group = g }).ToList();
-            BarSimpleValues dataList = new BarSimpleValues();
+            BarSimpleDatas dataList = new BarSimpleDatas();
             BarSimpleLabels labelList = new BarSimpleLabels();
             foreach (var item in q)
             {
@@ -94,7 +94,7 @@ namespace prjMovieHolic.Controllers
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
                 .OrderByDescending(i => i.FSession.FStartTime.Date)
                 .GroupBy(i => i.FSession.FStartTime.ToString("yyyy/MM")).Select(g => new { g.Key, group = g }).ToList();
-            BarSimpleValues dataList = new BarSimpleValues();
+            BarSimpleDatas dataList = new BarSimpleDatas();
             BarSimpleLabels labelList = new BarSimpleLabels();
             foreach (var item in q)
             {
