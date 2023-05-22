@@ -1112,30 +1112,21 @@ figure span {
     position: relative;
 }
 
-.titleRelative {
-    position: relative;
-}
 
-.titleAbsolut {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-}
+    .tabPlace input {
+        display: none
+    }
 
-.tabPlace input {
-    display: none
-}
-
-.tabPlace label {
-    margin: 0 5px 5px 0;
-    padding: 10px 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    background: #999;
-    color: #fff;
-    opacity: 0.5;
-    font-size: 20px;
-}
+    .tabPlace label {
+        margin: 0 5px 5px 0;
+        padding: 10px 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        background: #999;
+        color: #fff;
+        opacity: 0.5;
+        font-size: 20px;
+    }
 
 .tab_content {
     order: 1;
@@ -1248,7 +1239,7 @@ figure span {
 
 .orderList {
     width: 600px;
-    height: 600px;
+    height: 700px;
 }
 
 .orderLa {
@@ -1319,7 +1310,7 @@ figure span {
 }
 
 .hheight {
-    height: 520px;
+    height: 620px;
 }
 
 .addBorder2:hover {
@@ -1377,10 +1368,16 @@ figure span {
 
 
 /*最愛電影頁面*/
+.overflowXHidden {
+    overflow-x: hidden;
+}
+
 .likeMovie {
+    height: 600px;
     width: 590px;
     display: flex;
-    overflow:scroll;
+    overflow: scroll;
+    overflow-y: hidden;
 }
 
     .likeMovie::-webkit-scrollbar {
@@ -1396,6 +1393,7 @@ figure span {
 .movieCardBig2 {
     border: 1px solid silver;
     width: 200px;
+    height: 540px;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
