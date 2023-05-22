@@ -1576,6 +1576,30 @@ figure span {
     margin-bottom: 20px;
 }
 
+.commentPlace {
+    background-color: rgb(243, 242, 242);
+    width: 865px;
+    margin-bottom: 20px;
+    border: 10px double silver;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+    .commentPlace h3 {
+        font-size: 28px;
+        border-bottom: 3px dotted silver;
+        margin-bottom: 10px;
+    }
+
+    .commentPlace h4 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .commentPlace b {
+        font-size: 16px;
+    }
+
 /*電影類別頁面*/
 
 
