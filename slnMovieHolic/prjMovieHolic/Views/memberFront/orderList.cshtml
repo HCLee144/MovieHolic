@@ -3,6 +3,50 @@
     ViewData["Title"] = "orderList";
 }
 
+@section Styles{
+    <style>
+        .h3Text {
+            text-align: center;
+        }
+
+        .headText {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .tdWidth th {
+            width: 30px;
+        }
+
+        .tdText td {
+            text-align: center;
+        }
+
+        .tdWidth td {
+            width: 70px;
+        }
+
+        .borderWidth {
+            width: 400px;
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        .tBodyBorder tr {
+            border-bottom: 1px solid gray;
+        }
+
+        .tHeadBorder tr {
+            border-bottom: 2px solid black;
+        }
+
+        tbody tr:nth-child(2n) {
+            background-color: gainsboro;
+        }
+
+    </style>
+}
+
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -72,22 +116,21 @@
 </div>
 
 <dialog id="IamDialog" class="IamDialog">
-    <table>
-        <thead>
-            <tr>訂單明細</tr>
+    <h3 class="h3Text">訂票明細</h3>
+    <table class="tdWidth tdText borderWidth">
+        <thead class="headText tHeadBorder">
             <tr>
                 <td>序號</td>
                 <td>座位</td>
                 <td>票種</td>
             </tr>
         </thead>
-        <tbody id="dialogBody">
+        <tbody id="dialogBody" class="tBodyBorder">
         </tbody>
     </table>
-    <table>
-        <thead>
-            <tr>餐點明細</tr>
-        </thead>
+    <br /><br />
+    <h3 class="h3Text">餐點明細</h3>
+    <table class="tdWidth tdText borderWidth">
         <tbody id="dialogFoodBody">
         </tbody>
     </table>
@@ -96,6 +139,18 @@
 
 <dialog id="cancelDialog" class="IamDialog">
     <p id="cancelParagraph">
+@*        退票費用：根據我們的退票政策，可能會收取一定的退票費用或手續費。請確認您的退票費用及相關政策。
+        <br />
+        票券狀態：請注意，只有未使用過的票券才能辦理退票。如果您已經使用了票券進場觀影，將無法退還票款。
+        <br />
+        退款處理時間：一旦您成功提交退票申請，我們將在 [退款處理時間] 內進行退款處理。請耐心等待，退款款項將原路返回到您使用的付款方式上。
+        <br />
+        退票方式：您可以選擇在線退票或聯繫客服進行退票申請。請按照指示提供相關信息和完成退票程序。
+        <br />
+        退票確認：一旦您成功提交退票申請，請保留相關退票確認資訊作為您的記錄。我們也會通過郵件或其他方式向您發送退票確認。
+        <br />
+        退票聯繫：如果您在退票過程中遇到困難或有任何疑問，請隨時聯繫我們的客服部門，我們的團隊將樂意為您提供支援和協助。
+        <br />*@
         確定要退票嗎？
     </p>
     <button id="confirmDialog" class="closeDialog">確定</button>
@@ -213,11 +268,14 @@
         {
             const response = await fetch('@Url.Content("~/OrderFront/ShowReceiptDetails")?orderID=' + orderID);
             const data = await response.json();
-            
-            let result = '';
+
+            let result = `<td style="text-align: left">`;
             data.forEach((item) => {
-                result += `<td>${item["productName"]}x${item["productCount"]}</td>`;
+                result += `${item["productName"]}x${item["productCount"]}、`;
             })
+            if(result.substring(result.length-1)=='、')
+                result=result.substring(0,result.length-1);
+            result += `</td>`
             console.log(result);
 
             return result;
