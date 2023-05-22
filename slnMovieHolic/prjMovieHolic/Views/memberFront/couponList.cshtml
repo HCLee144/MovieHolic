@@ -48,11 +48,11 @@
 							
 							<div class="couponList">
 								<div class="momberPageTitle"><h3>我的優惠券</h3></div>
-								<div class="tabPlace">
+                                <div class="tabPlace">
 									<!-- TAB1 打包區塊 start -->
 									<input id="tab1" type="radio" name="tab" checked="checked" />
 									<label for="tab1">最　新</label>
-									<div class="tab_content">
+                                    <div class="tab_content overflowXHidden overflowYHidden">
                                         
 										@foreach (var item in Model.CouponList)
 										{
@@ -81,7 +81,7 @@
 									<!-- TAB2 打包區塊 start -->
 									<input id="tab2" type="radio" name="tab" />
 									<label for="tab2">無　效</label>
-									<div class="tab_content">
+									<div class="tab_content overflowXHidden overflowYHidden">
 										@foreach(var item in Model.CouponListExpired)
 										{
 												<div class="coupon usedCoupon" >
@@ -105,7 +105,7 @@
 									<!-- TAB3 打包區塊 start -->
 									<input id="tab3" type="radio" name="tab" />
 									<label for="tab3">已使用</label>
-									<div class="tab_content">
+									<div class="tab_content overflowXHidden overflowYHidden">
 										@{
 											if(Model.CouponListUsed.Count >0)
 											{

@@ -1239,12 +1239,14 @@ figure span {
 
 .orderList {
     width: 600px;
-    height: 700px;
+    height: 720px;
 }
 
 .orderLa {
     height: 550px;
     overflow: scroll;
+    padding-right:15px;
+    overflow-x:hidden;
 }
 
     .orderLa::-webkit-scrollbar {
@@ -1393,7 +1395,7 @@ figure span {
 .movieCardBig2 {
     border: 1px solid silver;
     width: 200px;
-    height: 540px;
+    height: 560px;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
@@ -1406,6 +1408,10 @@ figure span {
         .movieCardBig2 a:hover {
             background-color: #105190;
         }
+
+.moviecardH3{
+    margin-bottom:22px;
+}
 
 .buyNow2 {
     display: inline-block;
