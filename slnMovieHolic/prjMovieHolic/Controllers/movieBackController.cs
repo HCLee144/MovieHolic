@@ -170,7 +170,7 @@ namespace prjMovieHolic.Controllers
           return (_db.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
         }
 
-        public IActionResult View()
+        public IActionResult MovieView()
         {
             return View();
         }

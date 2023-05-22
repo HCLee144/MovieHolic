@@ -1,0 +1,139 @@
+﻿@model prjMovieHolic.Models.TMovie
+
+@{
+    ViewData["Title"] = "MovieView";
+    Layout = "~/Views/Shared/BackLayout.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-lg-12 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <h5 class="card-title fw-semibold">電影管理</h5>
+                    <div>
+                        <input type="button" class="btn btn-secondary" style="float:right" id="createButton" value="新增電影" />
+                    </div>
+                </div>
+                <div class="d-sm-flex align-items-center">
+                    <div style="position:relative">
+                        <input type="text" class="form-control" />
+                        <div class="list-group" style="position:absolute">
+                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
+                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
+                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
+                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary m-1">aaa</button>
+                </div>
+                <div>
+                    aaaaaaaaaa
+                </div>
+                <form asp-action="MovieView" hidden>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="FId" class="control-label"></label>
+                        <input asp-for="FId" class="form-control" />
+                        <span asp-validation-for="FId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FSeriesId" class="control-label"></label>
+                        <select asp-for="FSeriesId" class="form-control" asp-items="ViewBag.FSeriesId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FRatingId" class="control-label"></label>
+                        <select asp-for="FRatingId" class="form-control" asp-items="ViewBag.FRatingId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FNameCht" class="control-label"></label>
+                        <input asp-for="FNameCht" class="form-control" />
+                        <span asp-validation-for="FNameCht" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FNameEng" class="control-label"></label>
+                        <input asp-for="FNameEng" class="form-control" />
+                        <span asp-validation-for="FNameEng" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FScheduleStart" class="control-label"></label>
+                        <input asp-for="FScheduleStart" class="form-control" />
+                        <span asp-validation-for="FScheduleStart" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FScheduleEnd" class="control-label"></label>
+                        <input asp-for="FScheduleEnd" class="form-control" />
+                        <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FShowLength" class="control-label"></label>
+                        <input asp-for="FShowLength" class="form-control" />
+                        <span asp-validation-for="FShowLength" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FInteroduce" class="control-label"></label>
+                        <input asp-for="FInteroduce" class="form-control" />
+                        <span asp-validation-for="FInteroduce" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FTrailerLink" class="control-label"></label>
+                        <input asp-for="FTrailerLink" class="form-control" />
+                        <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FPosterPath" class="control-label"></label>
+                        <input asp-for="FPosterPath" class="form-control" />
+                        <span asp-validation-for="FPosterPath" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FImagePath" class="control-label"></label>
+                        <input asp-for="FImagePath" class="form-control" />
+                        <span asp-validation-for="FImagePath" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FPrice" class="control-label"></label>
+                        <input asp-for="FPrice" class="form-control" />
+                        <span asp-validation-for="FPrice" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        //const inpKeyword = document.querySelector('#InputKeyword');
+        //const divList = document.querySelector('.list-group');
+
+        //inpKeyword.addEventListener('input', async () => {
+        //    //const btn = `<button type="button" class="list-group-item list-group-item-action">${inpKeyword.value}</button>`;
+        //    //divList.innerHTML += btn;
+        //    const response = await fetch('@Url.Content("~/Home/GetProducts")?keyword=' + inpKeyword.value);
+        //    const datas = await response.json();
+
+        //    //讀出JSON格式的資料
+        //    const products = datas.map(data => {
+        //        return (
+        //            `<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
+        //        )
+        //    })
+        //    divList.innerHTML = products.join("");
+        //})
+
+        //function read(evt) {
+        //    inpKeyword.value = evt.target.textContent;
+        //    divList.innerHTML = "";
+        //}
+
+    </script>
+    }
