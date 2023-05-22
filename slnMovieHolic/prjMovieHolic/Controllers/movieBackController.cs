@@ -11,29 +11,29 @@ namespace prjMovieHolic.Controllers
 {
     public class movieBackController : Controller
     {
-        private readonly MovieContext _context;
+        private readonly MovieContext _db;
 
         public movieBackController(MovieContext context)
         {
-            _context = context;
+            _db = context;
         }
 
         // GET: movieBack
         public async Task<IActionResult> Index()
         {
-            var movieContext = _context.TMovies.Include(t => t.FRating).Include(t => t.FSeries);
+            var movieContext = _db.TMovies.Include(t => t.FRating).Include(t => t.FSeries);
             return View(await movieContext.ToListAsync());
         }
 
         // GET: movieBack/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.TMovies == null)
+            if (id == null || _db.TMovies == null)
             {
                 return NotFound();
             }
 
-            var tMovie = await _context.TMovies
+            var tMovie = await _db.TMovies
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .FirstOrDefaultAsync(m => m.FId == id);
@@ -48,8 +48,8 @@ namespace prjMovieHolic.Controllers
         // GET: movieBack/Create
         public IActionResult Create()
         {
-            ViewData["FRatingId"] = new SelectList(_context.TRatings, "FId", "FId");
-            ViewData["FSeriesId"] = new SelectList(_context.TSeries, "FId", "FId");
+            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId");
+            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId");
             return View();
         }
 
@@ -62,30 +62,30 @@ namespace prjMovieHolic.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tMovie);
-                await _context.SaveChangesAsync();
+                _db.Add(tMovie);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FRatingId"] = new SelectList(_context.TRatings, "FId", "FId", tMovie.FRatingId);
-            ViewData["FSeriesId"] = new SelectList(_context.TSeries, "FId", "FId", tMovie.FSeriesId);
+            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId", tMovie.FRatingId);
+            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId", tMovie.FSeriesId);
             return View(tMovie);
         }
 
         // GET: movieBack/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.TMovies == null)
+            if (id == null || _db.TMovies == null)
             {
                 return NotFound();
             }
 
-            var tMovie = await _context.TMovies.FindAsync(id);
+            var tMovie = await _db.TMovies.FindAsync(id);
             if (tMovie == null)
             {
                 return NotFound();
             }
-            ViewData["FRatingId"] = new SelectList(_context.TRatings, "FId", "FId", tMovie.FRatingId);
-            ViewData["FSeriesId"] = new SelectList(_context.TSeries, "FId", "FId", tMovie.FSeriesId);
+            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId", tMovie.FRatingId);
+            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId", tMovie.FSeriesId);
             return View(tMovie);
         }
 
@@ -105,8 +105,8 @@ namespace prjMovieHolic.Controllers
             {
                 try
                 {
-                    _context.Update(tMovie);
-                    await _context.SaveChangesAsync();
+                    _db.Update(tMovie);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,20 +121,20 @@ namespace prjMovieHolic.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FRatingId"] = new SelectList(_context.TRatings, "FId", "FId", tMovie.FRatingId);
-            ViewData["FSeriesId"] = new SelectList(_context.TSeries, "FId", "FId", tMovie.FSeriesId);
+            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId", tMovie.FRatingId);
+            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId", tMovie.FSeriesId);
             return View(tMovie);
         }
 
         // GET: movieBack/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.TMovies == null)
+            if (id == null || _db.TMovies == null)
             {
                 return NotFound();
             }
 
-            var tMovie = await _context.TMovies
+            var tMovie = await _db.TMovies
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .FirstOrDefaultAsync(m => m.FId == id);
@@ -151,23 +151,28 @@ namespace prjMovieHolic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TMovies == null)
+            if (_db.TMovies == null)
             {
                 return Problem("Entity set 'MovieContext.TMovies'  is null.");
             }
-            var tMovie = await _context.TMovies.FindAsync(id);
+            var tMovie = await _db.TMovies.FindAsync(id);
             if (tMovie != null)
             {
-                _context.TMovies.Remove(tMovie);
+                _db.TMovies.Remove(tMovie);
             }
             
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TMovieExists(int id)
         {
-          return (_context.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
+          return (_db.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
+        }
+
+        public IActionResult View()
+        {
+            return View();
         }
     }
 }
