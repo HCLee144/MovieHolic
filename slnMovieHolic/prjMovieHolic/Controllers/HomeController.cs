@@ -91,5 +91,39 @@ namespace prjMovieHolic.Controllers
         //{
         //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //}
+
+        //加入收藏
+        public IActionResult favoriteAdd(int FMemberId, int FMovieId)
+        {
+
+            TMemberAction favorite = _context.TMemberActions.Include(m=>m.FMovie).Include(m=>m.FMember)
+                .FirstOrDefault(m => m.FMemberId == FMemberId & m.FMovieId == FMovieId);
+
+            if (favorite != null)
+            {
+                TMemberAction action = new TMemberAction();
+                action.FMemberId = FMemberId;
+                action.FMovieId = FMovieId;
+                action.FActionTypeId = 1;
+                action.FTimeStamp = DateTime.Now;
+                _context.TMemberActions.Add(action);
+                _context.SaveChanges();
+            }
+          
+            return RedirectToAction("Index");
+        }
+        public IActionResult IsFavorite(int FMemberId, int FMovieId)
+        {
+            var favorite = _context.TMemberActions.Any(m => m.FMemberId == FMemberId & m.FMovieId == FMovieId);
+            if (favorite)
+            {
+                return Content("已收藏");
+            }
+            else
+            {
+                return Content("未收藏");
+            }
+
+        }
     }
 }

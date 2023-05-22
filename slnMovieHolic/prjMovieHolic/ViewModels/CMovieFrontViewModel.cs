@@ -14,5 +14,7 @@ namespace prjMovieHolic.ViewModels
         public List<TMovie>? NowShowingMovies { get; set; }
         public List<TMovie>? UpcomingMovies { get; set; }
 
+        //新增首頁電影收藏用
+        public TMember tmember { get; set; }
     }
 }

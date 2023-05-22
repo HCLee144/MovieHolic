@@ -11,7 +11,7 @@ using System.Text.Unicode;
 
 namespace prjMovieHolic.Controllers
 {
-    public class SessionBackController : Controller
+    public class SessionBackController : BackSuperController
     {
         private readonly MovieContext _db;
 

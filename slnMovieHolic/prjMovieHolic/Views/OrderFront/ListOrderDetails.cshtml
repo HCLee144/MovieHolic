@@ -64,9 +64,15 @@
                                                 }
                                                 if (set.Substring(set.Length - 1) == "、")
                                                     set = set.Substring(0, set.Length - 1);
-
                                             }
                                             <li><span>套餐項目</span>@set</li>
+                                            <li>
+                                                <span>支付方式</span>
+                                                <input type="radio" name="paymentType">
+                                                <label for="cash">現金</label>
+                                                <input type="radio" name="paymentType">
+                                                <label for="creditcard">信用卡</label>
+                                            </li>
                                             <li><span class="labUsingCoupon">使用優惠</span><input id="txtUsingCoupon" class="txtUsingCoupon" type="text"><input class="btnGoToCoupon" type="button" id="btnGoToCoupon" value="查看優惠"></li>
                                             <li><span>總　　價</span><span id="totalPrice">@Model.totalPrice</span></li>
                                         </ul>
@@ -109,7 +115,7 @@
 </dialog>
 
 <dialog id="getMoney" class="IamDialog">
-   <p>訂票成功</p>
+    <p>訂票成功，已將訂單明細寄到您的信箱</p>
     <button id="confirm" class="closeDialog">關閉</button>
 </dialog>
 
@@ -135,18 +141,17 @@
             })
         })
 
-        nextStep.addEventListener('click',async()=>{
-            const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDB")?totalprice='+totalPrice.innerHTML+'&couponID='+Number(couponID));
-            const data=await response.text();
-            if (data == '儲存成功')
-            {
+        nextStep.addEventListener('click', async () => {
+            const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDBandSendEmail")?totalprice=' + totalPrice.innerHTML + '&couponID=' + Number(couponID));
+            const data = await response.text();
+            if (data == '儲存成功') {
                 getMoney.showModal();
                 confirm.addEventListener('click', () => {
                     getMoney.close();
                     window.location.replace('@Url.Content("~/memberFront/orderList")');
                 })
             }
-            
+
         })
 
         function chooseCoupon(event) {
@@ -155,52 +160,52 @@
             txtUsingCoupon.value = couponTypeName + '折';
 
             let total = totalPrice.innerHTML
-            total=(Number(couponTypeName)*total/100).toFixed();
-            totalPrice.innerHTML=total;
+            total = (Number(couponTypeName) * total / 100).toFixed();
+            totalPrice.innerHTML = total;
             formdialog.close();
         }
 
 
 
-                //nextStep.addEventListener('click', async () => {
-                //    const response = await postData('https://sandbox-api-pay.line.me/v3/payments/request');
-                //    const data = await response.json();
-                //})
+                        //nextStep.addEventListener('click', async () => {
+                        //    const response = await postData('https://sandbox-api-pay.line.me/v3/payments/request');
+                        //    const data = await response.json();
+                        //})
 
-                //function postData(url) {
-                //    const response =return fetch(url, {
-                //        method: 'POST',
-                //        headers: {
-                //            'Content-Type': 'application/json',
-                //            'X-LINE-ChannelId': '1661019081',
-                //            'X-LINE-Authorization': '92369e0d89e64d3a3d5b32dc9005f732',
-                //            'X-LINE-Authorization-Nonce': UUID.randomUUID().toString()
-                //        },
-                //        body: JSON.stringify(body)
-                //    })
-                //}
+                        //function postData(url) {
+                        //    const response =return fetch(url, {
+                        //        method: 'POST',
+                        //        headers: {
+                        //            'Content-Type': 'application/json',
+                        //            'X-LINE-ChannelId': '1661019081',
+                        //            'X-LINE-Authorization': '92369e0d89e64d3a3d5b32dc9005f732',
+                        //            'X-LINE-Authorization-Nonce': UUID.randomUUID().toString()
+                        //        },
+                        //        body: JSON.stringify(body)
+                        //    })
+                        //}
 
-                //const body = {
-                //    'amount': 100,
-                //    'currency': "TWD",
-                //    'orderid': 'test0001',
-                //    packages:[
-                //        {
-                //            'id':'',
-                //            'amount':'',
-                //            'products':[{
-                //                'name':'',
-                //                'quantity':'',
-                //                'price':''
-                //            }]
-                //        }
-                //    ]
-                //    redirectUrls: {
-                //        'confirmUrl': '',
-                //        'cancelUrl': ''
-                //    }
+                        //const body = {
+                        //    'amount': 100,
+                        //    'currency': "TWD",
+                        //    'orderid': 'test0001',
+                        //    packages:[
+                        //        {
+                        //            'id':'',
+                        //            'amount':'',
+                        //            'products':[{
+                        //                'name':'',
+                        //                'quantity':'',
+                        //                'price':''
+                        //            }]
+                        //        }
+                        //    ]
+                        //    redirectUrls: {
+                        //        'confirmUrl': '',
+                        //        'cancelUrl': ''
+                        //    }
 
 
-                //};
+                        //};
     </script>
 }

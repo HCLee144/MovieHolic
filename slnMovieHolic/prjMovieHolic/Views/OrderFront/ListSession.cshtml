@@ -16,7 +16,6 @@
     </style>
 }
 
-
 <div id="page2">
     <div class="body1">
         <div class="">
@@ -65,7 +64,7 @@
                                               {
                                                   string showDay = $"day{i + 1}";
                                                   <a>
-                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
+                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.Where(s=>s.FStartTime>DateTime.Now.AddDays(1)).FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
                                                   </a>
                                              }
                                         }
@@ -79,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a class="button toRight" id="nextStep">下一步</a>
+                            <button class="button toRight" id="nextStep">下一步</button>
                         </div>
                     </section>
                 </div>
@@ -186,7 +185,7 @@
                     formdialog.close();
                 })
             }
-         
+            
          })
 
     </script>
