@@ -154,6 +154,17 @@
     margin-bottom: 10px;
 }
 
+.movieCard{
+    position:relative;
+}
+
+.movieRatingInCard{
+    
+    position:absolute;
+    left:0px;
+    bottom:140px;
+}
+
 .movieCard h3 {
     font-size: 22px;
     color: #373737;
@@ -1478,6 +1489,15 @@ figure span {
 .movie {
     margin-left: 20px;
 }
+
+.fiveStar{
+    display:flex;
+    margin-bottom:10px;
+}
+
+    .fiveStar h3{
+        margin-left:30px;
+    }
 
     .movie li {
         font-size: 16px;
