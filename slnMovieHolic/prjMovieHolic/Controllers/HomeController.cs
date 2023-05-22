@@ -21,10 +21,14 @@ namespace prjMovieHolic.Controllers
         {
             var now = DateTime.Now;
             var nowShowingMovies = await _context.TMovies
+                .Include(t => t.FRating)
+                .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now)
                 .ToListAsync();
 
             var upcomingMovies = await _context.TMovies
+                .Include(t => t.FRating)
+                .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart > now)
                 .ToListAsync();
 

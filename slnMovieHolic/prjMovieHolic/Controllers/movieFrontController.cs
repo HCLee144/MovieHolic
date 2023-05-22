@@ -25,10 +25,14 @@ namespace prjMovieHolic.Controllers
             var now = DateTime.Now;
             var nowShowingMovies = await _context.TMovies
                 .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now)
+                .Include(t => t.FRating)
+                .Include(t => t.FSeries)
                 .ToListAsync();
 
             var upcomingMovies = await _context.TMovies
                 .Where(m => m.FScheduleStart > now)
+                .Include(t => t.FRating)
+                .Include(t => t.FSeries)
                 .ToListAsync();
                 
             CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
