@@ -1529,10 +1529,14 @@ figure span {
     height: 30px;
 }
 
-.movieIntroduce {
-    letter-spacing: 2px;
-    color: dimgray;
-}
+    .fatLi a{
+        cursor:pointer;
+    }
+
+    .movieIntroduce {
+        letter-spacing: 2px;
+        color: dimgray;
+    }
 
 .myButton {
     background-color: #10a5d6;
