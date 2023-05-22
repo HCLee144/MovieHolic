@@ -1,40 +1,6 @@
 ﻿namespace prjMovieHolic.Models
 {
-    public class CDataForMovieIncome
-    {
-        //電影收入stack長條圖
 
-
-        public string? name { get; set; }
-        //series:電影名稱
-
-        public List<IncomeDataPerDay>? data { get; set; }
-    }
-
-    public class IncomeDataPerDay
-    {
-        public string x { get; set; }
-        //電影收入stack長條圖，X為日期
-        public int y { get; set; }
-        //電影收入stack長條圖，Y為收入
-    }
-
-
-    public class CDataForMemberAge
-    {
-        public string? name { get; set; }
-        //series:不同年份分別
-
-        public List<MemberAgeData>? data { get; set; }
-    }
-
-    public class MemberAgeData
-    {
-        public string x { get; set; }
-        //年齡分布
-        public int y { get; set; }
-        //人數
-    }
 
     public class PieData
     {
@@ -43,21 +9,34 @@
     }
 
     
-    public class SimpleBarDataValues
+    public class BarSimpleValues
     {
-        public SimpleBarDataValues()
+        public BarSimpleValues()
         {
             data = new List<int>();
         }
         public List<int> data { get; set; }
     }
 
-    public class SimpleBarDataLabels
+    public class BarSimpleLabels
     {
-        public SimpleBarDataLabels()
+        public BarSimpleLabels()
         {
             categories = new List<string>();
         }
        public List<string> categories { get; set; }
+    }
+
+
+    public class BarSeries
+    {
+        public string name { get; set; } = "";
+        public List<BarSeriesData> data { get; set; } = new List<BarSeriesData>();
+    }
+
+    public class BarSeriesData
+    {
+        public string x { get; set; } = "";
+        public int y { get; set; } = 0;
     }
 }

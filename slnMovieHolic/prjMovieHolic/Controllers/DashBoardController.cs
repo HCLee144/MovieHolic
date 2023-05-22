@@ -76,8 +76,8 @@ namespace prjMovieHolic.Controllers
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
                 .OrderByDescending(i => i.FSession.FStartTime.Date)
                 .GroupBy(i => i.FSession.FStartTime.Date.ToString("MM/dd")).Select(g => new { g.Key, group = g }).ToList();
-            SimpleBarDataValues dataList = new SimpleBarDataValues();
-            SimpleBarDataLabels labelList = new SimpleBarDataLabels();
+            BarSimpleValues dataList = new BarSimpleValues();
+            BarSimpleLabels labelList = new BarSimpleLabels();
             foreach (var item in q)
             {
                 dataList.data.Add((int)item.group.Sum(i => i.FTotalPrice));
@@ -94,8 +94,8 @@ namespace prjMovieHolic.Controllers
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= startdate))
                 .OrderByDescending(i => i.FSession.FStartTime.Date)
                 .GroupBy(i => i.FSession.FStartTime.ToString("yyyy/MM")).Select(g => new { g.Key, group = g }).ToList();
-            SimpleBarDataValues dataList = new SimpleBarDataValues();
-            SimpleBarDataLabels labelList = new SimpleBarDataLabels();
+            BarSimpleValues dataList = new BarSimpleValues();
+            BarSimpleLabels labelList = new BarSimpleLabels();
             foreach (var item in q)
             {
                 dataList.data.Add((int)item.group.Sum(i => i.FTotalPrice));
@@ -113,17 +113,17 @@ namespace prjMovieHolic.Controllers
                 .Where(i => (i.FSession.FStartTime.Date <= dateYesterDay && i.FSession.FStartTime.Date >= dateWeekAgo))
                 .OrderByDescending(i => i.FSession.FMovie.FScheduleStart)
                 .GroupBy(i => i.FSession.FMovie.FNameCht).Select(g => new { g.Key, group = g }).ToList();
-            List<CDataForMovieIncome> chartData = new List<CDataForMovieIncome>();
+            List<BarSeries> chartData = new List<BarSeries>();
             foreach (var group in q)
             {
-                CDataForMovieIncome movieData = new CDataForMovieIncome();
+                BarSeries movieData = new BarSeries();
                 //按照電影分series
                 movieData.name = group.Key;
                 //每部電影按照前一天到前七天計算票房總合
-                movieData.data = new List<IncomeDataPerDay>();
+                movieData.data = new List<BarSeriesData>();
                 for (int i = 0; i < 7; i++)
                 {
-                    IncomeDataPerDay income = new IncomeDataPerDay()
+                    BarSeriesData income = new BarSeriesData()
                     {
                         x = dateYesterDay.AddDays(-i).ToString("MM/dd"),
                         y = 0

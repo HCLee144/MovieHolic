@@ -54,10 +54,10 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult getChartDataForMemberAgeCoulmn()
         {
-            List<CDataForMemberAge> datas = new List<CDataForMemberAge>(); 
+            List<BarSeries> datas = new List<BarSeries>(); 
             for (int i = 0; i < 2; i++)
             {
-                CDataForMemberAge data = new CDataForMemberAge();
+                BarSeries data = new BarSeries();
                 int year = DateTime.Now.Year-i;
                 data.name = year.ToString();
                 data.data = getMemberAgeDataDistribution(year,i);
@@ -67,16 +67,16 @@ namespace prjMovieHolic.Controllers
         }
 
         [NonAction]
-        public List<MemberAgeData> getMemberAgeDataDistribution(int year, int diff)
+        public List<BarSeriesData> getMemberAgeDataDistribution(int year, int diff)
         {
             var q = _db.TMembers.AsEnumerable()
                 .Where(member => member.FCreatedDate.Year <= year)
                 .OrderByDescending(member => member.FBirthDate)
                 .GroupBy(member => groupByAge((DateTime)member.FBirthDate, diff)).ToList();
-            List<MemberAgeData> datas = new List<MemberAgeData>();
+            List<BarSeriesData> datas = new List<BarSeriesData>();
             foreach (var group in q)
             {
-                MemberAgeData data = new MemberAgeData();
+                BarSeriesData data = new BarSeriesData();
                 data.x = group.Key;
                 data.y = group.Count();
                 datas.Add(data);
@@ -117,6 +117,11 @@ namespace prjMovieHolic.Controllers
 
 
         public IActionResult Complaints()
+        {
+            return View();
+        }
+
+        public IActionResult getChartDataForComplaints()
         {
             return View();
         }
