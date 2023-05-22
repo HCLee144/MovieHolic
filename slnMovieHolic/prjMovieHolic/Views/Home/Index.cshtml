@@ -3,19 +3,10 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    //if (ViewBag.Login == true)
-    //{
-    //    string userId = ViewBag.UserId.ToString();
-            //}
+
 
 }
-<style>
-    #heart.active {
-    color: red;
-    }
 
-
-</style>
 
 <h1></h1>
 @if (ViewBag.Login == true)
@@ -79,7 +70,7 @@
                             @foreach (var movie in Model.NowShowingMovies)
                             {
                                 <!-- 熱門電影1-->
-                                <div class="movieCardBig">
+                                <div class="movieCardBig" onload="loadFavorite('@ViewBag.UserId', '@movie.FId')">
                                     <article class="movieCard">
                                         <a href="/MovieFront/MovieDetails?id=@movie.FId">
                                             <br>
@@ -102,7 +93,30 @@
 
                                         <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
                                         <div>
-                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId">❤</p>
+                                            @{
+                                                if(ViewBag.Login == false)
+                                                {
+                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                }
+                                                else
+                                                {
+                                                    bool flag = false;
+                                                    foreach(var item in Model.isFavoriteNow)
+                                                    {
+                                                        if (item.FMovieId == movie.FId)
+                                                        {
+                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                            flag = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!flag)
+                                                    {
+                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                    }
+                                                }
+                                            }
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +145,7 @@
                             @foreach (var movie in Model.UpcomingMovies)
                             {
                                 <!-- 電影1-->
-                                <div class="movieCardBig">
+                                <div class="movieCardBig" onload="loadFavorite('@ViewBag.UserId', '@movie.FId')">
                                     <article class="movieCard">
                                         <a href="/MovieFront/MovieDetails?id=@movie.FId">
                                             <br>
@@ -154,7 +168,30 @@
 
                                         <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
                                         <div>
-                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite(`@ViewBag.UserId', '@movie.FId`)" data-movie-id="@movie.FId">❤</p>
+                                            @{
+                                                if (ViewBag.Login == false)
+                                                {
+                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                }
+                                                else
+                                                {
+                                                    bool flag = false;
+                                                    foreach (var item in Model.isFavotiteComing)
+                                                    {
+                                                        if (item.FMovieId == movie.FId)
+                                                        {
+                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                            flag = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!flag)
+                                                    {
+                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                    }
+                                                }
+                                            }
+                                          
                                         </div>
                                     </div>
                                 </div>
@@ -170,217 +207,71 @@
     <p>請先登入會員！</p>
     <button id="closeDialog" class="closeDialog">確定</button>
 </dialog>
-
-@section Scripts {
+<dialog id="IamDialogFavorite" class="IamDialog">
+    <p>收藏電影成功！</p>
+    <button id="closeDialogFavorite" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogCancel" class="IamDialog">
+    <p>取消收藏成功！</p>
+    <button id="closeDialogCancel" class="closeDialog">確定</button>
+</dialog>
+@section Scripts{
     <script>
         const formdialog = document.getElementById('IamDialog');
         const btnCloseDialog = document.getElementById('closeDialog');
+        const formdialogFavorite = document.getElementById('IamDialogFavorite');
+        const btnCloseDialogFavorite = document.getElementById('closeDialogFavorite');
+        const formdialogCancel = document.getElementById('IamDialogCancel');
+        const btnCloseDialogCancel = document.getElementById('closeDialogCancel');
 
-        function checkLoginAndToggleFavorite(userId,movieId) {
 
+      
+        //先判斷是否有登入
+        function checkLoginAndToggleFavorite(userId, movieId) {
+            console.log(userId);
+            console.log(movieId);
             if (typeof userId === "undefined" || userId === '') {
                 login();
             } else {
-                checkIfFavorite(userId, movieId)
+
+                favoriteChange(userId, movieId);
             }
         }
-
-        //function toggleFavorite(userId,movieId) {
-        //    console.log('toggle')
-        //    var heartIcon = document.getElementById(`heart ${movieId}`);
-        //    //var movieId = heartIcon.getAttribute('data-movie-id');
-        //    console.log(movieId)
-        //    var isFavorite = checkIfFavorite(movieId);
-
-        //    if (isFavorite) {
-        //        cancelFavorite(userId,movieId);
-        //        heartIcon.classList.remove('active');
-        //    } else {
-        //        addFavorite(userId,movieId);
-        //        heartIcon.classList.add('active');
-        //    }
-        //}
-
-        function checkIfFavorite(userId,movieId) {
-            console.log('Calling check');
-            var memberId = '';
-        @if (ViewBag.UserId != null)
-        {
-            @:memberId = "@ViewBag.UserId";
-        }
-            //var movieId = document.getElementById('heart')
-            console.log(movieId);
-            let isFavorite = false;
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: '/Home/IsFavorite',
-                    type: 'POST',
-                    data: { FMemberId: memberId, FMovieId: movieId },
-                    success: function (response) {
-                        console.log(response)
-                        if (response === "已收藏") {
-                            isFavorite = true;
-                            console.log(isFavorite)
-                        }
-                        
-                        if(!isFavorite){
-                           addFavorite(memberId,movieId);
-                        }else{
-                            cancelFavorite(memberId,movieId)
-                        }
-
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("AJAX Error:", error);
-                        reject(error);
-                    }
-                });
-            });
-            
-        }
-
-        function addFavorite(userId,movieId) {
-            console.log('Calling add');
-            var memberId = '';
-        @if (ViewBag.UserId != null)
-        {
-            @:memberId = "@ViewBag.UserId";
-        }
-        //var movieId = document.getElementById('heart').getAttribute('data-movie-id');
-            console.log(movieId)
-            $.ajax({
-                url: '/Home/favoriteAdd',
-                type: 'POST',
-                data: { FMemberId: memberId, FMovieId: movieId },
-                success: function (response) {
-                    alert('收藏成功');
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    alert('失敗');
-                }
-            });
-        }
-
-        function cancelFavorite(userId,movieId) {
-            var memberId = '';
-        @if (ViewBag.UserId != null)
-        {
-            @:memberId = "@ViewBag.UserId";
-        }
-        //var movieId = document.getElementById('heart').getAttribute('data-movie-id');
-
-            $.ajax({
-                url: '/memberFront/favoriteCancel',
-                type: 'POST',
-                data: { FMemberId: memberId, FMovieId: movieId },
-                success: function (response) {
-                    alert('取消收藏成功');
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    alert('失敗');
-                }
-            });
-        }
-
         function login() {
             console.log('Login executed');
             formdialog.showModal();
             btnCloseDialog.addEventListener('click', () => {
                 formdialog.close();
+                window.location.href = "/memberFront/memberLogin";
             });
         }
-    </script>
-}
 
-
-@*@section Scripts{
-    <script>
-
-        const formdialog = document.getElementById('IamDialog');
-        const btnCloseDialog = document.getElementById('closeDialog');
-        //請先登入
-
-
-        function checkLoginAndToggleFavorite(userId) {
-            console.log('Calling checkLoginAndToggleFavorite()')
-            console.log(userId);
-            if (typeof userId === "undefined" || userId === '') {
-                login();
-            } else {
-                toggleFavorite();
-            }
-        }
-
-        function toggleFavorite() {
-            var heartIcon = document.getElementById('heart');
-            var movieId = heartIcon.getAttribute('data-movie-id');
-            var isFavorite = checkIfFavorite(movieId);
-
-            if (!isFavorite) {
-                cancelFavorite();
-                heartIcon.classList.remove('active');
-            } else {
-                addFavorite()
-                heartIcon.classList.add('active');
-            }
-        }
-
-
-            function checkIfFavorite(movieId) {
-                // 發送 AJAX 請求到控制器的 IsFavorite 方法
-            console.log('Calling check')
-            @if (!string.IsNullOrWhiteSpace(ViewBag.UserId))
-            {
-            @:var memberId = "@ViewBag.UserId";
-            // 其他 JavaScript 代码...
-             }
-            //var memberId = @ViewBag.UserId;
-            var movieId = document.getElementById('heart').getAttribute('data-movie-id');
-            let isFavorite = false;
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: '/memberFront/IsFavorite',
-                    type: 'POST',
-                    data: { memberId: memberId, movieId: movieId },
-                    success: function (response) {
-                        if (response === "已收藏") {
-                            isFavorite = true;
-                        }
-                        resolve(isFavorite);
-                    },
-                    error: function (xhr, status, error) {
-                        reject(error);
+        function favoriteChange(userId,movieId) {
+            var heartIcon = document.getElementById(`heart ${movieId}`);
+            console.log("Run")
+            $.ajax({
+                url: '/Home/favoriteChange',
+                type: 'POST',
+                data: { FMemberId: userId, FMovieId: movieId },
+                success: function (response) {
+                    console.log(response)
+                    if (response == "新加入收藏" || response == "取消後加入收藏") {
+                        formdialogFavorite.showModal();
+                        btnCloseDialogFavorite.addEventListener('click', () => {
+                            formdialogFavorite.close();
+                        });
+                        heartIcon.style.color = 'red';
                     }
-                });
-            });
-            }
-        
-
-        //function addToFavorites(movieId) {
-        //    // 加入收藏的邏輯
-        //}
-        //新增收藏
-        function addFavorite() {
-            console.log('Calling add')
-           @if (!string.IsNullOrWhiteSpace(ViewBag.UserId))
-           {
-            @:var memberId = "@ViewBag.UserId";
-            // 其他 JavaScript 代码...
-            }
-            //var memberId = userId;
-            var movieId = document.getElementById('heart').getAttribute('data-movie-id');
-
-            $.ajax({
-                url: '/Home/favoriteAdd',
-                type: 'POST',
-                data: { FMemberId: memberId, FMovieId: movieId },
-                success: function (response) {
+                    else {
+                        formdialogCancel.showModal();
+                        btnCloseDialogCancel.addEventListener('click', () => {
+                            formdialogCancel.close();
+                        });
+                        heartIcon.style.color = '#eaeaea';
+                    }
                     // 成功處理回應的程式碼
                     // 例如，重新載入喜愛清單
-                    alert('收藏成功')
-                    location.reload();
+
 
                 },
                 error: function (xhr, status, error) {
@@ -388,51 +279,15 @@
                     alert('失敗')
                 }
             });
-        }
-
-
-         //從收藏中移除的邏輯
-            function cancelFavorite() {
-            @if (!string.IsNullOrWhiteSpace(ViewBag.UserId))
-           {
-            @:var memberId = "@ViewBag.UserId";
-            // 其他 JavaScript 代码...
-            }
-                //var memberId = userId;
-            var movieId = document.getElementById('heart').getAttribute('data-movie-id');
-
-            $.ajax({
-                url: '/memberFront/favoriteCancel',
-                type: 'POST',
-                data: { FMemberId: memberId, FMovieId: movieId },
-                success: function (response) {
-                    // 成功處理回應的程式碼
-                    // 例如，重新載入喜愛清單
-                    alert('取消收藏成功')
-                    location.reload();
-
-                },
-                error: function (xhr, status, error) {
-                    // 處理錯誤的程式碼
-                    alert('失敗')
-                }
-            });
-        }
-        function login() {
-            console.log('Login executed')
-            // 執行登入操作的邏輯
-                formdialog.showModal();
-                btnCloseDialog.addEventListener('click', () => {
-                    // 關閉 <dialog>
-                    formdialog.close();
-                    //window.location.href = "/memberFront/memberLogin";
-
-                });
-        }
-
+       }
 
 
     </script>
+
+
 }
-*@
+
+
+
+
 
