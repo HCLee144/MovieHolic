@@ -14,7 +14,7 @@
                 <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                     <h5 class="card-title fw-semibold">電影管理</h5>
                     <div>
-                        <input type="button" class="btn btn-secondary" style="float:right" id="createButton" value="新增電影" />
+                        <input type="button" class="btn btn-secondary" style="float:right" id="btnCreate" value="新增電影" />
                     </div>
                 </div>
                 <div>
@@ -23,134 +23,234 @@
                         <input type="text" class="form-control" required id="textQuery" />
                         <input type="button" class="btn btn-primary" value="查詢編輯" id="btnQuery" />
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12 d-flex align-items-strech">
-            <div class="card w-100">
-                <div class="card-body">
-                    <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                        <h5 class="card-title fw-semibold">編輯電影</h5>
-                    </div>
-                    <div>
-                        @*========修改電影========*@
-                        <form asp-action="Edit" enctype="multipart/form-data">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="FId" id="eFId" />
-                            @*                            <input type="hidden" asp-for="FSeriesId" />*@
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="control-label">電影中文名稱</label>
-                                        <input asp-for="FNameCht" class="form-control" id="eFNameCht" />
-                                        <span asp-validation-for="FNameCht" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">檔期開始時間</label>
-                                        <input type="date" name="FScheduleStart" class="form-control" id="eFScheduleStart" required />
-                                        <span asp-validation-for="FScheduleStart" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">片長(分鐘)</label>
-                                        <input asp-for="FShowLength" class="form-control" id="eFShowLength" />
-                                        <span asp-validation-for="FShowLength" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="control-label">電影英文名稱</label>
-                                        <input asp-for="FNameEng" class="form-control" id="eFNameEng" />
-                                        <span asp-validation-for="FNameEng" class="text-danger"></span>
-                                        <div class="form-group">
-                                            <label class="control-label">檔期結束時間</label>
-                                            <input type="date" name="FScheduleEnd" class="form-control" id="eFScheduleEnd" required />
-                                            <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label">電影價格</label>
-                                            <input asp-for="FPrice" class="form-control" id="eFPrice" />
-                                            <span asp-validation-for="FPrice" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label class="control-label">預告片連結</label>
-                                        <input asp-for="FTrailerLink" class="form-control" id="eFTrailerLink" />
-                                        <span asp-validation-for="FTrailerLink" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">電影介紹</label>
-                                        <textarea name="FInteroduce" class="form-control" id="eFInteroduce" rows="10"></textarea>
-                                        <span asp-validation-for="FInteroduce" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">電影海報</label>
-                                        <input type="file" accept="image/*" class="form-control" onchange="loadNewImage(event)" name="image"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label class="control-label">原電影海報</label>
-                                    <br />
-                                    <img src="" width="200" id="eImage" />
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="control-label">新電影海報</label>
-                                    <br />
-                                    <img src="" width="200" id="NewImage" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="修改" class="btn btn-primary" />
-                            </div>
-                        </form>
+                    <div id="message">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
-        <script>
-            document.querySelector('#btnQuery').addEventListener('click', async function () {
-                const movieName = document.querySelector('#textQuery').value;
-                const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
-                const movie = await response.json();
+<div class="row" id="formEdit" hidden>
+    <div class="col-lg-12 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <h5 class="card-title fw-semibold">編輯電影</h5>
+                </div>
+                <div>
+                    @*========修改電影========*@
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="FId" id="eFId" />
+                        @*                            <input type="hidden" asp-for="FSeriesId" />*@
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label">電影中文名稱</label>
+                                    <input asp-for="FNameCht" class="form-control" id="eFNameCht" />
+                                    <span asp-validation-for="FNameCht" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">檔期開始時間</label>
+                                    <input type="date" name="FScheduleStart" class="form-control" id="eFScheduleStart" required />
+                                    <span asp-validation-for="FScheduleStart" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">片長(分鐘)</label>
+                                    <input asp-for="FShowLength" class="form-control" id="eFShowLength" />
+                                    <span asp-validation-for="FShowLength" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label">電影英文名稱</label>
+                                    <input asp-for="FNameEng" class="form-control" id="eFNameEng" />
+                                    <span asp-validation-for="FNameEng" class="text-danger"></span>
+                                    <div class="form-group">
+                                        <label class="control-label">檔期結束時間</label>
+                                        <input type="date" name="FScheduleEnd" class="form-control" id="eFScheduleEnd" required />
+                                        <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">電影價格</label>
+                                        <input asp-for="FPrice" class="form-control" id="eFPrice" />
+                                        <span asp-validation-for="FPrice" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="control-label">預告片連結</label>
+                                    <input asp-for="FTrailerLink" class="form-control" id="eFTrailerLink" />
+                                    <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">電影介紹</label>
+                                    <textarea name="FInteroduce" class="form-control" id="eFInteroduce" rows="10"></textarea>
+                                    <span asp-validation-for="FInteroduce" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">電影海報</label>
+                                    <input type="file" accept="image/*" class="form-control" onchange="loadNewImage(event)" name="image" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="control-label">原電影海報</label>
+                                <br />
+                                <img src="" width="200" id="eImage" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">新電影海報</label>
+                                <br />
+                                <img src="" width="200" id="NewImage" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="修改" class="btn btn-primary" onclick="return confirm('確認要修改電影？')" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="formCreate" hidden>
+    <div class="col-lg-12 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <h5 class="card-title fw-semibold">新增電影</h5>
+                </div>
+                <div>
+                    @*========新增電影========*@
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="FId" id="eFId" />
+                        @*                            <input type="hidden" asp-for="FSeriesId" />*@
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label">電影中文名稱</label>
+                                    <input asp-for="FNameCht" class="form-control" id="cFNameCht" />
+                                    <span asp-validation-for="FNameCht" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">檔期開始時間</label>
+                                    <input type="date" name="FScheduleStart" class="form-control" id="cFScheduleStart" required />
+                                    <span asp-validation-for="FScheduleStart" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">片長(分鐘)</label>
+                                    <input asp-for="FShowLength" class="form-control" id="cFShowLength" />
+                                    <span asp-validation-for="FShowLength" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label">電影英文名稱</label>
+                                    <input asp-for="FNameEng" class="form-control" id="cFNameEng" />
+                                    <span asp-validation-for="FNameEng" class="text-danger"></span>
+                                    <div class="form-group">
+                                        <label class="control-label">檔期結束時間</label>
+                                        <input type="date" name="FScheduleEnd" class="form-control" id="cFScheduleEnd" required />
+                                        <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">電影價格</label>
+                                        <input asp-for="FPrice" class="form-control" id="cFPrice" />
+                                        <span asp-validation-for="FPrice" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="control-label">預告片連結</label>
+                                    <input asp-for="FTrailerLink" class="form-control" id="cFTrailerLink" />
+                                    <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">電影介紹</label>
+                                    <textarea name="FInteroduce" class="form-control" id="cFInteroduce" rows="10"></textarea>
+                                    <span asp-validation-for="FInteroduce" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">電影海報</label>
+                                    <input type="file" accept="image/*" class="form-control" onchange="loadNewImage(event)" name="image" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="control-label">電影海報</label>
+                                <br />
+                                <img src="" width="200" id="cImage" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="新增" class="btn btn-primary" onclick="return confirm('確認要新增電影？')" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.querySelector('#btnQuery').addEventListener('click', async function () {
+            document.querySelector('#message').innerHTML="";
+            document.querySelector('#formCreate').setAttribute("hidden", true);
+            const movieName = document.querySelector('#textQuery').value;
+            const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
+            const movie = await response.json();
+            if (movie != null) {
                 loadMovie(movie);
-            })
-
-            function loadMovie(movie) {
-                document.querySelector('#eFId').value = movie.fId;
-                document.querySelector('#eFNameCht').value = movie.fNameCht;
-                document.querySelector('#eFNameEng').value = movie.fNameEng;
-                document.querySelector('#eFScheduleStart').value = movie.fScheduleStart.split("T")[0];
-                document.querySelector('#eFScheduleEnd').value = movie.fScheduleEnd.split("T")[0];
-                document.querySelector('#eFShowLength').value = movie.fShowLength;
-                document.querySelector('#eFInteroduce').value = movie.fInteroduce;
-                document.querySelector('#eFTrailerLink').value = movie.fTrailerLink;
-                document.querySelector('#eFPrice').value = movie.fPrice;
-                document.querySelector('#eImage').src = '../' + movie.fPosterPath;
+                document.querySelector('#formEdit').removeAttribute("hidden");
+            } else {
+                document.querySelector('#message').innerHTML = '<div class="alert alert-danger" role="alert">查無電影，請重新再試！</div>'
             }
+        })
+
+        function loadMovie(movie) {
+            document.querySelector('#eFId').value = movie.fId;
+            document.querySelector('#eFNameCht').value = movie.fNameCht;
+            document.querySelector('#eFNameEng').value = movie.fNameEng;
+            document.querySelector('#eFScheduleStart').value = movie.fScheduleStart.split("T")[0];
+            document.querySelector('#eFScheduleEnd').value = movie.fScheduleEnd.split("T")[0];
+            document.querySelector('#eFShowLength').value = movie.fShowLength;
+            document.querySelector('#eFInteroduce').value = movie.fInteroduce;
+            document.querySelector('#eFTrailerLink').value = movie.fTrailerLink;
+            document.querySelector('#eFPrice').value = movie.fPrice;
+            document.querySelector('#eImage').src = '../' + movie.fPosterPath;
+        }
 
 
-            //上傳圖片的同時顯示圖片
-            //URL.createObjectURL
-            function loadNewImage(event) {
-                var NewImage = document.getElementById('NewImage');
-                NewImage.src = URL.createObjectURL(event.target.files[0]);
-                NewImage.onload = function () {
-                    URL.revokeObjectURL(NewImage.src) // free memory
-                }
+        //上傳圖片的同時顯示圖片
+        //URL.createObjectURL
+        function loadNewImage(event) {
+            var NewImage = document.getElementById('NewImage');
+            NewImage.src = URL.createObjectURL(event.target.files[0]);
+            NewImage.onload = function () {
+                URL.revokeObjectURL(NewImage.src) // free memory
             }
-        </script>
+        }
+
+        document.querySelector('#btnCreate').addEventListener('click', function () {
+            document.querySelector('#message').innerHTML = "";
+            document.querySelector('#formEdit').setAttribute("hidden", true);
+            document.querySelector('#formCreate').removeAttribute("hidden");
+        })
+    </script>
     }
