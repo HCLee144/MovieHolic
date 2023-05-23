@@ -17,123 +17,121 @@
                         <input type="button" class="btn btn-secondary" style="float:right" id="createButton" value="新增電影" />
                     </div>
                 </div>
-                <div class="d-sm-flex align-items-center">
-                    <div style="position:relative">
-                        <input type="text" class="form-control" />
-                        <div class="list-group" style="position:absolute">
-                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
-                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
-                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
-                            <a href="#" class="list-group-item list-group-item-action">A simple default list group item</a>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary m-1">aaa</button>
-                </div>
                 <div>
-                    aaaaaaaaaa
+                    @*========查詢電影========*@
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control" required id="textQuery" />
+                        <input type="button" class="btn btn-primary" value="查詢編輯" id="btnQuery" />
+                    </div>
                 </div>
-                <form asp-action="MovieView" hidden>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="FId" class="control-label"></label>
-                        <input asp-for="FId" class="form-control" />
-                        <span asp-validation-for="FId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FSeriesId" class="control-label"></label>
-                        <select asp-for="FSeriesId" class="form-control" asp-items="ViewBag.FSeriesId"></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FRatingId" class="control-label"></label>
-                        <select asp-for="FRatingId" class="form-control" asp-items="ViewBag.FRatingId"></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FNameCht" class="control-label"></label>
-                        <input asp-for="FNameCht" class="form-control" />
-                        <span asp-validation-for="FNameCht" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FNameEng" class="control-label"></label>
-                        <input asp-for="FNameEng" class="form-control" />
-                        <span asp-validation-for="FNameEng" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FScheduleStart" class="control-label"></label>
-                        <input asp-for="FScheduleStart" class="form-control" />
-                        <span asp-validation-for="FScheduleStart" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FScheduleEnd" class="control-label"></label>
-                        <input asp-for="FScheduleEnd" class="form-control" />
-                        <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FShowLength" class="control-label"></label>
-                        <input asp-for="FShowLength" class="form-control" />
-                        <span asp-validation-for="FShowLength" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FInteroduce" class="control-label"></label>
-                        <input asp-for="FInteroduce" class="form-control" />
-                        <span asp-validation-for="FInteroduce" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FTrailerLink" class="control-label"></label>
-                        <input asp-for="FTrailerLink" class="form-control" />
-                        <span asp-validation-for="FTrailerLink" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FPosterPath" class="control-label"></label>
-                        <input asp-for="FPosterPath" class="form-control" />
-                        <span asp-validation-for="FPosterPath" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FImagePath" class="control-label"></label>
-                        <input asp-for="FImagePath" class="form-control" />
-                        <span asp-validation-for="FImagePath" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FPrice" class="control-label"></label>
-                        <input asp-for="FPrice" class="form-control" />
-                        <span asp-validation-for="FPrice" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                </form>
             </div>
         </div>
     </div>
-</div>
 
+    <div class="row">
+        <div class="col-lg-12 d-flex align-items-strech">
+            <div class="card w-100">
+                <div class="card-body">
+                    <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                        <h5 class="card-title fw-semibold">編輯電影</h5>
+                    </div>
+                    <div>
+                        @*========修改電影========*@
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="FId" id="eFId" />
+                            @*                            <input type="hidden" asp-for="FSeriesId" />*@
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">電影中文名稱</label>
+                                        <input asp-for="FNameCht" class="form-control" id="eFNameCht" />
+                                        <span asp-validation-for="FNameCht" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">檔期開始時間</label>
+                                        <input type="date" name="FScheduleStart" class="form-control" id="eFScheduleStart" required/>
+                                        <span asp-validation-for="FScheduleStart" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">片長(分鐘)</label>
+                                        <input asp-for="FShowLength" class="form-control" id="eFShowLength" />
+                                        <span asp-validation-for="FShowLength" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">電影英文名稱</label>
+                                        <input asp-for="FNameEng" class="form-control" id="eFNameEng" />
+                                        <span asp-validation-for="FNameEng" class="text-danger"></span>
+                                        <div class="form-group">
+                                            <label class="control-label">檔期結束時間</label>
+                                            <input type="date" name="FScheduleEnd" class="form-control" id="eFScheduleEnd" required />
+                                            <span asp-validation-for="FScheduleEnd" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">電影價格</label>
+                                            <input asp-for="FPrice" class="form-control" id="eFPrice" />
+                                            <span asp-validation-for="FPrice" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="control-label">預告片連結</label>
+                                        <input asp-for="FTrailerLink" class="form-control" id="eFTrailerLink" />
+                                        <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">電影介紹</label>
+                                        <textarea name="FInteroduce" class="form-control" id="eFInteroduce" rows="10"></textarea>
+                                        <span asp-validation-for="FInteroduce" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">電影海報</label>
+                                        <br />
+                                        <img src="" width="200" id="eImage" />
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="修改" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        //const inpKeyword = document.querySelector('#InputKeyword');
-        //const divList = document.querySelector('.list-group');
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            document.querySelector('#btnQuery').addEventListener('click', async function () {
+                console.log("a");
+                const movieName = document.querySelector('#textQuery').value;
+                const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
+                const movie = await response.json();
+                loadMovie(movie);
+            })
 
-        //inpKeyword.addEventListener('input', async () => {
-        //    //const btn = `<button type="button" class="list-group-item list-group-item-action">${inpKeyword.value}</button>`;
-        //    //divList.innerHTML += btn;
-        //    const response = await fetch('@Url.Content("~/Home/GetProducts")?keyword=' + inpKeyword.value);
-        //    const datas = await response.json();
+            function loadMovie(movie) {
+                document.querySelector('#eFId').value = movie.fId;
+                document.querySelector('#eFNameCht').value = movie.fNameCht;
+                document.querySelector('#eFNameEng').value = movie.fNameEng;
+                document.querySelector('#eFScheduleStart').value = movie.fScheduleStart;
+                console.log(movie.fScheduleStart);
+                document.querySelector('#eFScheduleEnd').value = movie.fScheduleEnd;
+                document.querySelector('#eFShowLength').value = movie.fShowLength;
+                document.querySelector('#eFInteroduce').value = movie.fInteroduce;
+                document.querySelector('#eFTrailerLink').value = movie.fTrailerLink;
+                document.querySelector('#eFPrice').value = movie.fPrice;
+                document.querySelector('#eImage').src= '../'+movie.fPosterPath;
+            }
 
-        //    //讀出JSON格式的資料
-        //    const products = datas.map(data => {
-        //        return (
-        //            `<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
-        //        )
-        //    })
-        //    divList.innerHTML = products.join("");
-        //})
-
-        //function read(evt) {
-        //    inpKeyword.value = evt.target.textContent;
-        //    divList.innerHTML = "";
-        //}
-
-    </script>
+        </script>
     }
