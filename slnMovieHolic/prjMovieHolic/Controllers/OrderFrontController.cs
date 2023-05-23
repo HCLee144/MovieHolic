@@ -695,9 +695,13 @@ namespace prjMovieHolic.Controllers
         public IActionResult ShowReceiptDetails(int orderID)
         {
             var receipt = movieContext.TReceipts.FirstOrDefault(r => r.FOrderId == orderID);
-            int receiptID = receipt.FReceiptId;
-            var receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
-
+            List<TReceiptDetail> receiptDetails = new List<TReceiptDetail>();
+            if(receipt!=null)
+            {
+                int receiptID = receipt.FReceiptId;
+                receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
+            }
+            
             List<CReceiptDetailData> list = new List<CReceiptDetailData>();
             foreach (var item in receiptDetails)
             {
