@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddMvc().AddJsonOptions(options =>
 {
-    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.Encoder =
         JavaScriptEncoder.Create(UnicodeRanges.All);
 });

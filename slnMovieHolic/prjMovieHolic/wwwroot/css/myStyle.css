@@ -1,3 +1,12 @@
+body{
+    background-color:#eaeaea;
+}
+
+footer{
+    background-color:#111;
+    height:450px;
+}
+
 .OpenDialog {
     border-radius: 5px;
     color: azure;
@@ -1202,6 +1211,80 @@ figure span {
     filter: drop-shadow(2px 12px 7px silver)
 }
 
+/*會員首頁*/
+
+.memberIndexTopMarker img {
+    display: inline-block;
+    width: 15px;
+    margin-top: 1px;
+    margin-right: 15px;
+}
+
+.memberIndexTop {
+    display: flex;
+    justify-content: space-around;
+    width: 600px;
+    margin: auto;
+}
+
+    .memberIndexTop img {
+        width: 150px;
+    }
+
+.memberIndexTopName h5 {
+    margin-top: 40px;
+    font-size: 20px;
+    color: #105190;
+}
+
+.memberIndexTopName h3 {
+    font-size: 26px;
+    margin-top: 20px;
+}
+
+.memberIndexButtonPlace {
+    display: flex;
+    justify-content: space-around;
+}
+
+    .memberIndexButtonPlace button {
+        width: 200px;
+        height: 150px;
+        border-radius: 15px;
+        background: radial-gradient(circle,rgb(255, 255, 255),rgb(226, 225, 225));
+        box-shadow: 3px 3px 3px 3px rgb(228, 228, 228);
+        border: 1px solid rgb(228, 228, 228);
+        font-size: 32px;
+        color: #105190;
+    }
+
+        .memberIndexButtonPlace button:hover {
+            box-shadow: inset 2px 2px 2px 2px rgb(228, 228, 228);
+        }
+
+.memberIndexBottom {
+    width: 600px;
+    margin: auto;
+}
+
+    .memberIndexBottom h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+.justPay {
+    display: flex;
+    font-size: 16px;
+}
+
+
+
+    .justPay img {
+        margin-top: 5px;
+        margin-right: 3px;
+    }
+
+
 /*優惠券部分*/
 
 
@@ -1417,7 +1500,6 @@ figure span {
 
 .commentBox {
     display: flex;
-    flex-wrap:wrap;
 }
 
 .hheight {
@@ -1437,9 +1519,9 @@ figure span {
 
 .commentDetailBox {
     border: 3px double silver;
-    padding: 10px;
+    padding: 12px;
     height: 90px;
-    width: 235px;
+    width: 240px;
 }
 
     .commentDetailBox h3 {
@@ -1562,6 +1644,9 @@ figure span {
     .buyNow2 a:hover {
         background-color: #3a3939;
     }
+
+
+
 
 
 /*以上大致是宜霈的部分*/
