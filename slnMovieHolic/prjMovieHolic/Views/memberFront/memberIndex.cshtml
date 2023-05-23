@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "memberIndex";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <div id="page2">
@@ -35,19 +36,34 @@
 
                         <div class="memberIndexButtonPlace">
 
-                            <button>會員資料</button>
-                            <button>我的訂單(X)</button>
-                            <button>我的收藏(X)</button>
-                            <button>我的優惠券(X)</button>
+                            <button><div><a href="@Url.Action("memberList", "memberFront",new{id=Model.Member.FMemberId})">會員資料</a> </div></button>
+                            <button><div><a href="@Url.Action("orderList", "memberFront",new{id=Model.Member.FMemberId})">未取票訂單</a></div></button>
+                            <button><div><a href="@Url.Action("favoriteList", "memberFront",new{id=Model.Member.FMemberId})">我的收藏<br>@Model.MemberActionNow.Count 部熱映中</a></div></button>
+                            <button><div><a href="@Url.Action("couponList", "memberFront",new{id=Model.Member.FMemberId})">我的優惠券<br>可用 @Model.CouponList.Count 張</a></div></button>
                         </div>
                         <div class="myBr"></div>
                         <div class="addBorder"></div>
                         <div class="myBr"></div>
                         <div class="memberIndexBottom">
-                            <h3>年度消費金--</h3>
+                            <h3>年度消費金-- @Model.TotalPrice 元</h3>
                             <div class="justPay">
                                 <span><img src="/images/menu_marker.png" alt=""></span>
-                                <h4>12/31前再消費8888元，即可成為....董事?</h4>
+                                @{
+                                    int Membership2 = 5000 - Model.TotalPrice;
+                                    int Membership3 = 10000 - Model.TotalPrice;
+                                    if (Model.Member.FMembershipId==3)
+                                    {
+                                        <h4>12/31前再消費 @Membership2 元，即可升等為 黃金會員</h4>
+                                    }
+                                    else if (Model.Member.FMembershipId == 2)
+                                    {
+                                        <h4>12/31前再消費 @Membership3 元，即可升等為 白金會員</h4>
+                                    }
+                                    else
+                                    {
+                                        <h4>12/31前再消費 @Membership3 元，明年繼續保有白金會員資格</h4>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>

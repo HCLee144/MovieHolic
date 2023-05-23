@@ -171,6 +171,7 @@ namespace prjMovieHolic.Controllers
                     Member = memberData,
                     CouponList = queryCoupon(id),
                     MemberActionNow = queryFavorite(id),
+                    TotalPrice = queryTotalPrice(id),
                 };
 
                 return View(viewModel);
@@ -463,6 +464,31 @@ namespace prjMovieHolic.Controllers
             var memberActionNow = _movieContext.TMemberActions.Include(c => c.FMovie)
              .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now & c.FActionTypeId == 1).ToList();
             return memberActionNow;
+        }
+        public int queryTotalPrice(int? id)
+        {
+            var totalPrice=_movieContext.TOrders.
+                Include(o=>o.TOrderStatusLogs).
+                ThenInclude(o=>o.FOrderStatus).
+                Where(o=>o.FMemberId==id & o.FOrderDate.Year==DateTime.Now.Year).Select(o=>o.FOrderId).ToList();
+            var totalPrice2 = _movieContext.TOrderStatusLogs.Where(o => totalPrice.Contains(o.FOrderId)& o.FOrderStatus.FOrderStatus=="已取消").Select(o=>o.FOrderId).ToList();
+            //var totalPrice3 = _movieContext.TOrderStatuses.Where(o => totalPrice2.Contains(o.FOrderStatusId)& o.FOrderStatus=="已取消").ToList();
+            var totalPriceSum = _movieContext.TOrders.Where(o => o.FMemberId == id & o.FOrderDate.Year == DateTime.Now.Year).ToList();
+            var cancel=_movieContext.TOrders.Where(o => o.FMemberId == id & o.FOrderDate.Year == DateTime.Now.Year & totalPrice2.Contains(o.FOrderId)).ToList();
+
+
+            int price = 0;
+            int cancelprice = 0;
+            foreach (var item in totalPriceSum)
+            {
+                price += (int)item.FTotalPrice;
+            }
+            foreach (var item2 in cancel)
+            {
+                cancelprice += (int)item2.FTotalPrice;
+            }
+            price =price-cancelprice;
+            return price;
         }
     }
 }
