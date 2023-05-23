@@ -372,6 +372,12 @@ namespace prjMovieHolic.Controllers
             return View();
         }
 
+        public IActionResult confirmUrl()
+        {
+            string s = "";
+            return View();
+        }
+
         public IActionResult ListOrderDetails(List<CProductInfo> products)
         {
             if (products.Count != 0)
