@@ -723,11 +723,12 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult SearchMovieKeyword(string keyword)
         {
-            var result=movieContext.TSessions.Include(s => s.FMovie).
+            var result=movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
                 Where(s => s.FStartTime.Date > DateTime.Now.Date).
-                Where(s => s.FMovie.FNameCht.Contains(keyword)).ToList();
-            string json = System.Text.Json.JsonSerializer.Serialize(result);
-            return Json(json);
+                Where(s => s.FMovie.FNameCht.Contains(keyword)).
+                DistinctBy(s=>s.FMovieId).ToList();
+
+            return Json(result);
         }
 
         [NonAction]
@@ -936,4 +937,5 @@ namespace prjMovieHolic.Controllers
         public string productName { get; set; }
         public string productCount { get; set; }
     }
+
 }

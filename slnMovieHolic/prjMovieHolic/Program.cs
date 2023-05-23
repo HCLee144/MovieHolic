@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using prjMovieHolic.Models;
 using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
 using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddMvc().AddJsonOptions(options =>
 {
-
+    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.Encoder =
         JavaScriptEncoder.Create(UnicodeRanges.All);
 });
