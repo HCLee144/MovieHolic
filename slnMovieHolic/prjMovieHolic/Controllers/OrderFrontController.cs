@@ -368,8 +368,6 @@ namespace prjMovieHolic.Controllers
         public IActionResult TryAndError(List<Item> myList)
         {
 
-            // 在這裡可以使用myList獲取List<Item>資料
-            int c = myList.Count;
 
             return View();
         }

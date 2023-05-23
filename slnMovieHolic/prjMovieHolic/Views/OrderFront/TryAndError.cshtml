@@ -3,10 +3,112 @@
 *@
 @{
 }
-<form action="TryAndError" method="post">
+@*<form action="TryAndError" method="post">
 <input type="text" name="myList[1].Id"  value="0"/>
 <input type="text" name="myList[1].Name" value="1" />
 <input type="text" name="myList[3].Id"  value="2"/>
 <input type="text" name="myList[3].Name" value="3"/>
 <button type="submit">下一步</button>
-</form>
+</form>*@
+
+ <button class="button toRight" id="trytrytry">金流test</button>
+
+
+
+@section Scripts{
+    <script>
+
+        const trytrytry = document.getElementById('trytrytry');
+
+        trytrytry.addEventListener('click', async () => {
+
+            const order = {
+                amount: 100,
+                currency: 'TWD',
+                orderId: 'test0001',
+                packages: [
+                    {
+                        id: '001',
+                        amount:100,
+                        products: [{
+                            name: 'test01',
+                            quantity: '100',
+                            price:100,
+                                }],
+                    },
+                ],
+                redirectUrls: {
+                    confirmUrl: 'https://localhost:7085/OrderFront/confirmUrl',
+                    cancelUrl: 'https://localhost:7085/OrderFront/cancelUrl',
+                }
+            };
+
+
+            // 使用示例
+            const key = '92369e0d89e64d3a3d5b32dc9005f732';
+            const requestUrl = '/v3/payments/request';
+            const nonce = await generateUUID();
+            let hmacBase64;
+
+            await hmacSHA256(key + requestUrl + JSON.stringify(order) + nonce)
+                .then(hmacbase64 => {
+                    hmacBase64=hmacbase64;
+                });
+            console.log(hmacBase64);
+            
+            const response = await postData('https://sandbox-api-pay.line.me/v3/payments/request',nonce,order);
+            const data = await response.json();
+            console.log(data);
+            return data;
+            
+        })
+
+        function postData(url,nonce,body) {
+            const response = fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-LINE-ChannelId': '1661019081',
+                    'X-LINE-Authorization': '92369e0d89e64d3a3d5b32dc9005f732',
+                    'X-LINE-Authorization-Nonce': nonce
+                },
+                body: JSON.stringify(body)
+            })
+           return response;
+        }
+
+        
+
+        function generateUUID() {
+            let uuid = '', i, random;
+
+            for (i = 0; i < 32; i++) {
+                random = (Math.random() * 16) | 0;
+
+                if (i === 8 || i === 12 || i === 16 || i === 20) {
+                    uuid += '-';
+                }
+                uuid += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(16);
+            }
+            return uuid;
+        }
+
+        function hmacSHA256(key, data) {
+            const encoder = new TextEncoder();
+            const decoder = new TextDecoder();
+            const encodedKey = encoder.encode(key);
+            const encodedData = encoder.encode(data);
+
+            return crypto.subtle.importKey('raw', encodedKey, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+                .then(key => crypto.subtle.sign('HMAC', key, encodedData))
+                .then(signature => {
+                    const uint8Array = new Uint8Array(signature);
+                    const base64String = btoa(String.fromCharCode.apply(null, uint8Array));
+                    return base64String
+                });
+        }
+
+
+
+    </script>
+}
