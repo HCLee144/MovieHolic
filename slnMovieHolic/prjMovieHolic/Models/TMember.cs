@@ -31,6 +31,10 @@ public partial class TMember
 
     public virtual TMembership FMembership { get; set; } = null!;
 
+    public virtual ICollection<TArtActList> TArtActLists { get; set; } = new List<TArtActList>();
+
+    public virtual ICollection<TArtFollow> TArtFollows { get; set; } = new List<TArtFollow>();
+
     public virtual ICollection<TArticle> TArticles { get; set; } = new List<TArticle>();
 
     public virtual ICollection<TCnQ> TCnQs { get; set; } = new List<TCnQ>();

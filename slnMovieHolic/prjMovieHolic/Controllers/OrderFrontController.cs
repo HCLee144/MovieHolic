@@ -39,6 +39,7 @@ namespace prjMovieHolic.Controllers
 
             if (movie == null)
                 return RedirectToAction("Index", "Home");
+            
 
             CListSessionViewModel vm = new CListSessionViewModel();
             vm.tMovie = movie;

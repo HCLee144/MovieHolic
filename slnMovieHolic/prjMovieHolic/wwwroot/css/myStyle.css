@@ -1,3 +1,12 @@
+body{
+    background-color:#eaeaea;
+}
+
+footer{
+    background-color:#111;
+    height:450px;
+}
+
 .OpenDialog {
     border-radius: 5px;
     color: azure;
@@ -71,6 +80,7 @@
     position: fixed;
     top: 250px;
     right: 30px;
+    z-index:100;
 }
 
     .position:hover {
@@ -1775,7 +1785,7 @@ figure span {
 
 .commentPlace {
     background-color: rgb(243, 242, 242);
-    width: 885px;
+    width: 915px;
     margin-bottom: 20px;
     border-radius: 15px;
     padding: 15px;
