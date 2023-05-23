@@ -190,7 +190,7 @@
              divGet.innerHTML=result;
         });
         OrderCancel.addEventListener('click',async ()=>{
-            result=await ListOrderTicket('已取消');
+            result = await ListCancelTicket('已取消');
              divCancel.innerHTML=result;
         });
       
@@ -213,7 +213,7 @@
             return result;
         }
 
-        //已取票、已取消
+        //已取票
         async function ListOrderTicket(od) {
             const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe=' + od);
             const data = await response.json();
@@ -223,6 +223,24 @@
                 result += `<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
                 result += `<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
                 result += `</div><div><h3><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a></h3></div></div>`;
+                result += `<div class="orderDetailBoxBottom">`;
+                result += `<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
+                result += `</div></div></div>`
+            })
+            console.log(result);
+            return result;
+        }
+
+        //已取消
+        async function ListCancelTicket(od) {
+            const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe=' + od);
+            const data = await response.json();
+            console.log(data);
+            let result = '';
+            data.forEach((item) => {
+                result += `<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
+                result += `<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
+                result += `</div><div></div></div>`;
                 result += `<div class="orderDetailBoxBottom">`;
                 result += `<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
                 result += `</div></div></div>`

@@ -714,8 +714,9 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult deleteOrder(int orderID)
         {
-            var deleted = movieContext.TOrderDetails.FirstOrDefault(od => od.FOrderId == orderID);
-            movieContext.TOrderDetails.Remove(deleted);
+            var deleted = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID);
+            foreach(var item in deleted)
+                movieContext.TOrderDetails.Remove(item);
 
             var orderStatusLog = movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
             var orderStatus = movieContext.TOrderStatuses.FirstOrDefault(os => os.FOrderStatusId == orderStatusLog.FOrderStatusId);
