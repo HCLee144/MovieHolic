@@ -7,6 +7,7 @@ body{
 a{
     text-decoration:none;
     cursor:pointer;
+    color:#10a5d6;
 }
 
 header{
@@ -133,7 +134,7 @@ header{
 }
 .articleCardsB h3{
     font-size: 18px;
-
+    font-weight:bolder;
 }
 .articleCardsB p{
     font-size: 14px;

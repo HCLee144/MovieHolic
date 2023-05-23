@@ -386,5 +386,22 @@ namespace prjMovieHolic.Controllers
             sessionCheck();
             return View(viewModel);
         }
+        public IActionResult commentList(int? id)
+        {
+            var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
+            var shortCmt =_movieContext.TShortCmts.Include(c=>c.FMovie)                
+                .Where(c=>c.FMemberId == id)
+                .ToList();
+            //var shortCmtEven=shortCmt.Where((item, index) => index % 2 == 0).ToList();
+            //var shortCmtOdd=shortCmt.Where((item, index) => index % 2 != 0).ToList();
+            var viewModel = new CCommentAndMemberViewModel
+            {
+                Member = members,
+                ShortCmt = shortCmt,
+
+            };
+            sessionCheck();
+            return View(viewModel);
+        }
     }
 }

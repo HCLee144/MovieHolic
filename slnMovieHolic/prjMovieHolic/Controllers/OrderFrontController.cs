@@ -370,12 +370,13 @@ namespace prjMovieHolic.Controllers
 
             // 在這裡可以使用myList獲取List<Item>資料
             int c = myList.Count;
+
             return View();
         }
 
         public IActionResult ListOrderDetails(List<CProductInfo> products)
         {
-            if(products.Count!=0)
+            if (products.Count != 0)
                 saveProductCount(products);
 
             //確認有沒有登入會員，if沒有，先登入會員
@@ -431,7 +432,11 @@ namespace prjMovieHolic.Controllers
                 if (int.Parse(item.productCount) > 0)
                 {
                     var selectedProduct = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.productID);
-                    string productName = selectedProduct.FProductName;
+                    string productName = "";
+                    if (selectedProduct.FCategoryId == 2)
+                        productName = selectedProduct.FProductName + "爆米花";
+                    else
+                        productName = selectedProduct.FProductName;
                     string thisProduct = $"{productName}X{item.productCount}";
                     showProducts.Add(thisProduct);
                 }
@@ -440,7 +445,8 @@ namespace prjMovieHolic.Controllers
 
             //擁有的優惠券
             int memID = getMemberID();
-            var couponList = movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == memID & c.FCouponType.FCouponDueDate.Month == DateTime.Now.Month & c.FIsUsed == false)
+            var couponList = movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == memID
+                & c.FCouponType.FCouponDueDate.Month == DateTime.Now.Month & c.FIsUsed == false)
                 .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
             vm.CouponList = couponList;
 
@@ -488,108 +494,131 @@ namespace prjMovieHolic.Controllers
             return View(vm);
         }
 
-        public IActionResult SaveOrdertoDBandSendEmail(int totalPrice, int? couponID)
+        public IActionResult SaveOrdertoDBandSendEmail(int totalPrice, int? couponID, string paymentType)
         {
-            //新增order資料
-            TOrder order = new TOrder();
-            int sessionID = getSessionID();
-            order.FSessionId = sessionID;
-            int memID = getMemberID();
-            order.FMemberId = memID;
-            order.FPayTypeId = 1;//先用現金付款
-            order.FOrderDate = DateTime.Now;
-            if (couponID != null)
-                order.FCouponId = couponID;
-            order.FTotalPrice = totalPrice;
-
-            movieContext.TOrders.Add(order);
-            movieContext.SaveChanges();
-
-            //新增orderDetails資料
-            //查總共票數(座位)
-            string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
-            string[] tickets = json_tickets.Split(",");
-            int[] ticketCounts = new int[tickets.Length];
-            for (int i = 0; i < tickets.Length; i++)
-                ticketCounts[i] = int.Parse(tickets[i]);
-
-            //將票種轉陣列
-            int[] ticketSelected = new int[(ticketCounts[0] + ticketCounts[1] + ticketCounts[2])];
-            for (int i = 0; i < ticketCounts[0]; i++)
-                ticketSelected[i] = 1;
-            for (int i = 0; i < ticketCounts[1]; i++)
-                ticketSelected[i + ticketCounts[0]] = 2;
-            for (int i = 0; i < ticketCounts[2]; i++)
-                ticketSelected[i + ticketCounts[0] + ticketCounts[1]] = 5;
-
-            string json_seats = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
-            List<int> seats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
-            int orderID = movieContext.TOrders.OrderByDescending(od => od.FOrderId).Select(od => od.FOrderId).FirstOrDefault();
-            for (int i = 0; i < seats.Count; i++)
+            try
             {
-                TOrderDetail orderDetail = new TOrderDetail();
-                orderDetail.FOrderId = orderID;
-                orderDetail.FSeatId = seats[i];
-                orderDetail.FTicketClassId = ticketSelected[i];
-                movieContext.TOrderDetails.Add(orderDetail);
-                movieContext.SaveChanges();
-            }
-
-            //新增orderStatus資料
-            TOrderStatus orderStatus = new TOrderStatus();
-            orderStatus.FOrderStatus = "未取票";
-            orderStatus.FChangedTime = DateTime.Now;
-            movieContext.TOrderStatuses.Add(orderStatus);
-            movieContext.SaveChanges();
-
-            //新增orderStatusLog資料
-            TOrderStatusLog orderStatusLog = new TOrderStatusLog();
-            orderStatusLog.FOrderId = orderID;
-            int orderStatusID = movieContext.TOrderStatuses.OrderByDescending(od => od.FOrderStatusId).Select(od => od.FOrderStatusId).FirstOrDefault();
-            orderStatusLog.FOrderStatusId = orderStatusID;
-            movieContext.TOrderStatusLogs.Add(orderStatusLog);
-            movieContext.SaveChanges();
-
-            //新增產品收據資料
-            List<CProductInfo> productInfo = getProductCounts();
-            bool buyProducts = false;
-            foreach (var item in productInfo)
-            {
-                if (Convert.ToInt32(item.productCount) > 0)
+                using (var tran = movieContext.Database.BeginTransaction())
                 {
-                    buyProducts = true;
-                    break;
-                }
-            }
+                    //新增order資料
+                    TOrder order = new TOrder();
+                    int sessionID = getSessionID();
+                    order.FSessionId = sessionID;
+                    int memID = getMemberID();
+                    order.FMemberId = memID;
+                    if (paymentType == "cash")
+                        order.FPayTypeId = 1;//現金付款
+                    else
+                        order.FPayTypeId = 2;//信用卡付款
+                    order.FOrderDate = DateTime.Now;
+                    if (couponID != null)
+                        order.FCouponId = couponID;
+                    order.FTotalPrice = totalPrice;
 
-            if (buyProducts)
-            {
-                TReceipt receipt = new TReceipt();
-                receipt.FMemberId = memID;
-                receipt.FReceiptDate = DateTime.Now;
-                receipt.FOrderId = orderID;
-                movieContext.TReceipts.Add(receipt);
-                movieContext.SaveChanges();
-            }
-
-            //新增ReceiptDetails
-            var receiptID = movieContext.TReceipts.OrderByDescending(r => r.FReceiptId).Select(r => r.FReceiptId).FirstOrDefault();
-            for (int i = 0; i < productInfo.Count; i++)
-            {
-                if (Convert.ToInt32(productInfo[i].productCount) > 0)
-                {
-                    TReceiptDetail receiptDetail = new TReceiptDetail();
-                    receiptDetail.FReceiptId = receiptID;
-                    receiptDetail.FProductId = productInfo[i].productID;
-                    receiptDetail.FQty = Convert.ToInt32(productInfo[i].productCount);
-                    movieContext.TReceiptDetails.Add(receiptDetail);
+                    movieContext.TOrders.Add(order);
                     movieContext.SaveChanges();
+
+                    //用掉的優惠券
+                    if (couponID != null)
+                    {
+                        var usedCoupon = movieContext.TCouponLists.FirstOrDefault(c => c.FCouponId == couponID);
+                        usedCoupon.FIsUsed = true;
+                        movieContext.SaveChanges();
+                    }
+
+                    //新增orderDetails資料
+                    //查總共票數(座位)
+                    string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
+                    string[] tickets = json_tickets.Split(",");
+                    int[] ticketCounts = new int[tickets.Length];
+                    for (int i = 0; i < tickets.Length; i++)
+                        ticketCounts[i] = int.Parse(tickets[i]);
+
+                    //將票種轉陣列
+                    int[] ticketSelected = new int[(ticketCounts[0] + ticketCounts[1] + ticketCounts[2])];
+                    for (int i = 0; i < ticketCounts[0]; i++)
+                        ticketSelected[i] = 1;
+                    for (int i = 0; i < ticketCounts[1]; i++)
+                        ticketSelected[i + ticketCounts[0]] = 2;
+                    for (int i = 0; i < ticketCounts[2]; i++)
+                        ticketSelected[i + ticketCounts[0] + ticketCounts[1]] = 5;
+
+                    string json_seats = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
+                    List<int> seats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json_seats);
+                    int orderID = movieContext.TOrders.OrderByDescending(od => od.FOrderId).Select(od => od.FOrderId).FirstOrDefault();
+                    for (int i = 0; i < seats.Count; i++)
+                    {
+                        TOrderDetail orderDetail = new TOrderDetail();
+                        orderDetail.FOrderId = orderID;
+                        orderDetail.FSeatId = seats[i];
+                        orderDetail.FTicketClassId = ticketSelected[i];
+                        movieContext.TOrderDetails.Add(orderDetail);
+                        movieContext.SaveChanges();
+                    }
+
+                    //新增orderStatus資料
+                    TOrderStatus orderStatus = new TOrderStatus();
+                    orderStatus.FOrderStatus = "未取票";
+                    orderStatus.FChangedTime = DateTime.Now;
+                    movieContext.TOrderStatuses.Add(orderStatus);
+                    movieContext.SaveChanges();
+
+                    //新增orderStatusLog資料
+                    TOrderStatusLog orderStatusLog = new TOrderStatusLog();
+                    orderStatusLog.FOrderId = orderID;
+                    int orderStatusID = movieContext.TOrderStatuses.OrderByDescending(od => od.FOrderStatusId).Select(od => od.FOrderStatusId).FirstOrDefault();
+                    orderStatusLog.FOrderStatusId = orderStatusID;
+                    movieContext.TOrderStatusLogs.Add(orderStatusLog);
+                    movieContext.SaveChanges();
+
+                    //新增產品收據資料
+                    List<CProductInfo> productInfo = getProductCounts();
+                    bool buyProducts = false;
+                    foreach (var item in productInfo)
+                    {
+                        if (Convert.ToInt32(item.productCount) > 0)
+                        {
+                            buyProducts = true;
+                            break;
+                        }
+                    }
+
+                    if (buyProducts)
+                    {
+                        TReceipt receipt = new TReceipt();
+                        receipt.FMemberId = memID;
+                        receipt.FReceiptDate = DateTime.Now;
+                        receipt.FOrderId = orderID;
+                        movieContext.TReceipts.Add(receipt);
+                        movieContext.SaveChanges();
+                    }
+
+                    //新增ReceiptDetails
+                    var receiptID = movieContext.TReceipts.OrderByDescending(r => r.FReceiptId).Select(r => r.FReceiptId).FirstOrDefault();
+                    for (int i = 0; i < productInfo.Count; i++)
+                    {
+                        if (Convert.ToInt32(productInfo[i].productCount) > 0)
+                        {
+                            TReceiptDetail receiptDetail = new TReceiptDetail();
+                            receiptDetail.FReceiptId = receiptID;
+                            receiptDetail.FProductId = productInfo[i].productID;
+                            receiptDetail.FQty = Convert.ToInt32(productInfo[i].productCount);
+                            movieContext.TReceiptDetails.Add(receiptDetail);
+                            movieContext.SaveChanges();
+                        }
+                    }
+
+                    SendEmail();
+                    ClearAllSession();
+                    tran.Commit();
+                    return Content("儲存成功");
                 }
             }
+            catch(Exception)
+            {
+                return Content("交易失敗");
+            }
 
-            SendEmail();
-            ClearAllSession();
-            return Content("儲存成功");
         }
 
         public IActionResult ListOrderBook(string orderStatusDescribe)
@@ -666,9 +695,13 @@ namespace prjMovieHolic.Controllers
         public IActionResult ShowReceiptDetails(int orderID)
         {
             var receipt = movieContext.TReceipts.FirstOrDefault(r => r.FOrderId == orderID);
-            int receiptID = receipt.FReceiptId;
-            var receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
-
+            List<TReceiptDetail> receiptDetails = new List<TReceiptDetail>();
+            if(receipt!=null)
+            {
+                int receiptID = receipt.FReceiptId;
+                receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
+            }
+            
             List<CReceiptDetailData> list = new List<CReceiptDetailData>();
             foreach (var item in receiptDetails)
             {
@@ -690,6 +723,16 @@ namespace prjMovieHolic.Controllers
 
             movieContext.SaveChanges();
             return Content("Success");
+        }
+
+        public IActionResult SearchMovieKeyword(string keyword)
+        {
+            var result=movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).
+                Where(s => s.FMovie.FNameCht.Contains(keyword)).
+                DistinctBy(s=>s.FMovieId).ToList();
+
+            return Json(result);
         }
 
         [NonAction]
@@ -812,7 +855,7 @@ namespace prjMovieHolic.Controllers
         {
             string GoogleID = "iSpanMovieTheater@gmail.com";
             string TempPassword = "yrxrcgvlwhtufszp";
-            string ReceiveEmail = "6121smile@gmail.com";
+            string ReceiveEmail = "zhuo.demo222@gmail.com";
 
             string SmtpServer = "smtp.gmail.com";
             int SmtpPort = 587;
@@ -898,4 +941,5 @@ namespace prjMovieHolic.Controllers
         public string productName { get; set; }
         public string productCount { get; set; }
     }
+
 }
