@@ -6,20 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjMovieHolic.Models;
+using prjMovieHolic.ViewModels;
 
 namespace prjMovieHolic.Controllers
 {
-    public class movieBackController : Controller
+    public class movieBackController : BackSuperController
     {
         private readonly MovieContext _db;
+        private readonly IWebHostEnvironment _enviro;
 
-        public movieBackController(MovieContext context)
+        public movieBackController(MovieContext context, IWebHostEnvironment p)
         {
             _db = context;
+            _enviro = p;
         }
 
-        public IActionResult MovieView()
+        public IActionResult MovieView(int? messageCode)
         {
+            if(messageCode !=null)
+                ViewBag.MessageCode = messageCode;
             return View();
         }
 
@@ -30,19 +35,32 @@ namespace prjMovieHolic.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(TMovie edition)
+        public IActionResult Edit(CMovieBackViewModel edition)
         {
             TMovie movie = _db.TMovies.Where(m => m.FId == edition.FId).FirstOrDefault();
-            if(movie != null)
+            if (movie != null)
             {
-                movie.FNameCht= edition.FNameCht;
-                movie.FNameEng= edition.FNameEng;
-                movie.FScheduleStart= edition.FScheduleStart;
-                movie.FScheduleEnd= edition.FScheduleEnd;
-                movie.FShowLength = edition.FShowLength;
-                movie.FInteroduce = edition.FInteroduce;
-                movie.FTrailerLink= edition.FTrailerLink;
-                movie.FPrice = edition.FPrice;
+                if (edition.FNameCht != null)
+                    movie.FNameCht = edition.FNameCht;
+                if (edition.FNameEng != null)
+                    movie.FNameEng = edition.FNameEng;
+                movie.FScheduleStart = edition.FScheduleStart;
+                movie.FScheduleEnd = edition.FScheduleEnd;
+                if (edition.FShowLength != null)
+                    movie.FShowLength = edition.FShowLength;
+                if (edition.FInteroduce != null)
+                    movie.FInteroduce = edition.FInteroduce;
+                if (edition.FTrailerLink != null)
+                    movie.FTrailerLink = edition.FTrailerLink;
+                if (edition.FPrice != null)
+                    movie.FPrice = edition.FPrice;
+                if(edition.image != null)
+                {
+                    string photoName = $"/images/moviePosters/{movie.FId}/"+Guid.NewGuid().ToString() + ".jpg";
+                    string path = _enviro.WebRootPath +photoName;
+                    edition.image.CopyTo(new FileStream(path, FileMode.Create));
+                    movie.FPosterPath = photoName;
+                }
                 _db.SaveChanges();
             }
             return RedirectToAction("MovieView");

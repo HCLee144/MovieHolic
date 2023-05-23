@@ -37,7 +37,7 @@
                     </div>
                     <div>
                         @*========修改電影========*@
-                        <form asp-action="Edit">
+                        <form asp-action="Edit" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="FId" id="eFId" />
                             @*                            <input type="hidden" asp-for="FSeriesId" />*@
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">檔期開始時間</label>
-                                        <input type="date" name="FScheduleStart" class="form-control" id="eFScheduleStart" required/>
+                                        <input type="date" name="FScheduleStart" class="form-control" id="eFScheduleStart" required />
                                         <span asp-validation-for="FScheduleStart" class="text-danger"></span>
                                     </div>
                                     <div class="form-group">
@@ -91,9 +91,20 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">電影海報</label>
-                                        <br />
-                                        <img src="" width="200" id="eImage" />
-                                    </div>                                    
+                                        <input type="file" accept="image/*" class="form-control" onchange="loadNewImage(event)" name="image"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="control-label">原電影海報</label>
+                                    <br />
+                                    <img src="" width="200" id="eImage" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">新電影海報</label>
+                                    <br />
+                                    <img src="" width="200" id="NewImage" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -112,7 +123,6 @@
         }
         <script>
             document.querySelector('#btnQuery').addEventListener('click', async function () {
-                console.log("a");
                 const movieName = document.querySelector('#textQuery').value;
                 const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
                 const movie = await response.json();
@@ -123,15 +133,24 @@
                 document.querySelector('#eFId').value = movie.fId;
                 document.querySelector('#eFNameCht').value = movie.fNameCht;
                 document.querySelector('#eFNameEng').value = movie.fNameEng;
-                document.querySelector('#eFScheduleStart').value = movie.fScheduleStart;
-                console.log(movie.fScheduleStart);
-                document.querySelector('#eFScheduleEnd').value = movie.fScheduleEnd;
+                document.querySelector('#eFScheduleStart').value = movie.fScheduleStart.split("T")[0];
+                document.querySelector('#eFScheduleEnd').value = movie.fScheduleEnd.split("T")[0];
                 document.querySelector('#eFShowLength').value = movie.fShowLength;
                 document.querySelector('#eFInteroduce').value = movie.fInteroduce;
                 document.querySelector('#eFTrailerLink').value = movie.fTrailerLink;
                 document.querySelector('#eFPrice').value = movie.fPrice;
-                document.querySelector('#eImage').src= '../'+movie.fPosterPath;
+                document.querySelector('#eImage').src = '../' + movie.fPosterPath;
             }
 
+
+            //上傳圖片的同時顯示圖片
+            //URL.createObjectURL
+            function loadNewImage(event) {
+                var NewImage = document.getElementById('NewImage');
+                NewImage.src = URL.createObjectURL(event.target.files[0]);
+                NewImage.onload = function () {
+                    URL.revokeObjectURL(NewImage.src) // free memory
+                }
+            }
         </script>
     }
