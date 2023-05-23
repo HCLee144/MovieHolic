@@ -721,6 +721,15 @@ namespace prjMovieHolic.Controllers
             return Content("Success");
         }
 
+        public IActionResult SearchMovieKeyword(string keyword)
+        {
+            var result=movieContext.TSessions.Include(s => s.FMovie).
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).
+                Where(s => s.FMovie.FNameCht.Contains(keyword)).ToList();
+            string json = System.Text.Json.JsonSerializer.Serialize(result);
+            return Json(json);
+        }
+
         [NonAction]
         string getNames(Array data)
         {

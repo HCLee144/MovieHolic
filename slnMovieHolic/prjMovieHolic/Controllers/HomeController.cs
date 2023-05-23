@@ -63,8 +63,10 @@ namespace prjMovieHolic.Controllers
 
 
             //快速訂票--Ting
-            var sessions = _context.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date);
-
+            var getSessions = _context.TSessions.Include(s=>s.FMovie).AsEnumerable().
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).
+                DistinctBy(s=>s.FMovie.FId).ToList();
+            movieViewModel.getTickets = getSessions;
 
 
             return View(movieViewModel);
