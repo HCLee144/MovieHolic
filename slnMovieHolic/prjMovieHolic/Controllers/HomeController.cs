@@ -60,6 +60,15 @@ namespace prjMovieHolic.Controllers
             //string json=JsonSerializer.Serialize(new { controller, view });
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+
+
+            //快速訂票--Ting
+            var getSessions = _context.TSessions.Include(s=>s.FMovie).AsEnumerable().
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).
+                DistinctBy(s=>s.FMovie.FId).ToList();
+            movieViewModel.getTickets = getSessions;
+
+
             return View(movieViewModel);
         }
 

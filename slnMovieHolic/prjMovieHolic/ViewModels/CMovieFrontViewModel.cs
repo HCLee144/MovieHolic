@@ -18,5 +18,8 @@ namespace prjMovieHolic.ViewModels
         public TMember tmember { get; set; }
         public List<TMemberAction> isFavoriteNow { get; set; }
         public List<TMemberAction> isFavotiteComing { get; set; }
+
+        //快速訂票用--Ting
+        public List<TSession> getTickets { get; set; }
     }
 }

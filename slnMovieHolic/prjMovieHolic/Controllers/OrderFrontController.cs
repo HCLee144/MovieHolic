@@ -695,9 +695,13 @@ namespace prjMovieHolic.Controllers
         public IActionResult ShowReceiptDetails(int orderID)
         {
             var receipt = movieContext.TReceipts.FirstOrDefault(r => r.FOrderId == orderID);
-            int receiptID = receipt.FReceiptId;
-            var receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
-
+            List<TReceiptDetail> receiptDetails = new List<TReceiptDetail>();
+            if(receipt!=null)
+            {
+                int receiptID = receipt.FReceiptId;
+                receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
+            }
+            
             List<CReceiptDetailData> list = new List<CReceiptDetailData>();
             foreach (var item in receiptDetails)
             {
@@ -719,6 +723,16 @@ namespace prjMovieHolic.Controllers
 
             movieContext.SaveChanges();
             return Content("Success");
+        }
+
+        public IActionResult SearchMovieKeyword(string keyword)
+        {
+            var result=movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).
+                Where(s => s.FMovie.FNameCht.Contains(keyword)).
+                DistinctBy(s=>s.FMovieId).ToList();
+
+            return Json(result);
         }
 
         [NonAction]
@@ -927,4 +941,5 @@ namespace prjMovieHolic.Controllers
         public string productName { get; set; }
         public string productCount { get; set; }
     }
+
 }
