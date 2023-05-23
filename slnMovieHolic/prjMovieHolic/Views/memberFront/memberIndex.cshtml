@@ -1,0 +1,59 @@
+﻿@model prjMovieHolic.ViewModels.CMemberAndOtherViewModel
+@{
+    ViewData["Title"] = "memberIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <div class="line1 wrapper">
+
+                        <div class="hotMoviePlaceLine">
+                            <ul class="hotMoviePlaceLineMenu">
+                                <li style="font-size: 26px;">
+                                    <span class="memberIndexTopMarker">
+                                        <img src="/images/menu_marker.png" alt="">
+                                    </span>會員專區
+                                </li>
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="memberIndexTop">
+                            <img src="/images/白金會員.png" alt="">
+                            <div class="memberIndexTopName">
+                                <h5>@Model.Member.FMembership.FMembershipName</h5>
+                                <h3>Hi！@Model.Member.FName</h3>
+                            </div>
+                        </div>
+
+                        <div class="addBorder"></div>
+                        <div class="myBr"></div>
+
+                        <div class="memberIndexButtonPlace">
+
+                            <button>會員資料</button>
+                            <button>我的訂單(X)</button>
+                            <button>我的收藏(X)</button>
+                            <button>我的優惠券(X)</button>
+                        </div>
+                        <div class="myBr"></div>
+                        <div class="addBorder"></div>
+                        <div class="myBr"></div>
+                        <div class="memberIndexBottom">
+                            <h3>年度消費金--</h3>
+                            <div class="justPay">
+                                <span><img src="/images/menu_marker.png" alt=""></span>
+                                <h4>12/31前再消費8888元，即可成為....董事?</h4>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
