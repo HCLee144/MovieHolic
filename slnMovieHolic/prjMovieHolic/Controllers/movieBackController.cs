@@ -33,6 +33,15 @@ namespace prjMovieHolic.Controllers
             var movie = _db.TMovies.Where(m => m.FNameCht == movieName).FirstOrDefault();
             return Json(movie);
         }
+
+        public IActionResult loadRecentMovies()
+        {
+            var movies = _db.TMovies.AsEnumerable().OrderBy(movie => movie.FScheduleStart)
+                .Where(movie => movie.FScheduleEnd >= DateTime.Now).Select(movie => movie.FNameCht );
+
+            return Json(movies);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(CMovieBackViewModel edition)
@@ -56,10 +65,18 @@ namespace prjMovieHolic.Controllers
                     movie.FPrice = edition.FPrice;
                 if(edition.image != null)
                 {
-                    string photoName = $"/images/moviePosters/{movie.FId}/"+Guid.NewGuid().ToString() + ".jpg";
-                    string path = _enviro.WebRootPath +photoName;
-                    edition.image.CopyTo(new FileStream(path, FileMode.Create));
-                    movie.FPosterPath = photoName;
+                    if(movie.FPosterPath != null)
+                    {
+                        string path = _enviro.WebRootPath + "/" + movie.FPosterPath;
+                        edition.image.CopyTo(new FileStream(path, FileMode.Create));
+                    }
+                    else
+                    {
+                        string photoName = $"images/moviePosters/{movie.FId}/" + Guid.NewGuid().ToString() + ".jpg";
+                        string path = _enviro.WebRootPath + "/" + photoName;
+                        edition.image.CopyTo(new FileStream(path, FileMode.Create));
+                        movie.FPosterPath = photoName;
+                    }
                 }
                 _db.SaveChanges();
             }

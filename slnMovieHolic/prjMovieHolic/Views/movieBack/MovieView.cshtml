@@ -23,6 +23,11 @@
                         <input type="text" class="form-control" required id="textQuery" />
                         <input type="button" class="btn btn-primary" value="查詢編輯" id="btnQuery" />
                     </div>
+                    <div>
+                        <select class="form-control" id="recentMovies">
+                            <option value="-1">請選擇電影</option>
+                        </select>
+                    </div>
                     <div id="message">
                     </div>
                 </div>
@@ -209,20 +214,49 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        document.querySelector('#btnQuery').addEventListener('click', async function () {
-            document.querySelector('#message').innerHTML="";
+        
+        //查詢電影資料 (點查詢電影時，清除alarm、隱藏新增電影)
+        document.querySelector('#btnQuery').addEventListener('click', ()=>{
+            let movieName =document.querySelector('#textQuery').value;
+            queryMovieByName(movieName);
+        });
+
+        async function queryMovieByName(movieName) {
+            document.querySelector('#message').innerHTML = "";
             document.querySelector('#formCreate').setAttribute("hidden", true);
-            const movieName = document.querySelector('#textQuery').value;
             const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
-            const movie = await response.json();
+            const movie = await response.json();            
             if (movie != null) {
                 loadMovie(movie);
                 document.querySelector('#formEdit').removeAttribute("hidden");
             } else {
                 document.querySelector('#message').innerHTML = '<div class="alert alert-danger" role="alert">查無電影，請重新再試！</div>'
             }
+        }
+
+
+        //到畫面時要載入近期電影的清單
+        const recentMovies = document.querySelector('#recentMovies');
+
+        async function loadResentMovies() {
+            var response = await fetch('@Url.Content("~/movieBack/loadRecentMovies")');
+            var datas = await response.json();
+            datas.forEach(function (item) {
+                recentMovies.innerHTML += `<option value="${item}">${item}</option>`
+            })
+        }
+
+        loadResentMovies();
+        //點清單會直接查詢電影
+        recentMovies.addEventListener('change', async (event) => {
+            let movie = recentMovies.options[recentMovies.selectedIndex].value;
+            if(movie== -1){
+                return;
+            }
+            await queryMovieByName(movie);
         })
 
+        //將載入的電影資料填入元素
         function loadMovie(movie) {
             document.querySelector('#eFId').value = movie.fId;
             document.querySelector('#eFNameCht').value = movie.fNameCht;
@@ -247,10 +281,26 @@
             }
         }
 
+        //(點新增電影按鈕時，清除alarm、隱藏編輯電影)
         document.querySelector('#btnCreate').addEventListener('click', function () {
             document.querySelector('#message').innerHTML = "";
             document.querySelector('#formEdit').setAttribute("hidden", true);
+            reset();
             document.querySelector('#formCreate').removeAttribute("hidden");
         })
+
+        function reset(){
+            document.querySelector('#eFId').value = '';
+            document.querySelector('#eFNameCht').value = '';
+            document.querySelector('#eFNameEng').value ='';
+            document.querySelector('#eFScheduleStart').value = '';
+            document.querySelector('#eFScheduleEnd').value = '';
+            document.querySelector('#eFShowLength').value ='';
+            document.querySelector('#eFInteroduce').value ='';
+            document.querySelector('#eFTrailerLink').value ='';
+            document.querySelector('#eFPrice').value ='';
+            document.querySelector('#eImage').src ='';
+        }
+        
     </script>
     }
