@@ -33,7 +33,7 @@ namespace prjMovieHolic.Controllers
                 .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart > now)
                 .ToListAsync();
-
+            //登入用
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
             var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
             ViewBag.Login = isUserLoggedIn;

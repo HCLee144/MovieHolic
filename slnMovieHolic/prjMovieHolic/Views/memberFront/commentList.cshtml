@@ -40,256 +40,42 @@
 
 
                                         <div class="hheight">
-
-
-
                                             <!--須注意  要連最上面commentBox一起複製-->
                                             <!--兩個一組 寫迴圈可以能要想一下，但是目前還沒試出更適當不跑版的方法-->
-
-                                            <div class="commentBox">
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
+                                          
+                                           <div class="commentBox">
+                                                @foreach (var item in Model.ShortCmt)
+                                                {
+                                                    <div class="addBorder2">
+                                                        <a href="">
+                                                            <div class="commentDetailBox">
+                                                                <div class="commentDetailBoxTop">
+                                                                    <div>
+                                                                        @{
+                                                                            if (item.FMovie.FNameCht.ToString().Length > 10)
+                                                                            {
+                                                                                <h4>@item.FMovie.FNameCht.ToString().Substring(0,9)...</h4>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <h4>@item.FMovie.FNameCht.ToString()</h4>
+                                                                            }
+                                                                        }
+                                                                        <!--這裡需要下判斷式限定字數-->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="commentDetailBoxBottom">
+                                                                    <div>
+                                                                        <h3>星星之所在</h3>
+                                                                    </div>
+                                                                    <h3>@item.FTitle</h3>
                                                                 </div>
                                                             </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-
-
-                                            <div class="commentBox">
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="commentBox">
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="commentBox">
-
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="commentBox">
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="commentBox">
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="addBorder2">
-                                                    <a href="">
-                                                        <div class="commentDetailBox">
-                                                            <div class="commentDetailBoxTop">
-                                                                <div>
-                                                                    <h4>名偵探柯南：灰原哀...</h4>
-                                                                    <!--這裡需要下判斷式限定字數-->
-                                                                </div>
-                                                            </div>
-                                                            <div class="commentDetailBoxBottom">
-                                                                <div>
-                                                                    <h3>星星之所在</h3>
-                                                                </div>
-                                                                <h3>評論內容</h3>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-
-
+                                                        </a>
+                                                    </div>
+                                                }
+                                             
+                                           </div>
 
                                         </div>
                                     </div>

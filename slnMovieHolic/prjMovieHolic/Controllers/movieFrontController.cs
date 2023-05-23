@@ -34,15 +34,27 @@ namespace prjMovieHolic.Controllers
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .ToListAsync();
-                
-            CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
+
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+
+            var nowShowingMovieIds = nowShowingMovies.Select(m => m.FId).ToList();
+            var IsFavoriteNow = _context.TMemberActions.Where(m => m.FMemberId == userId & nowShowingMovieIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
+
+            var upcomingMoviesIds = upcomingMovies.Select(m => m.FId).ToList();
+            var IsFavoriteComing = _context.TMemberActions.Where(m => m.FMemberId == userId & upcomingMoviesIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
+            var movieViewModel = new CMovieFrontViewModel
             {
                 NowShowingMovies = nowShowingMovies,
                 UpcomingMovies = upcomingMovies,
-               };
+                isFavoriteNow = IsFavoriteNow,
+                isFavotiteComing = IsFavoriteComing,
+            };
 
             //已登入用
-            sessionCheck();
+            //sessionCheck();
             string controller = "movieFront";
             string view = "MovieIndex";
             //string json=JsonSerializer.Serialize(new { controller, view });
