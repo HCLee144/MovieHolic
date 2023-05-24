@@ -139,6 +139,7 @@ namespace prjMovieHolic.Controllers
             vm.selectedMovieID = movie.FId;
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMovieEngName = movie.FNameEng;
+            vm.selectedMoviePoster = movie.FPosterPath;
 
             //顯示選的票種價錢
             decimal moviePrice = (decimal)movie.FPrice;
@@ -414,6 +415,7 @@ namespace prjMovieHolic.Controllers
             var movie = getSessionMovie(sessionID);
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMoviEngeName = movie.FNameEng;
+            vm.selectedMoviePoster = movie.FPosterPath;
             vm.selectedMovieID = movie.FId;
             var selectedSessionHour = getSessionHour(sessionID);
             vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);

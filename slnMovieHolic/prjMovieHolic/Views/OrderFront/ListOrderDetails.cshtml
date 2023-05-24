@@ -33,10 +33,7 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
-                                        @{
-                                            string showMoviePoster = $"{Model.selectedMovieID}.jpg";
-                                        }
-                                        <img class="orderMovieImage" src="~/images//moviePosters/@Model.selectedMovieID/@showMoviePoster">
+                                        <img class="orderMovieImage" src="../@Model.selectedMoviePoster" alt="">
                                     </figure>
                                 </div>
                                 <div class="pick">
