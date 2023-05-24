@@ -26,7 +26,7 @@
     <div class="col-lg-4">
         <div class="card w-100">
             <div class="card-body">
-                <h5>年目標(票房收入10,000,000元)</h5>
+                <h5 class="card-title fw-semibold">年目標(票房收入10,000,000元)</h5>
             </div>
             <div id="chartYearlyGoal">
             </div>
@@ -42,28 +42,34 @@
                     <h5 class="card-title fw-semibold">會員人數</h5>
                 </div>
                 <h2 style="text-align:center">@ViewBag.MemberCount</h2>
+                <p style="text-align:center">@ViewBag.MemberLastYear </p>
             </div>
         </div>
     </div>
     <div class="col-lg-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <div class="mb-3 mb-sm-0">
-                        <h5 class="card-title fw-semibold">會員人數</h5>
-                    </div>
+                <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">線上人數</h5>
                 </div>
+                <h2 style="text-align:center">2人</h2>
+@*                <p style="text-align:center">@ViewBag.MemberLastYear </p>*@
             </div>
         </div>
     </div>
     <div class="col-lg-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <div class="mb-3 mb-sm-0">
-                        <h5 class="card-title fw-semibold">會員人數</h5>
-                    </div>
+                <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">月營收</h5>
                 </div>
+                <h4 style="text-align:center">@ViewBag.MonthlyIncome</h4>
+                @{
+                    if (@ViewBag.growRate != null)
+                    {
+                        <p style="text-align:center">成長 @ViewBag.growRate.ToString("N2")% (與去年相比)</p>
+                    }
+                }
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
-                                <h3 style="font-size:20px">歡迎，@Model.FName</h3>
+                                <h3 class="welcome">歡迎，@Model.FName</h3>
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
@@ -26,13 +26,14 @@
                                         <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.FMemberId },null)</li>
-                                        <li><a href="#Advertising">我的評論</a></li>
+                                        <li>@Html.ActionLink("我的評論", "commentList","memberFront",new { id=Model.FMemberId },null)</li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
                                 </div>
                             </article>
                             <div class="memberInformation">
-                                <form asp-action="memberEdit" id="yourForm">
+                                <div class="momberPageTitle"><h3>資料修改</h3></div>
+                                <form asp-action="memberEdit"  id="yourForm">
                                     <input type="hidden" value="@Model.FMemberId" name="FMemberId" />
                                     <table class="memberTable">
                                     <tr>
@@ -54,9 +55,9 @@
                                      <tr>
                                           <th>性別</th>
                                             <td>
-                                                <input type="radio" name="FGenderId" value="1" @(Model.FGenderId == 1 ? "checked" : "") /><span style="font-size:15px">男</span>
-                                                <input type="radio" name="FGenderId" value="2" @(Model.FGenderId == 2 ? "checked" : "") /><span style="font-size:15px">女</span>
-                                                <input type="radio" name="FGenderId" value="3" @(Model.FGenderId == 3 ? "checked" : "")><span style="font-size:15px">非二元性別</span>
+                                                <input type="radio" name="FGenderId" value="1" @(Model.FGenderId == 1 ? "checked" : "") /><span style="font-size:20px">男</span>
+                                                <input type="radio" name="FGenderId" value="2" @(Model.FGenderId == 2 ? "checked" : "") /><span style="font-size:20px">女</span>
+                                                <input type="radio" name="FGenderId" value="3" @(Model.FGenderId == 3 ? "checked" : "")><span style="font-size:20px">非二元性別</span>
                                           </td>
                                      </tr>
                                      <tr>

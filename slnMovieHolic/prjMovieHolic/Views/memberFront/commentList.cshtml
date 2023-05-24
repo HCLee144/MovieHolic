@@ -1,0 +1,123 @@
+﻿@model prjMovieHolic.ViewModels.CCommentAndMemberViewModel
+@{
+    ViewData["Title"] = "commentList";
+}
+
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <section id="content">
+                    <div class="line1 wrapper">
+                        <div class="wrapper tabs memCut">
+                            <article class="memberMenu">
+                                <h3 class="welcome">歡迎，@Model.Member.FName</h3>
+                                <div class="pad">
+                                    <ul class="nav">
+                                        <li>@Html.ActionLink("會員資料", "memberList","memberFront",new {id=Model.Member.FMemberId},null)</li>
+                                        <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li><a class="selected">我的評論</a></li>
+                                        <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
+                                    </ul>
+                                </div>
+                            </article>
+
+
+
+
+                            <div class="orderList">
+                                <div class="tabPlace">
+                                    <!-- TAB1 打包區塊 start -->
+                                    <input id="tab1" type="radio" name="tab" checked="checked" />
+                                    <label for="tab1">短評</label>
+                                    <div class="tab_content overflowXHidden">
+
+
+                                        <div class="hheight">
+                                            <!--須注意  要連最上面commentBox一起複製-->
+                                            <!--兩個一組 寫迴圈可以能要想一下，但是目前還沒試出更適當不跑版的方法-->
+                                          
+                                           <div class="commentBox">
+                                                @foreach (var item in Model.ShortCmt)
+                                                {
+                                                    <div class="addBorder2">
+                                                        <a href="">
+                                                            <div class="commentDetailBox">
+                                                                <div class="commentDetailBoxTop">
+                                                                    <div>
+                                                                        @{
+                                                                            if (item.FMovie.FNameCht.ToString().Length > 10)
+                                                                            {
+                                                                                <h4>@item.FMovie.FNameCht.ToString().Substring(0,9)...</h4>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <h4>@item.FMovie.FNameCht.ToString()</h4>
+                                                                            }
+                                                                        }
+                                                                        <!--這裡需要下判斷式限定字數-->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="commentDetailBoxBottom">
+                                                                    <div>
+                                                                        <h3>星星之所在</h3>
+                                                                    </div>
+                                                                    <h3>@item.FTitle</h3>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                }
+                                             
+                                           </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- TAB1 打包區塊 end -->
+                                    <!-- TAB2 打包區塊 start -->
+                                    <input id="tab2" type="radio" name="tab" />
+                                    <label for="tab2">影評</label>
+                                    <div class="tab_content overflowYHidden">
+
+
+                                        <!--這邊是完整的區域框框-->
+                                        <div class="hheight">
+
+
+
+                                            <!--這邊一塊是完整的影評方塊-->
+                                            <a href="">
+                                                <div class="longCommentBox">
+                                                    <h4>名偵探柯南：灰原哀物語～黑鐵的神秘列車～</h4>
+                                                    <h3>星星之所在</h3>
+                                                    <h3>評論內容</h3>
+                                                </div>
+                                            </a>
+
+
+                                        </div>
+
+
+
+                                    </div>
+                                    <!-- TAB2 打包區塊 end -->
+                                    <!-- TAB3 打包區塊 start -->
+                                    <!-- TAB3 打包區塊 end -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

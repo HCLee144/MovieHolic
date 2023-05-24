@@ -19,13 +19,27 @@
 
             <div class="position">
                 <p>快速訂票</p>
-                <select name="" id="">
-                    <option value="">選擇電影</option>
-                    <option value="">電影名稱電影名稱電影</option>
-                    <option value="">基本上只能塞十個字</option>
-                    <option value="">不然會變形喔</option>
-                </select>
+                <ul class="drop-down-menu">
+                    <li>
+                        <input style="height: 35px; font-size: 20px;" type="text" value="選擇電影" size="13">
+                        <ul>
+                            <li>
+                                <button>我的媽的發顆</button>
+                            </li>
+                            <li>
+                                <button>灌籃歌手</button>
+                            </li>
+                            <li>
+                                <button>柯南那個名子很長</button>
+                            </li>
+                            <li>
+                                <button>最多放8個字就好</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
+
 
 
             <!--熱門電影分隔線-->
@@ -47,12 +61,13 @@
                             @foreach (var movie in Model.NowShowingMovies)
                             {
                                 <!-- 熱門電影1-->
-                                <div class="movieCardBig2">
+                                <div class="movieCardBig">
                                     <article class="movieCard">
                                         <a href="/MovieFront/MovieDetails?id=@movie.FId">
                                             <br>
                                             <figure>
                                                 <img src="~/@movie.FPosterPath" alt="" >
+                                                <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
                                             </figure>
                                             <div>
                                                 <h3>@movie.FNameCht</h3>
@@ -69,7 +84,29 @@
 
                                         <div><a class="buyNow">Buy Now</a></div>
                                         <div>
-                                            <p>❤</p>
+                                            @{
+                                                if (ViewBag.Login == false)
+                                                {
+                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                }
+                                                else
+                                                {
+                                                    bool flag = false;
+                                                    foreach (var item in Model.isFavoriteNow)
+                                                    {
+                                                        if (item.FMovieId == movie.FId)
+                                                        {
+                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                            flag = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!flag)
+                                                    {
+                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                    }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -104,6 +141,7 @@
                                             <br>
                                             <figure>
                                                 <img src="~/@movie.FPosterPath" alt="">
+                                                <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
                                             </figure>
                                             <div>
                                                 <h3>@movie.FNameCht</h3>
@@ -120,7 +158,29 @@
 
                                         <div><a class="buyNow">Buy Now</a></div>
                                         <div>
-                                            <p>❤</p>
+                                            @{
+                                                if (ViewBag.Login == false)
+                                                {
+                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                }
+                                                else
+                                                {
+                                                    bool flag = false;
+                                                    foreach (var item in Model.isFavotiteComing)
+                                                    {
+                                                        if (item.FMovieId == movie.FId)
+                                                        {
+                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                            flag = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!flag)
+                                                    {
+                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                    }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -132,3 +192,84 @@
         </div>
     </div>
 </div>
+<dialog id="IamDialog" class="IamDialog">
+    <p>請先登入會員！</p>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogFavorite" class="IamDialog">
+    <p>收藏電影成功！</p>
+    <button id="closeDialogFavorite" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogCancel" class="IamDialog">
+    <p>取消收藏成功！</p>
+    <button id="closeDialogCancel" class="closeDialog">確定</button>
+</dialog>
+@section Scripts{
+    <script>
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const formdialogFavorite = document.getElementById('IamDialogFavorite');
+        const btnCloseDialogFavorite = document.getElementById('closeDialogFavorite');
+        const formdialogCancel = document.getElementById('IamDialogCancel');
+        const btnCloseDialogCancel = document.getElementById('closeDialogCancel');
+
+
+
+        //先判斷是否有登入
+        function checkLoginAndToggleFavorite(userId, movieId) {
+            console.log(userId);
+            console.log(movieId);
+            if (typeof userId === "undefined" || userId === '') {
+                login();
+            } else {
+
+                favoriteChange(userId, movieId);
+            }
+        }
+        function login() {
+            console.log('Login executed');
+            formdialog.showModal();
+            btnCloseDialog.addEventListener('click', () => {
+                formdialog.close();
+                window.location.href = "/memberFront/memberLogin";
+            });
+        }
+
+        function favoriteChange(userId, movieId) {
+            var heartIcon = document.getElementById(`heart ${movieId}`);
+            console.log("Run")
+            $.ajax({
+                url: '/Home/favoriteChange',
+                type: 'POST',
+                data: { FMemberId: userId, FMovieId: movieId },
+                success: function (response) {
+                    console.log(response)
+                    if (response == "新加入收藏" || response == "取消後加入收藏") {
+                        formdialogFavorite.showModal();
+                        btnCloseDialogFavorite.addEventListener('click', () => {
+                            formdialogFavorite.close();
+                        });
+                        heartIcon.style.color = 'red';
+                    }
+                    else {
+                        formdialogCancel.showModal();
+                        btnCloseDialogCancel.addEventListener('click', () => {
+                            formdialogCancel.close();
+                        });
+                        heartIcon.style.color = '#eaeaea';
+                    }
+                    // 成功處理回應的程式碼
+                    // 例如，重新載入喜愛清單
+
+
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤的程式碼
+                    alert('失敗')
+                }
+            });
+        }
+
+
+    </script>
+}

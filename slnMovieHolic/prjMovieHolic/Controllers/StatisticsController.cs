@@ -3,6 +3,8 @@ using Microsoft.Build.Execution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using prjMovieHolic.Models;
+using prjMovieHolic.ViewModels;
+using System.Data;
 
 namespace prjMovieHolic.Controllers
 {
@@ -16,16 +18,12 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult Member()
         {
-            ViewBag.GenderData = getChartDataForMemberGenderPie();
-            ViewBag.AgeData= getChartDataForMemberAgePie();
             return View();
         }
 
         public IActionResult getChartDataForMemberAgePie()
         {
             PieData datas = new PieData();
-            datas.series = new List<int>();
-            datas.labels = new List<string>();
             var q = _db.TMembers.AsEnumerable().OrderByDescending(member => member.FBirthDate).GroupBy(member => groupByAge((DateTime)member.FBirthDate, 0))
                 .Select(g => new { g.Key, g }).ToList();
             foreach (var item in q)
@@ -40,11 +38,9 @@ namespace prjMovieHolic.Controllers
         public IActionResult getChartDataForMemberGenderPie()
         {
             PieData datas = new PieData();
-            datas.series = new List<int>();
-            datas.labels = new List<string>();
-            var q = _db.TMembers.Include(member=>member.FGender).AsEnumerable().OrderBy(member=>member.FGenderId).GroupBy(member => member.FGender.FGenderName)
-                .Select(g =>new { g.Key, g}).ToList();
-            foreach(var item in q)
+            var q = _db.TMembers.Include(member => member.FGender).AsEnumerable().OrderBy(member => member.FGenderId).GroupBy(member => member.FGender.FGenderName)
+                .Select(g => new { g.Key, g }).ToList();
+            foreach (var item in q)
             {
                 datas.series.Add(item.g.Count());
                 datas.labels.Add(item.Key.ToString());
@@ -54,29 +50,29 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult getChartDataForMemberAgeCoulmn()
         {
-            List<CDataForMemberAge> datas = new List<CDataForMemberAge>(); 
+            List<BarSeries> datas = new List<BarSeries>();
             for (int i = 0; i < 2; i++)
             {
-                CDataForMemberAge data = new CDataForMemberAge();
-                int year = DateTime.Now.Year-i;
+                BarSeries data = new BarSeries();
+                int year = DateTime.Now.Year - i;
                 data.name = year.ToString();
-                data.data = getMemberAgeDataDistribution(year,i);
+                data.data = getMemberAgeDataDistribution(year, i);
                 datas.Add(data);
             }
             return Json(datas);
         }
 
         [NonAction]
-        public List<MemberAgeData> getMemberAgeDataDistribution(int year, int diff)
+        public List<BarSeriesData> getMemberAgeDataDistribution(int year, int diff)
         {
             var q = _db.TMembers.AsEnumerable()
                 .Where(member => member.FCreatedDate.Year <= year)
                 .OrderByDescending(member => member.FBirthDate)
                 .GroupBy(member => groupByAge((DateTime)member.FBirthDate, diff)).ToList();
-            List<MemberAgeData> datas = new List<MemberAgeData>();
+            List<BarSeriesData> datas = new List<BarSeriesData>();
             foreach (var group in q)
             {
-                MemberAgeData data = new MemberAgeData();
+                BarSeriesData data = new BarSeriesData();
                 data.x = group.Key;
                 data.y = group.Count();
                 datas.Add(data);
@@ -87,7 +83,7 @@ namespace prjMovieHolic.Controllers
 
 
         [NonAction]
-        public string groupByAge(DateTime birth,int diff)
+        public string groupByAge(DateTime birth, int diff)
         {
             if (DateTime.Now.AddYears(-diff) <= birth.AddYears(18))
             {
@@ -115,5 +111,86 @@ namespace prjMovieHolic.Controllers
             }
         }
 
+
+        public IActionResult Complaints()
+        {
+            mostComplaintsThisMonth();
+            mostComplaintsLastMonth();
+            return View();
+        }
+
+        [NonAction]
+        public void mostComplaintsThisMonth()
+        {
+            DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
+            var rawdatas = _db.TCnQlogs.Include(c => c.FCnQ).Include(c => c.FCnQ.FCnQtype).AsEnumerable()
+                .Where(c => c.FStatusId == 1 && c.FTimeStamp.Date >= start && c.FCnQ.FIsComplaint == true)
+                .GroupBy(c => c.FCnQ.FCnQtype.FCnQtype)
+                .Select(g => new { g.Key, count = g.Count() });
+            int Max = rawdatas.Max(data => data.count);
+            var Types = rawdatas.Where(data => data.count == Max).Select(data => data.Key);
+            ViewBag.mostThisMonth = String.Join("、", Types)+$" ({Max} 件)";
+        }
+        public void mostComplaintsLastMonth()
+        {
+            DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date.AddMonths(-1);
+            DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
+            var rawdatas = _db.TCnQlogs.Include(c => c.FCnQ).Include(c => c.FCnQ.FCnQtype).AsEnumerable()
+                .Where(c => c.FStatusId == 1 && c.FTimeStamp.Date >= start &&c.FTimeStamp.Date<end && c.FCnQ.FIsComplaint == true)
+                .GroupBy(c => c.FCnQ.FCnQtype.FCnQtype)
+                .Select(g => new { g.Key, count = g.Count() });
+            int Max = rawdatas.Max(data => data.count);
+            var Types = rawdatas.Where(data => data.count == Max).Select(data => data.Key);
+            ViewBag.mostLastMonth = String.Join("、", Types) + $" ({Max} 件)";
+        }
+
+
+        public IActionResult getChartDataForComplaints(int diff)
+        {
+            //取得所有客訴種類集合
+            var complaintTypes = _db.TCnQtypes.OrderBy(type => type.FCnQtypeId).Select(type => type.FCnQtype).ToList();
+
+            //前diff個月的起始時間
+            DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-diff).Date;
+            var rawdatas = _db.TCnQlogs.Include(c => c.FCnQ).Include(c => c.FCnQ.FCnQtype).AsEnumerable()
+                .Where(c => (c.FStatusId == 1) && c.FTimeStamp.Date >= start&&c.FCnQ.FIsComplaint==true)
+                .OrderBy(c => c.FCnQ.FCnQtypeId)
+                .OrderByDescending(c => c.FTimeStamp)
+                .GroupBy(c => c.FTimeStamp.ToString("yyyy/MM"))
+                .Select(g => new { g.Key, group = g }).ToList();
+
+            List<BarSeries> datas = new List<BarSeries>();
+            foreach (var item in rawdatas)
+            {
+                BarSeries series = new BarSeries();
+                series.name = item.Key;
+                //每一個月份為一個series
+
+                //每一個complaint為一個series的一筆data，先做出每種complaint
+                foreach (var type in complaintTypes)
+                {
+                    BarSeriesData data = new BarSeriesData();
+                    data.x = type;
+                    data.y = 0;
+                    series.data.Add(data);
+                }
+
+                foreach (var complaint in item.group)
+                {
+
+                    //每一筆rawdata在比對種類名稱後，填入數量
+                    for (int i = 0; i < series.data.Count(); i++)
+                    {
+                        if (complaint.FCnQ.FCnQtype.FCnQtype == series.data[i].x)
+                        {
+                            series.data[i].y += 1;
+                            break;
+                        }
+                    }
+                }
+                datas.Add(series);
+            }
+            return Json(datas);
+        }
     }
 }

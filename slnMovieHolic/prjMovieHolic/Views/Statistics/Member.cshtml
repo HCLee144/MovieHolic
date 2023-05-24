@@ -127,11 +127,23 @@
                 bar: {
                     horizontal: false,
                     columnWidth: '55%',
-                    endingShape: 'rounded'
+                    endingShape: 'rounded',
+                    borderRadius: 10,
+                    dataLabels: {
+                        position: 'top',
+                    },
                 },
             },
             dataLabels: {
-                enabled: false
+                enabled: true,
+                formatter: function (val) {
+                    return val + "人";
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
             },
             xaxis: {
                 type: 'category'
