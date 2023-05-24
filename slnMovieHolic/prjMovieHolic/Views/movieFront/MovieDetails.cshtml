@@ -256,8 +256,10 @@
             starLevelContainer.appendChild(space);
 
             var ratingText = document.createElement('span');
-            ratingText.innerHTML = (starLevel.toFixed(1)).toString() + " / 5.0";
+            if (starLevel == 0) { ratingText.innerHTML = "尚無評分"; }
+            else { ratingText.innerHTML = (starLevel.toFixed(1)).toString() + " / 5.0"; }
             // 显示 starLevel 变量到小数第一位加上字符串 " / 5.0"
+            
             starLevelContainer.appendChild(ratingText);
         }
         </script>
