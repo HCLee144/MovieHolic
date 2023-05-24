@@ -67,6 +67,15 @@ footer{
         text-decoration: none;
     }
 
+    /*回到上方的浮動連結*/
+
+.backToTop {
+    position: fixed;
+    width: 40px;
+    bottom: 30px;
+    right: 30px;
+}
+
 /*浮動區塊*/
 .position {
     background: -webkit-linear-gradient(#10a5d6, #eaeaea);
@@ -80,7 +89,7 @@ footer{
     position: fixed;
     top: 250px;
     right: 30px;
-    z-index:100;
+    z-index: 100;
 }
 
     .position:hover {
