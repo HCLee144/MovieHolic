@@ -472,7 +472,6 @@ namespace prjMovieHolic.Controllers
                 ThenInclude(o=>o.FOrderStatus).
                 Where(o=>o.FMemberId==id & o.FOrderDate.Year==DateTime.Now.Year).Select(o=>o.FOrderId).ToList();
             var totalPrice2 = _movieContext.TOrderStatusLogs.Where(o => totalPrice.Contains(o.FOrderId)& o.FOrderStatus.FOrderStatus=="已取消").Select(o=>o.FOrderId).ToList();
-            //var totalPrice3 = _movieContext.TOrderStatuses.Where(o => totalPrice2.Contains(o.FOrderStatusId)& o.FOrderStatus=="已取消").ToList();
             var totalPriceSum = _movieContext.TOrders.Where(o => o.FMemberId == id & o.FOrderDate.Year == DateTime.Now.Year).ToList();
             var cancel=_movieContext.TOrders.Where(o => o.FMemberId == id & o.FOrderDate.Year == DateTime.Now.Year & totalPrice2.Contains(o.FOrderId)).ToList();
 

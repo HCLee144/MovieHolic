@@ -33,8 +33,20 @@
     .left{
         margin-top:80px;
     }
-    
+    #niniImagesPlace {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .coverflow-slide {
+        display: none;
+        position: absolute;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+    }
 </style>
+
 
 
 
@@ -48,7 +60,23 @@
                         <div class="posterPlace">
                             <img src="~/@Model.tMovie.FPosterPath" alt="">
                             
-                            <div class="niniImagesPlace"></div>
+                            <div id="niniImagesPlace">
+                                <img id="slide1" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0001.jpg"
+                                     alt="Slide 1">
+                                <img id="slide2" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0002.jpg"
+                                     alt="Slide 2">
+                                <img id="slide3" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0003.jpg"
+                                     alt="Slide 3">
+                                <img id="slide4" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0004.jpg"
+                                     alt="Slide 4">
+                                <img id="slide5" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0005.jpg"
+                                     alt="Slide 5">
+                                <img id="slide6" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0006.jpg"
+                                     alt="Slide 6">
+                                <img id="slide7" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0007.jpg"
+                                     alt="Slide 7">
+                                <button id="next-button"></button>
+                            </div>
                         </div>
                         <div class="movie">
                             <div class="fiveStar">
@@ -197,7 +225,28 @@
 
 
 @section Scripts{
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+    <script>
+        $(document).ready(function () {
+            var slides = $('.coverflow-slide');
+            var currentIndex = 0;
+
+            // 显示第一张幻灯片
+            slides.eq(currentIndex).show();
+
+            // 设置下一页按钮的点击事件
+            $('#next-button').click(function () {
+                slides.eq(currentIndex).hide();
+                currentIndex = (currentIndex + 1) % slides.length;
+                slides.eq(currentIndex).show();
+            });
+
+            setInterval(function () {
+                $('#next-button').click();
+            }, 3000);  // 3000毫秒 = 3秒
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
                 crossorigin="anonymous"></script>
         <script>
