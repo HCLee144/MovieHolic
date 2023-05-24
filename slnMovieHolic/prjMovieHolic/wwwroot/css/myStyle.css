@@ -1503,6 +1503,7 @@ figure span {
 
 .commentBox {
     display: flex;
+    flex-wrap:wrap;
 }
 
 .hheight {
@@ -1522,9 +1523,9 @@ figure span {
 
 .commentDetailBox {
     border: 3px double silver;
-    padding: 12px;
-    height: 90px;
-    width: 240px;
+    padding: 10px;
+    height: 100px;
+    width: 260px;
 }
 
     .commentDetailBox h3 {
@@ -1532,7 +1533,7 @@ figure span {
     }
 
     .commentDetailBox h4 {
-        font-size: 20px;
+        font-size: 15px;
         font-weight: 900;
     }
 
