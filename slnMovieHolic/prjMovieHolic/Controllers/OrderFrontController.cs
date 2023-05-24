@@ -78,7 +78,9 @@ namespace prjMovieHolic.Controllers
         {
             //依據點選到的日期出現場次
             string realDate = date.Substring(0, 5);
-            var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
+            var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().
+                OrderBy(s=>s.FTheaterId).
+                Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
 
             List<CShowSession> showSessions = new List<CShowSession>();
             foreach (var sessionItem in sessions)
