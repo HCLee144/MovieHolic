@@ -32,64 +32,88 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult queryMovieByName(string movieName)
         {
-            var movie = _db.TMovies.Where(m => m.FNameCht == movieName).FirstOrDefault();
-            return Json(movie);
+            try
+            {
+                var movie = _db.TMovies.Where(m => m.FNameCht == movieName).FirstOrDefault();
+                return Json(movie);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
+
         }
 
         public IActionResult loadRecentMovies()
         {
-            var movies = _db.TMovies.AsEnumerable().OrderBy(movie => movie.FScheduleStart)
-                .Where(movie => movie.FScheduleEnd >= DateTime.Now).Select(movie => movie.FNameCht);
+            try
+            {
+                var movies = _db.TMovies.AsEnumerable().OrderBy(movie => movie.FScheduleStart)
+                                .Where(movie => movie.FScheduleEnd >= DateTime.Now).Select(movie => movie.FNameCht);
 
-            return Json(movies);
+                return Json(movies);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(CMovieBackViewModel edition)
         {
-            TMovie movie = _db.TMovies.Where(m => m.FId == edition.FId).FirstOrDefault();
-            if (movie != null)
+            try
             {
-                if (edition.FNameCht != null)
-                    movie.FNameCht = edition.FNameCht;
-                if (edition.FNameEng != null)
-                    movie.FNameEng = edition.FNameEng;
-                movie.FScheduleStart = edition.FScheduleStart;
-                movie.FScheduleEnd = edition.FScheduleEnd;
-                movie.FRatingId = edition.FRatingId;
-                if (edition.FShowLength != null)
-                    movie.FShowLength = edition.FShowLength;
-                if (edition.FInteroduce != null)
-                    movie.FInteroduce = edition.FInteroduce;
-                if (edition.FTrailerLink != null)
-                    movie.FTrailerLink = edition.FTrailerLink;
-                if (edition.FPrice != null)
-                    movie.FPrice = edition.FPrice;
-                if (edition.image != null)
+                TMovie movie = _db.TMovies.Where(m => m.FId == edition.FId).FirstOrDefault();
+                if (movie != null)
                 {
-                    if (movie.FPosterPath != null)
+                    if (edition.FNameCht != null)
+                        movie.FNameCht = edition.FNameCht;
+                    if (edition.FNameEng != null)
+                        movie.FNameEng = edition.FNameEng;
+                    movie.FScheduleStart = edition.FScheduleStart;
+                    movie.FScheduleEnd = edition.FScheduleEnd;
+                    movie.FRatingId = edition.FRatingId;
+                    if (edition.FShowLength != null)
+                        movie.FShowLength = edition.FShowLength;
+                    if (edition.FInteroduce != null)
+                        movie.FInteroduce = edition.FInteroduce;
+                    if (edition.FTrailerLink != null)
+                        movie.FTrailerLink = edition.FTrailerLink;
+                    if (edition.FPrice != null)
+                        movie.FPrice = edition.FPrice;
+                    if (edition.image != null)
                     {
-                        string path = _enviro.WebRootPath + "/" + movie.FPosterPath;
-                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        if (movie.FPosterPath != null)
                         {
-                            edition.image.CopyTo(fileStream);
+                            string path = _enviro.WebRootPath + "/" + movie.FPosterPath;
+                            using (var fileStream = new FileStream(path, FileMode.Create))
+                            {
+                                edition.image.CopyTo(fileStream);
+                            }
+                        }
+                        else
+                        {
+                            string photoName = $"images/moviePosters/{movie.FId}/" + Guid.NewGuid().ToString() + ".jpg";
+                            string path = _enviro.WebRootPath + "/" + photoName;
+                            using (var fileStream = new FileStream(path, FileMode.Create))
+                            {
+                                edition.image.CopyTo(fileStream);
+                            }
+                            movie.FPosterPath = photoName;
                         }
                     }
-                    else
-                    {
-                        string photoName = $"images/moviePosters/{movie.FId}/" + Guid.NewGuid().ToString() + ".jpg";
-                        string path = _enviro.WebRootPath + "/" + photoName;
-                        using (var fileStream = new FileStream(path, FileMode.Create))
-                        {
-                            edition.image.CopyTo(fileStream);
-                        }
-                        movie.FPosterPath = photoName;
-                    }
+                    _db.SaveChanges();
                 }
-                _db.SaveChanges();
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 2 });
             }
-            return RedirectToAction("MovieView");
+            catch (Exception e)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
+
+
         }
 
         [HttpPost]
@@ -98,7 +122,7 @@ namespace prjMovieHolic.Controllers
         {
             if (create.FRatingId == -1)
             {
-                return RedirectToAction("MovieView");
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
             }
             try
             {
@@ -140,13 +164,36 @@ namespace prjMovieHolic.Controllers
                         _db.SaveChanges();
                     }
                     tran.Commit();
-                    return RedirectToAction("MovieView");
+                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 1 });
                 }
 
             }
             catch (Exception ex)
             {
-                return RedirectToAction("MovieView");
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int? FId)
+        {
+            try
+            {
+                var movie = _db.TMovies.Include(m => m.TSessions).AsEnumerable().FirstOrDefault(m => m.FId == FId);
+                if (movie == null)
+                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 5 });
+                if (movie.TSessions.Any())
+                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 5 });
+
+                _db.TMovies.Remove(movie);
+                _db.SaveChanges();
+
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 3 });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
             }
 
         }
