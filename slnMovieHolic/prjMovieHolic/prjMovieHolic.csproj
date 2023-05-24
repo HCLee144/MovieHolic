@@ -113,6 +113,7 @@
     <Folder Include="wwwroot\images\movieImages\" />
     <Folder Include="wwwroot\images\moviePosters\" />
     <Folder Include="wwwroot\images\movieRatings\" />
+    <Folder Include="wwwroot\images\uploads\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 

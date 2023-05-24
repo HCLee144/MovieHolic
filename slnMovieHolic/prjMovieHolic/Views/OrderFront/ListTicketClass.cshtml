@@ -40,10 +40,7 @@
                                 <div class="orderBox">
                                 <div>
                                     <figure>
-                                            @{
-                                                string s = Model.selectedMovieID.ToString() + ".jpg";
-                                            }
-                                            <img class="orderMovieImage" src="~/images/moviePosters/@Model.selectedMovieID/@s" alt="">
+                                       <img class="orderMovieImage" src="../@Model.selectedMoviePoster" alt="">
                                     </figure>
                                 </div>
                                 <div class="pick">
