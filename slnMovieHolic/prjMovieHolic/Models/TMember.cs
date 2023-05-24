@@ -48,4 +48,6 @@ public partial class TMember
     public virtual ICollection<TReceipt> TReceipts { get; set; } = new List<TReceipt>();
 
     public virtual ICollection<TShortCmt> TShortCmts { get; set; } = new List<TShortCmt>();
+
+
 }

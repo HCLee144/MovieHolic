@@ -155,6 +155,32 @@ namespace prjMovieHolic.Controllers
             }
         }
 
+        //會員首頁
+        public IActionResult memberIndex(int? id) 
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_USER))
+            {
+                TMember memberData = _movieContext.TMembers.Include(t => t.FMembership)
+                    .Include(t => t.FGender)
+                    .FirstOrDefault(t => t.FMemberId == id);
+
+                sessionCheck();
+
+                CMemberAndOtherViewModel viewModel = new CMemberAndOtherViewModel()
+                {
+                    Member = memberData,
+                    CouponList = queryCoupon(id),
+                    MemberActionNow = queryFavorite(id),
+                    TotalPrice = queryTotalPrice(id),
+                };
+
+                return View(viewModel);
+            }
+            return RedirectToAction("memberLogin");
+            
+        }   
+
+
         //會員基本資料
         public IActionResult memberList(int? id)
         {
@@ -166,7 +192,14 @@ namespace prjMovieHolic.Controllers
 
                 sessionCheck();
 
-                return View(memberData);
+                CMemberAndOtherViewModel viewModel = new CMemberAndOtherViewModel()
+                {
+                    Member = memberData,
+                    CouponList = queryCoupon(id),
+                    MemberActionNow = queryFavorite(id),
+                };
+
+                return View(viewModel);
             }
             return RedirectToAction("memberLogin");
         }
@@ -178,8 +211,14 @@ namespace prjMovieHolic.Controllers
                 .FirstOrDefault(t => t.FMemberId == id);
             sessionCheck();
             if (memberData != null)
-            {
-                return View(memberData);
+            {   
+                CMemberAndOtherViewModel viewModel = new CMemberAndOtherViewModel()
+                {
+                    Member= memberData,
+                    CouponList= queryCoupon(id),
+                    MemberActionNow=queryFavorite(id),
+                };
+                return View(viewModel);
             }
             else
                 return RedirectToAction("memberList",new {id=id});
@@ -188,7 +227,7 @@ namespace prjMovieHolic.Controllers
         public IActionResult memberEdit(TMember member)
         {
 
-            TMember memberData = _movieContext.TMembers.Include(t => t.FMembership)
+            var memberData = _movieContext.TMembers.Include(t => t.FMembership)
                 .Include(t => t.FGender)
                 .FirstOrDefault(t => t.FMemberId == member.FMemberId);
             if (memberData != null)
@@ -211,8 +250,14 @@ namespace prjMovieHolic.Controllers
             TMember memberData = _movieContext.TMembers.Include(t => t.FMembership)
                                .Include(t => t.FGender)
                                .FirstOrDefault(t => t.FMemberId == id);
+            CMemberAndOtherViewModel viewModel = new CMemberAndOtherViewModel()
+            {
+                Member = memberData,
+                CouponList = queryCoupon(id),
+                MemberActionNow = queryFavorite(id),
+            };
             sessionCheck();
-            return View(memberData);
+            return View(viewModel);
         }
         [HttpPost]
         public IActionResult passwordEdit(CMemberViewModel vm)
@@ -282,8 +327,9 @@ namespace prjMovieHolic.Controllers
                 CouponList = couponList,
                 CouponListExpired = couponListExpired,
                 CouponListUsed = couponListUsed,
-				Member = members,
-                Movie=movie,
+                Member = members,
+                Movie = movie,
+                MemberActionNow = queryFavorite(id),
 			};
             sessionCheck();
 			return View(viewModel);
@@ -303,8 +349,9 @@ namespace prjMovieHolic.Controllers
                 Member = members,
                 MemberActionNow = memberActionNow,
                 MemberActionFuture = memberActionFuture,
-                MemberActionExpired = memberActionExpired
-                
+                MemberActionExpired = memberActionExpired,
+                CouponList= queryCoupon(id),
+
             };
             sessionCheck();
             return View(viewModel);
@@ -321,7 +368,7 @@ namespace prjMovieHolic.Controllers
                 favorite.FTimeStamp= DateTime.Now;
                 _movieContext.SaveChanges();
             }
-            return RedirectToAction("favoriteList", new { id = FMemberId });
+            return Content("取消收藏");
         }
 
       
@@ -333,6 +380,7 @@ namespace prjMovieHolic.Controllers
             int id=(int)HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER); 
 
             var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
+            
 
             //var orderStatus_未取票 = _movieContext.TOrderStatuses.Where(od => od.FOrderStatus == "未取票").Select(od => od.FOrderStatusId).ToList();
             //List<TOrderStatusLog> order_未取票 = new List<TOrderStatusLog>();
@@ -382,6 +430,8 @@ namespace prjMovieHolic.Controllers
                 //Order_未取票 = this會員的未取票,
                 //Order_已取票 = this會員的已取票,
                 //Order_已取消 = this會員的已取消,
+                CouponList = queryCoupon(id),
+                MemberActionNow=queryFavorite(id),
             };
             sessionCheck();
             return View(viewModel);
@@ -392,16 +442,53 @@ namespace prjMovieHolic.Controllers
             var shortCmt =_movieContext.TShortCmts.Include(c=>c.FMovie)                
                 .Where(c=>c.FMemberId == id)
                 .ToList();
-            //var shortCmtEven=shortCmt.Where((item, index) => index % 2 == 0).ToList();
-            //var shortCmtOdd=shortCmt.Where((item, index) => index % 2 != 0).ToList();
             var viewModel = new CCommentAndMemberViewModel
             {
                 Member = members,
                 ShortCmt = shortCmt,
-
+                CouponList = queryCoupon(id),
+                MemberActionNow=queryFavorite(id),
             };
             sessionCheck();
             return View(viewModel);
+        }
+
+        public List<TCouponList> queryCoupon(int? id)
+        {
+            var couponList = _movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == id & c.FCouponType.FCouponDueDate.Month == DateTime.Now.Month & c.FIsUsed == false)
+                .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+            return couponList;
+        }
+        public List<TMemberAction> queryFavorite(int? id)
+        {
+            var memberActionNow = _movieContext.TMemberActions.Include(c => c.FMovie)
+             .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now & c.FActionTypeId == 1).ToList();
+            return memberActionNow;
+        }
+        public int queryTotalPrice(int? id)
+        {
+            var totalPrice=_movieContext.TOrders.
+                Include(o=>o.TOrderStatusLogs).
+                ThenInclude(o=>o.FOrderStatus).
+                Where(o=>o.FMemberId==id & o.FOrderDate.Year==DateTime.Now.Year).Select(o=>o.FOrderId).ToList();
+            var totalPrice2 = _movieContext.TOrderStatusLogs.Where(o => totalPrice.Contains(o.FOrderId)& o.FOrderStatus.FOrderStatus=="已取消").Select(o=>o.FOrderId).ToList();
+            //var totalPrice3 = _movieContext.TOrderStatuses.Where(o => totalPrice2.Contains(o.FOrderStatusId)& o.FOrderStatus=="已取消").ToList();
+            var totalPriceSum = _movieContext.TOrders.Where(o => o.FMemberId == id & o.FOrderDate.Year == DateTime.Now.Year).ToList();
+            var cancel=_movieContext.TOrders.Where(o => o.FMemberId == id & o.FOrderDate.Year == DateTime.Now.Year & totalPrice2.Contains(o.FOrderId)).ToList();
+
+
+            int price = 0;
+            int cancelprice = 0;
+            foreach (var item in totalPriceSum)
+            {
+                price += (int)item.FTotalPrice;
+            }
+            foreach (var item2 in cancel)
+            {
+                cancelprice += (int)item2.FTotalPrice;
+            }
+            price =price-cancelprice;
+            return price;
         }
     }
 }

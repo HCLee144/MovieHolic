@@ -15,5 +15,6 @@
         public string sessionDate { get; set; }
         public string sessionTime { get; set; }
         public string totalTickets { get; set; }
+
     }
 }

@@ -69,7 +69,7 @@
                                      <input type="hidden" name="FNickName" value="" />
                                 </table>
                                 <hr />
-                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;">個人資料使用條款</a>
+                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;" id="rule">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit">
                                         <input class="ourButton" type="submit" id="submit" value="送出">
@@ -84,6 +84,47 @@
         </div>
     </div>
 </div>
+
+<dialog id="IamDialog" class="IamDialog">
+    <div> 一、會員服務條款</div>
+        <div>
+            1.本會員服務條款所稱之「會員」，為依照本站所定之加入會員程序加入完成並通過認證者。<br />
+            2.當您使用本站服務時，即表示您同意及遵守本服務條款的規定事項及相關法律之規定。<br />
+            3.本站保留有審核加入會員資格之權利，另外已加入會員者，本站亦保留有解除其會員資格之權利。<br />
+            4.本會員服務條款之修訂，適用於所有會員，當本站修訂本服務條款時，將於本站上公告。<br />
+        </div>
+
+       <div> 二、隱私權保護</div>
+        <div>尊重並依據本網站「隱私權保護聲明」保護您的隱私(請參閱「隱私權保護聲明」條款)。</div>
+
+            <div>三、會員</div>
+        <div>1.使用本站所提供之會員服務時，於加入會員時所登錄之帳號及密碼使用之。<br />
+        2.會員須善盡帳號及密碼的使用與管理之責任。對於使用該會員之帳號及密碼(無關於會員本身或其他人)利用本站服務所造成或衍生之所有行為及結果，會員須自行負擔全部責任。<br />
+        3.會員之帳號及密碼遺失，或發現無故遭第三者盜用時，應立即通知本站連絡掛失，因未即時通知，導致本站無法有效防止及修改時，所造成的所有損失，會員應自負全責。<br />
+        4.每次結束使用本服務，執行會員之登出並關閉視窗，以確保您的會員權益。<br />
+        5.盜用第三者會員之帳號及密碼，導致第三者或本公司遭其他第三人或行政機關之調查或追訴時，第三者會員或本公司有權向您請求損害賠償，包括但不限於訴訟費用、律師費及商譽損失等。<br />
+        </div>
+        <div>四、會員登錄資料</div>
+      <div>  1.會員登錄資料須提供您本人正確、最新及完整的資料。
+        2.會員登錄資料不得有偽造、不實等之情事(ex如個人資料及信用卡資料)，一經發現本公司可拒絕其加入會員資格之權利。並得以暫停或終止其會員資格，若違反中華民國相關法律，亦將依法追究。<br />
+        3.會員基本資料(ex:住址，電話及其他登錄資料)有變更時，請不定期更新相關個人資料，確保其正確及完整性。若您提供的資料有錯誤或不符等現象，本網站有權暫停或終止您的帳號，並拒絕您繼續使用本服務。<br />
+        4.未經會員本人同意，本公司原則上不會將涉及個人隱私之資料開示給第三者，唯資料共用原則...等不在此限(請參閱本站「隱私權保護聲明」相關規定)。<br />
+        5.會員應妥善保管密碼，不可將密碼洩露或提供給他人知道或使用；以同一個會員身分證字號和密碼使用本服務所進行的所有行為，都將被認為是該會員本人和密碼持有人的行為。<br />
+        6.會員如果發現或懷疑有第三人使用其會員身分證字號或密碼，應該立即通知本公司，採取必要的必要的防範措施。但上述通知不得解釋為本公司對會員負有任何形式之賠償或補償之責任或義務。<br />
+        </div>
+        <div>五、使用行為</div>
+       <div> 1.您使用本服務之一切行為必須符合當地或國際相關法令規範；對於使用者的一切行為，您須自行負擔全部責任。<br />
+        2.您同意絕不為非法之目的或以非法方式使用本服務，與確實遵守中華民國相關法規及網際網路之國際慣例，並保證不得利用本服務從事侵害他人權益或違法之行為。<br />
+        3.您於使用本站會員服務時應遵守以下限制：<br />
+            a)有損他人人格或商標權、著作權等智慧財產權或其他權利內容。<br />
+            b)使用違反公共秩序或善良風俗或其他不法之文字。<br />
+            c)強烈政治、宗教色彩的偏激言論。<br />
+            d)未經本公司許可，不得利用本服務或本網站所提供其他資源，包括但不限於圖文資料庫、編寫製作網頁之軟體等，從事任何商業交易行為，或招攬廣告商或贊助人。<br />
+            e)其他違反本站「會員服務條款」的內容。<br />
+    </div>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+
 @section Scripts{
     <script>
         const submit=document.querySelector('#submit');
@@ -101,6 +142,11 @@
         const FIdcardNumber = document.querySelector('#FIdcardNumber');
         const radioFemale = document.querySelector('#radioFemale');
 
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const rule = document.getElementById('rule');
+
+
         //確認是否必填欄位都填了
         //SignUpForm.addEventListener("submit",function(event){
         //    event.preventDefault();
@@ -112,7 +158,13 @@
         //    // 表單驗證通過，提交表單
         //    this.submit();
         //})
-
+        rule.addEventListener('click',()=>{
+            formdialog.showModal();
+            btnCloseDialog.addEventListener('click', () => {
+                formdialog.close();
+          
+            })
+        })
 
 
 

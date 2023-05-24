@@ -32,6 +32,7 @@
         public TGender FGender { get; set; } = null!;
 
         public TMembership FMembership { get; set; }
+        public List<TCouponList> CouponList { get; set; }
 
 
     }
