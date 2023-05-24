@@ -182,7 +182,7 @@
                                 <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
                             </div>
                             <div class="sunArea">
-                                <h4>←　１　２　３　４　５　→</h4>                                
+                                <h4><a>←</a>　<a class="current">1</a>　<a>2</a>　<a>3</a>　<a>4</a>　<a>5</a>　<a>→</a></h4>
                             </div>
                         </div>
 
@@ -201,8 +201,23 @@
                 integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
                 crossorigin="anonymous"></script>
         <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "../api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    drawStars(result.starLevel);
+                    
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                }
+            });
+        });
+        function drawStars(averageStars){
             // 通过变量设置评分值
-            var starLevel = 3.7; // 假设评分为4.5
+            var starLevel = averageStars; // 假设评分为4.5
 
             // 根据评分值设置星星显示
             var fullStars = Math.floor(starLevel);
@@ -244,6 +259,7 @@
             ratingText.innerHTML = (starLevel.toFixed(1)).toString() + " / 5.0";
             // 显示 starLevel 变量到小数第一位加上字符串 " / 5.0"
             starLevelContainer.appendChild(ratingText);
+        }
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
