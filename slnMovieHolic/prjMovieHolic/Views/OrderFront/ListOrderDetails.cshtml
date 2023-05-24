@@ -33,10 +33,7 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
-                                        @{
-                                            string showMoviePoster = $"{Model.selectedMovieID}.jpg";
-                                        }
-                                        <img class="orderMovieImage" src="~/images//moviePosters/@Model.selectedMovieID/@showMoviePoster">
+                                        <img class="orderMovieImage" src="../@Model.selectedMoviePoster" alt="">
                                     </figure>
                                 </div>
                                 <div class="pick">
@@ -80,6 +77,7 @@
                                 </div>
                             </div>
                             <button class="button toRight" id="nextStep">送出</button>
+
                         </div>
                     </section>
                 </div>
@@ -175,7 +173,7 @@
                         window.location.replace('@Url.Content("~/memberFront/orderList")');
                     })
                 }
-                else{
+                else {
                     dialogParagraph.innerHTML = '網路不穩，請稍後再試';
                     anotherDialog.showModal();
                     confirm.addEventListener('click', () => {
@@ -205,45 +203,5 @@
         }
 
 
-                                                            //nextStep.addEventListener('click', async () => {
-                                                            //    const response = await postData('https://sandbox-api-pay.line.me/v3/payments/request');
-                                                            //    const data = await response.json();
-                                                            //})
-
-                                                            //function postData(url) {
-                                                            //    const response =return fetch(url, {
-                                                            //        method: 'POST',
-                                                            //        headers: {
-                                                            //            'Content-Type': 'application/json',
-                                                            //            'X-LINE-ChannelId': '1661019081',
-                                                            //            'X-LINE-Authorization': '92369e0d89e64d3a3d5b32dc9005f732',
-                                                            //            'X-LINE-Authorization-Nonce': UUID.randomUUID().toString()
-                                                            //        },
-                                                            //        body: JSON.stringify(body)
-                                                            //    })
-                                                            //}
-
-                                                            //const body = {
-                                                            //    'amount': 100,
-                                                            //    'currency': "TWD",
-                                                            //    'orderid': 'test0001',
-                                                            //    packages:[
-                                                            //        {
-                                                            //            'id':'',
-                                                            //            'amount':'',
-                                                            //            'products':[{
-                                                            //                'name':'',
-                                                            //                'quantity':'',
-                                                            //                'price':''
-                                                            //            }]
-                                                            //        }
-                                                            //    ]
-                                                            //    redirectUrls: {
-                                                            //        'confirmUrl': '',
-                                                            //        'cancelUrl': ''
-                                                            //    }
-
-
-                                                            //};
     </script>
     }
