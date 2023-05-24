@@ -1772,18 +1772,18 @@ width: 915px;
 padding:20px;
 }
 
-.starLavel ul{
+.starLevel ul{
     display:flex;
 }
 
 
 
-.starLavel h3 {
+.starLevel h3 {
     margin: 10px 0 10px 50px;
     font-size: 34px;
 }
 
-.starLavel h6{
+.starLevel h6{
     margin:25px 0 0 5px;
 }
 
@@ -1808,11 +1808,11 @@ padding:20px;
     font-size: 16px;
 }
 
-.sunArea{
+.cmtPageSelector{
    width:280px;
    margin:auto;
 }
- .sunArea h4{
+ .cmtPageSelector h4{
      margin: 30px auto 20px;
      font-size:20px;
  }
