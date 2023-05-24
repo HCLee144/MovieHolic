@@ -21,5 +21,8 @@ namespace prjMovieHolic.ViewModels
 
         //快速訂票用--Ting
         public List<TSession> getTickets { get; set; }
+
+        //輪播牆-Beautiful Ting
+        public string[] movieImagePaths { get; set; }
     }
 }
