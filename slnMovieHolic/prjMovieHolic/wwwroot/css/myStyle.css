@@ -1762,62 +1762,69 @@ figure span {
     margin-bottom: 20px;
 }
 
-.newComment {
-    background-color: rgb(243, 242, 242);
-    padding: 15px;
-    border-radius: 15px;
+.commentPlaceBox{
+background-color: rgb(243, 242, 242);
+border-radius: 15px;
+width: 915px;
+padding:20px;
 }
 
-    .newComment h3 {
-        font-size: 28px;
-        border-bottom: 3px dotted silver;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
+.starLavel ul{
+    display:flex;
+}
 
-    .newComment h4 {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
+
+
+.starLavel h3 {
+    margin: 10px 0 10px 50px;
+    font-size: 34px;
+}
+
+.starLavel h6{
+    margin:25px 0 0 5px;
+}
 
 .commentPlace {
-    background-color: rgb(243, 242, 242);
-    width: 915px;
-    margin-bottom: 20px;
-    border-radius: 15px;
+    margin: auto;
+    width: 830px;
     padding: 15px;
+    border-bottom: 1px solid silver;
 }
 
-    .commentPlace h3 {
-        font-size: 28px;
-        border-bottom: 3px dotted silver;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
-
-    .commentPlace h4 {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-
-    .commentPlace b {
-        font-size: 16px;
-    }
-
-/*電影類別頁面*/
-
-
-.movieType a {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 22px;
-    margin-right: 11px;
-    margin-bottom: 6px;
-    padding: 15px;
-    cursor: pointer;
-    border: 4px dotted silver;
-    border-radius: 5px;
+.commentPlaceTop ul{
+    display:flex;
+   
+    font-size:20px;
 }
+
+.commentPlaceTop li{
+ margin:0 10px 10px 0;
+}
+
+.commentPlace b {
+    font-size: 16px;
+}
+
+.sunArea{
+   width:280px;
+   margin:auto;
+}
+ .sunArea h4{
+     margin: 30px auto 20px;
+     font-size:20px;
+ }
+    /*電影類別頁面*/
+    .movieType a {
+        display: inline-block;
+        text-decoration: none;
+        font-size: 22px;
+        margin-right: 11px;
+        margin-bottom: 6px;
+        padding: 15px;
+        cursor: pointer;
+        border: 4px dotted silver;
+        border-radius: 5px;
+    }
 
     .movieType a:hover {
         background-color: #105190;
