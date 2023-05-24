@@ -124,11 +124,11 @@
                             </ul>
                         </div>                        
                         <div class="myBr"></div>
-                        <div class="commentPlaceBox">
+                        <div class="commentPlaceBox" id="shortcmt-section">
                             <div class="starLevel">
                                 <ul>
-                                    <li><h3>4.82/5</h3></li>
-                                    <li><h6>(39)</h6></li>
+                                    <li><h3><span class="cmts-average">4.82</span>/5</h3></li>
+                                    <li><h6><span class="cmts-amount">(39)</span></h6></li>
                                 </ul>
                             </div>
                             <div class="commentPlace">
@@ -181,7 +181,7 @@
                                 </div>
                                 <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
                             </div>
-                            <div class="cmtPageSelector">
+                            <div class="cmtPageSelector" id="cmts-pager">
                                 <h4><a class="action prev"><i class="bi bi-arrow-left"></i></a>　<a class="current">1</a>　<a>2</a>　<a>3</a>　<a>4</a>　<a>5</a>　<a class="action next"><i class="bi bi-arrow-right"></i></a></h4>
                             </div>
                         </div>
@@ -263,7 +263,13 @@
             starLevelContainer.appendChild(ratingText);
         }
         </script>
-
+    <script type="text/javascript" src="~/js/shortcmt.js"></script>
+    <script>
+        $(document).ready(function ($) {
+            $("#shortcomment-section").movieCmts('../api/LoadShortCmts/load/@Model.tMovie.FId');
+        });)
+        
+    </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             $(document).ready(function () {
