@@ -9,6 +9,16 @@
         -webkit-appearance: none;
         margin: 0;
     }
+
+    .TicketQTY {
+        height: 30px;
+        width: 200px;
+    }
+
+    .totalPrice {
+        width: 180px;  /*婷婷*/
+        height: 30px;
+    }
 </style>
 <form id="listTicketClassForm" action="ListSeat" method="post">
 
@@ -58,20 +68,20 @@
                                             <ul>
                                                 <input type="hidden" value="@Model.oneNormalPrice" id="oneNormalPrice" />
                                                 <li class="fontFat">一般</li>
-                                                    <li class="TicketQTY">張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" value="0" style="width:50px" /><button id="normalPlus" type="button">+</button></li>
-                                                    <li class="totalPrice" id="sumNormalPrice">單張：$@Model.oneNormalPrice</li>
+                                                    <li class="TicketQTY">張數<button id="normalMinus" type="button">-</button><input type="number" id="normalTicket" name="normalCount_seat" value="0" style="width:50px;text-align:center" /><button id="normalPlus" type="button">+</button></li>
+                                                    <li class="totalPrice" id="sumNormalPrice">單張：NT$@Model.oneNormalPrice</li>
                                             </ul>
                                             <ul>
                                                 <input type="hidden" value="@Model.oneStudentPrice" id="oneStudentPrice" />
                                                 <li class="fontFat">學生</li>
-                                                    <li class="TicketQTY">張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px" /><button id="studentPlus" type="button">+</button></li>
-                                                    <li class="totalPrice" id="sumStudentPrice">單張：$@Model.oneStudentPrice</li>
+                                                    <li class="TicketQTY">張數<button id="studentMinus" type="button">-</button><input type="number" id="studentTicket" name="studentCount_seat" value="0" style="width:50px;text-align:center" /><button id="studentPlus" type="button">+</button></li>
+                                                    <li class="totalPrice" id="sumStudentPrice">單張：NT$@Model.oneStudentPrice</li>
                                             </ul>
                                             <ul>
                                                 <input type="hidden" value="@Model.oneSoldierPrice" id="oneSoldierPrice" />
                                                 <li class="fontFat">軍警</li>
-                                                    <li class="TicketQTY">張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px" /><button id="soldierPlus" type="button">+</button></li>
-                                                    <li class="totalPrice" id="sumSoldierPrice">單張：$@Model.oneSoldierPrice</li>
+                                                    <li class="TicketQTY">張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px ;text-align:center" /><button id="soldierPlus" type="button">+</button></li>
+                                                    <li class="totalPrice" id="sumSoldierPrice">單張：NT$@Model.oneSoldierPrice</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -124,7 +134,7 @@
             let normalTicketNo = Number(normalTicket.value);
             normalTicketNo++;
             normalTicket.value = normalTicketNo;
-            sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
+            sumNormalPrice.innerHTML = 'NT$' + (Number(oneNormalPrice.value) * normalTicketNo);
         })
 
         normalMinus.addEventListener('click', () => {
@@ -133,7 +143,7 @@
             if (normalTicketNo < 0)
                 normalTicketNo = 0;
             normalTicket.value = normalTicketNo;
-            sumNormalPrice.innerHTML = '$' + (Number(oneNormalPrice.value) * normalTicketNo);
+            sumNormalPrice.innerHTML = 'NT$' + (Number(oneNormalPrice.value) * normalTicketNo);
         })
 
         studentMinus.addEventListener('click', () => {
@@ -142,14 +152,14 @@
             if (studentTicketNo < 0)
                 studentTicketNo = 0;
             studentTicket.value = studentTicketNo;
-            sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
+            sumStudentPrice.innerHTML = 'NT$' + (Number(oneStudentPrice.value) * studentTicketNo);
         })
 
         studentPlus.addEventListener('click', () => {
             let studentTicketNo = Number(studentTicket.value);
             studentTicketNo++;
             studentTicket.value = studentTicketNo;
-            sumStudentPrice.innerHTML = '$' + (Number(oneStudentPrice.value) * studentTicketNo);
+            sumStudentPrice.innerHTML = 'NT$' + (Number(oneStudentPrice.value) * studentTicketNo);
         })
 
         soldierMinus.addEventListener('click', () => {
@@ -158,14 +168,14 @@
             if (soldierTicketNo < 0)
                 soldierTicketNo = 0;
             soldierTicket.value = soldierTicketNo;
-            sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
+            sumSoldierPrice.innerHTML = 'NT$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
         })
 
         soldierPlus.addEventListener('click', () => {
             let soldierTicketNo = Number(soldierTicket.value);
             soldierTicketNo++;
             soldierTicket.value = soldierTicketNo;
-            sumSoldierPrice.innerHTML = '$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
+            sumSoldierPrice.innerHTML = 'NT$' + (Number(oneSoldierPrice.value) * soldierTicketNo);
         })
 
 

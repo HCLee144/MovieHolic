@@ -29,6 +29,26 @@
                         </select>
                     </div>
                     <div id="message">
+                        @{
+                            switch (ViewBag.MessageCode)
+                            {
+                                case 1:
+                                    @:<div class="alert alert-primary" role="alert">電影新增完成</div>
+                                    break;
+                                case 2:
+                                    @:<div class="alert alert-primary" role="alert">電影修改完成</div>
+                                    break;
+                                case 3:
+                                    @:<div class="alert alert-primary" role="alert">電影刪除完成</div>
+                                    break;
+                                case 4:
+                                    @:<div class="alert alert-danger" role="alert">資料輸入異常，請重新嘗試！</div>
+                                    break;
+                                case 5:
+                                    @:<div class="alert alert-danger" role="alert">查無電影或電影有場次無法刪除！</div>
+                                    break;
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -128,6 +148,12 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" value="修改" class="btn btn-primary" onclick="return confirm('確認要修改電影？')" />
+                        </div>
+                    </form>
+                    <form asp-action="Delete">
+                        <input type="hidden" name="FId" id="dFId" />
+                        <div class="form-group">
+                            <input type="submit" value="刪除" class="btn btn-danger" onclick="return confirm('確認要刪除電影？')" />
                         </div>
                     </form>
                 </div>
@@ -294,6 +320,7 @@
             document.querySelector('#eFPrice').value = movie.fPrice;
             document.querySelector('#eRating').value = movie.fRatingId;
             document.querySelector('#eImage').src = '../' + movie.fPosterPath;
+            document.querySelector('#dFId').value = movie.fId;
         }
 
 
