@@ -61,7 +61,20 @@
                             <img src="~/@Model.tMovie.FPosterPath" alt="">
                             
                             <div id="niniImagesPlace">
-                                <img id="slide1" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0001.jpg"
+
+                                @{
+                                    if(Model.movieImagePaths!=null)
+                                    {
+                                        for(int i=0;i<Model.movieImagePaths.Length;i++)
+                                        {
+                                            
+                                            <img id="slide@(i+1)" class="coverflow-slide" src="@Model.movieImagePaths[i]"
+                                                 alt="Slide @(i+1)">
+                                        }
+                                    }
+                                }
+
+@*                                <img id="slide1" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0001.jpg"
                                      alt="Slide 1">
                                 <img id="slide2" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0002.jpg"
                                      alt="Slide 2">
@@ -74,7 +87,7 @@
                                 <img id="slide6" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0006.jpg"
                                      alt="Slide 6">
                                 <img id="slide7" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0007.jpg"
-                                     alt="Slide 7">
+                                     alt="Slide 7">*@
                                 <button id="next-button"></button>
                             </div>
                         </div>
