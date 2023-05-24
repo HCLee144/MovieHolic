@@ -1683,7 +1683,7 @@ figure span {
     text-align: center;
 }
 
-.niniImagesPlace {
+#niniImagesPlace {
     width: 200px;
     height: 300px;
     background-color: antiquewhite;
@@ -1691,7 +1691,7 @@ figure span {
 
 .posterPlace img {
     width: 200px;
-    margin-bottom: 100px;
+    margin-bottom: 30px;
 }
 
 .movie {
