@@ -690,9 +690,7 @@ public partial class MovieContext : DbContext
 
             entity.ToTable("tMovie", "Movie");
 
-            entity.Property(e => e.FId)
-                .ValueGeneratedNever()
-                .HasColumnName("fId");
+            entity.Property(e => e.FId).HasColumnName("fId");
             entity.Property(e => e.FImagePath).HasColumnName("fImagePath");
             entity.Property(e => e.FInteroduce).HasColumnName("fInteroduce");
             entity.Property(e => e.FNameCht)

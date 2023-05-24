@@ -66,6 +66,11 @@
                                     <input asp-for="FShowLength" class="form-control" id="eFShowLength" />
                                     <span asp-validation-for="FShowLength" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label">預告片連結</label>
+                                    <input asp-for="FTrailerLink" class="form-control" id="eFTrailerLink" />
+                                    <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -82,16 +87,22 @@
                                         <input asp-for="FPrice" class="form-control" id="eFPrice" />
                                         <span asp-validation-for="FPrice" class="text-danger"></span>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label">電影分級</label>
+                                        <select id="eRating" name="FRatingId" class="form-control">
+                                            <option value="-1">請選擇分級</option>
+                                            <option value="1">普遍級</option>
+                                            <option value="2">保護級</option>
+                                            <option value="3">輔12級</option>
+                                            <option value="4">輔15級</option>
+                                            <option value="5">限制級</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="control-label">預告片連結</label>
-                                    <input asp-for="FTrailerLink" class="form-control" id="eFTrailerLink" />
-                                    <span asp-validation-for="FTrailerLink" class="text-danger"></span>
-                                </div>
                                 <div class="form-group">
                                     <label class="control-label">電影介紹</label>
                                     <textarea name="FInteroduce" class="form-control" id="eFInteroduce" rows="10"></textarea>
@@ -99,7 +110,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">電影海報</label>
-                                    <input type="file" accept="image/*" class="form-control" onchange="loadNewImage(event)" name="image" />
+                                    <input type="file" accept="image/*" class="form-control" onchange="loadNewEImage(event)" name="image" />
                                 </div>
                             </div>
                         </div>
@@ -112,7 +123,7 @@
                             <div class="col-lg-6">
                                 <label class="control-label">新電影海報</label>
                                 <br />
-                                <img src="" width="200" id="NewImage" />
+                                <img src="" width="200" id="NewEImage" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -136,8 +147,6 @@
                     @*========新增電影========*@
                     <form asp-action="Create" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="FId" id="eFId" />
-                        @*                            <input type="hidden" asp-for="FSeriesId" />*@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -155,6 +164,11 @@
                                     <input asp-for="FShowLength" class="form-control" id="cFShowLength" />
                                     <span asp-validation-for="FShowLength" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label">預告片連結</label>
+                                    <input asp-for="FTrailerLink" class="form-control" id="cFTrailerLink" />
+                                    <span asp-validation-for="FTrailerLink" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -171,16 +185,22 @@
                                         <input asp-for="FPrice" class="form-control" id="cFPrice" />
                                         <span asp-validation-for="FPrice" class="text-danger"></span>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label">電影分級</label>
+                                        <select id="cRating" name="FRatingId" class="form-control">
+                                            <option value="-1">請選擇分級</option>
+                                            <option value="1">普遍級</option>
+                                            <option value="2">保護級</option>
+                                            <option value="3">輔12級</option>
+                                            <option value="4">輔15級</option>
+                                            <option value="5">限制級</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="control-label">預告片連結</label>
-                                    <input asp-for="FTrailerLink" class="form-control" id="cFTrailerLink" />
-                                    <span asp-validation-for="FTrailerLink" class="text-danger"></span>
-                                </div>
                                 <div class="form-group">
                                     <label class="control-label">電影介紹</label>
                                     <textarea name="FInteroduce" class="form-control" id="cFInteroduce" rows="10"></textarea>
@@ -188,21 +208,25 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">電影海報</label>
-                                    <input type="file" accept="image/*" class="form-control" onchange="loadNewImage(event)" name="image" />
+                                    <input type="file" accept="image/*" class="form-control" onchange="loadCImage(event)" name="image" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
-                                <label class="control-label">電影海報</label>
-                                <br />
                                 <img src="" width="200" id="cImage" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <input type="submit" value="新增" class="btn btn-primary" onclick="return confirm('確認要新增電影？')" />
+                        <div class="d-flex">
+                            <div class="form-group">
+                                <input type="submit" value="新增" class="btn btn-primary" onclick="createMovie(event)" />
+                            </div>
+                            <div class="form-group">
+                                <input type="reset" value="清除" class="btn btn-primary" />
+                            </div>
                         </div>
                     </form>
+                    <button class="btn btn-secondary" onclick="demoCreate()">Demo</button>
                 </div>
             </div>
         </div>
@@ -214,10 +238,9 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        
         //查詢電影資料 (點查詢電影時，清除alarm、隱藏新增電影)
-        document.querySelector('#btnQuery').addEventListener('click', ()=>{
-            let movieName =document.querySelector('#textQuery').value;
+        document.querySelector('#btnQuery').addEventListener('click', () => {
+            let movieName = document.querySelector('#textQuery').value;
             queryMovieByName(movieName);
         });
 
@@ -225,7 +248,7 @@
             document.querySelector('#message').innerHTML = "";
             document.querySelector('#formCreate').setAttribute("hidden", true);
             const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
-            const movie = await response.json();            
+            const movie = await response.json();
             if (movie != null) {
                 loadMovie(movie);
                 document.querySelector('#formEdit').removeAttribute("hidden");
@@ -247,10 +270,12 @@
         }
 
         loadResentMovies();
+
+
         //點清單會直接查詢電影
         recentMovies.addEventListener('change', async (event) => {
             let movie = recentMovies.options[recentMovies.selectedIndex].value;
-            if(movie== -1){
+            if (movie == -1) {
                 return;
             }
             await queryMovieByName(movie);
@@ -267,17 +292,18 @@
             document.querySelector('#eFInteroduce').value = movie.fInteroduce;
             document.querySelector('#eFTrailerLink').value = movie.fTrailerLink;
             document.querySelector('#eFPrice').value = movie.fPrice;
+            document.querySelector('#eRating').value = movie.fRatingId;
             document.querySelector('#eImage').src = '../' + movie.fPosterPath;
         }
 
 
-        //上傳圖片的同時顯示圖片
+        //(編輯)上傳圖片的同時顯示圖片
         //URL.createObjectURL
-        function loadNewImage(event) {
-            var NewImage = document.getElementById('NewImage');
-            NewImage.src = URL.createObjectURL(event.target.files[0]);
-            NewImage.onload = function () {
-                URL.revokeObjectURL(NewImage.src) // free memory
+        function loadNewEImage(event) {
+            var NewEImage = document.getElementById('NewEImage');
+            NewEImage.src = URL.createObjectURL(event.target.files[0]);
+            NewEImage.onload = function () {
+                URL.revokeObjectURL(NewEImage.src) // free memory
             }
         }
 
@@ -289,18 +315,54 @@
             document.querySelector('#formCreate').removeAttribute("hidden");
         })
 
-        function reset(){
+        function reset() {
             document.querySelector('#eFId').value = '';
             document.querySelector('#eFNameCht').value = '';
-            document.querySelector('#eFNameEng').value ='';
+            document.querySelector('#eFNameEng').value = '';
             document.querySelector('#eFScheduleStart').value = '';
             document.querySelector('#eFScheduleEnd').value = '';
-            document.querySelector('#eFShowLength').value ='';
-            document.querySelector('#eFInteroduce').value ='';
-            document.querySelector('#eFTrailerLink').value ='';
-            document.querySelector('#eFPrice').value ='';
-            document.querySelector('#eImage').src ='';
+            document.querySelector('#eFShowLength').value = '';
+            document.querySelector('#eFInteroduce').value = '';
+            document.querySelector('#eFTrailerLink').value = '';
+            document.querySelector('#eFPrice').value = '';
+            document.querySelector('#eRating').value = -1;
+            document.querySelector('#eImage').src = '';
+
+            document.querySelector('#cFNameCht').value = '';
+            document.querySelector('#cFNameEng').value = '';
+            document.querySelector('#cFScheduleStart').value = '';
+            document.querySelector('#cFScheduleEnd').value = '';
+            document.querySelector('#cFShowLength').value = '';
+            document.querySelector('#cFInteroduce').value = '';
+            document.querySelector('#cFTrailerLink').value = '';
+            document.querySelector('#cFPrice').value = '';
+            document.querySelector('#cRating').value = -1;
+            document.querySelector('#cImage').src = '';
+
         }
-        
+
+        function demoCreate() {
+            document.querySelector('#cFNameCht').value = '催眠狙擊';
+            document.querySelector('#cFNameEng').value = 'Hypnotic';
+            document.querySelector('#cFScheduleStart').value = '2023-06-01';
+            document.querySelector('#cFScheduleEnd').value = '2023-06-14';
+            document.querySelector('#cFShowLength').value = 100;
+            document.querySelector('#cFInteroduce').value = '《艾莉塔:戰鬥天使》導演勞勃羅里葛茲自編自導最新作品，班艾佛列克主演，入選本屆坎城影展午夜放映單元，劇情懸疑燒腦、層層翻轉,結局精彩大逆轉!\n\n            剛復職的警探(班艾佛列克)在調查一宗銀行劫案的過程中，發現一名具有強大催眠能力的的危險男子，竟和自己日前失蹤的女兒有關。在催眠師(艾莉絲布拉加)的協助下，他嘗試前往追查並拆解箇中謎團，反而讓二人被該男子追殺而身陷險境。然在追查的過程中，事情發展出人意料，顛覆他對身邊一切的認知... \n\n            班艾佛列克在《催眠狙擊》片中飾演女兒離奇失蹤的警探，在接觸一名有怪異催眠能力的危險男子後掌握到線索追查，並循線找到艾莉絲布拉加飾演的催眠師黛安娜克魯茲，進而了解催眠世界的神秘奧義。片中講述厲害的催眠師能透過精神頻寬影響人的大腦、重塑現實，通常是藉由聲響、話語、鎖住目光等途徑作為心理暗示，讓被催眠者的所見所聞皆遵照催眠師的「構念」，看到一個不存在的世界，堪稱殺人於無形的終極武器，而被催眠者只能渾然無所覺地聽命行事，除非擁有催眠師最大噩夢——「心靈阻斷」特異功能，才能免於被操控。而班艾佛列克語帶玄機地透露自己在片中扮演了多重角色，相當好玩過癮。';
+            document.querySelector('#cFTrailerLink').value = 'https://www.youtube.com/watch?v=CtH8mEGn6PA';
+            document.querySelector('#cFPrice').value = '350';
+            document.querySelector('#cRating').value = 2;
+            document.querySelector('#cImage').src = '';
+        }
+
+        //(編輯)上傳圖片的同時顯示圖片
+        //URL.createObjectURL
+        function loadCImage(event) {
+            var cImage = document.getElementById('cImage');
+            cImage.src = URL.createObjectURL(event.target.files[0]);
+            cImage.onload = function () {
+                URL.revokeObjectURL(cImage.src) // free memory
+            }
+        }
+
     </script>
     }
