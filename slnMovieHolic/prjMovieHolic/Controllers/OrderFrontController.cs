@@ -140,6 +140,7 @@ namespace prjMovieHolic.Controllers
             vm.selectedMovieID = movie.FId;
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMovieEngName = movie.FNameEng;
+            vm.selectedMoviePoster = movie.FPosterPath;
 
             //顯示選的票種價錢
             decimal moviePrice = (decimal)movie.FPrice;
@@ -369,9 +370,13 @@ namespace prjMovieHolic.Controllers
         public IActionResult TryAndError(List<Item> myList)
         {
 
-            // 在這裡可以使用myList獲取List<Item>資料
-            int c = myList.Count;
 
+            return View();
+        }
+
+        public IActionResult confirmUrl()
+        {
+            string s = "";
             return View();
         }
 
@@ -411,6 +416,7 @@ namespace prjMovieHolic.Controllers
             var movie = getSessionMovie(sessionID);
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMoviEngeName = movie.FNameEng;
+            vm.selectedMoviePoster = movie.FPosterPath;
             vm.selectedMovieID = movie.FId;
             var selectedSessionHour = getSessionHour(sessionID);
             vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);
@@ -715,8 +721,9 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult deleteOrder(int orderID)
         {
-            var deleted = movieContext.TOrderDetails.FirstOrDefault(od => od.FOrderId == orderID);
-            movieContext.TOrderDetails.Remove(deleted);
+            var deleted = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID);
+            foreach(var item in deleted)
+                movieContext.TOrderDetails.Remove(item);
 
             var orderStatusLog = movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
             var orderStatus = movieContext.TOrderStatuses.FirstOrDefault(os => os.FOrderStatusId == orderStatusLog.FOrderStatusId);

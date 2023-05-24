@@ -7,6 +7,7 @@ namespace prjMovieHolic.ViewModels
         public string selectedMovieName { get; set; }
         public string selectedMoviEngeName { get; set; }
         public int selectedMovieID { get; set; }
+        public string selectedMoviePoster { get; set; }
         public string selecteDate { get; set; }
         public string theaterName { get; set; }
         public string tickets { get; set; }
