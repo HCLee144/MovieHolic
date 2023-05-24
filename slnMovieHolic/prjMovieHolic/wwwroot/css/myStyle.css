@@ -128,6 +128,12 @@ ul {
             /* 只有第一層是靠左對齊*/
         }
 
+    ul.drop-down-menu li:hover {
+                /* 滑鼠滑入按鈕變色*/
+                background-color: #105190;
+                color: #fff;
+            }
+
         ul.drop-down-menu button {
             background-color: #fff;
             color: #333;
@@ -139,11 +145,7 @@ ul {
             border-radius: 5px;
         }
 
-            ul.drop-down-menu button:hover {
-                /* 滑鼠滑入按鈕變色*/
-                background-color: #105190;
-                color: #fff;
-            }
+        
 
         ul.drop-down-menu li:hover > button {
             /* 滑鼠移入次選單上層按鈕保持變色*/
