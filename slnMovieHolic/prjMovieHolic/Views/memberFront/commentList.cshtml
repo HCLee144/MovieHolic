@@ -14,14 +14,15 @@
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
                                 <h3 class="welcome">歡迎，@Model.Member.FName</h3>
+                                <hr />
                                 <div class="pad">
                                     <ul class="nav">
                                         <li>@Html.ActionLink("會員資料", "memberList","memberFront",new {id=Model.Member.FMemberId},null)</li>
                                         <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的收藏（"+$"{Model.MemberActionNow.Count}"+"）", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的優惠券（"+$"{Model.CouponList.Count}"+"）", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li><a class="selected">我的評論</a></li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>

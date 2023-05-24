@@ -1,4 +1,5 @@
-﻿using prjMovieHolic.Models;
+﻿using Microsoft.Extensions.FileProviders;
+using prjMovieHolic.Models;
 
 namespace prjMovieHolic.ViewModels
 {
@@ -28,30 +29,9 @@ namespace prjMovieHolic.ViewModels
 
         public string? FImagePath { get; set; }
 
-        public virtual TRating? FRating { get; set; }
+        public int? FPrice { get; set; }
 
-        public virtual TSeries? FSeries { get; set; }
-
-        public virtual ICollection<TActorList> TActorLists { get; set; } = new List<TActorList>();
-
-        public virtual ICollection<TArticle> TArticles { get; set; } = new List<TArticle>();
-
-        public virtual ICollection<TCountryList> TCountryLists { get; set; } = new List<TCountryList>();
-
-        public virtual ICollection<TDirectorList> TDirectorLists { get; set; } = new List<TDirectorList>();
-
-        public virtual ICollection<TLanguageList> TLanguageLists { get; set; } = new List<TLanguageList>();
-
-        public virtual ICollection<TMemberAction> TMemberActions { get; set; } = new List<TMemberAction>();
-
-        public virtual ICollection<TSession> TSessions { get; set; } = new List<TSession>();
-
-        public virtual ICollection<TShortCmt> TShortCmts { get; set; } = new List<TShortCmt>();
-
-        public virtual ICollection<TTypeList> TTypeLists { get; set; } = new List<TTypeList>();
-
-        public List<TMovie>? NowShowingMovies { get; set; }
-        public List<TMovie>? UpcomingMovies { get; set; }
+        public IFormFile? image { get; set; }
 
     }
 }

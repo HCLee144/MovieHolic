@@ -10,6 +10,7 @@ namespace prjMovieHolic.ViewModels
 		public List<TCouponList> CouponListExpired { get; set; }
 		public List<TCouponList> CouponListUsed { get; set; }
 		public TMovie Movie { get; set; }
-	}
+        public List<TMemberAction> MemberActionNow { get; set; }
+    }
 
 }

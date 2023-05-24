@@ -55,7 +55,7 @@
 
                                                 if (ViewBag.Login == true)
                                                 {
-                                                <li> @Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)</li>
+                                                <li> @Html.ActionLink("會員中心", "memberIndex","memberFront",new{id=ViewBag.userId},null)</li>
                                                 <li class="end">@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                                 }
                                                 else
