@@ -43,7 +43,7 @@ namespace prjMovieHolic.Controllers
             {
                 total_page_number = Math.Ceiling(q.Count() / 5m);
                 total_ratings_average_note = q.Average(t => t.FRate);
-                var q2 = q.Skip(5 * pageNumber - 1).Take(5);
+                var q2 = q.OrderByDescending(t=>t.FCreatedTime).Skip(5 * pageNumber - 1).Take(5);
                 foreach (var item in q2)
                 {
                     CCmtViewModel cCmt = new CCmtViewModel();
