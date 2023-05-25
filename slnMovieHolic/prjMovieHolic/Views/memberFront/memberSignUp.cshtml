@@ -38,7 +38,9 @@
                                          <th>確認密碼</th>
                                          <td><input type="password" name="FPasswordCheck" id="FPasswordCheck" value="" size="30"required>
                                                 <div id="passwordCheckVerify" class="verify"></div>
-                                            </td>
+
+                                          </td>
+
                                      </tr>
                                       <tr>
                                           <th>姓名</th>
@@ -62,7 +64,7 @@
                                     </tr>
                                     <tr>
                                         <th>Email</th>
-                                        <td><input type="text" name="FEmail" value="" size="20" id="FEmail" required></td>
+                                        <td><input type="text" name="FEmail" value="" size="30" id="FEmail" required></td>
                                     </tr>
                                     <input type="hidden" name="FCreatedDate" value="@DateTime.Now" />
                                      <input type="hidden" name="FMembershipId" value="3" />
@@ -70,7 +72,9 @@
 
                                 </table>
                                 <hr />
-                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
+                                    <input type="checkbox" name="" id="displayPassword">
+                                    <label style="font-size:15px" for="displayPassword">顯示密碼</label><br />
+                                    <input type="checkbox" name="" id="rule" required><label style="font-size:15px" for="rule">我同意</label><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit">
                                         <input class="ourButton" type="submit" id="submit" value="送出">
@@ -222,6 +226,22 @@
                 alert(data.message);
             }
         })
+
+        const displayPassword = document.getElementById('displayPassword');
+        displayPassword.addEventListener('click', () => {
+            if (FPassword.getAttribute('type') === 'password' && FPasswordCheck.getAttribute('type') === 'password') {
+                FPassword.setAttribute('type', 'text')
+                FPasswordCheck.setAttribute('type', 'text')
+            }
+            else {
+                FPassword.setAttribute('type', 'password')
+                FPasswordCheck.setAttribute('type', 'password')
+            }
+
+        })
+
+
+
 
         //Demo
         SignUpDemo.addEventListener('click', function () {

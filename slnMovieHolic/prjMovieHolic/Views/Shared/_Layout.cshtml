@@ -30,22 +30,7 @@
                                     <nav>
                                         <ul id="menu">
 
-@*                                        @{
-                                            if (ViewBag.Login == true)
-                                            {
-                                                <li id="active">@Html.ActionLink("快速訂票","listsession","OrderFront",new{movieid=1},null)</li>
-                                                <li><a href="#">最新消息</a></li>
-                                                <li><a href="Services.html">電影資訊</a></li>
-                                                <li>@Html.ActionLink("會員中心", "memberList","memberFront",new{id=ViewBag.userId},null)</li>
-                                            }
-                                            else
-                                            {
-                                                <li>@Html.ActionLink("快速訂票", "memberLogin","memberFront")</li>
-                                                <li><a href="#">最新消息</a></li>
-                                                <li><a href="Services.html">電影資訊</a></li>
-                                                <li>@Html.ActionLink("會員登入", "memberLogin","memberFront")</li>
-                                            }
-                                        }*@
+
                                         @*<li id="active">@Html.ActionLink("快速訂票","listsession","OrderFront",new{movieid=1},null)</li>*@
                                             <li><a href="#">最新消息</a></li>
                                         <li><a href="/MovieFront/MovieIndex">電影資訊</a></li>
@@ -55,8 +40,23 @@
 
                                                 if (ViewBag.Login == true)
                                                 {
-                                                <li> @Html.ActionLink("會員中心", "memberIndex","memberFront",new{id=ViewBag.userId},null)</li>
-                                                <li class="end">@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
+                                                <li></li>
+                                                <li>
+                                                    <ul class="end">
+                                                        <li>
+                                                            <a>歡迎！@ViewBag.userName</a>
+                                                            <ul class="endend">
+                                                                <li>
+                                                                    <button><a href="@Url.Action("memberIndex", "memberFront",new{ id=ViewBag.userId})" style="color:black; width:60px">會員中心</a></button>
+                                                                </li>
+                                                                <li>
+                                                                    <button><a href="@Url.Action("memberLogout", "memberFront")" style="color:black; width:60px">登出</a></button>
+                                                                </li>
+
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
                                                 }
                                                 else
                                                 {

@@ -9,9 +9,11 @@ namespace prjMovieHolic.Controllers
         public void sessionCheck()
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName=HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
             var isUserLoggedIn = userId != null;
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
+            ViewBag.userName = userName;
 
         }
     }
