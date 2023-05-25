@@ -15,7 +15,7 @@
                             <div class="logInBoxSmall">
                                 <form asp-action="memberLogin" id="yourForm">
                                 <h6>帳號</h6>
-                                    <input type="text" name="txtAccount" id="txtAccount" value="">
+                                    <input type="text" name="txtAccount" id="txtAccount" value="" placeholder="請輸入註冊時的電話號碼">
                                 <h6>密碼</h6>
                                     <input type="password" name="txtPassword" id="txtPassword" value="">
                                     <p> @Html.ActionLink("忘記密碼？","forgetPassword","memberFront")   </p>
@@ -27,11 +27,11 @@
                                     <input class="ourButton" type="button" id="loginDemo2" value="Demo2" />
                                     <input class="ourButton" type="button" id="loginDemo3" value="Demo3" />
                                 <hr>
-                                    <span>還不是會員嗎？</span>@Html.ActionLink("註冊會員","memberSignUp","memberFront")
+                                    <p>————————OR————————</p>
                                 </form>
                                 <hr>
                                 <hr>
-                                <p>————————OR————————</p>
+                                <span>還不是會員嗎？</span>@Html.ActionLink("註冊會員","memberSignUp","memberFront")
                                 <hr>
                                 <a href=""><img src="~/images/icons8-facebook-48.png" alt=""></a>
                                 <a href=""><img src="~/images/icons8-twitter-circled-48.png" alt=""></a>
@@ -76,7 +76,7 @@
             console.log(data)
             if (!data.success) {
                 // 登入失敗
-                alert('登入失敗')
+                alert('您輸入的帳號或密碼錯誤，請重新輸入')
             }
         })
 
@@ -113,8 +113,8 @@
             txtPassword.value = 'Xpe49cFb';
         })
         loginDemo2.addEventListener('click', function () {
-            txtAccount.value = '0923906031';
-            txtPassword.value = '8M43Td24';
+            txtAccount.value = '0983556961';
+            txtPassword.value = 'mLskcBp13';
         })
         loginDemo3.addEventListener('click', function () {
             txtAccount.value = '0983556965';

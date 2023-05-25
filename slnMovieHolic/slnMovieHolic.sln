@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "prjMovieHolic", "prjMovieHolic\prjMovieHolic.csproj", "{DA50BD5D-09AD-4C77-A8E4-E3FDB0985E51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieFrontController.Tests", "MovieFrontController.Tests\MovieFrontController.Tests.csproj", "{B1A376F7-AAA6-4F1E-A79B-5D704759DEFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieFrontController.Tests", "MovieFrontController.Tests\MovieFrontController.Tests.csproj", "{B1A376F7-AAA6-4F1E-A79B-5D704759DEFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

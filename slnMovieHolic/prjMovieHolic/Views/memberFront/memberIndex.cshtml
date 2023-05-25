@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@latest/tabler-icons.min.css">
 
 <div id="page2">
     <div class="body1">
@@ -24,7 +25,21 @@
                             </ul>
                         </div>
                         <div class="memberIndexTop">
-                            <img src="/images/白金會員.png" alt="">
+                            @{
+                                switch (Model.Member.FMembershipId)
+                                {
+                                    case 1:
+                                        @:<img src="/images/membership/diamond.png" alt="" width="10">
+                                        break;
+                                    case 2:
+                                        @:<img src="/images/membership/medal.png" alt="" width="10">
+                                        break;
+                                    case 3:
+                                        @:<img src="/images/membership/user.png" alt="" width="10">
+                                        break;
+
+                                }
+                            }
                             <div class="memberIndexTopName">
                                 <h5>@Model.Member.FMembership.FMembershipName</h5>
                                 <h3>Hi！@Model.Member.FName</h3>
@@ -51,7 +66,7 @@
                                 @{
                                     int Membership2 = 5000 - Model.TotalPrice;
                                     int Membership3 = 10000 - Model.TotalPrice;
-                                    if (Model.Member.FMembershipId==3)
+                                    if (Model.Member.FMembershipId == 3)
                                     {
                                         <h4>12/31前再消費 @Membership2 元，即可升等為 黃金會員</h4>
                                     }
