@@ -28,14 +28,22 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListSession(int? movieID)
         {
-            var session = movieContext.TSessions.Where(x => x.FMovieId == 36).ToList();
-            string x = "";
+            ClearAllSession();
+			//先判斷是否有場次
+			var session = movieContext.TSessions.Where(s => s.FMovieId == movieID).
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).ToList();
+            if (session == null)
+                return RedirectToAction("Index", "Home");
+
+
             //判斷會員登入或會員中心
             bool verify_checkLogIn = sessionCheck();
 
             if (movieID == null)
                 return RedirectToAction("Index", "Home");
-            var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m => m.TTypeLists).ThenInclude(t => t.FType).Include(m => m.TDirectorLists).ThenInclude(t => t.FDirector).Include(m => m.TActorLists).ThenInclude(t => t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
+            var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m => m.TTypeLists).
+                ThenInclude(t => t.FType).Include(m => m.TDirectorLists).ThenInclude(t => t.FDirector).
+                Include(m => m.TActorLists).ThenInclude(t => t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
 
             if (movie == null)
                 return RedirectToAction("Index", "Home");
