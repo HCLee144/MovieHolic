@@ -8,5 +8,6 @@ namespace prjMovieHolic.ViewModels
         public List<TCouponList> CouponList { get; set; }
         public List<TMemberAction> MemberActionNow { get; set; }
         public int TotalPrice { get; set; }
+        public TCouponList couponList { get; set; }
     }
 }

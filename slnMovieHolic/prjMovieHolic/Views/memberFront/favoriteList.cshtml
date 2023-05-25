@@ -94,7 +94,7 @@
 
                                                                 <div><a class="buyNow" href="@Url.Action("ListSession", "OrderFront",new{movieID=item.FMovieId})">Buy Now</a></div>
                                                                 <div>
-                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
+                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite('@item.FMemberId','@item.FMovieId')" data-movie-id="@item.FMovieId">❤</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -156,7 +156,7 @@
 
                                                                 <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
                                                                 <div>
-                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
+                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite('@item.FMemberId','@item.FMovieId')" data-movie-id="@item.FMovieId">❤</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -217,7 +217,7 @@
 
                                                                 <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
                                                                 <div>
-                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite()" data-movie-id="@item.FMovieId">❤</p>
+                                                                    <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite('@item.FMemberId','@item.FMovieId')" data-movie-id="@item.FMovieId">❤</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -268,9 +268,9 @@
         const formdialogCancel = document.getElementById('IamDialogCancel');
         const btnCloseDialogCancel = document.getElementById('closeDialogCancel');
 
-        function cancelFavorite() {
-            var memberId = @Model.Member.FMemberId;
-            var movieId = document.getElementById('heart').getAttribute('data-movie-id');
+        function cancelFavorite(memberId,movieId) {
+            //var memberId = @Model.Member.FMemberId;
+            //var movieId = document.getElementById('heart').getAttribute('data-movie-id');
             
             $.ajax({
                 url: '/memberFront/favoriteCancel',
