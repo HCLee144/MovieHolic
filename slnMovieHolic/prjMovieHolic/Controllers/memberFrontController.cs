@@ -77,9 +77,17 @@ namespace prjMovieHolic.Controllers
                 var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
                 if (accountCheck == false)
                 {
-                    _movieContext.TMembers.Add(member);
-                    _movieContext.SaveChanges();
-                    return RedirectToAction("memberLogin");
+                _movieContext.TMembers.Add(member);
+                _movieContext.SaveChanges();
+                TCouponList couponList = new TCouponList();
+                couponList.FCouponTypeId = (int)DateTime.Now.Month;
+                couponList.FMemberId=member.FMemberId;
+                couponList.FIsUsed = false;
+                couponList.FReceiveDate= DateTime.Now;
+                couponList.FOrderId = null;
+                _movieContext.TCouponLists.Add(couponList);
+                _movieContext.SaveChanges();
+                return RedirectToAction("memberLogin");
                 }
             //}
             return View();
