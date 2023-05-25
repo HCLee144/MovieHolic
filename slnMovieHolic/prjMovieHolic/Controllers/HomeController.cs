@@ -26,12 +26,14 @@ namespace prjMovieHolic.Controllers
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now)
+                .Include(t => t.TSessions)  // 05-25 Stanley
                 .ToListAsync();
 
             var upcomingMovies = await _context.TMovies
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart > now)
+                .Include(t => t.TSessions)  // 05-25 Stanley
                 .ToListAsync();
             //登入用
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
