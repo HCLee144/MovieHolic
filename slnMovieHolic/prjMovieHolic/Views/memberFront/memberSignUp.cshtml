@@ -69,11 +69,12 @@
                                      <input type="hidden" name="FNickName" value="" />
                                 </table>
                                 <hr />
-                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;" id="rule">個人資料使用條款</a>
+                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit">
                                         <input class="ourButton" type="submit" id="submit" value="送出">
                                         <input class="ourButton" type="button" id="SignUpDemo" value="Demo" />
+                                        <input class="ourButton" type="button" id="SignUpDemo2" value="Demo2" />
                                     </div>
                                 </form>
                             </div>
@@ -217,15 +218,26 @@
 
         //Demo
         SignUpDemo.addEventListener('click', function () {
-           FPhone.value = '0983556965'
-           FPassword.value = '5CUSfTPO';
-           FPasswordCheck.value = '5CUSfTPO';
-           FName.value ='安妮亞';
+           FPhone.value = '0983556961'
+            FPassword.value = 'mLskcBp13';
+            FPasswordCheck.value = 'mLskcBp13';
+           FName.value ='洛伊德';
            radioFemale.checded = true;
-           FBirthDate.value = '2003/08/19';
-           FEmail.value = 'anya@gmail.com';
-           FIdcardNumber.value='G298546321';
-           
+           FBirthDate.value = '1975/08/19';
+           FEmail.value = 'roid@gmail.com';
+           FIdcardNumber.value='A198546321'; 
+        })
+
+        const SignUpDemo2 = document.querySelector('#SignUpDemo2');
+        SignUpDemo2.addEventListener('click', function () {
+            FPhone.value = '0983556965'
+            FPassword.value = 'mLskcBp';
+            FPasswordCheck.value = 'mLskcBp1';
+            FName.value = '洛伊德';
+            radioFemale.checded = true;
+            FBirthDate.value = '1975/08/19';
+            FEmail.value = 'roid@gmail.com';
+            FIdcardNumber.value = 'A198546321';
         })
     </script>
 

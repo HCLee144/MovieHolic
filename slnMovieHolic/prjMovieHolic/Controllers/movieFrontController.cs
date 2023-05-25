@@ -85,6 +85,8 @@ namespace prjMovieHolic.Controllers
             var tDirectorListNames = _context.TDirectorLists.Where(t => t.FMovieId == id).Select(t => t.FDirector.FNameCht).ToArray();
             var tActorListNames = _context.TActorLists.Where(t => t.FMovieId == id).Select(t => t.FActor.FNameCht).ToArray();
 
+
+
             CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 tMovie = tMovie,
@@ -101,7 +103,9 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
 
-
+            //婷
+            string[] paths=getImagesPath(tMovie.FImagePath);
+            movieViewModel.movieImagePaths = paths;
 
             return View(movieViewModel);
         }
@@ -121,7 +125,26 @@ namespace prjMovieHolic.Controllers
           return (_context.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
         }
 
-      
+        [NonAction]
+        string[] getImagesPath(string path)
+        {
+            try
+            {
+                string x = "wwwroot/" + path;
+                string[] paths = Directory.GetFiles(x);
+                string[] newPaths = new string[paths.Length];
+                for(int i =0; i<paths.Length;i++)
+                {
+                    newPaths[i]=paths[i].Replace("\\", "/").Replace("wwwroot","");
+                }
+                return newPaths;
+            }
+            catch
+            {
+                return null;
+            }
+            
+        }
 
     }
 
