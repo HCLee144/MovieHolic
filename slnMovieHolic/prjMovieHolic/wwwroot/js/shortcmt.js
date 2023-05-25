@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'loader'
+    '../js/loader'
 ], function ($) {
     'use strict';
 
