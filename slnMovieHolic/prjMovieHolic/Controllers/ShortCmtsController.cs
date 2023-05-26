@@ -43,11 +43,12 @@ namespace prjMovieHolic.Controllers
             }
             else
             {
-                //string controller = "moviefront";
-                //string view = "movieDetails";
-                
-                //HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
-                //HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+                string controller = "moviefront";
+                string view = "movieDetails";
+                int parameter = movieID;
+                HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+                HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+                HttpContext.Session.SetInt32(CDictionary.SK_PARAMETER, parameter);
                 return RedirectToAction("memberLogin", "MemberFront", null);
             }
         }
