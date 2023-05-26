@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "MovieHolic快速訂票";
 }
 @section Styles{
     <style>
@@ -142,6 +143,7 @@
                                         for (int i = 1; i <= 20; i++)
                                         {
                                             <div class="rowSit">
+                                            
                                                 @for (int j = 1; j <= 20; j++)
                                                 {
                                                     int seatName = (i - 1) * 20 + j;
