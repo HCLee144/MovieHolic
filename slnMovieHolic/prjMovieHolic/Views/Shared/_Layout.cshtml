@@ -191,6 +191,12 @@
             });
         });
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        //更新線上人數
+        var connection = new signalR.HubConnectionBuilder().withUrl("/FrontHub").build().start();  //0526-Stanley
+    </script>
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>

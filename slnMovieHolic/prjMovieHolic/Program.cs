@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using prjMovieHolic.Hubs;
 using prjMovieHolic.Models;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
@@ -19,6 +20,10 @@ builder.Services.AddDbContext<MovieContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("MovieConnection")));
 
+
+builder.Services.AddSignalR();   //0526-Stanley 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +40,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+app.MapHub<FrontHub>("/FrontHub"); //0526-Stanley 
+app.MapHub<BackHub>("/BackHub"); //0526-Stanley 
 
 app.UseAuthorization();
 
