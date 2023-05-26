@@ -1,13 +1,17 @@
 ﻿@model prjMovieHolic.Models.TShortCmt
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "MovieHolic 移除短評";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<!-- Bootstrap ICONS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
-<h1>Delete</h1>
+<h1>移除短評</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>確定要移除這則評論嗎？</h3>
 <div>
     <h4>TShortCmt</h4>
     <hr />
@@ -58,7 +62,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="FCmtid" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="刪除" class="btn btn-outline-danger" /> |
+        <button type="button" cleass=" btn bnt-outline-primary">取消</button>
     </form>
 </div>
