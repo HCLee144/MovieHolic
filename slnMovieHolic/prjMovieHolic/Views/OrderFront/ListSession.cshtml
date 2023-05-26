@@ -4,6 +4,9 @@
 @{
 }
 @model prjMovieHolic.ViewModels.CListSessionViewModel
+@{
+    ViewData["Title"] = "MovieHolic快速訂票";
+}
 @section Styles{
     <style>
         .day {
@@ -13,6 +16,74 @@
         .ccc {
             border: solid
         }
+
+        .chooseTime {
+            border-bottom: 1px solid silver;
+            width: 430px;
+            overflow: auto;
+        }
+
+            .chooseTime::-webkit-scrollbar {
+                background: transparent;
+                height: 6px;
+            }
+
+            .chooseTime::-webkit-scrollbar-thumb {
+                background-color: silver;
+            }
+
+            .chooseTime li {
+                width: 70px;
+                height: 20px;
+                text-align: center;
+                cursor: pointer;
+                font-size:26px /*婷婷*/
+            }
+
+                .chooseTime li:hover {
+                    background-color: #10a5d6;
+                    color: #eaeaea;
+                }
+
+        .pickDate {
+            display: flex;
+            border-bottom: 1px solid silver;
+            margin-left: 30px;
+            overflow: auto;
+            max-height: 150px;
+            max-width: 430px;
+        }
+
+            .pickDate::-webkit-scrollbar {
+                background: transparent;
+                height: 6px;
+            }
+
+            .pickDate::-webkit-scrollbar-thumb {
+                background-color: silver;
+            }
+
+            .pickDate li {
+                border: 1px solid silver;
+                padding: 5px;
+                margin-right: 15px;
+                margin-bottom: 5px;
+                font-size: 22px; /*婷婷*/
+                height: 40px;
+                width: 90px;
+                text-align: center;
+            }
+
+                .pickDate li:hover {
+                    background-color: #10a5d6;
+                    color: #eaeaea;
+                }
+
+            .pickDate a {
+                text-decoration: none;
+                cursor: pointer;
+                /*滑鼠手手回來了*/
+            }
     </style>
 }
 
@@ -45,9 +116,7 @@
                                 <div>
                                     <figure>
                                         <input type="hidden" id="movieID" value="@Model.MovieID" />
-                                       
-                                        @{string s = Model.MovieID.ToString() + ".jpg";}
-                                        <img class="orderMovieImage" src="~/images/moviePosters/@Model.MovieID/@s" alt="">
+                                        <img class="orderMovieImage" src="../@Model.tMovie.FPosterPath" alt="">
                                         <ul>                                      
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">類型</span>@Model.TypeListNames</li>
@@ -60,11 +129,11 @@
                                     <div>
                                         <ul class="pickDate">
                                         @{
-                                              for (int i = 0; i < 5; i++)
+                                              for (int i = 0; i < 7; i++)
                                               {
                                                   string showDay = $"day{i + 1}";
                                                   <a>
-                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.Where(s=>s.FStartTime>DateTime.Now.AddDays(1)).FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
+                                                  <li id="@showDay" class="day">@Model.tMovie.TSessions.Where(s=>s.FStartTime.Date>DateTime.Now).FirstOrDefault().FStartTime.Date.AddDays(i).ToString("MM/dd")<br>@Model.weekDays[i]</li>
                                                   </a>
                                              }
                                         }

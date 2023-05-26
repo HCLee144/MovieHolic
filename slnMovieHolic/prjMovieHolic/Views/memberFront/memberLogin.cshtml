@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "memberLogin";
 }
+
+
+@Html.AntiForgeryToken()
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -15,23 +18,24 @@
                             <div class="logInBoxSmall">
                                 <form asp-action="memberLogin" id="yourForm">
                                 <h6>帳號</h6>
-                                    <input type="text" name="txtAccount" id="txtAccount" value="">
+                                    <input type="text" name="txtAccount" id="txtAccount" value="" placeholder="請輸入註冊時的電話號碼">
                                 <h6>密碼</h6>
                                     <input type="password" name="txtPassword" id="txtPassword" value="">
-                                    <p> @Html.ActionLink("忘記密碼？","forgetPassword","memberFront")   </p>
-                                    <hr />
+                                    <br />
+                                    <input type="checkbox" name="" id="displayPassword"><label style="font-size:15px" for="displayPassword">顯示密碼</label>
+                                    <span> @Html.ActionLink("忘記密碼？","forgetPassword","memberFront")   </span>
                                     <hr />
                                 @*<input type="checkbox" name="" id=""><span>保持登入</span>*@
                                     <a href=""><input class="loginButton" type="submit" id="submit" value="登入" /></a>
-                                    <input class="ourButton" type="button" id="loginDemo" value="Demo" />
-                                    <input class="ourButton" type="button" id="loginDemo2" value="Demo2" />
-                                    <input class="ourButton" type="button" id="loginDemo3" value="Demo3" />
+                                    <input class="ourButton" type="button" id="loginDemo" value="D報告用" />
+                                    <input class="ourButton" type="button" id="loginDemo2" value="D日常用" />
+                                    <input class="ourButton" type="button" id="loginDemo3" value="D隨便用" />
                                 <hr>
-                                    <span>還不是會員嗎？</span>@Html.ActionLink("註冊會員","memberSignUp","memberFront")
+                                    <p>————————OR————————</p>
                                 </form>
                                 <hr>
                                 <hr>
-                                <p>————————OR————————</p>
+                                <span>還不是會員嗎？</span>@Html.ActionLink("註冊會員","memberSignUp","memberFront")
                                 <hr>
                                 <a href=""><img src="~/images/icons8-facebook-48.png" alt=""></a>
                                 <a href=""><img src="~/images/icons8-twitter-circled-48.png" alt=""></a>
@@ -76,7 +80,7 @@
             console.log(data)
             if (!data.success) {
                 // 登入失敗
-                alert('登入失敗')
+                alert('您輸入的帳號或密碼錯誤，請重新輸入')
             }
         })
 
@@ -105,16 +109,25 @@
 
         //});
 
-
+        const displayPassword=document.getElementById('displayPassword');
+        displayPassword.addEventListener('click',()=>{
+            if(txtPassword.getAttribute('type')==='password'){
+             txtPassword.setAttribute('type','text')
+            }
+            else{
+                txtPassword.setAttribute('type', 'password')
+            }
+            
+        })
 
 
         loginDemo.addEventListener('click', function () {
             txtAccount.value = '0923906031';
-            txtPassword.value = 'Xpe49cFb';
+            txtPassword.value = '8M43Td24';
         })
         loginDemo2.addEventListener('click', function () {
             txtAccount.value = '0923906031';
-            txtPassword.value = '8M43Td24';
+            txtPassword.value = 'Xpe49cFb';
         })
         loginDemo3.addEventListener('click', function () {
             txtAccount.value = '0983556965';

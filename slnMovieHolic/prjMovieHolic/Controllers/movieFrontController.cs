@@ -27,18 +27,22 @@ namespace prjMovieHolic.Controllers
                 .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now)
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
+                .Include(t=>t.TSessions)  // 05-25 Stanley
                 .ToListAsync();
 
             var upcomingMovies = await _context.TMovies
                 .Where(m => m.FScheduleStart > now)
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
+                .Include(t => t.TSessions)  // 05-25 Stanley
                 .ToListAsync();
 
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
             var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
+            ViewBag.userName = userName;
 
             var nowShowingMovieIds = nowShowingMovies.Select(m => m.FId).ToList();
             var IsFavoriteNow = _context.TMemberActions.Where(m => m.FMemberId == userId & nowShowingMovieIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
@@ -56,7 +60,7 @@ namespace prjMovieHolic.Controllers
             //已登入用
             //sessionCheck();
             string controller = "movieFront";
-            string view = "MovieIndex";
+            string view = "MovieIndex"; 
             //string json=JsonSerializer.Serialize(new { controller, view });
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
@@ -65,6 +69,7 @@ namespace prjMovieHolic.Controllers
         }
 
         // GET: movieFront/Details?id=
+
         public async Task<IActionResult> MovieDetails(int? id)
         {
             if (id == null || _context.TMovies == null)
@@ -85,6 +90,8 @@ namespace prjMovieHolic.Controllers
             var tDirectorListNames = _context.TDirectorLists.Where(t => t.FMovieId == id).Select(t => t.FDirector.FNameCht).ToArray();
             var tActorListNames = _context.TActorLists.Where(t => t.FMovieId == id).Select(t => t.FActor.FNameCht).ToArray();
 
+
+
             CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 tMovie = tMovie,
@@ -97,31 +104,17 @@ namespace prjMovieHolic.Controllers
             //已登入用
             sessionCheck();
             string controller = "movieFront";
-            string view = "MovieIndex";
+            string view = "MovieDetails";
+            int? parameter =id;
             //string json=JsonSerializer.Serialize(new { controller, view });
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+            HttpContext.Session.SetInt32(CDictionary.SK_PARAMETER, parameter ?? 0);
 
-            return View(movieViewModel);
-        }
+            //婷
+            string[] paths=getImagesPath(tMovie.FImagePath);
+            movieViewModel.movieImagePaths = paths;
 
-        public async Task<IActionResult> GetMoviesByType(string? type)
-        {
-            // Find the type IDs associated with the given type name
-            var typeIds = await _context.TTypeLists
-                .Where(t => t.FType.FNameCht == type)
-                .Select(t => t.FMovieId)
-                .ToListAsync();
-
-            // Get all movies that have one of the found type IDs
-            var tMovies = await _context.TMovies
-                .Where(m => typeIds.Contains(m.FId))
-                .ToListAsync();
-
-            CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
-            {
-                tMovies = tMovies,
-            };
             return View(movieViewModel);
         }
         string getNames(Array data)
@@ -137,5 +130,27 @@ namespace prjMovieHolic.Controllers
         {
           return (_context.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
         }
+
+        [NonAction]
+        string[] getImagesPath(string path)
+        {
+            try
+            {
+                string x = "wwwroot/" + path;
+                string[] paths = Directory.GetFiles(x);
+                string[] newPaths = new string[paths.Length];
+                for(int i =0; i<paths.Length;i++)
+                {
+                    newPaths[i]=paths[i].Replace("\\", "/").Replace("wwwroot","");
+                }
+                return newPaths;
+            }
+            catch
+            {
+                return null;
+            }
+            
+        }
+
     }
 }

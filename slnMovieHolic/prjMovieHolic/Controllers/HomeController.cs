@@ -26,20 +26,24 @@ namespace prjMovieHolic.Controllers
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart <= now && m.FScheduleEnd >= now)
+                .Include(t => t.TSessions)  // 05-25 Stanley
                 .ToListAsync();
 
             var upcomingMovies = await _context.TMovies
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
                 .Where(m => m.FScheduleStart > now)
+                .Include(t => t.TSessions)  // 05-25 Stanley
                 .ToListAsync();
             //登入用
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
             var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
+            ViewBag.userName = userName;
 
-            
+
             var nowShowingMovieIds = nowShowingMovies.Select(m => m.FId).ToList();
             var IsFavoriteNow = _context.TMemberActions.Where(m => m.FMemberId == userId & nowShowingMovieIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
 
@@ -52,7 +56,7 @@ namespace prjMovieHolic.Controllers
                 isFavoriteNow = IsFavoriteNow,
                 isFavotiteComing=IsFavoriteComing,
             };
-            //登入用
+      
            
             //todo 製作Session把Action和Controller存進去
             string controller = "Home";

@@ -1,0 +1,65 @@
+﻿@model prjMovieHolic.Models.TShortCmt
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>TShortCmt</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FCmtid" />
+            <div class="form-group">
+                <label asp-for="FMovieId" class="control-label"></label>
+                <select asp-for="FMovieId" class="form-control" asp-items="ViewBag.FMovieId"></select>
+                <span asp-validation-for="FMovieId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FMemberId" class="control-label"></label>
+                <select asp-for="FMemberId" class="form-control" asp-items="ViewBag.FMemberId"></select>
+                <span asp-validation-for="FMemberId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FTitle" class="control-label"></label>
+                <input asp-for="FTitle" class="form-control" />
+                <span asp-validation-for="FTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FRate" class="control-label"></label>
+                <input asp-for="FRate" class="form-control" />
+                <span asp-validation-for="FRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FCreatedTime" class="control-label"></label>
+                <input asp-for="FCreatedTime" class="form-control" />
+                <span asp-validation-for="FCreatedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FEditedTime" class="control-label"></label>
+                <input asp-for="FEditedTime" class="form-control" />
+                <span asp-validation-for="FEditedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FVisible" class="control-label"></label>
+                <input asp-for="FVisible" class="form-control" />
+                <span asp-validation-for="FVisible" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

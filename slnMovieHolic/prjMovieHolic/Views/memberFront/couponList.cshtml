@@ -38,8 +38,8 @@
 										<li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-										<li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-										<li class="selected"><a>我的優惠券</a></li>
+										<li>@Html.ActionLink("我的收藏（"+$"{Model.MemberActionNow.Count}"+"）", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+										<li class="selected"><a>我的優惠券（@Model.CouponList.Count）</a></li>
 										<li>@Html.ActionLink("我的評論", "commentList","memberFront",new { id=Model.Member.FMemberId },null)</li>
 										<li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
 									</ul>
@@ -72,7 +72,7 @@
 															</div>
 															<div class="couponRule">
 																<a href="">使用規則</a><hr><hr><hr><hr><hr><hr />
-																<a href="@Url.Action("ListSession", "OrderFront",new{ movieID=1})">立即使用 > </a>
+																<a href="@Url.Action("MovieIndex", "movieFront",new{ movieID=1})">立即使用 > </a>
 															</div>
 														</div>
 

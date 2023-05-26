@@ -1,178 +1,201 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjMovieHolic.Models;
+using prjMovieHolic.ViewModels;
 
 namespace prjMovieHolic.Controllers
 {
-    public class movieBackController : Controller
+    public class movieBackController : BackSuperController
     {
         private readonly MovieContext _db;
+        private readonly IWebHostEnvironment _enviro;
 
-        public movieBackController(MovieContext context)
+        public movieBackController(MovieContext context, IWebHostEnvironment p)
         {
             _db = context;
+            _enviro = p;
         }
 
-        // GET: movieBack
-        public async Task<IActionResult> Index()
+        public IActionResult MovieView(int? messageCode)
         {
-            var movieContext = _db.TMovies.Include(t => t.FRating).Include(t => t.FSeries);
-            return View(await movieContext.ToListAsync());
-        }
-
-        // GET: movieBack/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _db.TMovies == null)
-            {
-                return NotFound();
-            }
-
-            var tMovie = await _db.TMovies
-                .Include(t => t.FRating)
-                .Include(t => t.FSeries)
-                .FirstOrDefaultAsync(m => m.FId == id);
-            if (tMovie == null)
-            {
-                return NotFound();
-            }
-
-            return View(tMovie);
-        }
-
-        // GET: movieBack/Create
-        public IActionResult Create()
-        {
-            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId");
-            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId");
+            if (messageCode != null)
+                ViewBag.MessageCode = messageCode;
             return View();
         }
 
-        // POST: movieBack/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public IActionResult queryMovieByName(string movieName)
+        {
+            try
+            {
+                var movie = _db.TMovies.Where(m => m.FNameCht == movieName).FirstOrDefault();
+                return Json(movie);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
+
+        }
+
+        public IActionResult loadRecentMovies()
+        {
+            try
+            {
+                var movies = _db.TMovies.AsEnumerable().OrderBy(movie => movie.FScheduleStart)
+                                .Where(movie => movie.FScheduleEnd >= DateTime.Now).Select(movie => movie.FNameCht);
+
+                return Json(movies);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FId,FSeriesId,FRatingId,FNameCht,FNameEng,FScheduleStart,FScheduleEnd,FShowLength,FInteroduce,FTrailerLink,FPosterPath,FImagePath,FPrice")] TMovie tMovie)
+        public IActionResult Edit(CMovieBackViewModel edition)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _db.Add(tMovie);
-                await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TMovie movie = _db.TMovies.Where(m => m.FId == edition.FId).FirstOrDefault();
+                if (movie != null)
+                {
+                    if (edition.FNameCht != null)
+                        movie.FNameCht = edition.FNameCht;
+                    if (edition.FNameEng != null)
+                        movie.FNameEng = edition.FNameEng;
+                    movie.FScheduleStart = edition.FScheduleStart;
+                    movie.FScheduleEnd = edition.FScheduleEnd;
+                    movie.FRatingId = edition.FRatingId;
+                    if (edition.FShowLength != null)
+                        movie.FShowLength = edition.FShowLength;
+                    if (edition.FInteroduce != null)
+                        movie.FInteroduce = edition.FInteroduce;
+                    if (edition.FTrailerLink != null)
+                        movie.FTrailerLink = edition.FTrailerLink;
+                    if (edition.FPrice != null)
+                        movie.FPrice = edition.FPrice;
+                    if (edition.image != null)
+                    {
+                        if (movie.FPosterPath != null)
+                        {
+                            string path = _enviro.WebRootPath + "/" + movie.FPosterPath;
+                            using (var fileStream = new FileStream(path, FileMode.Create))
+                            {
+                                edition.image.CopyTo(fileStream);
+                            }
+                        }
+                        else
+                        {
+                            string photoName = $"images/moviePosters/{movie.FId}/" + Guid.NewGuid().ToString() + ".jpg";
+                            string path = _enviro.WebRootPath + "/" + photoName;
+                            using (var fileStream = new FileStream(path, FileMode.Create))
+                            {
+                                edition.image.CopyTo(fileStream);
+                            }
+                            movie.FPosterPath = photoName;
+                        }
+                    }
+                    _db.SaveChanges();
+                }
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 2 });
             }
-            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId", tMovie.FRatingId);
-            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId", tMovie.FSeriesId);
-            return View(tMovie);
+            catch (Exception e)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
+
+
         }
 
-        // GET: movieBack/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _db.TMovies == null)
-            {
-                return NotFound();
-            }
-
-            var tMovie = await _db.TMovies.FindAsync(id);
-            if (tMovie == null)
-            {
-                return NotFound();
-            }
-            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId", tMovie.FRatingId);
-            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId", tMovie.FSeriesId);
-            return View(tMovie);
-        }
-
-        // POST: movieBack/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FId,FSeriesId,FRatingId,FNameCht,FNameEng,FScheduleStart,FScheduleEnd,FShowLength,FInteroduce,FTrailerLink,FPosterPath,FImagePath,FPrice")] TMovie tMovie)
+        public IActionResult Create(CMovieBackViewModel create)
         {
-            if (id != tMovie.FId)
+            if (create.FRatingId == -1)
             {
-                return NotFound();
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
             }
+            try
+            {
+                using (var tran = _db.Database.BeginTransaction())
+                {
+                    bool repeated = _db.TMovies.Where(movie => movie.FNameCht == create.FNameCht || movie.FNameEng == create.FNameEng).Any();
+                    if (repeated)
+                        return RedirectToAction("MovieView");
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _db.Update(tMovie);
-                    await _db.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TMovieExists(tMovie.FId))
+                    TMovie movie = new TMovie()
                     {
-                        return NotFound();
-                    }
-                    else
+                        FNameCht = create.FNameCht,
+                        FNameEng = create.FNameEng,
+                        FScheduleStart = create.FScheduleStart,
+                        FScheduleEnd = create.FScheduleEnd,
+                        FShowLength = create.FShowLength,
+                        FInteroduce = create.FInteroduce,
+                        FTrailerLink = create.FTrailerLink,
+                        FPrice = create.FPrice,
+                        FRatingId = create.FRatingId,
+                    };
+                    _db.TMovies.Add(movie);
+                    _db.SaveChanges();
+
+
+                    //新增儲存資料夾、儲存圖片
+                    var newMovie = _db.TMovies.OrderByDescending(movie => movie.FId).First();
+                    string folderPath = $"images/moviePosters/{newMovie.FId}/";
+                    Directory.CreateDirectory(_enviro.WebRootPath + "/" + folderPath);
+
+                    if (create.image != null)
                     {
-                        throw;
+                        string photoPath = folderPath + Guid.NewGuid().ToString() + ".jpg";
+                        using (var fileStream = new FileStream(_enviro.WebRootPath + "/" + photoPath, FileMode.Create))
+                        {
+                            create.image.CopyTo(fileStream);
+                        }
+                        newMovie.FPosterPath = photoPath;
+                        _db.SaveChanges();
                     }
+                    tran.Commit();
+                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 1 });
                 }
-                return RedirectToAction(nameof(Index));
+
             }
-            ViewData["FRatingId"] = new SelectList(_db.TRatings, "FId", "FId", tMovie.FRatingId);
-            ViewData["FSeriesId"] = new SelectList(_db.TSeries, "FId", "FId", tMovie.FSeriesId);
-            return View(tMovie);
+            catch (Exception ex)
+            {
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+            }
         }
 
-        // GET: movieBack/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _db.TMovies == null)
-            {
-                return NotFound();
-            }
-
-            var tMovie = await _db.TMovies
-                .Include(t => t.FRating)
-                .Include(t => t.FSeries)
-                .FirstOrDefaultAsync(m => m.FId == id);
-            if (tMovie == null)
-            {
-                return NotFound();
-            }
-
-            return View(tMovie);
-        }
-
-        // POST: movieBack/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult Delete(int? FId)
         {
-            if (_db.TMovies == null)
+            try
             {
-                return Problem("Entity set 'MovieContext.TMovies'  is null.");
+                var movie = _db.TMovies.Include(m => m.TSessions).AsEnumerable().FirstOrDefault(m => m.FId == FId);
+                if (movie == null)
+                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 5 });
+                if (movie.TSessions.Any())
+                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 5 });
+
+                _db.TMovies.Remove(movie);
+                _db.SaveChanges();
+
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 3 });
             }
-            var tMovie = await _db.TMovies.FindAsync(id);
-            if (tMovie != null)
+            catch (Exception ex)
             {
-                _db.TMovies.Remove(tMovie);
+                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
             }
-            
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool TMovieExists(int id)
-        {
-          return (_db.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
-        }
-
-        public IActionResult View()
-        {
-            return View();
         }
     }
 }

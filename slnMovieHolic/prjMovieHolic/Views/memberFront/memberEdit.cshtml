@@ -1,4 +1,4 @@
-﻿@model prjMovieHolic.Models.TMember
+﻿@model prjMovieHolic.ViewModels.CMemberAndOtherViewModel
 @{
     ViewData["Title"] = "memberEdit";
 }
@@ -7,6 +7,7 @@
         font-size:30px,
     }
 </style>
+@Html.AntiForgeryToken()
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -16,17 +17,17 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
-                                <h3 class="welcome">歡迎，@Model.FName</h3>
+                                <h3 class="welcome">歡迎，@Model.Member.FName</h3>
                                 <hr />
                                 <div class="pad">
                                     <ul class="nav">
-                                        <li>@Html.ActionLink("會員資料", "memberList","memberFront",new { id=Model.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("會員資料", "memberList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li class="selected"><a>資料修改</a></li>
-                                        <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的評論", "commentList","memberFront",new { id=Model.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的收藏（"+$"{Model.MemberActionNow.Count}"+"）", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的優惠券（"+$"{Model.CouponList.Count}"+"）", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的評論", "commentList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
                                 </div>
@@ -34,39 +35,39 @@
                             <div class="memberInformation">
                                 <div class="momberPageTitle"><h3>資料修改</h3></div>
                                 <form asp-action="memberEdit"  id="yourForm">
-                                    <input type="hidden" value="@Model.FMemberId" name="FMemberId" />
+                                    <input type="hidden" value="@Model.Member.FMemberId" name="FMemberId" />
                                     <table class="memberTable">
                                     <tr>
                                         <th>會員等級</th>
-                                        <td>@Model.FMembership.FMembershipName</td>
+                                        <td>@Model.Member.FMembership.FMembershipName</td>
                                     </tr>
                                     <tr>
                                          <th>登入帳號</th>
-                                         <td>@Model.FPhone</td>
+                                         <td>@Model.Member.FPhone</td>
                                     </tr>
                                     <tr>
                                         <th>姓名</th>
-                                        <td><input type="text" name="FName" value="@Model.FName" size="20"></td>
+                                        <td><input type="text" name="FName" value="@Model.Member.FName" size="20"></td>
                                     </tr>
                                      <tr>
                                          <th>暱稱</th>
-                                         <td><input type="text" name="FNickname" value="@Model.FNickname" size="20"></td>
+                                         <td><input type="text" name="FNickname" value="@Model.Member.FNickname" size="20"></td>
                                     </tr>
                                      <tr>
                                           <th>性別</th>
                                             <td>
-                                                <input type="radio" name="FGenderId" value="1" @(Model.FGenderId == 1 ? "checked" : "") /><span style="font-size:20px">男</span>
-                                                <input type="radio" name="FGenderId" value="2" @(Model.FGenderId == 2 ? "checked" : "") /><span style="font-size:20px">女</span>
-                                                <input type="radio" name="FGenderId" value="3" @(Model.FGenderId == 3 ? "checked" : "")><span style="font-size:20px">非二元性別</span>
+                                                <input type="radio" name="FGenderId" value="1" @(Model.Member.FGenderId == 1 ? "checked" : "") /><span style="font-size:20px">男</span>
+                                                <input type="radio" name="FGenderId" value="2" @(Model.Member.FGenderId == 2 ? "checked" : "") /><span style="font-size:20px">女</span>
+                                                <input type="radio" name="FGenderId" value="3" @(Model.Member.FGenderId == 3 ? "checked" : "")><span style="font-size:20px">非二元性別</span>
                                           </td>
                                      </tr>
                                      <tr>
                                          <th>身分證字號</th>
-                                         <td><input type="text" name="FIdcardNumber" value="@Model.FIdcardNumber" size="20"></td>
+                                         <td><input type="text" name="FIdcardNumber" value="@Model.Member.FIdcardNumber" size="20"></td>
                                     </tr>
                                     <tr>
                                         <th>生日</th>
-                                        <td><input type="text" name="FBirthDate" value="@Model.FBirthDate.ToString().Substring(0,9)" size="20" placeholder="請依照西元年/月/日的格式輸入">
+                                        <td><input type="text" name="FBirthDate" value="@Model.Member.FBirthDate.ToString().Substring(0,9)" size="20" placeholder="請依照西元年/月/日的格式輸入">
                                               @*  西元<select id="yy" name="FBirthDate" >
                                                        @for (int year = 1940; year <= 2023; year++)
                                                              {
@@ -79,13 +80,13 @@
                                     </tr>
                                     <tr>
                                         <th>Email</th>
-                                        <td><input type="text" name="FEmail" value="@Model.FEmail" size="30"></td>
+                                        <td><input type="text" name="FEmail" value="@Model.Member.FEmail" size="30"></td>
                                     </tr>
                                 </table>
                                 <br>
                                 <div class="MemberEditSubmit">
                                         <input class="ourButton" type="submit" id="submit" value="送出">
-                                        <a href="@Url.Action("memberList","memberFront",new{id=Model.FMemberId})"><input class="ourButton" type="button" id="cancel" value="取消"></a>
+                                        <a href="@Url.Action("memberList","memberFront",new{id=Model.Member.FMemberId})"><input class="ourButton" type="button" id="cancel" value="取消"></a>
                                     </div>
                                 </form>
                             </div>
@@ -125,7 +126,7 @@
             });
             // 關閉 <dialog>
             formdialog.close();
-            window.location.href = "/memberFront/memberList?id=" + @Model.FMemberId;
+            window.location.href = "/memberFront/memberList?id=" + @Model.Member.FMemberId;
 
         });
 

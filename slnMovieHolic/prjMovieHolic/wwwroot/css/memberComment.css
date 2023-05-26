@@ -1,0 +1,19 @@
+﻿body {
+}
+*{
+    border:none;
+}
+.memberMenu {
+    width: 240px;
+}
+.nav{
+    width: 220px;
+    height:300px;
+}
+.nav li{
+    width:200px;
+    height:30px;
+}
+h3 {
+
+}

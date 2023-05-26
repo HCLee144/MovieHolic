@@ -11,7 +11,7 @@
 <h1></h1>
 @if (ViewBag.Login == true)
 {
-   <p style="display:none">@ViewBag.UserId</p> 
+    <p style="display:none">@ViewBag.UserId</p>
 }
 
 <div id="page1">
@@ -26,13 +26,13 @@
             <div class="relative">
                 <div id="gallery">
                     <ul id="myRoundabout">
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/bb.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
-                        <li><img src="~/images/aa.jpg" alt=""></li>
+                        <li><img src="~/images/星際異攻隊.jpg" alt=""></li>
+                        <li><img src="~/images/反詐騙.png" alt=""></li>
+                        <li><img src="~/images/玩命關頭.png" alt=""></li>
+                        <li><img src="~/images/小美人魚.jpg" alt=""></li>
+                        <li><img src="~/images/漲價公告.png" alt=""></li>
+                        <li><img src="~/images/閃電俠.png" alt=""></li>
+                        <li><img src="~/images/變形金剛.png" alt=""></li>
                     </ul>
                 </div>
             </div>
@@ -44,9 +44,9 @@
                 <p>快速訂票</p>
                 <ul class="drop-down-menu">
                     <li>
-                        <input id="movieKeyword" style="height: 35px; font-size: 20px;" type="text" value="選擇電影" size="13">
+                        <input id="movieKeyword" style="height: 35px; font-size: 20px;" type="text" value="選擇電影" size="13" readonly>
                         <ul id="searchMovieKeyword">
-                            @foreach(var item in Model.getTickets)
+                            @foreach (var item in Model.getTickets)
                             {
                                 <li><button id="@item.FMovieId" onclick="goBuyTickets(event)">@item.FMovie.FNameCht</button></li>
                             }
@@ -61,7 +61,7 @@
             <div class="hotMoviePlaceLine">
                 <ul class="hotMoviePlaceLineMenu">
                     <li style="font-size: 26px;">現正熱映</li>
-                    <li ><a href="/MovieFront/MovieIndex#hotMovie">瀏覽所有電影...</a></li>
+                    <li><a href="/MovieFront/MovieIndex#hotMovie">瀏覽所有電影...</a></li>
                 </ul>
             </div>
             <!-- content -->
@@ -95,18 +95,26 @@
                                         </a>
                                     </article>
                                     <div class="likeAndBuy">
-
-                                        <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                        @{ //05-25 Stanley
+                                            if (movie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                            {
+                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                            }
+                                            else
+                                            {
+                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId" style="visibility:hidden">Buy Now</a></div>
+                                            }
+                                        }
                                         <div>
                                             @{
-                                                if(ViewBag.Login == false)
+                                                if (ViewBag.Login == false)
                                                 {
                                                     <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
                                                 }
                                                 else
                                                 {
                                                     bool flag = false;
-                                                    foreach(var item in Model.isFavoriteNow)
+                                                    foreach (var item in Model.isFavoriteNow)
                                                     {
                                                         if (item.FMovieId == movie.FId)
                                                         {
@@ -121,7 +129,7 @@
                                                     }
                                                 }
                                             }
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +163,7 @@
                                         <a href="/MovieFront/MovieDetails?id=@movie.FId">
                                             <br>
                                             <figure>
-                                                <img src="~/@movie.FPosterPath" alt="">
+                                                <img src="../@movie.FPosterPath" alt="">
                                                 <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
                                             </figure>
                                             <div>
@@ -170,8 +178,15 @@
                                         </a>
                                     </article>
                                     <div class="likeAndBuy">
-
-                                        <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                        @{
+                                            //05-25 Stanley
+                                            if (movie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                            {
+                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                            }else{
+                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId" style="visibility:hidden">Buy Now</a></div>
+                                            }
+                                        }
                                         <div>
                                             @{
                                                 if (ViewBag.Login == false)
@@ -196,7 +211,7 @@
                                                     }
                                                 }
                                             }
-                                          
+
                                         </div>
                                     </div>
                                 </div>
@@ -230,7 +245,7 @@
         const btnCloseDialogCancel = document.getElementById('closeDialogCancel');
 
 
-      
+
         //先判斷是否有登入
         function checkLoginAndToggleFavorite(userId, movieId) {
             console.log(userId);
@@ -251,7 +266,7 @@
             });
         }
 
-        function favoriteChange(userId,movieId) {
+        function favoriteChange(userId, movieId) {
             var heartIcon = document.getElementById(`heart ${movieId}`);
             console.log("Run")
             $.ajax({
@@ -284,11 +299,11 @@
                     alert('失敗')
                 }
             });
-       }
+        }
 
 
 
-       //for快速訂票--TingTing
+        //for快速訂票--TingTing
         //const movieKeyword = document.getElementById('movieKeyword');
         //const searchMovieKeyword = document.getElementById('searchMovieKeyword');
         //movieKeyword.addEventListener('input',async()=>{
@@ -296,10 +311,9 @@
         //    const data=await response.json();
         //    console.log(data);
         //})
-        function goBuyTickets(evt)
-        {
-            const movieID=evt.target.getAttribute('id');
-            window.location.replace('@Url.Content("~/OrderFront/ListSession")?movieID='+movieID);
+        function goBuyTickets(evt) {
+            const movieID = evt.target.getAttribute('id');
+            window.location.replace('@Url.Content("~/OrderFront/ListSession")?movieID=' + movieID);
         }
 
     </script>

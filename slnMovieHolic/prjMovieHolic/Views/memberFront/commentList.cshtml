@@ -3,6 +3,23 @@
     ViewData["Title"] = "commentList";
 }
 
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<!-- Bootstrap ICONS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/myStyle.css">
+<link rel="stylesheet" href="~/css/memberComment.css">
+
+<style>
+
+
+/*    .main{
+        margin-top:100px;
+    }*/
+</style>
 
 <div id="page2">
     <div class="body1">
@@ -13,15 +30,16 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <article class="memberMenu">
-                                <h3 class="welcome">歡迎，@Model.Member.FName</h3>
+                                <h3 class="welcome" style="font-weight:900">歡迎，@Model.Member.FName</h3>
+                                @*<hr style="height:0px"/>*@
                                 <div class="pad">
                                     <ul class="nav">
                                         <li>@Html.ActionLink("會員資料", "memberList","memberFront",new {id=Model.Member.FMemberId},null)</li>
                                         <li>@Html.ActionLink("資料修改", "memberEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("更改密碼", "passwordEdit","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li>@Html.ActionLink("訂單查詢", "orderList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的收藏", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
-                                        <li>@Html.ActionLink("我的優惠券", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的收藏（"+$"{Model.MemberActionNow.Count}"+"）", "favoriteList","memberFront",new { id=Model.Member.FMemberId },null)</li>
+                                        <li>@Html.ActionLink("我的優惠券（"+$"{Model.CouponList.Count}"+"）", "couponList","memberFront",new { id=Model.Member.FMemberId },null)</li>
                                         <li><a class="selected">我的評論</a></li>
                                         <li>@Html.ActionLink("登出", "memberLogout","memberFront",null,new{onclick="return confirm('確認要登出嗎?')"})</li>
                                     </ul>
@@ -54,25 +72,68 @@
                                                                         @{
                                                                             if (item.FMovie.FNameCht.ToString().Length > 10)
                                                                             {
-                                                                                <h4>@item.FMovie.FNameCht.ToString().Substring(0,9)...</h4>
+                                                                                <h3>@item.FMovie.FNameCht.ToString().Substring(0,9)...</h3>
                                                                             }
                                                                             else
                                                                             {
-                                                                                <h4>@item.FMovie.FNameCht.ToString()</h4>
+                                                                                <h3>@item.FMovie.FNameCht.ToString()</h3>
                                                                             }
                                                                         }
                                                                         <!--這裡需要下判斷式限定字數-->
                                                                     </div>
                                                                 </div>
                                                                 <div class="commentDetailBoxBottom">
-                                                                    <div>
-                                                                        <h3>星星之所在</h3>
-                                                                    </div>
-                                                                    <h3>@item.FTitle</h3>
+                                                                    <div class="fiveStar" id="star_@item.FMovieId" data-star-level="@item.FRate">
+                                                                        <div class="star_@item.FMovieId" style="color: #ffa201;font-size: 15px;">
+                                                                                <span class="bi bi-star-fill"></span>
+                                                                                <span class="bi bi-star-fill"></span>
+                                                                                <span class="bi bi-star-fill"></span>
+                                                                                <span class="bi bi-star-fill"></span>
+                                                                                <span class="bi bi-star-fill"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    @{
+                                                                        if (item.FTitle.ToString().Length > 15)
+                                                                        {
+                                                                            <h4>@item.FTitle.ToString().Substring(0,14)...</h4>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <h4>@item.FTitle.ToString()</h4>
+                                                                        }
+                                                                    }
+                                                                   @* <h3>@item.FTitle</h3>*@
                                                                 </div>
                                                             </div>
                                                         </a>
                                                     </div>
+                                                    <script>
+
+                                                        // 星星樣式
+                                                        var starLevelContainer = document.querySelector(`.star_@item.FMovieId`);
+                                                        starLevelContainer.innerHTML = '';
+                                                        // 抓評分值
+                                                        var starElement = document.getElementById(`star_@item.FMovieId`)
+                                                        console.log(starElement)
+                                                        var starLevel = starElement.getAttribute('data-star-level');
+                                                        console.log(starLevel)
+                                                        // 根据评分值设置星星显示
+                                                        var fullStars = starLevel;
+                                                        for (var i = 0; i < fullStars; i++) {
+                                                            var star = document.createElement('span');
+                                                            star.classList.add('bi', 'bi-star-fill');
+                                                            starLevelContainer.appendChild(star);
+                                                        }
+
+                                                        // 剩余的空星星
+                                                        var emptyStars = 5 - Math.ceil(starLevel);
+                                                        for (var i = 0; i < emptyStars; i++) {
+                                                            var emptyStar = document.createElement('span');
+                                                            emptyStar.classList.add('bi', 'bi-star');
+                                                            starLevelContainer.appendChild(emptyStar);
+                                                        }
+
+                                                    </script>
                                                 }
                                              
                                            </div>
@@ -118,6 +179,59 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+            crossorigin="anonymous"></script>
 
+
+ 
+   @* <script>
+        // 抓評分值
+        var star=document.querySelector('.star')
+        var starLevel = star.getAttribute('data-star-level'); // 假设评分为4.5
+        console.log(starLevel)
+        // 根据评分值设置星星显示
+        var fullStars = Math.floor(starLevel);
+        var halfStar = (starLevel % 1) >= 0.5;
+
+        // 设置星星的样式类
+        var starLevelContainer = document.querySelector('.star');
+        starLevelContainer.innerHTML = '';
+
+        for (var i = 0; i < fullStars; i++) {
+            var star = document.createElement('span');
+            star.classList.add('bi', 'bi-star-fill');
+            starLevelContainer.appendChild(star);
+        }
+
+        //if (halfStar) {
+        //    var halfStar = document.createElement('span');
+        //    halfStar.classList.add('bi', 'bi-star-half');
+        //    starLevelContainer.appendChild(halfStar);
+        //}
+        //else if (starLevel - fullStars > 0) {
+        //    var emptyStar = document.createElement('span');
+        //    emptyStar.classList.add('bi', 'bi-star');
+        //    starLevelContainer.appendChild(emptyStar);
+        //}
+
+        // 剩余的空星星
+        var emptyStars = 5 - Math.ceil(starLevel);
+        for (var i = 0; i < emptyStars; i++) {
+            var emptyStar = document.createElement('span');
+            emptyStar.classList.add('bi', 'bi-star');
+            starLevelContainer.appendChild(emptyStar);
+        }
+        //var space = document.createElement('span');
+        //space.innerHTML = '&nbsp;&nbsp;'; // 添加空格
+        //starLevelContainer.appendChild(space);
+
+        //var ratingText = document.createElement('span');
+        //ratingText.innerHTML = (starLevel.toFixed(1)).toString() + " / 5.0";
+        //// 显示 starLevel 变量到小数第一位加上字符串 " / 5.0"
+        //starLevelContainer.appendChild(ratingText);
+    </script>*@
+}
 
 

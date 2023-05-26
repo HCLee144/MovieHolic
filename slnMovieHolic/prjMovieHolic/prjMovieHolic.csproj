@@ -10,15 +10,19 @@
     <Compile Remove="wwwroot\images\movieActors\**" />
     <Compile Remove="wwwroot\images\movieDirectors\**" />
     <Compile Remove="wwwroot\images\prettyPhoto\**" />
+    <Compile Remove="wwwroot\js\magento\**" />
     <Content Remove="wwwroot\images\movieActors\**" />
     <Content Remove="wwwroot\images\movieDirectors\**" />
     <Content Remove="wwwroot\images\prettyPhoto\**" />
+    <Content Remove="wwwroot\js\magento\**" />
     <EmbeddedResource Remove="wwwroot\images\movieActors\**" />
     <EmbeddedResource Remove="wwwroot\images\movieDirectors\**" />
     <EmbeddedResource Remove="wwwroot\images\prettyPhoto\**" />
+    <EmbeddedResource Remove="wwwroot\js\magento\**" />
     <None Remove="wwwroot\images\movieActors\**" />
     <None Remove="wwwroot\images\movieDirectors\**" />
     <None Remove="wwwroot\images\prettyPhoto\**" />
+    <None Remove="wwwroot\js\magento\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -113,6 +117,7 @@
     <Folder Include="wwwroot\images\movieImages\" />
     <Folder Include="wwwroot\images\moviePosters\" />
     <Folder Include="wwwroot\images\movieRatings\" />
+    <Folder Include="wwwroot\images\uploads\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 

@@ -28,17 +28,26 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListSession(int? movieID)
         {
-            var session = movieContext.TSessions.Where(x => x.FMovieId == 36).ToList();
-            string x = "";
+            ClearAllSession();
+			//先判斷是否有場次
+			var session = movieContext.TSessions.Where(s => s.FMovieId == movieID).
+                Where(s => s.FStartTime.Date > DateTime.Now.Date).ToList();
+            if (session == null)
+                return RedirectToAction("Index", "Home");
+
+
             //判斷會員登入或會員中心
             bool verify_checkLogIn = sessionCheck();
 
             if (movieID == null)
                 return RedirectToAction("Index", "Home");
-            var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m => m.TTypeLists).ThenInclude(t => t.FType).Include(m => m.TDirectorLists).ThenInclude(t => t.FDirector).Include(m => m.TActorLists).ThenInclude(t => t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
+            var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m => m.TTypeLists).
+                ThenInclude(t => t.FType).Include(m => m.TDirectorLists).ThenInclude(t => t.FDirector).
+                Include(m => m.TActorLists).ThenInclude(t => t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
 
             if (movie == null)
                 return RedirectToAction("Index", "Home");
+            
 
             CListSessionViewModel vm = new CListSessionViewModel();
             vm.tMovie = movie;
@@ -77,7 +86,9 @@ namespace prjMovieHolic.Controllers
         {
             //依據點選到的日期出現場次
             string realDate = date.Substring(0, 5);
-            var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
+            var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().
+                OrderBy(s=>s.FTheaterId).
+                Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
 
             List<CShowSession> showSessions = new List<CShowSession>();
             foreach (var sessionItem in sessions)
@@ -139,6 +150,7 @@ namespace prjMovieHolic.Controllers
             vm.selectedMovieID = movie.FId;
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMovieEngName = movie.FNameEng;
+            vm.selectedMoviePoster = movie.FPosterPath;
 
             //顯示選的票種價錢
             decimal moviePrice = (decimal)movie.FPrice;
@@ -368,9 +380,13 @@ namespace prjMovieHolic.Controllers
         public IActionResult TryAndError(List<Item> myList)
         {
 
-            // 在這裡可以使用myList獲取List<Item>資料
-            int c = myList.Count;
 
+            return View();
+        }
+
+        public IActionResult confirmUrl()
+        {
+            string s = "";
             return View();
         }
 
@@ -410,6 +426,7 @@ namespace prjMovieHolic.Controllers
             var movie = getSessionMovie(sessionID);
             vm.selectedMovieName = movie.FNameCht;
             vm.selectedMoviEngeName = movie.FNameEng;
+            vm.selectedMoviePoster = movie.FPosterPath;
             vm.selectedMovieID = movie.FId;
             var selectedSessionHour = getSessionHour(sessionID);
             vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);
@@ -714,8 +731,9 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult deleteOrder(int orderID)
         {
-            var deleted = movieContext.TOrderDetails.FirstOrDefault(od => od.FOrderId == orderID);
-            movieContext.TOrderDetails.Remove(deleted);
+            var deleted = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID);
+            foreach(var item in deleted)
+                movieContext.TOrderDetails.Remove(item);
 
             var orderStatusLog = movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
             var orderStatus = movieContext.TOrderStatuses.FirstOrDefault(os => os.FOrderStatusId == orderStatusLog.FOrderStatusId);
@@ -824,9 +842,11 @@ namespace prjMovieHolic.Controllers
         public bool sessionCheck()
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
             bool isUserLoggedIn = userId != null;
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
+            ViewBag.userName = userName;
             return isUserLoggedIn;
         }
 
