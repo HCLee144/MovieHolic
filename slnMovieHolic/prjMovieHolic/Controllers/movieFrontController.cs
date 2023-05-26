@@ -88,7 +88,8 @@ namespace prjMovieHolic.Controllers
             CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 tMovie = tMovie,
-                TypeListNames = getNames(tTypeListNames),
+                tTypeListNames = tTypeListNames,
+                //TypeListNames = getNames(tTypeListNames),
                 DirectorListNames = getNames(tDirectorListNames),
                 ActorListNames = getNames(tActorListNames)
             };
@@ -101,11 +102,28 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
 
-
-
             return View(movieViewModel);
         }
 
+        public async Task<IActionResult> GetMoviesByType(string? type)
+        {
+            // Find the type IDs associated with the given type name
+            var typeIds = await _context.TTypeLists
+                .Where(t => t.FType.FNameCht == type)
+                .Select(t => t.FMovieId)
+                .ToListAsync();
+
+            // Get all movies that have one of the found type IDs
+            var tMovies = await _context.TMovies
+                .Where(m => typeIds.Contains(m.FId))
+                .ToListAsync();
+
+            CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
+            {
+                tMovies = tMovies,
+            };
+            return View(movieViewModel);
+        }
         string getNames(Array data)
         {
             string result = "";
@@ -115,14 +133,9 @@ namespace prjMovieHolic.Controllers
             }
             return result;
         }
-
         private bool TMovieExists(int id)
         {
           return (_context.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
         }
-
-      
-
     }
-
 }
