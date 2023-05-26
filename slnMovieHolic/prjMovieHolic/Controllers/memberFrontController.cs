@@ -96,9 +96,9 @@ namespace prjMovieHolic.Controllers
                 couponList.FOrderId = null;
                 _movieContext.TCouponLists.Add(couponList);
                 _movieContext.SaveChanges();
-                return Json(new { success = true, message = "註冊成功。" });
+                return RedirectToAction("memberLogin", "memberFront");
             }
-            return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+            return View();
         }
         //註冊：驗證帳號是否已存在
         public IActionResult accountCheck(string FPhone)
