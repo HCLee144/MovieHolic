@@ -52,7 +52,7 @@
                 <div class="mb-3 mb-sm-0">
                     <h5 class="card-title fw-semibold">線上人數</h5>
                 </div>
-                <h2 style="text-align:center" id="onlineCounter">2人</h2>
+                <h2 style="text-align:center" id="onlineCounter"> ~~人</h2>
                 @*                <p style="text-align:center">@ViewBag.MemberLastYear </p>*@
             </div>
         </div>
@@ -166,17 +166,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
     <script>
         //更新線上人數
-        var connection = new signalR.HubConnectionBuilder().withUrl("/FrontHub").build();
+        //var connection = new signalR.HubConnectionBuilder().withUrl("/FrontHub").build();
 
-        connection.start().then(async function(){
+        //connection.start().then(async function(){
+        //    //connection.invoke("updateCounter")
+        //    let counter = await connection.invoke("getCounter")
+        //    document.querySelector('#onlineCounter').innerHTML = counter + '人';
+        //});
+
+        //connection.on('updateCounter',function(counter){
+        //    console.log(counter)
+        //    document.querySelector('#onlineCounter').innerHTML=counter+'人';
+        //})
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/BackHub").build();
+
+        connection.start().then(async function () {
             //connection.invoke("updateCounter")
             let counter = await connection.invoke("getCounter")
             document.querySelector('#onlineCounter').innerHTML = counter + '人';
         });
 
-        connection.on('updateCounter',function(counter){
+        connection.on('updateCounter', function (counter) {
             console.log(counter)
-            document.querySelector('#onlineCounter').innerHTML=counter+'人';
+            document.querySelector('#onlineCounter').innerHTML = counter + '人';
         })
 
 
