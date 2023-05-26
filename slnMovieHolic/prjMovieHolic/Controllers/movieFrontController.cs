@@ -38,9 +38,11 @@ namespace prjMovieHolic.Controllers
                 .ToListAsync();
 
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
             var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
             ViewBag.Login = isUserLoggedIn;
             ViewBag.UserId = userId;
+            ViewBag.userName = userName;
 
             var nowShowingMovieIds = nowShowingMovies.Select(m => m.FId).ToList();
             var IsFavoriteNow = _context.TMemberActions.Where(m => m.FMemberId == userId & nowShowingMovieIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
