@@ -52,15 +52,7 @@ namespace prjMovieHolic.Controllers
                 return RedirectToAction("memberLogin", "MemberFront", null);
             }
         }
-
-
-        [HttpGet("shortcmts/movie/{movieID}")]
-        public async Task<IActionResult> Movie(int movieID)
-        {
-            var movieContext = _context.TShortCmts.Include(t => t.FMember).Include(t => t.FMovie).Where(t => t.FMovieId == movieID);
-            return View(await movieContext.ToListAsync());
-        }
-
+        
         // GET: ShortCmts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
