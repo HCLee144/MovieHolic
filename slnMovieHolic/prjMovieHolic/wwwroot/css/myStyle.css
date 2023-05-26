@@ -255,7 +255,7 @@ ul {
             border: #ccc 1px solid;
             position: absolute;
             z-index: 99;
-            left: -1px;
+            right: -1px;
             top: 100%;
             min-width: 178px;
         }
@@ -1912,8 +1912,9 @@ padding:20px;
 }
 
 .cmtPageSelector{
-   width:280px;
+   width:400px;
    margin:auto;
+   text-align:center;
 }
  .cmtPageSelector h4{
      margin: 30px auto 20px;

@@ -10,8 +10,9 @@
 <!-- Bootstrap ICONS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
-<link rel="stylesheet" href="~/css/style.css" >
-<link rel="stylesheet" href="~/css/myStyle.css" >
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/myStyle.css">
+<link rel="stylesheet" href="~/css/pagination.css">
 
 
 
@@ -30,9 +31,10 @@
         -webkit-box-orient: vertical;
     }
 
-    .left{
-        margin-top:80px;
+    .left {
+        margin-top: 80px;
     }
+
     #niniImagesPlace {
         position: relative;
         overflow: hidden;
@@ -59,35 +61,35 @@
                     <div class="moviePage">
                         <div class="posterPlace">
                             <img src="~/@Model.tMovie.FPosterPath" alt="">
-                            
+
                             <div id="niniImagesPlace">
 
                                 @{
-                                    if(Model.movieImagePaths!=null)
+                                    if (Model.movieImagePaths != null)
                                     {
-                                        for(int i=0;i<Model.movieImagePaths.Length;i++)
+                                        for (int i = 0; i < Model.movieImagePaths.Length; i++)
                                         {
-                                            
+
                                             <img id="slide@(i+1)" class="coverflow-slide" src="@Model.movieImagePaths[i]"
                                                  alt="Slide @(i+1)">
                                         }
                                     }
                                 }
 
-@*                                <img id="slide1" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0001.jpg"
-                                     alt="Slide 1">
+                                @*                                <img id="slide1" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0001.jpg"
+                                alt="Slide 1">
                                 <img id="slide2" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0002.jpg"
-                                     alt="Slide 2">
+                                alt="Slide 2">
                                 <img id="slide3" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0003.jpg"
-                                     alt="Slide 3">
+                                alt="Slide 3">
                                 <img id="slide4" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0008.jpg"
-                                     alt="Slide 4">
+                                alt="Slide 4">
                                 <img id="slide5" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0005.jpg"
-                                     alt="Slide 5">
+                                alt="Slide 5">
                                 <img id="slide6" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0006.jpg"
-                                     alt="Slide 6">
+                                alt="Slide 6">
                                 <img id="slide7" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0007.jpg"
-                                     alt="Slide 7">*@
+                                alt="Slide 7">*@
                                 <button id="next-button"></button>
                             </div>
                         </div>
@@ -100,9 +102,9 @@
                                     <span class="bi bi-star-fill"></span>
                                     <span class="bi bi-star-fill"></span>
                                 </div>
-                                
+
                             </div>
-                                
+
                             <h3>@Model.tMovie.FNameCht</h3>
                             <h4>@Model.tMovie.FNameEng</h4>
                             <div class="somethingAboutMovie">
@@ -121,7 +123,7 @@
                                 <ul>
                                     <li class="fatLi">類　型</li>
                                     <li>
-                                        <a href=""> @Model.TypeListNames</a>                                        
+                                        <a href=""> @Model.TypeListNames</a>
                                     </li>
                                 </ul>
                                 <ul>
@@ -161,79 +163,83 @@
                         <div class="hotMoviePlaceLine">
                             <ul class="hotMoviePlaceLineMenu">
                                 <li style="font-size: 26px;">電影評論</li>
-                                <li><a href="~/shortcmts/movie/@Model.tMovie.FId">發表我的評論→</a></li>
+                                <li><a href="~/shortcmts/edit-or-create/@Model.tMovie.FId">發表我的評論→</a></li>
                             </ul>
-                        </div>                        
+                        </div>
                         <div class="myBr"></div>
-                        <div class="commentPlaceBox" id="shortcmt-section">
-                            <div class="starLevel">
-                                <ul>
+                        <div class="commentPlaceBox">
+                            <div class="starLevel" id="starLevel">
+                                @*<ul>
                                     <li><h3><span class="cmts-average">4.82</span>/5</h3></li>
                                     <li><h6><span class="cmts-amount">(39)</span></h6></li>
-                                </ul>
+                                </ul>*@
                             </div>
-                            <div class="commentPlace">
-                                <div class="commentPlaceTop">
-                                    <ul>
-                                        <li>安妮雅</li>
-                                        <li>星星之所在</li>
-                                        <li>2022-12-33</li>
-                                    </ul>
-                                </div>                                                        
-                                <b>會員的評論</b>
-                            </div>          
-                            <div class="commentPlace">
-                                <div class="commentPlaceTop">
-                                    <ul>
-                                        <li>安妮雅</li>
-                                        <li>星星之所在</li>
-                                        <li>2022-12-33</li>
-                                    </ul>
+                            <div id="cmtsContainer">
+                                @*
+                                <div class="commentPlace">
+                                    <div class="commentPlaceTop">
+                                        <ul>
+                                            <li>安妮雅</li>
+                                            <li>星星之所在</li>
+                                            <li>2022-12-33</li>
+                                        </ul>
+                                    </div>
+                                    <b>會員的評論</b>
                                 </div>
-                                <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
-                            </div>
-                            <div class="commentPlace">
-                                <div class="commentPlaceTop">
-                                    <ul>
-                                        <li>安妮雅</li>
-                                        <li>星星之所在</li>
-                                        <li>2022-12-33</li>
-                                    </ul>
+                                <div class="commentPlace">
+                                    <div class="commentPlaceTop">
+                                        <ul>
+                                            <li>安妮雅</li>
+                                            <li>星星之所在</li>
+                                            <li>2022-12-33</li>
+                                        </ul>
+                                    </div>
+                                    <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
                                 </div>
-                                <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
-                            </div>
-                            <div class="commentPlace">
-                                <div class="commentPlaceTop">
-                                    <ul>
-                                        <li>安妮雅</li>
-                                        <li>星星之所在</li>
-                                        <li>2022-12-33</li>
-                                    </ul>
+                                <div class="commentPlace">
+                                    <div class="commentPlaceTop">
+                                        <ul>
+                                            <li>安妮雅</li>
+                                            <li>星星之所在</li>
+                                            <li>2022-12-33</li>
+                                        </ul>
+                                    </div>
+                                    <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
                                 </div>
-                                <b>會員的評論會員的評論會員的評論會員的評論</b>
-                            </div>
-                            <div class="commentPlace">
-                                <div class="commentPlaceTop">
-                                    <ul>
-                                        <li>安妮雅</li>
-                                        <li>星星之所在</li>
-                                        <li>2022-13-33</li>
-                                    </ul>
+                                <div class="commentPlace">
+                                    <div class="commentPlaceTop">
+                                        <ul>
+                                            <li>安妮雅</li>
+                                            <li>星星之所在</li>
+                                            <li>2022-12-33</li>
+                                        </ul>
+                                    </div>
+                                    <b>會員的評論會員的評論會員的評論會員的評論</b>
                                 </div>
-                                <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
+                                <div class="commentPlace">
+                                    <div class="commentPlaceTop">
+                                        <ul>
+                                            <li>安妮雅</li>
+                                            <li>星星之所在</li>
+                                            <li>2022-13-33</li>
+                                        </ul>
+                                    </div>
+                                    <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
+                                </div>*@
                             </div>
+                            <div class="myBr"></div>
                             <div class="cmtPageSelector" id="cmts-pager">
-                                <h4><a class="action prev"><i class="bi bi-arrow-left"></i></a>　<a class="current">1</a>　<a>2</a>　<a>3</a>　<a>4</a>　<a>5</a>　<a class="action next"><i class="bi bi-arrow-right"></i></a></h4>
+                                @*<h4><a class="action prev"><i class="bi bi-arrow-left"></i></a>　<a class="current">1</a>　<a>2</a>　<a>3</a>　<a>4</a>　<a>5</a>　<a class="action next"><i class="bi bi-arrow-right"></i></a></h4>*@
                             </div>
                         </div>
 
 
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 
@@ -258,12 +264,13 @@
             }, 3000);  // 3000毫秒 = 3秒
         });
     </script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
-                crossorigin="anonymous"></script>
-        <script src="~/js/require.js"></script>
-                <script>
+            integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+            crossorigin="anonymous"></script>
+    <script src="~/js/pagination.min.js"></script>
+    <script>
+        //動態載入電影平均評分
         $(document).ready(function () {
             $.ajax({
                 type: "GET",
@@ -271,14 +278,14 @@
                 dataType: "json",
                 success: function (result, status, xhr) {
                     drawStars(result.starLevel);
-                    
+
                 },
                 error: function (xhr, status, error) {
                     // Handle errors
                 }
             });
         });
-        function drawStars(averageStars){
+        function drawStars(averageStars) {
             // 通过变量设置评分值
             var starLevel = averageStars; // 假设评分为4.5
 
@@ -322,24 +329,85 @@
             if (starLevel == 0) { ratingText.innerHTML = "尚無評分"; }
             else { ratingText.innerHTML = (starLevel.toFixed(1)).toString() + " / 5.0"; }
             // 显示 starLevel 变量到小数第一位加上字符串 " / 5.0"
-            
+
             starLevelContainer.appendChild(ratingText);
         }
-        </script>
-    <script type="text/javascript">
-        require([
-            '../js/shortcmt'
-        ], function ($) {
-            $("#shortcomment-section").movieCmts('../api/LoadShortCmts/load/@Model.tMovie.FId');
+    </script>
+    <script>
+        //生成電影短評區
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "../api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    var html=renderCmtsStars(result.starLevel,result.cmtsCount);
+                    $('#starLevel').html(html);
+                }
+            });
+        });
+        function renderCmtsStars(starLevel, Count){
+            
+            var html =""; 
+            if (Count>0){
+                html +=
+                `<ul>
+                            <li><h3><span class="bi bi-star-fill"></span><span class="cmts-average">  ${starLevel.toFixed(2).toString()}` + ` </span> / 5 </h3></li >
+                    <li><h6><span class="cmts-amount"> ( ${Count} ) </span></h6 > </li>
+                    </ul>
+                    `
+            }
+            else
+            html+= `<h4>尚無評論 </h4>`
+            return html;
+        }
+        $('#cmts-pager').pagination({
+            dataSource: '../api/LoadShortCmts/Load/@Model.tMovie.FId',
+            locator: 'cmts',
+            totalNumberLocator: function (response) {
+                // you can return totalNumber by analyzing response content
+                return response.total_cmts;
+            },
+            pageSize: 5,
+            ajax: {
+                beforeSend: function () {
+                    $('#cmtsContainer').html('載入評論中');
+                }
+            },
+            callback: function (data, pagination) {
+                // template method of yourself
+                console.log(data);
+                var html = renderCmts(data);
+                $('#cmtsContainer').html(html);
+            }
+        });
+        function renderCmts(data) {
+            var html="";
+            
+            $.each(data, function (index, item) {
+                html += `<div class="commentPlace">
+                    <div class="commentPlaceTop">
+                        <ul>
+                            <li>${item.member_name}</li>
+                            <li><span class="bi bi-star-fill"></span>
+                            <span>${item.rating}</span> / 5</li>
+                            <li>${item.created_time.slice(0, 10)}</li>
+                        </ul>
+                    </div>
+                    <b>${item.title}</b>
+                </div>`
+            });
+        
+            return html;
+         
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#toggleButton").click(function () {
+                $("li").toggleClass("clamp-text");
+            });
         });
     </script>
-   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $("#toggleButton").click(function () {
-                    $("li").toggleClass("clamp-text");
-                });
-            });
-        </script>
 }

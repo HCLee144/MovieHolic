@@ -9,7 +9,7 @@ using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
 {
-    public class ShortCmtsController : Controller
+    public class ShortCmtsController : SuperFrontController
     {
         private readonly MovieContext _context;
 
@@ -24,10 +24,31 @@ namespace prjMovieHolic.Controllers
             var movieContext = _context.TShortCmts.Include(t => t.FMember).Include(t => t.FMovie);
             return View(await movieContext.ToListAsync());
         }
+        [HttpGet("shortcmts/edit-or-create/{movieID}")]
+        public IActionResult editOrCreate(int movieID)
+        {
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            if (userId != null)
+            {
+                //查詢是否有有既存的 ? 
+                var q = _context.TShortCmts.Where(t => t.FMovieId == movieID).Where(t => t.FMemberId == userId);
+                if (q.Count() > 0)
+                {
+                    int cmtID = q.FirstOrDefault().FCmtid;
+                    return RedirectToAction("edit", "ShortCmts", new { id = cmtID });
+                }
+                else
+                    return RedirectToAction("Create", "ShortCmts", new { movieID } );
+            }
+            else
+                return RedirectToAction("memberLogin", "MemberFront", null);
+        }
+
+
         [HttpGet("shortcmts/movie/{movieID}")]
         public async Task<IActionResult> Movie(int movieID)
         {
-            var movieContext = _context.TShortCmts.Include(t => t.FMember).Include(t => t.FMovie).Where(t=>t.FMovieId==movieID);
+            var movieContext = _context.TShortCmts.Include(t => t.FMember).Include(t => t.FMovie).Where(t => t.FMovieId == movieID);
             return View(await movieContext.ToListAsync());
         }
 
@@ -52,10 +73,14 @@ namespace prjMovieHolic.Controllers
         }
 
         // GET: ShortCmts/Create
-        public IActionResult Create()
+        [HttpGet("ShortCmts/Create/{movieID}")]
+        public IActionResult Create(int movieID)
         {
-            ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId");
-            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId");
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            if (userId==null)
+                return RedirectToAction("memberLogin", "MemberFront", null);
+            ViewBag.FMemberId = userId;
+            ViewBag.FMovieId = movieID;
             return View();
         }
 
@@ -166,14 +191,14 @@ namespace prjMovieHolic.Controllers
             {
                 _context.TShortCmts.Remove(tShortCmt);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TShortCmtExists(int id)
         {
-          return (_context.TShortCmts?.Any(e => e.FCmtid == id)).GetValueOrDefault();
+            return (_context.TShortCmts?.Any(e => e.FCmtid == id)).GetValueOrDefault();
         }
     }
 }

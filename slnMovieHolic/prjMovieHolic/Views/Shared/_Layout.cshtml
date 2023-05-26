@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/css/myStyle.css" type="text/css" media="all">
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
+<body id="forTing">
    
         <div id="page2">
             <div class="body1">
@@ -188,6 +188,12 @@
                 reflect: true
             });
         });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        //更新線上人數
+        var connection = new signalR.HubConnectionBuilder().withUrl("/FrontHub").build().start();  //0526-Stanley
     </script>
     
     @await RenderSectionAsync("Scripts", required: false)
