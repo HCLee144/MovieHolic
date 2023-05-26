@@ -218,7 +218,7 @@
         })
         //submit.addEventListener('click', async () => {
         //    //回傳註冊是否成功
-        //    const response = await fetch(`@Url.Content("~/memberFront/IsSignUp")?FPhone=` +
+        //    const response = await fetch(`Url.Content("~/memberFront/IsSignUp")?FPhone=` +
         //        FPhone.value + "&FPassword=" + FPassword.value + "&FPasswordCheck=" + FPasswordCheck.value, { method: 'POST' })
         //    const data = await response.json();
         //    console.log(data)
@@ -231,43 +231,36 @@
         //    }
         //})
 
-        const formdialogPass = document.getElementById('IamDialogPass');
-        const btnCloseDialogPass = document.getElementById('closeDialogPass');
-        submit.addEventListener('click', async (event) => {
-            event.preventDefault();
-            const response = await fetch(`@Url.Content("~/memberFront/IsPasswordEdit")?previousPassword=` +
-                previousPassword.value + "&newPassword=" + newPassword.value + "&newPasswordCheck=" + newPasswordCheck.value, { method: 'POST' })
-            const data = await response.json();
-            console.log(data)
-            if (data.success) {
-                // 成功寄送新密碼，顯示提示訊息
-                formdialogPass.showModal();
+        submit.addEventListener('click', async () => {
+            console.log('run')
+            const url = '@Url.Action("memberSignUp", "memberFront")';
+            const formData = new FormData();
+            formData.append('member.FPhone', FPhone.value);
+            formData.append('member.FPassword', FPassword.value);
+            formData.append('member.FName', FName.value);
+            formData.append('member.FEmail', FEmail.value);
+            formData.append('member.FBirthDate', FBirthDate.value);
+            formData.append('member.FIdcardNumber', FIdcardNumber.value);
+            formData.append('member.FGenderId', FGenderId.value);
+            formData.append('member.FMembershipId', FMembershipId.value);
+            formData.append('member.FNickName', FNickName.value);
+            formData.append('member.FCreatedDate', FCreatedDate.value);
 
-            } else {
-                // 無法寄送新密碼，顯示錯誤訊息
-                formdialogFail.showModal();
-                btnCloseDialogFail.addEventListener('click', () => {
-                    formdialogFail.close();
-                    window.location.reload();
-                })
-            }
-        })
-
-        btnCloseDialogPass.addEventListener('click', async () => {
-            // 提交表單資料到 Controller
-            const form = document.querySelector('#yourForm');
-            const formData = new FormData(form);
-
-            const response = await fetch('@Url.Content("~/memberFront/PasswordEdit")', {
+            const response = await fetch(url, {
                 method: 'POST',
-                // 設定適當的 headers 和 body，包含需要傳遞的資料
-                body: formData,
+                body: formData
             });
-            // 關閉 <dialog>
-            formdialog.close();
-            window.location.href = "/memberFront/memberList?id=" + @Model.Member.FMemberId;
-
+            const result = await response.json();
+            console.log(result);
+            if (result.success) {
+                // 成功註冊，顯示提示訊息
+                alert(result.message);
+            } else {
+                // 註冊失敗，顯示錯誤訊息
+                alert(result.message);
+            }
         });
+ 
 
         const displayPassword = document.getElementById('displayPassword');
         displayPassword.addEventListener('click', () => {
