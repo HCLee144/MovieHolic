@@ -69,7 +69,7 @@ namespace prjMovieHolic.Controllers
         }
 
         // GET: movieFront/Details?id=
-        //[HttpGet("movieFront/MovieDetails/{id}")]
+
         public async Task<IActionResult> MovieDetails(int? id)
         {
             if (id == null || _context.TMovies == null)
