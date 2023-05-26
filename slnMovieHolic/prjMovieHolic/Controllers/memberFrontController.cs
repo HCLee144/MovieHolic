@@ -22,8 +22,9 @@ namespace prjMovieHolic.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult memberLogin(CMemberViewModel vm)
-        {//todo 登入判斷包含id
+        {
             TMember user=_movieContext.TMembers.FirstOrDefault(t=>t.FPhone.Equals(vm.txtAccount));
             //bool verifyPassword = CPasswordHasher.VerifyPassword(vm.txtPassword, user.FPassword);
             if (user != null && user.FPassword.Equals(vm.txtPassword))
@@ -72,28 +73,25 @@ namespace prjMovieHolic.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult memberSignUp(TMember member)
         {
-            //if (ModelState.IsValid)
-            //{
-                var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
-                if (accountCheck == false)
-                {
+            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
+            if (accountCheck == false)
+            {
                 _movieContext.TMembers.Add(member);
                 _movieContext.SaveChanges();
                 TCouponList couponList = new TCouponList();
                 couponList.FCouponTypeId = (int)DateTime.Now.Month;
-                couponList.FMemberId=member.FMemberId;
+                couponList.FMemberId = member.FMemberId;
                 couponList.FIsUsed = false;
-                couponList.FReceiveDate= DateTime.Now;
+                couponList.FReceiveDate = DateTime.Now;
                 couponList.FOrderId = null;
                 _movieContext.TCouponLists.Add(couponList);
                 _movieContext.SaveChanges();
                 return RedirectToAction("memberLogin");
-                }
-            //}
+            }
             return View();
-                
         }
         //註冊：驗證帳號是否已存在
         public IActionResult accountCheck(string FPhone)
@@ -101,30 +99,30 @@ namespace prjMovieHolic.Controllers
             var accountCheck=_movieContext.TMembers.Any(t=>t.FPhone==FPhone);
             return Content(accountCheck.ToString());
         }
-        //註冊：回傳是否註冊成功 
-        //public IActionResult IsSignUp(string FPhone, string FPassword, string FPasswordCheck)
-        //{
-        //    //if (ModelState.IsValid)
-        //    //{
-        //        var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == FPhone);
-        //        bool passwordFormat = !string.IsNullOrEmpty(FPassword) && Regex.IsMatch(FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
-        //        bool passwordDoubleCheck = false;
-        //        if (FPassword != null)
-        //        {
-        //            passwordDoubleCheck = FPassword.Equals(FPasswordCheck);
-        //        }
+        //註冊：回傳是否註冊成功
+        public IActionResult IsSignUp(CSignUpViewModel vm)
+        {
+            //if (ModelState.IsValid)
+            //{
+            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == vm.FPhone);
+            bool passwordFormat = !string.IsNullOrEmpty(vm.FPassword) && Regex.IsMatch(vm.FPassword, @"(?=.{8,16})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])");
+            bool passwordDoubleCheck = false;
+            if (vm.FPassword != null)
+            {
+                passwordDoubleCheck = vm.FPassword.Equals(vm.FPasswordCheck);
+            }
 
-        //        if (accountCheck != true && passwordFormat == true && passwordDoubleCheck == true)
-        //        {
-        //            return Json(new { success = true, message = "註冊成功。" });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
-        //        }
-        //    //}
-        //    //return View();
-        //}
+            if (accountCheck != true && passwordFormat == true && passwordDoubleCheck == true)
+            {
+                return Json(new { success = true, message = "註冊成功。" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+            }
+            //}
+            //return View();
+        }
 
 
 
@@ -135,6 +133,7 @@ namespace prjMovieHolic.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult forgetPassword(CMemberViewModel vm)
         {
             string email = vm.txtForgetPasswordEmail;
@@ -234,6 +233,7 @@ namespace prjMovieHolic.Controllers
                 return RedirectToAction("memberList",new {id=id});
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult memberEdit(TMember member)
         {
 
@@ -270,6 +270,7 @@ namespace prjMovieHolic.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult passwordEdit(CMemberViewModel vm)
         { 
             var memberData = _movieContext.TMembers.FirstOrDefault(t=>t.FMemberId==vm.FMemberId);
@@ -349,7 +350,7 @@ namespace prjMovieHolic.Controllers
         {
             var members=_movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
             var memberActionNow=_movieContext.TMemberActions.Include(c=>c.FMovie).ThenInclude(c=>c.TSessions)
-                .Where(c=>c.FMemberId==id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now & c.FActionTypeId==1).ToList();
+                .Where(c=>c.FMemberId==id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now & c.FActionTypeId==1).OrderByDescending(c=>c.FTimeStamp).ToList();
             var memberActionFuture= _movieContext.TMemberActions.Include(c => c.FMovie).ThenInclude(c => c.TSessions)
                 .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart > DateTime.Now & c.FActionTypeId==1) .ToList();
             var memberActionExpired = _movieContext.TMemberActions.Include(c => c.FMovie).ThenInclude(c => c.TSessions)
@@ -450,7 +451,7 @@ namespace prjMovieHolic.Controllers
         {
             var members = _movieContext.TMembers.FirstOrDefault(c => c.FMemberId == id);
             var shortCmt =_movieContext.TShortCmts.Include(c=>c.FMovie)                
-                .Where(c=>c.FMemberId == id)
+                .Where(c=>c.FMemberId == id).OrderByDescending(c=>c.FCreatedTime)
                 .ToList();
             var viewModel = new CCommentAndMemberViewModel
             {

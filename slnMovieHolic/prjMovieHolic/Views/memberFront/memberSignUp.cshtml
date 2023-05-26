@@ -6,9 +6,12 @@
     .verify{
         font-size:15px;
         line-height:20px;
+        color:red;
+        margin-top: -25px;
     }
 </style>
 
+@Html.AntiForgeryToken()
 <div id="page2">
     <div class="body1">
         <div class="body3">
@@ -35,13 +38,21 @@
                                         </td>
                                     </tr>
                                      <tr>
-                                         <th>確認密碼</th>
-                                         <td><input type="password" name="FPasswordCheck" id="FPasswordCheck" value="" size="30"required>
+                                            <th>確認密碼</th>
+
+                                            <td>                                                
+                                                <input type="password" name="FPasswordCheck" id="FPasswordCheck" value="" size="30" required>
+                                                <div style="margin-top:-45px;">
+                                                    <input style="display:inline-block;" type="checkbox" name="" id="displayPassword">
+                                                    <label style="font-size:15px" for="displayPassword">顯示密碼</label>
+                                                </div>
+                                                
                                                 <div id="passwordCheckVerify" class="verify"></div>
-
                                           </td>
+                                            <td>
 
-                                     </tr>
+                                            </td>
+                                        </tr>
                                       <tr>
                                           <th>姓名</th>
                                           <td><input type="text" name="FName" value="" size="30"id="FName" required></td>
@@ -72,9 +83,7 @@
 
                                 </table>
                                 <hr />
-                                    <input type="checkbox" name="" id="displayPassword">
-                                    <label style="font-size:15px" for="displayPassword">顯示密碼</label><br />
-                                    <input type="checkbox" name="" id="rule" required><label style="font-size:15px" for="rule">我同意</label><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
+                                    <input type="checkbox" name="" id="display" required><label style="font-size:15px" for="display">我同意</label><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit">
                                         <input class="ourButton" type="submit" id="submit" value="送出">
@@ -136,6 +145,10 @@
     </div>
     <button id="closeDialog" class="closeDialog">確定</button>
 </dialog>
+<dialog id="IamDialogPass" class="IamDialog">
+    <p>會員註冊成功！</p>
+    <button id="closeDialogPass" class="closeDialog">確定</button>
+</dialog>
 
 @section Scripts{
     <script>
@@ -159,18 +172,9 @@
         const rule = document.getElementById('rule');
 
 
-        //確認是否必填欄位都填了
-        //SignUpForm.addEventListener("submit",function(event){
-        //    event.preventDefault();
-        //    if (FPhone=== ""||FPassword===""||FPasswordCheck==="") {
-        //        alert("請填寫必填欄位");
-        //        return;
-        //    }
 
-        //    // 表單驗證通過，提交表單
-        //    this.submit();
-        //})
         rule.addEventListener('click',()=>{
+            console.log('run')
             formdialog.showModal();
             btnCloseDialog.addEventListener('click', () => {
                 formdialog.close();
@@ -212,20 +216,58 @@
             }
             passwordCheckVerify.innerHTML = message;
         })
-        submit.addEventListener('click', async () => {
-            //回傳註冊是否成功
-            const response = await fetch(`@Url.Content("~/memberFront/IsSignUp")?FPhone=` +
-                FPhone.value + "&FPassword=" + FPassword.value + "&FPasswordCheck=" + FPasswordCheck.value, { method: 'POST' })
+        //submit.addEventListener('click', async () => {
+        //    //回傳註冊是否成功
+        //    const response = await fetch(`@Url.Content("~/memberFront/IsSignUp")?FPhone=` +
+        //        FPhone.value + "&FPassword=" + FPassword.value + "&FPasswordCheck=" + FPasswordCheck.value, { method: 'POST' })
+        //    const data = await response.json();
+        //    console.log(data)
+        //    if (data.success) {
+        //        // 成功註冊，顯示提示訊息
+        //        alert(data.message);
+        //    } else {
+        //        // 註冊失敗，顯示錯誤訊息
+        //        alert(data.message);
+        //    }
+        //})
+
+        const formdialogPass = document.getElementById('IamDialogPass');
+        const btnCloseDialogPass = document.getElementById('closeDialogPass');
+        submit.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const response = await fetch(`@Url.Content("~/memberFront/IsPasswordEdit")?previousPassword=` +
+                previousPassword.value + "&newPassword=" + newPassword.value + "&newPasswordCheck=" + newPasswordCheck.value, { method: 'POST' })
             const data = await response.json();
             console.log(data)
             if (data.success) {
-                // 成功註冊，顯示提示訊息
-                alert(data.message);
+                // 成功寄送新密碼，顯示提示訊息
+                formdialogPass.showModal();
+
             } else {
-                // 註冊失敗，顯示錯誤訊息
-                alert(data.message);
+                // 無法寄送新密碼，顯示錯誤訊息
+                formdialogFail.showModal();
+                btnCloseDialogFail.addEventListener('click', () => {
+                    formdialogFail.close();
+                    window.location.reload();
+                })
             }
         })
+
+        btnCloseDialogPass.addEventListener('click', async () => {
+            // 提交表單資料到 Controller
+            const form = document.querySelector('#yourForm');
+            const formData = new FormData(form);
+
+            const response = await fetch('@Url.Content("~/memberFront/PasswordEdit")', {
+                method: 'POST',
+                // 設定適當的 headers 和 body，包含需要傳遞的資料
+                body: formData,
+            });
+            // 關閉 <dialog>
+            formdialog.close();
+            window.location.href = "/memberFront/memberList?id=" + @Model.Member.FMemberId;
+
+        });
 
         const displayPassword = document.getElementById('displayPassword');
         displayPassword.addEventListener('click', () => {
@@ -237,10 +279,7 @@
                 FPassword.setAttribute('type', 'password')
                 FPasswordCheck.setAttribute('type', 'password')
             }
-
         })
-
-
 
 
         //Demo
