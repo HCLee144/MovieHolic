@@ -38,7 +38,9 @@
                                          <th>確認密碼</th>
                                          <td><input type="password" name="FPasswordCheck" id="FPasswordCheck" value="" size="30"required>
                                                 <div id="passwordCheckVerify" class="verify"></div>
-                                            </td>
+
+                                          </td>
+
                                      </tr>
                                       <tr>
                                           <th>姓名</th>
@@ -62,20 +64,29 @@
                                     </tr>
                                     <tr>
                                         <th>Email</th>
-                                        <td><input type="text" name="FEmail" value="" size="20" id="FEmail" required></td>
+                                        <td><input type="text" name="FEmail" value="" size="30" id="FEmail" required></td>
                                     </tr>
                                     <input type="hidden" name="FCreatedDate" value="@DateTime.Now" />
                                      <input type="hidden" name="FMembershipId" value="3" />
                                      <input type="hidden" name="FNickName" value="" />
+
                                 </table>
                                 <hr />
-                                    <input type="checkbox" name="" id="" required><span style="font-size:15px">我同意</span><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
+                                    <input type="checkbox" name="" id="displayPassword">
+                                    <label style="font-size:15px" for="displayPassword">顯示密碼</label><br />
+                                    <input type="checkbox" name="" id="rule" required><label style="font-size:15px" for="rule">我同意</label><a style="font-size:15px;cursor:pointer;" id="rule">個人資料使用條款</a>
                                 <br>
                                 <div class="MemberEditSubmit">
                                         <input class="ourButton" type="submit" id="submit" value="送出">
-                                        <input class="ourButton" type="button" id="SignUpDemo" value="Demo" />
-                                        <input class="ourButton" type="button" id="SignUpDemo2" value="Demo2" />
-                                    </div>
+                                        
+                                 </div>
+                                 <br />
+                                    <div class="MemberEditSubmit" style="font-size:10px">
+                                        <input class="ourButton" type="button" id="SignUpDemo" value="Demo會員" style="font-size:15px" />
+                                        <input class="ourButton" type="button" id="SignUpDemo2" value="Demo後台" style="font-size:15px" />
+                                        <input class="ourButton" type="button" id="SignUpDemo3" value="Demo後台" style="font-size:15px" />
+                                        <input class="ourButton" type="button" id="SignUpDemo4" value="Demo後台" style="font-size:15px" />
+                                 </div>
                                 </form>
                             </div>
                         </div>
@@ -216,28 +227,66 @@
             }
         })
 
+        const displayPassword = document.getElementById('displayPassword');
+        displayPassword.addEventListener('click', () => {
+            if (FPassword.getAttribute('type') === 'password' && FPasswordCheck.getAttribute('type') === 'password') {
+                FPassword.setAttribute('type', 'text')
+                FPasswordCheck.setAttribute('type', 'text')
+            }
+            else {
+                FPassword.setAttribute('type', 'password')
+                FPasswordCheck.setAttribute('type', 'password')
+            }
+
+        })
+
+
+
+
         //Demo
         SignUpDemo.addEventListener('click', function () {
-           FPhone.value = '0983556961'
+           FPhone.value = '0983555465'
             FPassword.value = 'mLskcBp13';
             FPasswordCheck.value = 'mLskcBp13';
-           FName.value ='洛伊德';
+           FName.value ='約兒';
            radioFemale.checded = true;
-           FBirthDate.value = '1975/08/19';
-           FEmail.value = 'roid@gmail.com';
-           FIdcardNumber.value='A198546321'; 
+           FBirthDate.value = '1975/10/16';
+           FEmail.value = 'yuru@gmail.com';
+           FIdcardNumber.value='A298546321'; 
         })
 
         const SignUpDemo2 = document.querySelector('#SignUpDemo2');
         SignUpDemo2.addEventListener('click', function () {
-            FPhone.value = '0983556965'
-            FPassword.value = 'mLskcBp';
-            FPasswordCheck.value = 'mLskcBp1';
-            FName.value = '洛伊德';
+            FPhone.value = '0956125468'
+            FPassword.value = 'OB2bcbmi';
+            FPasswordCheck.value = 'OB2bcbmi';
+            FName.value = '黃昏';
+            radioFemale.checded = true;
+            FBirthDate.value = '1960/08/19';
+            FEmail.value = 'tasokare@gmail.com';
+            FIdcardNumber.value = 'B198546321';
+        })
+        const SignUpDemo3 = document.querySelector('#SignUpDemo3');
+        SignUpDemo3.addEventListener('click', function () {
+            FPhone.value = '0983123456'
+            FPassword.value = 'OB3bcbmi';
+            FPasswordCheck.value = 'OB3bcbmi';
+            FName.value = '夜帷';
             radioFemale.checded = true;
             FBirthDate.value = '1975/08/19';
             FEmail.value = 'roid@gmail.com';
-            FIdcardNumber.value = 'A198546321';
+            FIdcardNumber.value = 'A298144621';
+        })
+        const SignUpDemo4 = document.querySelector('#SignUpDemo4');
+        SignUpDemo4.addEventListener('click', function () {
+            FPhone.value = '0983789546'
+            FPassword.value = 'OB4bcbmi';
+            FPasswordCheck.value = 'OB4bcbmi';
+            FName.value = '戴斯蒙德';
+            radioFemale.checded = true;
+            FBirthDate.value = '2002/03/19';
+            FEmail.value = 'secondSon@gmail.com';
+            FIdcardNumber.value = 'A198123456';
         })
     </script>
 

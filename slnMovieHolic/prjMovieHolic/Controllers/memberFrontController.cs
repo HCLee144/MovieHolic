@@ -30,8 +30,10 @@ namespace prjMovieHolic.Controllers
             {
                 //string json=JsonSerializer.Serialize(user.);
                 HttpContext.Session.SetInt32(CDictionary.SK_LOGIN_USER,user.FMemberId);
+                HttpContext.Session.SetString(CDictionary.SK_LOGIN_USER_NAME, user.FName);
                 ViewBag.Login = true;
                 ViewBag.userId = user.FMemberId;
+                ViewBag.userName=user.FName;
                 string controller=HttpContext.Session.GetString(CDictionary.SK_CONTROLLER);
                 string view = HttpContext.Session.GetString(CDictionary.SK_VIEW);
                 ViewBag.Controller = controller;
@@ -77,9 +79,17 @@ namespace prjMovieHolic.Controllers
                 var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
                 if (accountCheck == false)
                 {
-                    _movieContext.TMembers.Add(member);
-                    _movieContext.SaveChanges();
-                    return RedirectToAction("memberLogin");
+                _movieContext.TMembers.Add(member);
+                _movieContext.SaveChanges();
+                TCouponList couponList = new TCouponList();
+                couponList.FCouponTypeId = (int)DateTime.Now.Month;
+                couponList.FMemberId=member.FMemberId;
+                couponList.FIsUsed = false;
+                couponList.FReceiveDate= DateTime.Now;
+                couponList.FOrderId = null;
+                _movieContext.TCouponLists.Add(couponList);
+                _movieContext.SaveChanges();
+                return RedirectToAction("memberLogin");
                 }
             //}
             return View();
@@ -338,11 +348,11 @@ namespace prjMovieHolic.Controllers
         public IActionResult favoriteList(int? id)
         {
             var members=_movieContext.TMembers.FirstOrDefault(c=>c.FMemberId==id);
-            var memberActionNow=_movieContext.TMemberActions.Include(c=>c.FMovie)
+            var memberActionNow=_movieContext.TMemberActions.Include(c=>c.FMovie).ThenInclude(c=>c.TSessions)
                 .Where(c=>c.FMemberId==id & c.FMovie.FScheduleStart < DateTime.Now & c.FMovie.FScheduleEnd > DateTime.Now & c.FActionTypeId==1).ToList();
-            var memberActionFuture= _movieContext.TMemberActions.Include(c => c.FMovie)
+            var memberActionFuture= _movieContext.TMemberActions.Include(c => c.FMovie).ThenInclude(c => c.TSessions)
                 .Where(c => c.FMemberId == id & c.FMovie.FScheduleStart > DateTime.Now & c.FActionTypeId==1) .ToList();
-            var memberActionExpired = _movieContext.TMemberActions.Include(c => c.FMovie)
+            var memberActionExpired = _movieContext.TMemberActions.Include(c => c.FMovie).ThenInclude(c => c.TSessions)
                 .Where(c => c.FMemberId == id & c.FMovie.FScheduleEnd < DateTime.Now & c.FActionTypeId==1).ToList();
             var viewModel = new CMovieAndMemberViewModel
             {
