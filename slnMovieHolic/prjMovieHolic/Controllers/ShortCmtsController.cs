@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
@@ -38,10 +39,17 @@ namespace prjMovieHolic.Controllers
                     return RedirectToAction("edit", "ShortCmts", new { id = cmtID });
                 }
                 else
-                    return RedirectToAction("Create", "ShortCmts", new { movieID } );
+                    return RedirectToAction("Create", "ShortCmts", new { movieID });
             }
             else
+            {
+                //string controller = "moviefront";
+                //string view = "movieDetails";
+                
+                //HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+                //HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
                 return RedirectToAction("memberLogin", "MemberFront", null);
+            }
         }
 
 
@@ -77,7 +85,7 @@ namespace prjMovieHolic.Controllers
         public IActionResult Create(int movieID)
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            if (userId==null)
+            if (userId == null)
                 return RedirectToAction("memberLogin", "MemberFront", null);
             ViewBag.FMemberId = userId;
             ViewBag.FMovieId = movieID;
