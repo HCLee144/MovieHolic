@@ -25,12 +25,13 @@ namespace prjMovieHolic.Controllers
         public async Task<IActionResult> GetAverageRating(int movieID)
         {
             var q = from cmt in _context.TShortCmts.Where(t => t.FMovieId == movieID) select cmt.FRate;
-            if (q.Count() == 0)
-                return Ok(new { starLevel = 0 });
-            else return Ok(new { starLevel = q.Average() });
+            int count = q.Count();
+            if (count == 0)
+                return Ok(new { starLevel = 0, cmtsCount=count });
+            else return Ok(new { starLevel = q.Average(), cmtsCount=count });
         }
 
-        [HttpGet("load/{movieID}/page/{pageNumber}")]
+        [HttpGet("load/{movieID}")]
         public async Task<IActionResult> loadCmts(int movieID, int pageNumber)
         {
             int current_page_number = pageNumber;
@@ -39,11 +40,15 @@ namespace prjMovieHolic.Controllers
             decimal total_page_number = 0m;
             double total_ratings_average_note = 0d;
             List<CCmtViewModel> cmts = new List<CCmtViewModel>();
-            if (q.Count() > 0)
+            if (total_cmts > 0)
             {
                 total_page_number = Math.Ceiling(q.Count() / 5m);
                 total_ratings_average_note = q.Average(t => t.FRate);
-                var q2 = q.OrderByDescending(t=>t.FCreatedTime).Skip(5 * pageNumber - 1).Take(5);
+                if (pageNumber > total_page_number)
+                    pageNumber = (int)total_page_number;
+                if (pageNumber < 1)
+                    pageNumber = 1;
+                var q2 = q.OrderByDescending(t=>t.FCreatedTime).Skip(5 * (pageNumber - 1)).Take(5);
                 foreach (var item in q2)
                 {
                     CCmtViewModel cCmt = new CCmtViewModel();
@@ -55,6 +60,30 @@ namespace prjMovieHolic.Controllers
                 }
             }
             return Ok(new { cmts, total_cmts, total_ratings_average_note, total_page_number, current_page_number });
+        }
+
+        [HttpGet("load-all/{movieID}")]
+        public async Task<IActionResult> loadAllCmts(int movieID)
+        {
+            var q = from cmt in _context.TShortCmts.Include(t => t.FMember).Where(t => t.FMovieId == movieID) select cmt;
+            int total_cmts = q.Count();
+            double total_ratings_average_note = 0d;
+            List<CCmtViewModel> cmts = new List<CCmtViewModel>();
+            if (total_cmts > 0)
+            {
+                total_ratings_average_note = q.Average(t => t.FRate);
+                var q2 = q.OrderByDescending(t => t.FCreatedTime);
+                foreach (var item in q2)
+                {
+                    CCmtViewModel cCmt = new CCmtViewModel();
+                    cCmt.title = item.FTitle;
+                    cCmt.created_time = item.FCreatedTime;
+                    cCmt.rating = item.FRate;
+                    cCmt.member_name = item.FMember.FName;
+                    cmts.Add(cCmt);
+                }
+            }
+            return Ok(new { cmts, total_cmts, total_ratings_average_note});
         }
 
         // GET: api/LoadShortCmts
