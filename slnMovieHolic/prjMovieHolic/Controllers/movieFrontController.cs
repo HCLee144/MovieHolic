@@ -60,7 +60,7 @@ namespace prjMovieHolic.Controllers
             //已登入用
             //sessionCheck();
             string controller = "movieFront";
-            string view = "MovieIndex";
+            string view = "MovieIndex"; 
             //string json=JsonSerializer.Serialize(new { controller, view });
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
@@ -69,6 +69,7 @@ namespace prjMovieHolic.Controllers
         }
 
         // GET: movieFront/Details?id=
+        //[HttpGet("movieFront/MovieDetails/{id}")]
         public async Task<IActionResult> MovieDetails(int? id)
         {
             if (id == null || _context.TMovies == null)
@@ -102,10 +103,12 @@ namespace prjMovieHolic.Controllers
             //已登入用
             sessionCheck();
             string controller = "movieFront";
-            string view = "MovieIndex";
+            string view = "MovieDetails";
+            int? parameter =id;
             //string json=JsonSerializer.Serialize(new { controller, view });
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
             HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+            HttpContext.Session.SetInt32(CDictionary.SK_PARAMETER, parameter ?? 0);
 
             //婷
             string[] paths=getImagesPath(tMovie.FImagePath);

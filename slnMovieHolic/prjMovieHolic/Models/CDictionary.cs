@@ -7,6 +7,7 @@
         public static readonly string SK_LOGIN_USER_NAME = "SK_LOGIN_USER_NAME";
         public static readonly string SK_CONTROLLER = "SK_CONTROLLER";
         public static readonly string SK_VIEW = "SK_VIEW";
+        public static readonly string SK_PARAMETER = "SK_PARAMETER";
 
         //Order System
         public static readonly string SelectedSessionID = "SelectedSessionID";

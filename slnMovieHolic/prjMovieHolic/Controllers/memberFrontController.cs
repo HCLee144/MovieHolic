@@ -37,9 +37,12 @@ namespace prjMovieHolic.Controllers
                 ViewBag.userName=user.FName;
                 string controller=HttpContext.Session.GetString(CDictionary.SK_CONTROLLER);
                 string view = HttpContext.Session.GetString(CDictionary.SK_VIEW);
+                int? parameter = HttpContext.Session.GetInt32(CDictionary.SK_PARAMETER);
                 ViewBag.Controller = controller;
                 ViewBag.View = view;
-                if (controller != null && view != null)
+                if (controller != null && view != null && parameter !=null)
+                    return RedirectToAction(view, controller, new {id=parameter});
+                else if(controller != null && view != null && parameter == null)
                     return RedirectToAction(view, controller);
                 else
                     return RedirectToAction("memberList", "memberFront", new {id=vm.FMemberId});
@@ -65,6 +68,10 @@ namespace prjMovieHolic.Controllers
         public IActionResult memberLogout()
         {
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER);
+            HttpContext.Session.Remove(CDictionary.SK_LOGIN_USER_NAME);
+            HttpContext.Session.Remove(CDictionary.SK_CONTROLLER);
+            HttpContext.Session.Remove(CDictionary.SK_VIEW);
+            HttpContext.Session.Remove(CDictionary.SK_PARAMETER);
             return RedirectToAction("Index","Home");
         }
         //todo 尚未驗證完成 註冊會員
