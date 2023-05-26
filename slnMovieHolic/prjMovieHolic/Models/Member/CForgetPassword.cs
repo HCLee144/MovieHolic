@@ -26,7 +26,7 @@ namespace prjMovieHolic.Models.Member
             MailMessage mms = new MailMessage();
             mms.From = new MailAddress(GoogleEmail, "MovieHolic");
             mms.Subject = "[密碼重設]-Movie Holic瘋電影會員";
-            mms.Body = "您好，" + "您的新密碼為 :" + newPassword + "，請重新登入並重設您的密碼。";
+            mms.Body = "您好，" + "您的新密碼為 :   " + newPassword + "  ，請重新登入並重設您的密碼。";
             mms.IsBodyHtml = true;
             mms.SubjectEncoding = Encoding.UTF8;
             mms.To.Add(new MailAddress(ReceiveMail));

@@ -5,6 +5,127 @@
 }
 
 @model prjMovieHolic.ViewModels.CListOrderDetailsViewModel
+@{
+    ViewData["Title"] = "MovieHolic快速訂票";
+}
+
+@section Styles{
+    <style>
+        .IamDialog {
+            width: 500px;
+            height: 200px;
+            border-radius: 15px;
+            margin: auto auto; /*婷婷*/
+        }
+
+            .IamDialog p {
+                color: #999;
+                font-size: 24px;
+                margin-top: 30px;
+                text-align: center;
+            }
+
+            .IamDialog::-webkit-scrollbar {
+                background: transparent;
+                width: 6px;
+                height: 6px;
+                border-radius: 5px;
+            }
+
+            .IamDialog::-webkit-scrollbar-thumb {
+                background-color: silver;
+                border-radius: 5px;
+            }
+
+        .closeDialog {
+            border-radius: 5px;
+            color: azure;
+            width: 100px;
+            height: 40px;
+            background-color: #10a5d6;
+            margin-top: 30px;
+            margin-left: 190px;
+        }
+
+        .closeDialog:hover {
+            cursor: pointer; /*婷婷*/
+            color: #eaeaea; /*婷婷*/
+            background-color: #105190; /*婷婷*/
+        }
+
+        /*下面for訂單提示對話框*/
+        .IamDialog1 {
+            width: 850px;
+            height: 600px;
+            border-radius: 15px;
+            margin: auto auto; /*婷婷*/
+        }
+
+            .IamDialog1 p {
+                color: #999;
+                font-size: 24px;
+                margin-top: 30px;
+                text-align: center;
+            }
+
+            .IamDialog1::-webkit-scrollbar {
+                background: transparent;
+                width: 6px;
+                height: 6px;
+                border-radius: 5px;
+            }
+
+            .IamDialog1::-webkit-scrollbar-thumb {
+                background-color: silver;
+                border-radius: 5px;
+            }
+        
+        .closeDialog1 {
+            border-radius: 5px;
+            color: azure;
+            width: 100px;
+            height: 40px;
+            background-color: grey;
+            margin-top: 30px;
+            margin-left: 170px;
+            display:inline;
+        }
+
+        .closeDialog2 {
+            border-radius: 5px;
+            color: azure;
+            width: 100px;
+            height: 40px;
+            background-color: #10a5d6;
+            margin-top: 30px;
+            margin-left: 200px;
+            display: inline;
+        }
+
+        .closeDialog2:hover {
+            cursor: pointer; /*婷婷*/
+            color: #eaeaea; /*婷婷*/
+            background-color: #105190; /*婷婷*/
+        }
+
+        .dialogDiv{
+            font-size:24px;
+            text-align:left;
+            color:black;
+            line-height:28px
+        }
+
+
+        .dialogDiv h3{
+            font-size: 30px;
+            text-align: left;
+            color: black;
+            margin-top:20px;
+            margin-bottom: 0px
+        }
+
+    </style>
+}
 <div id="page2">
     <div class="body1">
         <div class="">
@@ -94,7 +215,7 @@
             {
                 <div class="coupon">
                     <div class="couponName">
-                        <img src="images/icons8-coupon-64.png" alt="">
+                        <img src="~/images/icons8-coupon-64.png" alt="">
                         <p>MovieHolic</p>
                     </div>
                     <div class="couponDetail">
@@ -127,6 +248,17 @@
     <button id="confirm" class="closeDialog">關閉</button>
 </dialog>
 
+<dialog id="OrderCheckDialog" class="IamDialog1">
+    <div id="dialogDiv" class="dialogDiv"></div>
+    <br>
+    <hr>
+    <div style="justify-content: center;align-items:center;display: flex;">
+        <input type="checkbox" id="orderCheckBox" style="width:20px;height:20px" /><span style="font-size:20px">我已閱讀並同意上述訂票規定</span>
+    </div>
+    <button id="confirmOrder" class="closeDialog1" disabled>確認</button>
+    <button id="cancel" class="closeDialog2">關閉</button>
+</dialog>
+
 @section Scripts{
     <script>
         const nextStep = document.querySelector('#nextStep');
@@ -145,6 +277,12 @@
 
         const radioBtns = document.getElementsByName('paymentType');
 
+        const OrderCheckDialog = document.getElementById('OrderCheckDialog');
+        const dialogDiv = document.getElementById('dialogDiv');
+        const confirmOrder = document.getElementById('confirmOrder');
+        const cancel = document.getElementById('cancel');
+        const orderCheckBox = document.getElementById('orderCheckBox');
+
         btnGoToCoupon.addEventListener('click', () => {
             formdialog.showModal();
             btnCloseDialog.addEventListener('click', () => {
@@ -162,26 +300,86 @@
                 })
             }
             else {
-                console.log(couponID);
-                const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDBandSendEmail")?totalprice=' + totalPrice.innerHTML + '&couponID=' + Number(couponID) + '&paymentType=' + radioBtnValue);
-                const data = await response.text();
-                if (data == '儲存成功') {
-                    dialogParagraph.innerHTML = '訂票成功，已將訂單明細寄到您的信箱';
-                    anotherDialog.showModal();
-                    confirm.addEventListener('click', () => {
-                        anotherDialog.close();
-                        window.location.replace('@Url.Content("~/memberFront/orderList")');
-                    })
-                }
-                else {
-                    dialogParagraph.innerHTML = '網路不穩，請稍後再試';
-                    anotherDialog.showModal();
-                    confirm.addEventListener('click', () => {
-                        anotherDialog.close();
-                    })
+                let Checked = await orderChecked();
+                
+
+                if (Checked) {
+
+                    const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDBandSendEmail")?totalprice=' + totalPrice.innerHTML + '&couponID=' + Number(couponID) + '&paymentType=' + radioBtnValue);
+                    const data = await response.text();
+                    if (data == '儲存成功') {
+                        dialogParagraph.innerHTML = '訂票成功，已將訂單明細寄到您的信箱';
+                        anotherDialog.showModal();
+                        confirm.addEventListener('click', () => {
+                            anotherDialog.close();
+                            window.location.replace('@Url.Content("~/memberFront/orderList")');
+                        })
+                    }
+                    else {
+                        dialogParagraph.innerHTML = '網路不穩，請稍後再試';
+                        anotherDialog.showModal();
+                        confirm.addEventListener('click', () => {
+                            anotherDialog.close();
+                        })
+                    }
                 }
             }
         })
+
+        orderCheckBox.addEventListener('change', ()=>{
+            if(orderCheckBox.checked)
+            {
+                confirmOrder.removeAttribute('disabled');
+                confirmOrder.style.backgroundColor='#10a5d6';
+                confirmOrder.addEventListener("mouseover", handleHover);
+                confirmOrder.addEventListener("mouseout", handleHover);
+            }
+            else{
+                confirmOrder.setAttribute('disabled',true);
+                confirmOrder.style.backgroundColor = 'grey';
+                confirmOrder.removeEventListener("mouseover", handleHover);
+                confirmOrder.removeEventListener("mouseout", handleHover);
+            }
+        })
+
+        function handleHover(event) {
+            if (event.type === "mouseover") {
+                confirmOrder.style.backgroundColor= '#105190';
+                confirmOrder.style.cursor='pointer';
+            } 
+            else if (event.type === "mouseout") {
+                confirmOrder.style.backgroundColor = '#10a5d6';
+                confirmOrder.style.cursor='default';
+            }
+        }
+
+        function orderChecked() {
+            return new Promise((resolve, reject) => {
+
+                dialogDiv.innerHTML = '<h3 style="font-size:28px">訂票及取票規定</h3></br>';;
+                dialogDiv.innerHTML += '1. 每張訂票皆會收取NT$20之訂票手續費，於訂購場次開演前可至影城櫃台取票。</br>';;
+                dialogDiv.innerHTML += '2. 依據統一發票使用辦法第四條第二十七款規定，娛樂業之門票（電影票）收入可免開發票，以票根作為購票證明。</br>';
+                dialogDiv.innerHTML += '<h3 style="font-size:28px">退票規定</h3></br>';;
+                dialogDiv.innerHTML += '1. 依影城規定於訂購場次開演的30分鐘前，可線上或影城現場櫃檯辦理取消訂票。</br>';
+                dialogDiv.innerHTML += '2. 於時限內辦理取消訂票，將線上退還票款，但訂票手續費依影城規定恕不退還。</br>';
+                dialogDiv.innerHTML += '3. 如欲線上更改數量或更換座位，僅能線上整筆取消後再重新訂位，以利取消持卡人刷卡授權或進行原消費退款。</br>';
+                dialogDiv.innerHTML += '4. 如至影城取票後退票或是訂多取少，依影城規定仍須收取訂票手續費；請持原電影票辨理，電影票遺失恕不補發，亦無法辦理退換票。</br>';
+                dialogDiv.innerHTML += '5. 未辦理取消、退票或逾時未取票，將不退還該筆金額，影城將全額扣款，恕不得要求退款或更改其他場次時間。';
+
+                OrderCheckDialog.showModal(); 
+
+                confirmOrder.addEventListener('click', () => {
+                    OrderCheckDialog.close();
+                    resolve(true); 
+                });
+
+                cancel.addEventListener('click', () => {
+                    OrderCheckDialog.close();
+                    resolve(false); 
+                });
+
+            });
+        }
 
         function chooseCoupon(event) {
             couponID = event.target.getAttribute('id');
@@ -201,7 +399,5 @@
             }
             return 'notSelectPayment';
         }
-
-
     </script>
     }
