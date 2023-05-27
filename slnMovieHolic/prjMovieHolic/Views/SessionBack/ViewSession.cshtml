@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/BackLayout.cshtml";
 }
 
+
+
 <div class="card">
     <div class="card-body">
         <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
@@ -87,6 +89,15 @@
 </div>
 
 
+<dialog id="normalDialog" style="width: 500px; margin:auto;" class="card-body alert alert-primary">
+    <p style="text-align:center; font-size:24px">場次新增完成</p>
+    <button id="closeDialogPass" class="btn btn-primary">確定</button>
+</dialog>
+
+<dialog id="errorDialog" style="width: 500px; margin:auto;" class="card-body alert alert-danger">
+    <p style="text-align:center; font-size:18px" >場次新增完成</p>
+    <button id="closeDialogPass" class="btn btn-danger">確定</button>
+</dialog>
 
 
 
@@ -223,12 +234,12 @@
                             sessionStart.innerHTML = session.startTime.split("T")[1];
                             sessionEnd.innerHTML = session.endTime.toString().split("T")[1];
                         },
-                    toolbar:{
-                        show:false
-                    },
-                    zoom:{
-                        enabled:false
-                    }
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        }
                     }
                 },
                 plotOptions: {
