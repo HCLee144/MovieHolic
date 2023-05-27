@@ -180,13 +180,30 @@ namespace prjMovieHolic.Controllers
             }
         }
 
+        //public IActionResult delete(int? SessionID, string? deleteDate)
+        //{
+        //    if (SessionID == null)
+        //        return RedirectToAction("ViewSession");
+        //    _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
+        //    _db.SaveChanges();
+        //    return RedirectToAction("ViewSession", "SessionBack", new { message = 3, date = deleteDate });
+        //}
+
         public IActionResult delete(int? SessionID, string? deleteDate)
         {
-            if (SessionID == null)
-                return RedirectToAction("ViewSession");
-            _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
-            _db.SaveChanges();
-            return RedirectToAction("ViewSession", "SessionBack", new { message = 3, date = deleteDate });
+            try
+            {
+                if (SessionID == null)
+                    return Json(new { isError = true, message = "查無場次，請重新再試！" });
+                _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
+                _db.SaveChanges();
+                return Json(new { isError = false, message = "場次刪除成功" });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { isError = true, message = "連線異常，請重新再試！" });
+            }
+            
         }
 
     }
