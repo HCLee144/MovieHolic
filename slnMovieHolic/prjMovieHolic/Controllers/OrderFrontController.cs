@@ -377,18 +377,7 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.SetString(CDictionary.SelectedProductCount, json);
         }
 
-        public IActionResult TryAndError(List<Item> myList)
-        {
 
-
-            return View();
-        }
-
-        public IActionResult confirmUrl()
-        {
-            string s = "";
-            return View();
-        }
 
         public IActionResult ListOrderDetails(List<CProductInfo> products)
         {
