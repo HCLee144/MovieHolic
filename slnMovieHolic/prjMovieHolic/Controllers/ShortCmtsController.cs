@@ -29,7 +29,7 @@ namespace prjMovieHolic.Controllers
         public IActionResult editOrCreate(int movieID)
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            if (userId != null)
+            if (sessionCheck())
             {
                 //查詢是否有有既存的 ? 
                 var q = _context.TShortCmts.Where(t => t.FMovieId == movieID).Where(t => t.FMemberId == userId);
@@ -116,8 +116,11 @@ namespace prjMovieHolic.Controllers
             {
                 return NotFound();
             }
+            sessionCheck();
             ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId", tShortCmt.FMemberId);
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tShortCmt.FMovieId);
+            ViewData["FMemberName"] = _context.TMembers.Where(t => t.FMemberId == tShortCmt.FMemberId).Select(t=>t.FName).FirstOrDefault();
+            ViewData["FMovieName"] = _context.TMovies.Where(t=>t.FId==tShortCmt.FMovieId).Select(t=>t.FNameCht).FirstOrDefault();
             return View(tShortCmt);
         }
 
@@ -126,7 +129,7 @@ namespace prjMovieHolic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FCmtid,FMovieId,FMemberId,FTitle,FRate,FCreatedTime,FEditedTime,FVisible")] TShortCmt tShortCmt)
+        public async Task<IActionResult> Edit(int id, TShortCmt tShortCmt)
         {
             if (id != tShortCmt.FCmtid)
             {
@@ -200,6 +203,16 @@ namespace prjMovieHolic.Controllers
         private bool TShortCmtExists(int id)
         {
             return (_context.TShortCmts?.Any(e => e.FCmtid == id)).GetValueOrDefault();
+        }
+        private bool sessionCheck()
+        {
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
+            bool isUserLoggedIn = userId != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+            ViewBag.userName = userName;
+            return isUserLoggedIn;
         }
     }
 }

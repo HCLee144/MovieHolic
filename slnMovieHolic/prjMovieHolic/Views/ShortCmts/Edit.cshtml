@@ -1,69 +1,80 @@
 ﻿@model prjMovieHolic.Models.TShortCmt
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "MovieHolic 編輯短評";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
       integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 <!-- Bootstrap ICONS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-<h1>Edit</h1>
+<link rel="stylesheet" href="~/css/star-rating.css"/>
 
-<h4>TShortCmt</h4>
+<div class="myBr"></div>
+<h4>編輯短評</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FCmtid" />
+            <input type="hidden" asp-for="FMovieId"/>
+            <input type="hidden" asp-for="FMemberId"/>
+            <label>電影名稱：@ViewData["FMovieName"]</label>
+            
+            <div class="myBr"></div>
             <div class="form-group">
-                <label asp-for="FMovieId" class="control-label"></label>
-                <select asp-for="FMovieId" class="form-control" asp-items="ViewBag.FMovieId"></select>
-                <span asp-validation-for="FMovieId" class="text-danger"></span>
+                <label>評分：</label>
+                <span class="gl-star-rating gl-star-rating--ltr" data-star-rating="">
+                    <select id="glsr-ltr" class="FRate" name="FRate">
+                        <option value="">請選擇</option>
+                        @{
+                            for (int i = 5; i > 0; i--)
+                            {
+                                if (Model.FRate == i)
+                                {
+                                    <option value="@i" selected>@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        }
+                    </select><span class="gl-star-rating--stars s0" role="tooltip" data-rating="0"
+                                   aria-label="Select a Rating">
+                        <span data-index="0" data-value="1"></span><span data-index="1"
+                                                                         data-value="2"></span><span data-index="2" data-value="3"></span><span data-index="3"
+                                                                                                                                                data-value="4"></span><span data-index="4" data-value="5"></span>
+                    </span>
+                </span>
             </div>
+            <div class="myBr"></div>
             <div class="form-group">
-                <label asp-for="FMemberId" class="control-label"></label>
-                <select asp-for="FMemberId" class="form-control" asp-items="ViewBag.FMemberId"></select>
-                <span asp-validation-for="FMemberId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FTitle" class="control-label"></label>
+                <label class="control-label">評論內容：</label>
                 <input asp-for="FTitle" class="form-control" />
                 <span asp-validation-for="FTitle" class="text-danger"></span>
             </div>
+            <div class="myBr"></div>
             <div class="form-group">
-                <label asp-for="FRate" class="control-label"></label>
-                <input asp-for="FRate" class="form-control" />
-                <span asp-validation-for="FRate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FCreatedTime" class="control-label"></label>
-                <input asp-for="FCreatedTime" class="form-control" />
-                <span asp-validation-for="FCreatedTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FEditedTime" class="control-label"></label>
-                <input asp-for="FEditedTime" class="form-control" />
-                <span asp-validation-for="FEditedTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FVisible" class="control-label"></label>
-                <input asp-for="FVisible" class="form-control" />
-                <span asp-validation-for="FVisible" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <button type="button" class="btn btn-outline-primary" onclick="history.back()">取消</button>
+                <input type="submit" value="儲存" class="btn btn-outline-primary" />
+                <button type="button" class="btn btn-outline-primary" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>返回電影介紹</button>
+                <button type="button" class="btn btn-outline-danger" onclick='location.href="/ShortCmts/delete/@Model.FCmtid"'>刪除這則短評</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <button type="button">刪除這則短評</button>
-</div>
 
 @section Scripts {
+    <script src="~/js/star-rating.js"></script>
+    <script>
+        // var destroyed = false;
+        var starratingPrebuilt = new StarRating('.FRate', {
+            prebuilt: true,
+            clearable: false,
+            maxStars: 5,
+        });
+        </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
