@@ -60,7 +60,7 @@
                                      <tr>
                                           <th>性別</th>
                                           <td>
-                                                <input type="radio" name="FGenderId" value="1" required/><label style="font-size:15px">男</label>
+                                                <input type="radio" name="FGenderId" value="1" id="radioMale" required /><label style="font-size:15px">男</label>
                                                 <input type="radio" name="FGenderId" value="2" id="radioFemale"/><label style="font-size:15px">女</label>
                                                 <input type="radio" name="FGenderId" value="3" /><label style="font-size:15px">非二元性別</label>
                                           </td>
@@ -166,6 +166,8 @@
         const FEmail = document.querySelector('#FEmail');
         const FIdcardNumber = document.querySelector('#FIdcardNumber');
         const radioFemale = document.querySelector('#radioFemale');
+        const radioMale = document.querySelector('#radioMale');
+        const display = document.querySelector('#display');
 
         const formdialog = document.getElementById('IamDialog');
         const btnCloseDialog = document.getElementById('closeDialog');
@@ -275,10 +277,11 @@
             FPassword.value = 'mLskcBp13';
             FPasswordCheck.value = 'mLskcBp13';
            FName.value ='約兒';
-           radioFemale.checded = true;
+           radioFemale.checked = true;
            FBirthDate.value = '1975/10/16';
            FEmail.value = 'yuru@gmail.com';
            FIdcardNumber.value='A298546321'; 
+           display.checked = true;
         })
 
         const SignUpDemo2 = document.querySelector('#SignUpDemo2');
@@ -287,10 +290,11 @@
             FPassword.value = 'OB2bcbmi';
             FPasswordCheck.value = 'OB2bcbmi';
             FName.value = '黃昏';
-            radioFemale.checded = true;
+            radioMale.checked = true;
             FBirthDate.value = '1960/08/19';
             FEmail.value = 'tasokare@gmail.com';
             FIdcardNumber.value = 'B198546321';
+            display.checked = true;
         })
         const SignUpDemo3 = document.querySelector('#SignUpDemo3');
         SignUpDemo3.addEventListener('click', function () {
@@ -298,10 +302,11 @@
             FPassword.value = 'OB3bcbmi';
             FPasswordCheck.value = 'OB3bcbmi';
             FName.value = '夜帷';
-            radioFemale.checded = true;
+            radioFemale.checked = true;
             FBirthDate.value = '1975/08/19';
             FEmail.value = 'roid@gmail.com';
             FIdcardNumber.value = 'A298144621';
+            display.checked = true;
         })
         const SignUpDemo4 = document.querySelector('#SignUpDemo4');
         SignUpDemo4.addEventListener('click', function () {
@@ -309,10 +314,11 @@
             FPassword.value = 'OB4bcbmi';
             FPasswordCheck.value = 'OB4bcbmi';
             FName.value = '戴斯蒙德';
-            radioFemale.checded = true;
+            radioMale.checked = true;
             FBirthDate.value = '2002/03/19';
             FEmail.value = 'secondSon@gmail.com';
             FIdcardNumber.value = 'A198123456';
+            display.checked = true;
         })
     </script>
 
