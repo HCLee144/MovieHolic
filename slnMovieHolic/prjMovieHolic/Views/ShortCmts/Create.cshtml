@@ -1,25 +1,29 @@
 ﻿@model prjMovieHolic.Models.TShortCmt
 
 @{
-    ViewData["Title"] = "新增短評";
+    ViewData["Title"] = "MovieHolic 新增短評";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<!-- Bootstrap ICONS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
-<h1>Create</h1>
+<h1>新增短評</h1>
 
-<h4>TShortCmt</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label  class="control-label">電影名稱</label>
-                <input asp-for="FMovieId" class ="form-control" asp-items="ViewBag.FMovieId"/>
+                <label asp-for="FMovieId" class="control-label"></label>
+                <input asp-for="FMovieId" type="hidden" class ="form-control" asp-items="ViewBag.FMovieId"/>
             </div>
             <div class="form-group">
                 <label asp-for="FMemberId" class="control-label"></label>
-                <input asp-for="FMemberId" readonly="readonly" class ="form-control" asp-items="ViewBag.FMemberId"/>
+                <input asp-for="FMemberId" class ="form-control" asp-items="ViewBag.FMemberId"/>
             </div>
             <div class="form-group">
                 <label asp-for="FTitle" class="control-label"></label>
@@ -32,19 +36,15 @@
                 <span asp-validation-for="FRate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="發送" class="btn btn-outline-primary" />
+                <button type="button" class="btn btn-outline-primary" onclick="history.back()" >取消</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">回到電影頁面</a>
-</div>
+
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
-            crossorigin="anonymous"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
