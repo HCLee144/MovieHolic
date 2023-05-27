@@ -22,7 +22,7 @@
                     <div class="line1 wrapper">
                         <div class="wrapper tabs memCut">
                             <div class="memberInformation">
-                                <form asp-action="memberSignUp" method="post">
+                                <form asp-action="memberSignUp" method="post" id="yourForm">
                                 <table class="memberTable">
                                     <tr>
                                          <th>帳號</th>
@@ -230,43 +230,30 @@
         //        alert(data.message);
         //    }
         //})
+        const formdialogPass = document.getElementById('IamDialogPass');
+        const btnCloseDialogPass = document.getElementById('closeDialogPass');
 
-        submit.addEventListener('click', async () => {
-            console.log('run')
-            const url = '@Url.Action("memberSignUp", "memberFront")';
-            const formData = new FormData();
-            formData.append('member.FPhone', FPhone.value);
-            formData.append('member.FPassword', FPassword.value);
-            formData.append('member.FName', FName.value);
-            formData.append('member.FEmail', FEmail.value);
-            formData.append('member.FBirthDate', FBirthDate.value);
-            formData.append('member.FIdcardNumber', FIdcardNumber.value);
-            formData.append('member.FGenderId', FGenderId.value);
-            formData.append('member.FMembershipId', FMembershipId.value);
-            formData.append('member.FNickName', FNickName.value);
-            formData.append('member.FCreatedDate', FCreatedDate.value);
+        submit.addEventListener('click', (event) => {
+            event.preventDefault();
+            formdialogPass.showModal();
+        })
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: formData
-                });
+        btnCloseDialogPass.addEventListener('click', async () => {
+            // 提交表單資料到 Controller
+            const form = document.querySelector('#yourForm');
+            const formData = new FormData(form);
 
-                const result = await response.json();
-                console.log(result);
-
-                if (result.success) {
-                    // 成功註冊，顯示提示訊息
-                    alert(result.message);
-                } else {
-                    // 註冊失敗，顯示錯誤訊息
-                    alert(result.message);
-                }
-            } catch (error) {
-                console.error('An error occurred:', error);
-            }
+            const response = await fetch('@Url.Content("~/memberFront/memberSignUp")', {
+                method: 'POST',
+                body: formData,
+            });
+            // 關閉 <dialog>
+            formdialogPass.close();
+            window.location.href = "/memberFront/memberLogin";
 
         });
+
+
  
 
         const displayPassword = document.getElementById('displayPassword');

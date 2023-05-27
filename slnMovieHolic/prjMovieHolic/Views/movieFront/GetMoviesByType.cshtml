@@ -1,0 +1,111 @@
+﻿@model prjMovieHolic.ViewModels.CMovieFrontViewModel
+@*@model IEnumerable<prjMovieHolic.Models.TMovie>*@
+
+@{
+    ViewData["Title"] = "GetMoviesByType";
+}
+
+<div id="page2">
+    <div id="page2">
+        <div class="body1">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="line1 wrapper">
+                            <!--熱門電影分隔線-->
+                            <div class="myBr"></div>
+
+                            <div class="movieType">
+                                <a href="GetMoviesByType?type=劇情片">劇情</a><a href="GetMoviesByType?type=動作片">動作</a><a href="GetMoviesByType?type=科幻片">科幻</a><a href="GetMoviesByType?type=驚悚片">驚悚</a><a href="GetMoviesByType?type=動畫片">動畫</a><a href="GetMoviesByType?type=漫威">漫威</a>
+                                <a href="GetMoviesByType?type=DC">DC</a><a href="GetMoviesByType?type=迪士尼">迪士尼</a><a href="GetMoviesByType?type=紀錄片">紀錄</a>
+                            </div>
+                            <div class="hotMoviePlaceLine">
+                                <ul class="hotMoviePlaceLineMenu">
+                                    <li style="font-size: 26px;">分類檢索： </li>
+                                    <li><a href="" style="color: #13c5ff;"></a></li>
+                                </ul>
+                            </div>
+                            <!-- content -->
+                            <!-- 熱門電影區塊-->
+                            <section id="">
+                                <div class="line1">
+                                    <div class="line2 wrapper">
+                                        <div class="movieWallMovies2">
+
+                                            @foreach (var movie in Model.tMovies)
+                                            {
+                                                <!-- 熱門電影1-->
+                                                <div class="movieCardBig">
+                                                    <article class="movieCard">
+                                                        <a href="/MovieFront/MovieDetails?id=@movie.FId">
+                                                            <br>
+                                                            <figure>
+                                                                <img src="~/@movie.FPosterPath" alt="">
+                                                                <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
+                                                            </figure>
+                                                            <div>
+                                                                <h3>@movie.FNameCht</h3>
+                                                                <ul>
+                                                                    <li class="movieEnglishName">(@movie.FNameEng)</li>
+                                                                    <hr>
+                                                                    <li>上映日期：@movie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                    <li>片長：@movie.FShowLength 分鐘</li>
+                                                                </ul>
+                                                            </div>
+                                                        </a>
+                                                    </article>
+                                                    <div class="likeAndBuy">
+                                                        @{
+                                                            //05-25 Stanley
+                                                            if (movie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                                            {
+                                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId" style="visibility:hidden">Buy Now</a></div>
+                                                            }
+                                                        }
+                                                        <div>
+                                                            @{
+                                                                if (ViewBag.Login == false)
+                                                                {
+                                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    bool flag = false;
+                                                                    foreach (var item in Model.isFavoriteNow)
+                                                                    {
+                                                                        if (item.FMovieId == movie.FId)
+                                                                        {
+                                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                                            flag = true;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if (!flag)
+                                                                    {
+                                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="myBr"></div>
+                           
+                            
+                        </div>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
