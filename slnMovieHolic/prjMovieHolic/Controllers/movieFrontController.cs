@@ -121,7 +121,7 @@ namespace prjMovieHolic.Controllers
         public async Task<IActionResult> GetMoviesByType(string type)
         {
             // Find the type IDs associated with the given type name
-            var typeIds = await _context.TTypeLists.Include(t=>t.FMovie).ThenInclude(t=>t.TSessions)
+            var typeIds = await _context.TTypeLists
                 .Where(t => t.FType.FNameCht == type)
                 .Select(t => t.FMovieId)
                 .ToListAsync();
@@ -129,7 +129,7 @@ namespace prjMovieHolic.Controllers
             // Get all movies that have one of the found type IDs
             var Movies = await _context.TMovies
                 .Include(t => t.FRating)
-                .Include(t => t.FSeries)
+                .Include(t => t.FSeries).Include(t => t.TSessions)
                 .Where(m => typeIds.Contains(m.FId))
                 .ToListAsync();
 
