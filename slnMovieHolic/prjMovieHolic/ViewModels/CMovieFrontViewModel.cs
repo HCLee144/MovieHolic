@@ -5,6 +5,7 @@ namespace prjMovieHolic.ViewModels
     public class CMovieFrontViewModel
     {
         public TMovie tMovie {  get; set; }
+        public TType tType { get; set; }
         public string[] tTypeListNames { get; set; }
         public string TypeListNames { get; set; }
         public string[] tActorListNames { get; set; }
@@ -13,6 +14,7 @@ namespace prjMovieHolic.ViewModels
         public string DirectorListNames { get; set; }
 
         public List<TMovie> tMovies { get; set; }
+        public List<TType> tTypes { get; set; }
         public List<TMovie>? NowShowingMovies { get; set; }
         public List<TMovie>? UpcomingMovies { get; set; }
 

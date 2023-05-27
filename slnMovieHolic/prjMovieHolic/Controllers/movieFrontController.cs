@@ -130,12 +130,19 @@ namespace prjMovieHolic.Controllers
             var Movies = await _context.TMovies
                 .Include(t => t.FRating)
                 .Include(t => t.FSeries)
+                .Include(t => t.TSessions)  // 05-25 Stanley
                 .Where(m => typeIds.Contains(m.FId))
+                .OrderByDescending(m => m.FScheduleEnd)
+                .ToListAsync();
+
+            // Get all types
+            var Types = await _context.TTypes
                 .ToListAsync();
 
             CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 tMovies = Movies,                
+                tTypes = Types,
             };
 
             //已登入用
