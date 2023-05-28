@@ -29,10 +29,10 @@ namespace prjMovieHolic.Controllers
         public IActionResult ListSession(int? movieID)
         {
             ClearAllSession();
-			//先判斷是否有場次
-			var session = movieContext.TSessions.Where(s => s.FMovieId == movieID).
+            //先判斷是否有場次
+            var session = movieContext.TSessions.Where(s => s.FMovieId == movieID).
                 Where(s => s.FStartTime.Date > DateTime.Now.Date).ToList();
-            if (session == null)
+            if (session.Count == 0)
                 return RedirectToAction("Index", "Home");
 
 
@@ -47,7 +47,7 @@ namespace prjMovieHolic.Controllers
 
             if (movie == null)
                 return RedirectToAction("Index", "Home");
-            
+
 
             CListSessionViewModel vm = new CListSessionViewModel();
             vm.tMovie = movie;
@@ -87,7 +87,7 @@ namespace prjMovieHolic.Controllers
             //依據點選到的日期出現場次
             string realDate = date.Substring(0, 5);
             var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().
-                OrderBy(s=>s.FTheaterId).
+                OrderBy(s => s.FTheaterId).
                 Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
 
             List<CShowSession> showSessions = new List<CShowSession>();
@@ -377,18 +377,7 @@ namespace prjMovieHolic.Controllers
             HttpContext.Session.SetString(CDictionary.SelectedProductCount, json);
         }
 
-        public IActionResult TryAndError(List<Item> myList)
-        {
 
-
-            return View();
-        }
-
-        public IActionResult confirmUrl()
-        {
-            string s = "";
-            return View();
-        }
 
         public IActionResult ListOrderDetails(List<CProductInfo> products)
         {
@@ -631,7 +620,7 @@ namespace prjMovieHolic.Controllers
                     return Content("儲存成功");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return Content("交易失敗");
             }
@@ -643,6 +632,7 @@ namespace prjMovieHolic.Controllers
             int memberID = getMemberID();
 
             var orderStatus_取票狀態 = movieContext.TOrderStatuses.Where(od => od.FOrderStatus == orderStatusDescribe).
+                OrderByDescending(o=>o.FOrderStatusId).
                 Select(od => od.FOrderStatusId).ToList();
             List<TOrderStatusLog> order_取票狀態 = new List<TOrderStatusLog>();
             foreach (var item in orderStatus_取票狀態)
@@ -713,17 +703,21 @@ namespace prjMovieHolic.Controllers
         {
             var receipt = movieContext.TReceipts.FirstOrDefault(r => r.FOrderId == orderID);
             List<TReceiptDetail> receiptDetails = new List<TReceiptDetail>();
-            if(receipt!=null)
+            if (receipt != null)
             {
                 int receiptID = receipt.FReceiptId;
-                receiptDetails = movieContext.TReceiptDetails.Where(rd => rd.FReceiptId == receiptID).ToList();
+                receiptDetails = movieContext.TReceiptDetails.Include(rd=>rd.FProduct).
+                    Where(rd => rd.FReceiptId == receiptID).ToList();
             }
-            
+
             List<CReceiptDetailData> list = new List<CReceiptDetailData>();
             foreach (var item in receiptDetails)
             {
                 CReceiptDetailData receiptDetailData = new CReceiptDetailData();
-                receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                if (item.FProduct.FCategoryId == 2)
+                    receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName + "爆米花";
+                else
+                    receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
                 receiptDetailData.productCount = item.FQty.ToString();
                 list.Add(receiptDetailData);
             }
@@ -732,7 +726,7 @@ namespace prjMovieHolic.Controllers
         public IActionResult deleteOrder(int orderID)
         {
             var deleted = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID);
-            foreach(var item in deleted)
+            foreach (var item in deleted)
                 movieContext.TOrderDetails.Remove(item);
 
             var orderStatusLog = movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
@@ -745,10 +739,10 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult SearchMovieKeyword(string keyword)
         {
-            var result=movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
+            var result = movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
                 Where(s => s.FStartTime.Date > DateTime.Now.Date).
                 Where(s => s.FMovie.FNameCht.Contains(keyword)).
-                DistinctBy(s=>s.FMovieId).ToList();
+                DistinctBy(s => s.FMovieId).ToList();
 
             return Json(result);
         }

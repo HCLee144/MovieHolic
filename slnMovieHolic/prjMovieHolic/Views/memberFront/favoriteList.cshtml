@@ -94,7 +94,7 @@
                                                             <div class="likeAndBuy">
                                                                 @{
                                                                     //05-25 Stanley
-                                                                    if (item.FMovie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                                                    if (item.FMovie.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date).Any())
                                                                     {
                                                                         <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@item.FMovieId">Buy Now</a></div>
                                                                     }
@@ -165,7 +165,17 @@
                                                             </article>
                                                             <div class="likeAndBuy">
 
-                                                                <div><a class="buyNow" style="cursor: no-drop;background-color:#5B5B5B">Buy Now</a></div>
+                                                                @{
+                                                                    //05-25 Stanley
+                                                                    if (item.FMovie.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date).Any())
+                                                                    {
+                                                                        <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@item.FMovieId">Buy Now</a></div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@item.FMovieId" style="visibility:hidden">Buy Now</a></div>
+                                                                    }
+                                                                }
                                                                 <div>
                                                                     <p id="heart" style="color:#FF2D2D" onclick="cancelFavorite('@item.FMemberId','@item.FMovieId')" data-movie-id="@item.FMovieId">❤</p>
                                                                 </div>
