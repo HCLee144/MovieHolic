@@ -7,6 +7,9 @@
     <style>
         .h3Text {
             text-align: center;
+            font-size:36px;
+            margin:10px;
+            margin-bottom:20px;
         }
 
         .headText {
@@ -20,6 +23,8 @@
 
         .tdText td {
             text-align: center;
+            font-size:24px;
+            line-height:30px
         }
 
         .tdWidth td {
@@ -27,7 +32,7 @@
         }
 
         .borderWidth {
-            width: 400px;
+            width: 700px;
             margin: auto;
             border-collapse: collapse;
         }
@@ -44,6 +49,92 @@
             background-color: gainsboro;
         }
 
+
+        .IamDialog {
+            width: 850px;
+            height: 400px;
+            border-radius: 15px;
+            margin: 250px auto;
+        }
+
+            .IamDialog p {
+                color: #999;
+                font-size: 24px;
+                margin-top: 30px;
+                text-align: center;
+            }
+
+            .IamDialog::-webkit-scrollbar {
+                background: transparent;
+                width: 6px;
+                height: 6px;
+                border-radius: 5px;
+            }
+
+            .IamDialog::-webkit-scrollbar-thumb {
+                background-color: silver;
+                border-radius: 5px;
+            }
+
+        .closeDialog {
+            border-radius: 5px;
+            color: azure;
+            width: 100px;
+            height: 40px;
+            background-color: #10a5d6;
+            margin-top: 30px;
+            margin-left: 190px;
+        }
+
+        .closeOrderDetailsDialog {
+            border-radius: 5px;
+            color: azure;
+            width: 100px;
+            height: 40px;
+            background-color: #10a5d6;
+            margin-top: 30px;
+        }
+
+        .noBookOrderParagraph{
+            font-size:28px;
+            text-align:center;
+            color:grey;
+        }
+
+        .toMovieIndexLink {
+            text-align: center;
+            display:block;
+            font-size:28px;
+            text-decoration: underline;
+            color:grey;
+        }
+
+        .toMovieIndexLink:link{
+            text-align:center;
+            text-decoration:underline;
+        }
+
+        .toMovieIndexLink:hover {
+            color: blue;
+            cursor:pointer;
+        }
+
+
+        .dialogDiv {
+            font-size: 24px;
+            text-align: left;
+            color: black;
+            line-height: 28px
+        }
+
+
+            .dialogDiv h3 {
+                font-size: 30px;
+                text-align: left;
+                color: black;
+                margin-top: 20px;
+                margin-bottom: 20px
+            }
     </style>
 }
 
@@ -83,7 +174,8 @@
                                     <label id="OrderBook" for="tab1">未取票</label>
                                     <div class="tab_content overflowXHidden overflowYHidden">
                                         <div class="orderLa" id="divBook">
-                                 
+                                            <p class="noBookOrderParagraph">尚無未取票訂單，有想看的電影嗎 ?</p>
+                                            @Html.ActionLink("點我看現正熱映電影","MovieIndex","MovieFront",null,new{@class="toMovieIndexLink"})
                                         </div>
                                     </div>
                                     <!-- TAB1 打包區塊 end -->
@@ -92,8 +184,6 @@
                                     <label id="OrderGet" for="tab2">已取票</label>
                                     <div class="tab_content overflowXHidden overflowYHidden">
                                         <div class="orderLa" id="divGet">
-                                            
-                                       
                                         </div>
                                     </div>
                                     <!-- TAB2 打包區塊 end -->
@@ -102,7 +192,6 @@
                                     <label for="tab3" id="OrderCancel">已取消</label>
                                     <div class="tab_content overflowXHidden overflowYHidden">
                                         <div class="orderLa" id="divCancel">
-                                            
                                         </div>
                                     </div>
                                     <!-- TAB3 打包區塊 end -->
@@ -136,41 +225,44 @@
         <tbody id="dialogFoodBody">
         </tbody>
     </table>
-    <button id="closeDialog"  class="closeDialog">確認</button>
+    <div style="display:flex;justify-content:center">
+        <button id="closeDialog" class="closeOrderDetailsDialog">確認</button>
+    </div>
 </dialog>
 
 <dialog id="cancelDialog" class="IamDialog">
-    <p id="cancelParagraph">
-@*        退票費用：根據我們的退票政策，可能會收取一定的退票費用或手續費。請確認您的退票費用及相關政策。
+    <div id="cancelParagraph" class="dialogDiv">
+        <h3>退票費用</h3>
+        根據我們的退票政策，可能會收取一定的退票費用或手續費。請確認您的退票費用及相關政策。
         <br />
         票券狀態：請注意，只有未使用過的票券才能辦理退票。如果您已經使用了票券進場觀影，將無法退還票款。
         <br />
-        退款處理時間：一旦您成功提交退票申請，我們將在 [退款處理時間] 內進行退款處理。請耐心等待，退款款項將原路返回到您使用的付款方式上。
+        退款處理時間：一旦您成功提交退票申請，我們將在 3天 內進行退款處理。請耐心等待，退款款項將原路返回到您使用的付款方式上。
         <br />
         退票方式：您可以選擇在線退票或聯繫客服進行退票申請。請按照指示提供相關信息和完成退票程序。
         <br />
         退票確認：一旦您成功提交退票申請，請保留相關退票確認資訊作為您的記錄。我們也會通過郵件或其他方式向您發送退票確認。
         <br />
         退票聯繫：如果您在退票過程中遇到困難或有任何疑問，請隨時聯繫我們的客服部門，我們的團隊將樂意為您提供支援和協助。
-        <br />*@
+        <br />
         確定要退票嗎？
-    </p>
+    </div>
     <button id="confirmDialog" class="closeDialog">確定</button>
     <button id="closeCancelDialog" class="closeDialog">取消</button>
 </dialog>
 
 @section Scripts{
     <script>
-        const OrderBook=document.getElementById('OrderBook');
-        const OrderGet=document.getElementById('OrderGet');
-        const OrderCancel=document.getElementById('OrderCancel');
-        const divBook=document.getElementById('divBook');
-        const divGet=document.getElementById('divGet');
-        const divCancel=document.getElementById('divCancel');
+        const OrderBook = document.getElementById('OrderBook');
+        const OrderGet = document.getElementById('OrderGet');
+        const OrderCancel = document.getElementById('OrderCancel');
+        const divBook = document.getElementById('divBook');
+        const divGet = document.getElementById('divGet');
+        const divCancel = document.getElementById('divCancel');
 
         const formdialog = document.getElementById('IamDialog');
         const btnCloseDialog = document.getElementById('closeDialog');
-        const dialogBody=document.getElementById('dialogBody');
+        const dialogBody = document.getElementById('dialogBody');
         const dialogFoodBody = document.getElementById('dialogFoodBody');
 
         const cancelDialog = document.getElementById('cancelDialog');
@@ -179,39 +271,47 @@
         const closeCancelDialog = document.getElementById('closeCancelDialog');
 
 
-        window.onload = async ()=> {
-            divBook.innerHTML=await ListOrderBookTicket('未取票');
+        window.onload = async () => {
+            const result= await ListOrderBookTicket('未取票');
+            if(result)
+                divBook.innerHTML = result;
+            else{
+                divBook.innerHTML = ' <p class="noBookOrderParagraph">尚無未取票訂單，有想看的電影嗎 ?</p>';
+                divBook.innerHTML += '@Html.ActionLink("點我看現正熱映電影","MovieIndex","MovieFront",null,new{@class="toMovieIndexLink"})';
+            } 
         }
- 
-        OrderBook.addEventListener('click',async ()=>{
-            result=await ListOrderBookTicket('未取票');
-             divBook.innerHTML=result;
+
+        OrderBook.addEventListener('click', async () => {
+            result = await ListOrderBookTicket('未取票');
+            if(result)
+                divBook.innerHTML = result;
+            else{
+                divBook.innerHTML = ' <p class="noBookOrderParagraph">尚無未取票訂單，有想看的電影嗎 ?</p>';
+                divBook.innerHTML += '@Html.ActionLink("點我看現正熱映電影","MovieIndex","MovieFront",null,new{@class="toMovieIndexLink"})';
+            }
         });
-        OrderGet.addEventListener('click',async ()=>{
-            result=await ListOrderTicket('已取票');
-             divGet.innerHTML=result;
+        OrderGet.addEventListener('click', async () => {
+            result = await ListOrderTicket('已取票');
+            divGet.innerHTML = result;
         });
-        OrderCancel.addEventListener('click',async ()=>{
+        OrderCancel.addEventListener('click', async () => {
             result = await ListCancelTicket('已取消');
-             divCancel.innerHTML=result;
+            divCancel.innerHTML = result;
         });
-      
+
         //未取票
-        async function ListOrderBookTicket(od)
-        {
-            const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe='+od);
+        async function ListOrderBookTicket(od) {
+            const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe=' + od);
             const data = await response.json();
-            console.log(data);
-            let result='';
-            data.forEach((item)=>{
-                result+=`<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
-                result+=`<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
+            let result = '';
+            data.forEach((item) => {
+                result += `<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
+                result += `<h3>${item["theaterName"]}</h3><h4>${item["movieName"]}</h4>`;
                 result += `</div><div><a id=${item["orderID"]} onclick="showOrderDetails(event)" >詳情</a>`;
                 result += `<button id=${item["orderID"]} class="orderDetaildelete" onclick="cancelTicket(event)">取消</button></div></div><div class="orderDetailBoxBottom">`;
-                result+=`<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
-                result+=`</div></div></div>`        
+                result += `<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
+                result += `</div></div></div>`
             })
-            console.log(result);
             return result;
         }
 
@@ -219,7 +319,6 @@
         async function ListOrderTicket(od) {
             const response = await fetch('@Url.Content("~/OrderFront/ListOrderBook")?orderStatusDescribe=' + od);
             const data = await response.json();
-            console.log(data);
             let result = '';
             data.forEach((item) => {
                 result += `<div class="addBorder"><div class="orderDetailBox"><div class="orderDetailBoxTop"><div>`;
@@ -229,7 +328,6 @@
                 result += `<h3>${item["sessionStartTime"]}</h3><h3>NT$ ${item["totalPrice"]}元</h3>`;
                 result += `</div></div></div>`
             })
-            console.log(result);
             return result;
         }
 
@@ -251,41 +349,36 @@
             return result;
         }
 
-        async function showOrderDetails(event)
-        {
-            const id=event.target.getAttribute('id');
-            const orderDetaildata=await callOrderDetail(id);
+        async function showOrderDetails(event) {
+            const id = event.target.getAttribute('id');
+            const orderDetaildata = await callOrderDetail(id);
             const receiptDetaildata = await callReceiptDetail(id);
 
             dialogBody.innerHTML = orderDetaildata;
-            dialogFoodBody.innerHTML=receiptDetaildata;
+            dialogFoodBody.innerHTML = receiptDetaildata;
             formdialog.showModal();
             btnCloseDialog.addEventListener('click', () => {
-            formdialog.close();
+                formdialog.close();
             })
-            
-            console.log(id);
+
         }
 
-        async function callOrderDetail(orderID)
-        {
-            const response=await fetch('@Url.Content("~/OrderFront/ShowOrderDetails")?orderID='+orderID);
-            const data=await response.json();
+        async function callOrderDetail(orderID) {
+            const response = await fetch('@Url.Content("~/OrderFront/ShowOrderDetails")?orderID=' + orderID);
+            const data = await response.json();
 
-            let result='';
-            let i=1;
-            data.forEach((item)=>{
-                result+=`<tr><td>${i}</td>`;
+            let result = '';
+            let i = 1;
+            data.forEach((item) => {
+                result += `<tr><td>${i}</td>`;
                 result += `<td>${item["seatName"]}</td>`;
-                result+=`<td>${item["ticketClassName"]}</td></tr>`;  
+                result += `<td>${item["ticketClassName"]}</td></tr>`;
                 i++;
             })
-            console.log(result);
 
             return result;
         }
-        async function callReceiptDetail(orderID) 
-        {
+        async function callReceiptDetail(orderID) {
             const response = await fetch('@Url.Content("~/OrderFront/ShowReceiptDetails")?orderID=' + orderID);
             const data = await response.json();
 
@@ -293,21 +386,20 @@
             data.forEach((item) => {
                 result += `${item["productName"]}x${item["productCount"]}、`;
             })
-            if(result.substring(result.length-1)=='、')
-                result=result.substring(0,result.length-1);
+            if (result.substring(result.length - 1) == '、')
+                result = result.substring(0, result.length - 1);
             result += `</td>`
             console.log(result);
 
             return result;
         }
 
-        function cancelTicket(event)
-        {
+        function cancelTicket(event) {
             cancelDialog.showModal();
-            confirmDialog.addEventListener('click', async() => {
+            confirmDialog.addEventListener('click', async () => {
                 const orderID = event.target.getAttribute('id');
-                const response=await deleteOrder(orderID);
-                
+                const response = await deleteOrder(orderID);
+
                 const result = await ListOrderBookTicket('未取票');
                 divBook.innerHTML = result;
 
@@ -321,7 +413,7 @@
         async function deleteOrder(orderID) {
             const response = await fetch('@Url.Content("~/OrderFront/deleteOrder")?orderID=' + orderID);
             const data = await response.text();
-            if(data=='Success')
+            if (data == 'Success')
                 return '退票成功';
         }
     </script>
