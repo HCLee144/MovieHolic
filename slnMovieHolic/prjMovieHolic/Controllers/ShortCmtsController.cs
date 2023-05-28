@@ -82,6 +82,7 @@ namespace prjMovieHolic.Controllers
                 return RedirectToAction("memberLogin", "MemberFront", null);
             ViewBag.FMemberId = userId;
             ViewBag.FMovieId = movieID;
+            sessionCheck();
             return View();
         }
 
@@ -100,6 +101,7 @@ namespace prjMovieHolic.Controllers
             }
             ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId", tShortCmt.FMemberId);
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tShortCmt.FMovieId);
+            
             return View(tShortCmt);
         }
 
@@ -118,6 +120,7 @@ namespace prjMovieHolic.Controllers
             }
             ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId", tShortCmt.FMemberId);
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tShortCmt.FMovieId);
+            sessionCheck();
             return View(tShortCmt);
         }
 
