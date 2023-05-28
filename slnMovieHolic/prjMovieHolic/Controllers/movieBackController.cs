@@ -23,10 +23,8 @@ namespace prjMovieHolic.Controllers
             _enviro = p;
         }
 
-        public IActionResult MovieView(int? messageCode)
+        public IActionResult MovieView()
         {
-            if (messageCode != null)
-                ViewBag.MessageCode = messageCode;
             return View();
         }
 
@@ -39,7 +37,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+                return Json(null);
             }
 
         }
@@ -55,7 +53,7 @@ namespace prjMovieHolic.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+                return Json(null);
             }
         }
 
@@ -63,74 +61,83 @@ namespace prjMovieHolic.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(CMovieBackViewModel edition)
         {
+            string error = "";
+            if (edition.FNameCht == null)
+                error += "電影中文名稱，";
+            if (edition.FNameEng == null)
+                error += "電影英文名稱，";
+            if (edition.FRatingId == -1)
+                error += "電影分級，";
+            if (error != "")
+                return Json(new { isError = true, message = $"請輸入{error}謝謝！" });
             try
             {
-                TMovie movie = _db.TMovies.Where(m => m.FId == edition.FId).FirstOrDefault();
-                if (movie != null)
+                var movie = _db.TMovies.Where(m => m.FId == edition.FId).FirstOrDefault();
+                if (movie == null)
+                    return Json(new { isError = true, message = "查無電影，請重新再試！" });
+                movie.FNameCht = edition.FNameCht;
+                movie.FNameEng = edition.FNameEng;
+                movie.FScheduleStart = edition.FScheduleStart;
+                movie.FScheduleEnd = edition.FScheduleEnd;
+                movie.FRatingId = edition.FRatingId;
+                if (edition.FShowLength != null)
+                    movie.FShowLength = edition.FShowLength;
+                if (edition.FInteroduce != null)
+                    movie.FInteroduce = edition.FInteroduce;
+                if (edition.FTrailerLink != null)
+                    movie.FTrailerLink = edition.FTrailerLink;
+                if (edition.FPrice != null)
+                    movie.FPrice = edition.FPrice;
+                if (edition.image != null)
                 {
-                    if (edition.FNameCht != null)
-                        movie.FNameCht = edition.FNameCht;
-                    if (edition.FNameEng != null)
-                        movie.FNameEng = edition.FNameEng;
-                    movie.FScheduleStart = edition.FScheduleStart;
-                    movie.FScheduleEnd = edition.FScheduleEnd;
-                    movie.FRatingId = edition.FRatingId;
-                    if (edition.FShowLength != null)
-                        movie.FShowLength = edition.FShowLength;
-                    if (edition.FInteroduce != null)
-                        movie.FInteroduce = edition.FInteroduce;
-                    if (edition.FTrailerLink != null)
-                        movie.FTrailerLink = edition.FTrailerLink;
-                    if (edition.FPrice != null)
-                        movie.FPrice = edition.FPrice;
-                    if (edition.image != null)
+                    if (movie.FPosterPath != null)
                     {
-                        if (movie.FPosterPath != null)
+                        string path = _enviro.WebRootPath + "/" + movie.FPosterPath;
+                        using (var fileStream = new FileStream(path, FileMode.Create))
                         {
-                            string path = _enviro.WebRootPath + "/" + movie.FPosterPath;
-                            using (var fileStream = new FileStream(path, FileMode.Create))
-                            {
-                                edition.image.CopyTo(fileStream);
-                            }
-                        }
-                        else
-                        {
-                            string photoName = $"images/moviePosters/{movie.FId}/" + Guid.NewGuid().ToString() + ".jpg";
-                            string path = _enviro.WebRootPath + "/" + photoName;
-                            using (var fileStream = new FileStream(path, FileMode.Create))
-                            {
-                                edition.image.CopyTo(fileStream);
-                            }
-                            movie.FPosterPath = photoName;
+                            edition.image.CopyTo(fileStream);
                         }
                     }
-                    _db.SaveChanges();
+                    else
+                    {
+                        string photoName = $"images/moviePosters/{movie.FId}/" + Guid.NewGuid().ToString() + ".jpg";
+                        string path = _enviro.WebRootPath + "/" + photoName;
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            edition.image.CopyTo(fileStream);
+                        }
+                        movie.FPosterPath = photoName;
+                    }
                 }
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 2 });
+                _db.SaveChanges();
+                return Json(new { isError = false, message = "電影修改完成！" });
             }
             catch (Exception e)
             {
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+                return Json(new { isError = true, message = "電影修改異常，請重新再試！" });
             }
-
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CMovieBackViewModel create)
         {
+            string error = "";
+            if (create.FNameCht == null)
+                error += "電影中文名稱，";
+            if (create.FNameEng == null)
+                error += "電影英文名稱，";
             if (create.FRatingId == -1)
-            {
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
-            }
+                error += "電影分級，";
+            if (error != "")
+                return Json(new { isError = true, message = $"請輸入{error}謝謝！" });
             try
             {
                 using (var tran = _db.Database.BeginTransaction())
                 {
                     bool repeated = _db.TMovies.Where(movie => movie.FNameCht == create.FNameCht || movie.FNameEng == create.FNameEng).Any();
                     if (repeated)
-                        return RedirectToAction("MovieView");
+                        return Json(new { isError = true, message = "電影中文或英文名稱有重複，請重新確認！" });
 
                     TMovie movie = new TMovie()
                     {
@@ -164,13 +171,13 @@ namespace prjMovieHolic.Controllers
                         _db.SaveChanges();
                     }
                     tran.Commit();
-                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 1 });
+                    return Json(new { isError = false, message = "電影新增成功！" });
                 }
 
             }
             catch (Exception ex)
             {
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+                return Json(new { isError = true, message = "電影新增異常，請重新再試！" });
             }
         }
 
@@ -182,18 +189,18 @@ namespace prjMovieHolic.Controllers
             {
                 var movie = _db.TMovies.Include(m => m.TSessions).AsEnumerable().FirstOrDefault(m => m.FId == FId);
                 if (movie == null)
-                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 5 });
+                    return Json(new { isError = true, message = "查無電影，請重新再試！" });
                 if (movie.TSessions.Any())
-                    return RedirectToAction("MovieView", "movieBack", new { messageCode = 5 });
+                    return Json(new { isError = true, message = "該電影有場次，無法刪除" });
 
                 _db.TMovies.Remove(movie);
                 _db.SaveChanges();
 
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 3 });
+                return Json(new { isError = false, message = "電影刪除成功！" });
             }
             catch (Exception ex)
             {
-                return RedirectToAction("MovieView", "movieBack", new { messageCode = 4 });
+                return Json(new { isError = true, message = "電影刪除異常，請重新再試！" });
             }
 
         }

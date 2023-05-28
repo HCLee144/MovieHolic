@@ -63,7 +63,7 @@
                         <input type="time" id="selectEnd" class="form-select" readonly>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="新增" class="btn btn-primary" id="createFormButtom" />
+                        <input type="submit" value="新增" class="btn btn-primary" id="createFormButton" />
                     </div>
                 </form>
             </div>
@@ -131,7 +131,7 @@
         const selectStart = document.querySelector('#selectStart');
         const selectEnd = document.querySelector('#selectEnd');
 
-
+        const createFormButton = document.querySelector('#createFormButton')
 
         const sessionID = document.querySelectorAll('#sessionID');
 
@@ -340,7 +340,7 @@
         })
 
         //CreateButton
-        createFormButtom.addEventListener('click', function () {
+        createFormButton.addEventListener('click', function () {
             event.preventDefault();
             showConfirmDialog('確認要新增場次？', 'createSession');
         })
