@@ -160,7 +160,7 @@ namespace prjMovieHolic.Controllers
             //已登入用
             sessionCheck();
             string controller = "movieFront";
-            string view = "MovieDetails";
+            string view = "MovieIndex";
             //int? parameter = id;
             //string json=JsonSerializer.Serialize(new { controller, view });
             HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);

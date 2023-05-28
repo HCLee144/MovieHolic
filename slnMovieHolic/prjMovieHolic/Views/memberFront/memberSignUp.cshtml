@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "memberSignUp";
+    ViewData["Title"] = "MovieHolic 會員註冊";
 }
 <style>
     .verify{
@@ -257,6 +257,24 @@
 
         submit.addEventListener('click', async () => {
             event.preventDefault();
+
+            const requiredInputs = document.querySelectorAll('input[required]');
+            let isFormValid = true;
+
+            requiredInputs.forEach(input => {
+                if (
+                    (input.type === 'checkbox' && !input.checked) ||
+                    (input.type !== 'checkbox' && !input.value.trim())
+                ) {
+                    isFormValid = false;
+                }
+            });
+
+            if (!isFormValid) {
+                alert('請填入或勾選所有欄位');
+                return;
+            }
+
             // 提交表單資料到 Controller
             const form = document.querySelector('#yourForm');
             const formData = new FormData(form);
@@ -268,11 +286,11 @@
             const data=await response.text();
             console.log(data);
             if(data=='註冊成功'){
-            alert('註冊成功');
+            alert('註冊成功，請重新登入');
                 window.location.href = "/memberFront/memberLogin";
             }
             else{
-                alert('註冊失敗');
+                alert('註冊失敗，請重新輸入資料');
                 window.location.reload();
             }
             
