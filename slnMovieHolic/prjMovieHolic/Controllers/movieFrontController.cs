@@ -54,7 +54,7 @@ namespace prjMovieHolic.Controllers
                 NowShowingMovies = nowShowingMovies,
                 UpcomingMovies = upcomingMovies,
                 isFavoriteNow = IsFavoriteNow,
-                isFavotiteComing = IsFavoriteComing,
+                isFavoriteComing = IsFavoriteComing,
             };
 
             //已登入用
@@ -95,7 +95,8 @@ namespace prjMovieHolic.Controllers
             CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 tMovie = tMovie,
-                TypeListNames = getNames(tTypeListNames),
+                tTypeListNames = tTypeListNames,
+                //TypeListNames = getNames(tTypeListNames),
                 DirectorListNames = getNames(tDirectorListNames),
                 ActorListNames = getNames(tActorListNames)
             };
@@ -117,6 +118,62 @@ namespace prjMovieHolic.Controllers
             return View(movieViewModel);
         }
 
+        public async Task<IActionResult> GetMoviesByType(string type)
+        {
+            // Find the type IDs associated with the given type name
+            var typeIds = await _context.TTypeLists
+                .Where(t => t.FType.FNameCht == type)
+                .Select(t => t.FMovieId)
+                .ToListAsync();
+
+            // Get all movies that have one of the found type IDs
+            var Movies = await _context.TMovies
+                .Include(t => t.FRating)
+                .Include(t => t.FSeries)
+                .Include(t => t.TSessions)  // 05-25 Stanley
+                .Where(m => typeIds.Contains(m.FId))
+                .OrderByDescending(m => m.FScheduleEnd)
+                .ToListAsync();
+
+            // Get all types
+            var Types = await _context.TTypes
+                .ToListAsync();
+
+            // User Login and Favorite
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
+            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+            ViewBag.userName = userName;
+
+            var MovieIds = Movies.Select(m=>m.FId).ToList();
+            var IsFavoriteAll = _context.TMemberActions.Where(m => m.FMemberId == userId & MovieIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
+
+           CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
+            {
+                tMovies = Movies,                
+                tTypes = Types,
+                isFavoriteAll = IsFavoriteAll,
+            };
+
+            //已登入用
+            sessionCheck();
+            string controller = "movieFront";
+            string view = "MovieDetails";
+            //int? parameter = id;
+            //string json=JsonSerializer.Serialize(new { controller, view });
+            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+            //HttpContext.Session.SetInt32(CDictionary.SK_PARAMETER, parameter ?? 0);
+
+            //婷
+            //string[] paths = getImagesPath(Movies .FImagePath);
+            //movieViewModel.movieImagePaths = paths;
+
+            return View(movieViewModel);
+        }
+
         string getNames(Array data)
         {
             string result = "";
@@ -126,7 +183,6 @@ namespace prjMovieHolic.Controllers
             }
             return result;
         }
-
         private bool TMovieExists(int id)
         {
           return (_context.TMovies?.Any(e => e.FId == id)).GetValueOrDefault();
@@ -154,5 +210,4 @@ namespace prjMovieHolic.Controllers
         }
 
     }
-
 }

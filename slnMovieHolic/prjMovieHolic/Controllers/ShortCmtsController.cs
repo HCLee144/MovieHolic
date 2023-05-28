@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
@@ -38,20 +39,20 @@ namespace prjMovieHolic.Controllers
                     return RedirectToAction("edit", "ShortCmts", new { id = cmtID });
                 }
                 else
-                    return RedirectToAction("Create", "ShortCmts", new { movieID } );
+                    return RedirectToAction("Create", "ShortCmts", new { movieID });
             }
             else
+            {
+                string controller = "moviefront";
+                string view = "movieDetails";
+                int parameter = movieID;
+                HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+                HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+                HttpContext.Session.SetInt32(CDictionary.SK_PARAMETER, parameter);
                 return RedirectToAction("memberLogin", "MemberFront", null);
+            }
         }
-
-
-        [HttpGet("shortcmts/movie/{movieID}")]
-        public async Task<IActionResult> Movie(int movieID)
-        {
-            var movieContext = _context.TShortCmts.Include(t => t.FMember).Include(t => t.FMovie).Where(t => t.FMovieId == movieID);
-            return View(await movieContext.ToListAsync());
-        }
-
+        
         // GET: ShortCmts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -77,7 +78,7 @@ namespace prjMovieHolic.Controllers
         public IActionResult Create(int movieID)
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            if (userId==null)
+            if (userId == null)
                 return RedirectToAction("memberLogin", "MemberFront", null);
             ViewBag.FMemberId = userId;
             ViewBag.FMovieId = movieID;

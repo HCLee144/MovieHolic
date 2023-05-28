@@ -54,7 +54,7 @@ namespace prjMovieHolic.Controllers
                 NowShowingMovies = nowShowingMovies,
                 UpcomingMovies = upcomingMovies,
                 isFavoriteNow = IsFavoriteNow,
-                isFavotiteComing=IsFavoriteComing,
+                isFavoriteComing=IsFavoriteComing,
             };
       
            

@@ -123,7 +123,11 @@
                                 <ul>
                                     <li class="fatLi">類　型</li>
                                     <li>
-                                        <a href=""> @Model.TypeListNames</a>
+                                        @foreach(var type in Model.tTypeListNames)
+                                        {
+                                            <a href="GetMoviesByType?type=@type">@type　</a>
+                                        }
+                                        @* <a href=""> @Model.TypeListNames</a>*@
                                     </li>
                                 </ul>
                                 <ul>
@@ -169,67 +173,14 @@
                         <div class="myBr"></div>
                         <div class="commentPlaceBox">
                             <div class="starLevel" id="starLevel">
-                                @*<ul>
-                                    <li><h3><span class="cmts-average">4.82</span>/5</h3></li>
-                                    <li><h6><span class="cmts-amount">(39)</span></h6></li>
-                                </ul>*@
+                                
                             </div>
                             <div id="cmtsContainer">
-                                @*
-                                <div class="commentPlace">
-                                    <div class="commentPlaceTop">
-                                        <ul>
-                                            <li>安妮雅</li>
-                                            <li>星星之所在</li>
-                                            <li>2022-12-33</li>
-                                        </ul>
-                                    </div>
-                                    <b>會員的評論</b>
-                                </div>
-                                <div class="commentPlace">
-                                    <div class="commentPlaceTop">
-                                        <ul>
-                                            <li>安妮雅</li>
-                                            <li>星星之所在</li>
-                                            <li>2022-12-33</li>
-                                        </ul>
-                                    </div>
-                                    <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
-                                </div>
-                                <div class="commentPlace">
-                                    <div class="commentPlaceTop">
-                                        <ul>
-                                            <li>安妮雅</li>
-                                            <li>星星之所在</li>
-                                            <li>2022-12-33</li>
-                                        </ul>
-                                    </div>
-                                    <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
-                                </div>
-                                <div class="commentPlace">
-                                    <div class="commentPlaceTop">
-                                        <ul>
-                                            <li>安妮雅</li>
-                                            <li>星星之所在</li>
-                                            <li>2022-12-33</li>
-                                        </ul>
-                                    </div>
-                                    <b>會員的評論會員的評論會員的評論會員的評論</b>
-                                </div>
-                                <div class="commentPlace">
-                                    <div class="commentPlaceTop">
-                                        <ul>
-                                            <li>安妮雅</li>
-                                            <li>星星之所在</li>
-                                            <li>2022-13-33</li>
-                                        </ul>
-                                    </div>
-                                    <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
-                                </div>*@
+                                
                             </div>
                             <div class="myBr"></div>
                             <div class="cmtPageSelector" id="cmts-pager">
-                                @*<h4><a class="action prev"><i class="bi bi-arrow-left"></i></a>　<a class="current">1</a>　<a>2</a>　<a>3</a>　<a>4</a>　<a>5</a>　<a class="action next"><i class="bi bi-arrow-right"></i></a></h4>*@
+                                
                             </div>
                         </div>
 
@@ -274,7 +225,7 @@
         $(document).ready(function () {
             $.ajax({
                 type: "GET",
-                url: "../api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
+                url: window.location.origin+"/api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
                 dataType: "json",
                 success: function (result, status, xhr) {
                     drawStars(result.starLevel);
@@ -338,7 +289,7 @@
         $(document).ready(function () {
             $.ajax({
                 type: "GET",
-                url: "../api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
+                url: window.location.origin+"/api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
                 dataType: "json",
                 success: function (result, status, xhr) {
                     var html=renderCmtsStars(result.starLevel,result.cmtsCount);
@@ -352,7 +303,7 @@
             if (Count>0){
                 html +=
                 `<ul>
-                            <li><h3><span class="bi bi-star-fill"></span><span class="cmts-average">  ${starLevel.toFixed(2).toString()}` + ` </span> / 5 </h3></li >
+                            <li><h3><span class="bi bi-star-fill"></span><span class="cmts-average">  ${starLevel.toFixed(1).toString()}` + ` </span> / 5.0 </h3></li >
                     <li><h6><span class="cmts-amount"> ( ${Count} ) </span></h6 > </li>
                     </ul>
                     `
@@ -362,7 +313,7 @@
             return html;
         }
         $('#cmts-pager').pagination({
-            dataSource: '../api/LoadShortCmts/Load/@Model.tMovie.FId',
+            dataSource: window.location.origin+'/api/LoadShortCmts/Load/@Model.tMovie.FId',
             locator: 'cmts',
             totalNumberLocator: function (response) {
                 // you can return totalNumber by analyzing response content
