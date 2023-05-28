@@ -254,7 +254,7 @@
         //});
 
         submit.addEventListener('click', async () => {
-            //event.preventDefault();
+            event.preventDefault();
             // 提交表單資料到 Controller
             const form = document.querySelector('#yourForm');
             const formData = new FormData(form);
@@ -267,9 +267,11 @@
             console.log(data);
             if(data=='註冊成功'){
             alert('註冊成功');
+                window.location.href = "/memberFront/memberLogin";
             }
             else{
                 alert('註冊失敗');
+                window.location.reload();
             }
             
         })
