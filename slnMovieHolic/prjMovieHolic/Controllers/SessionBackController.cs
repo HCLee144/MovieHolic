@@ -20,12 +20,8 @@ namespace prjMovieHolic.Controllers
             _db = db;
         }
 
-        public IActionResult ViewSession(int? message, string? date)
+        public IActionResult ViewSession()
         {
-            if (message != null)
-                ViewBag.Error = message;
-            if (date != null)
-                ViewBag.Date = date;
             return View();
         }
 
@@ -139,6 +135,10 @@ namespace prjMovieHolic.Controllers
         {
             try
             {
+                if(vm.StartTime.TimeOfDay <new TimeSpan(9, 0, 0) || vm.StartTime.TimeOfDay > new TimeSpan(23, 0, 0))
+                {
+                    return Json(new { isError = true, message = "場次時間早於早上9點或晚於晚上11點！" });
+                }
                 DateTime startTime = DateTime.Parse(vm.createDate) + vm.StartTime.TimeOfDay;
                 int length = (int)_db.TMovies.Where(m => m.FId == vm.MovieID).Select(m => m.FShowLength).First();
                 TimeSpan lengthMinute = TimeSpan.FromMinutes(length);
@@ -163,7 +163,7 @@ namespace prjMovieHolic.Controllers
                     }
                 }
                 if (isOverLapped)
-                    return RedirectToAction("ViewSession", "SessionBack", new { message = 1, date = vm.createDate });
+                    return Json(new { isError = true, message = "場次時間重疊，請確認場次時間！" });
 
                 TSession session = new TSession();
                 session.FTheaterId = (int)vm.TheaterID;
@@ -172,22 +172,14 @@ namespace prjMovieHolic.Controllers
                 session.FEndTime = endTime;
                 _db.TSessions.Add(session);
                 _db.SaveChanges();
-                return RedirectToAction("ViewSession", "SessionBack", new { message = 2, date = vm.createDate });
+                return Json(new { isError = false, message = "場次新增成功！" });
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ViewSession", "SessionBack", new { message = 4, date = vm.createDate });
+                return Json(new { isError = true, message = "連線異常，請重新再試！" });
             }
         }
 
-        //public IActionResult delete(int? SessionID, string? deleteDate)
-        //{
-        //    if (SessionID == null)
-        //        return RedirectToAction("ViewSession");
-        //    _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
-        //    _db.SaveChanges();
-        //    return RedirectToAction("ViewSession", "SessionBack", new { message = 3, date = deleteDate });
-        //}
 
         public IActionResult delete(int? SessionID, string? deleteDate)
         {
@@ -197,7 +189,7 @@ namespace prjMovieHolic.Controllers
                     return Json(new { isError = true, message = "查無場次，請重新再試！" });
                 _db.TSessions.Where(s => s.FSessionId == SessionID).ExecuteDelete();
                 _db.SaveChanges();
-                return Json(new { isError = false, message = "場次刪除成功" });
+                return Json(new { isError = false, message = "場次刪除成功！" });
             }
             catch(Exception ex)
             {
