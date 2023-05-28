@@ -54,7 +54,7 @@ namespace prjMovieHolic.Controllers
                 NowShowingMovies = nowShowingMovies,
                 UpcomingMovies = upcomingMovies,
                 isFavoriteNow = IsFavoriteNow,
-                isFavotiteComing = IsFavoriteComing,
+                isFavoriteComing = IsFavoriteComing,
             };
 
             //已登入用
@@ -139,10 +139,22 @@ namespace prjMovieHolic.Controllers
             var Types = await _context.TTypes
                 .ToListAsync();
 
-            CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
+            // User Login and Favorite
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
+            var isUserLoggedIn = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER) != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+            ViewBag.userName = userName;
+
+            var MovieIds = Movies.Select(m=>m.FId).ToList();
+            var IsFavoriteAll = _context.TMemberActions.Where(m => m.FMemberId == userId & MovieIds.Contains(m.FMovieId) & m.FActionTypeId == 1).ToList();
+
+           CMovieFrontViewModel movieViewModel = new CMovieFrontViewModel
             {
                 tMovies = Movies,                
                 tTypes = Types,
+                isFavoriteAll = IsFavoriteAll,
             };
 
             //已登入用
