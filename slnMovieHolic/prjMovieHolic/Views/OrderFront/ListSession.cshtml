@@ -84,6 +84,20 @@
                 cursor: pointer;
                 /*滑鼠手手回來了*/
             }
+
+
+            /*title css樣式*/
+        li[title]:hover::after {
+            content: attr(title);
+            background-color: #000;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 }
 
@@ -214,10 +228,11 @@
             datas.forEach((data) => {
                 console.log(data);
                 result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
-                data["sessionIDandTime"].split(",").forEach(item => {
+                data["sessionIDandTimeandLeftSeats"].split(",").forEach(item => {
                     let sessionID = item.split("##")[0];
                     let sessionTime = item.split("##")[1];
-                    result += `<li name="${sessionID}" class="ccc" " onclick="chooseSession(event)">${sessionTime}</li>`;
+                    let leftSeats=  item.split("##")[2];
+                    result += `<li name="${sessionID}" title="剩餘座位：${leftSeats}個" class="ccc" " onclick="chooseSession(event)">${sessionTime}</li>`;
                 })
 
                 result += `</ul>`

@@ -94,7 +94,9 @@ namespace prjMovieHolic.Controllers
                 {
                     if (item.theaterName == sessionItem.FTheater.FTheater)
                     {
-                        item.sessionIDandTime += $",{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
+                        item.sessionIDandTimeandLeftSeats += $",{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
+                        int leftSeats = showLeftSeats(sessionItem.FSessionId);
+                        item.sessionIDandTimeandLeftSeats += $"##{leftSeats}";
                         verify = true;
                         break;
                     }
@@ -103,12 +105,24 @@ namespace prjMovieHolic.Controllers
                 {
                     CShowSession showSession = new CShowSession();
                     showSession.theaterName = sessionItem.FTheater.FTheater;
-                    showSession.sessionIDandTime = $"{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
-
+                    showSession.sessionIDandTimeandLeftSeats = $"{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
+                    int leftSeats = showLeftSeats(sessionItem.FSessionId);
+                    showSession.sessionIDandTimeandLeftSeats += $"##{leftSeats}";
                     showSessions.Add(showSession);
                 }
             }
             return Json(showSessions);
+        }
+
+        public int showLeftSeats(int sessionID)
+        {
+            var theater=movieContext.TSessions.Include(t=>t.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater;
+            //var seatCount = 400-movieContext.TSeats.Where(s => s.FTheaterId == theater.FTheaterId).Where(s=>s.FSeatStatusId!=2).Count();
+            var seatCount =  movieContext.TSeats.Where(s => s.FTheaterId == theater.FTheaterId).Where(s => s.FSeatStatusId != 2).ToList();
+            var seats = seatCount.Count();
+            var soldSeats=movieContext.TOrderDetails.Where(o => o.FOrder.FSessionId == sessionID).Count();
+            int leftSeats = seats - soldSeats;
+            return leftSeats;
         }
 
         public IActionResult SaveSelectedSessionID(int sessionID)
@@ -928,7 +942,7 @@ namespace prjMovieHolic.Controllers
     public class CShowSession
     {
         public string theaterName { get; set; }
-        public string sessionIDandTime { get; set; }
+        public string sessionIDandTimeandLeftSeats { get; set; }
     }
 
     public class CticketData
