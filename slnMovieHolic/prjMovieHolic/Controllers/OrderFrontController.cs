@@ -11,10 +11,6 @@ using System.Drawing;
 using System.Net.NetworkInformation;
 
 
-//using ZXing.Common;
-//using ZXing;
-//using ZXing.QrCode;
-
 
 namespace prjMovieHolic.Controllers
 {

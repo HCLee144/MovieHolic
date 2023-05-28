@@ -24,6 +24,10 @@
             height: 30px;
         }
 
+        .sumPrice {
+            width: 120px; /*婷婷*/
+            height: 30px;
+        }
 
         .pickTicket {
             width: 430px; /*婷婷*/
@@ -144,10 +148,8 @@
                                                     <li class="totalPrice">單張：NT$@Model.oneSoldierPrice</li>
                                                     <li class="TicketQTY">張數<button id="soldierMinus" type="button">-</button><input type="number" id="soldierTicket" name="soldierCount_seat" value="0" style="width:50px ;text-align:center" /><button id="soldierPlus" type="button">+</button></li>
                                                 </ul>
-                                                <ul style="display:flex;justify-content:end">
-                                                        小計：
-                                                    <li class="totalPrice" id="sumPrice">NT$0</li>元
-                                                    
+                                                <ul style="display:flex;justify-content:end;border-top-width:3px">
+                                                     小計：<li class="sumPrice" id="sumPrice">NT$0</li>元
                                                  </ul>
                                         </div>
                                     </div>

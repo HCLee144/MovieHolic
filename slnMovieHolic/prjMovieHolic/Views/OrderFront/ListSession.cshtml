@@ -212,11 +212,12 @@
          function showSession(datas){
             let result = `<div>`;
             datas.forEach((data) => {
+                console.log(data);
                 result += `<h3>${data["theaterName"]}</h3><ul class="chooseTime">`;
                 data["sessionIDandTime"].split(",").forEach(item => {
                     let sessionID = item.split("##")[0];
                     let sessionTime = item.split("##")[1];
-                    result += `<li name="${sessionID}" class="ccc" onclick="chooseSession(event)">${sessionTime}</li>`;
+                    result += `<li name="${sessionID}" class="ccc" " onclick="chooseSession(event)">${sessionTime}</li>`;
                 })
 
                 result += `</ul>`
