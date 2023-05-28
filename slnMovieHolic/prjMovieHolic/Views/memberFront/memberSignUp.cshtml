@@ -233,12 +233,28 @@
         const formdialogPass = document.getElementById('IamDialogPass');
         const btnCloseDialogPass = document.getElementById('closeDialogPass');
 
-        submit.addEventListener('click', (event) => {
-            event.preventDefault();
-            formdialogPass.showModal();
-        })
+        //submit.addEventListener('click', (event) => {
+        //    event.preventDefault();
+        //    formdialogPass.showModal();
+        //})
 
-        btnCloseDialogPass.addEventListener('click', async () => {
+        //btnCloseDialogPass.addEventListener('click', async () => {
+        //    // 提交表單資料到 Controller
+        //    const form = document.querySelector('#yourForm');
+        //    const formData = new FormData(form);
+
+        //    const response = await fetch('Url.Content("~/memberFront/memberSignUp")', {
+        //        method: 'POST',
+        //        body: formData,
+        //    });
+        //    // 關閉 <dialog>
+        //    formdialogPass.close();
+        //    window.location.href = "/memberFront/memberLogin";
+
+        //});
+
+        submit.addEventListener('click', async () => {
+            //event.preventDefault();
             // 提交表單資料到 Controller
             const form = document.querySelector('#yourForm');
             const formData = new FormData(form);
@@ -247,13 +263,31 @@
                 method: 'POST',
                 body: formData,
             });
-            // 關閉 <dialog>
-            formdialogPass.close();
-            window.location.href = "/memberFront/memberLogin";
+            const data=await response.text();
+            console.log(data);
+            if(data=='註冊成功'){
+            alert('註冊成功');
+            }
+            else{
+                alert('註冊失敗');
+            }
+            
+        })
 
-        });
+        //btnCloseDialogPass.addEventListener('click', async () => {
+        //    // 提交表單資料到 Controller
+        //    const form = document.querySelector('#yourForm');
+        //    const formData = new FormData(form);
 
+        //    const response = await fetch('@Url.Content("~/memberFront/memberSignUp")', {
+        //        method: 'POST',
+        //        body: formData,
+        //    });
+        //    // 關閉 <dialog>
+        //    formdialogPass.close();
+        //    window.location.href = "/memberFront/memberLogin";
 
+        //});
  
 
         const displayPassword = document.getElementById('displayPassword');
