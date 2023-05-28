@@ -209,7 +209,7 @@
                                 i.value = session.sessionID
                             })
                             if (session.hasOrder == true) {
-                                noDelete.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法修改</div>';
+                                noDelete.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法刪除</div>';
                             } else {
                                 deleteButton.removeAttribute("hidden");
                             }
@@ -287,7 +287,7 @@
             document.querySelector('#selectMovie').innerHTML = null;
             document.querySelector('#movieLengthHidden').innerHTML = null;
             datas.forEach(i => {
-                selectMovie.innerHTML += `<option value="${i.fId}">${i.fNameCht}</option>`;
+                selectMovie.innerHTML += `<option value="${i.fId}">${i.fNameCht} ( ${i.fShowLength} 分鐘)</option>`;
                 document.querySelector('#movieLengthHidden').innerHTML += `<input type="hidden" id="movie${i.fId}" value=${i.fShowLength}>`
             })
         }
