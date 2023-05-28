@@ -17,9 +17,12 @@
                             <div class="myBr"></div>
 
                             <div class="movieType">
-                                <a href="GetMoviesByType?type=劇情片">劇情</a><a href="GetMoviesByType?type=動作片">動作</a><a href="GetMoviesByType?type=科幻片">科幻</a><a href="GetMoviesByType?type=驚悚片">驚悚</a><a href="GetMoviesByType?type=動畫片">動畫</a><a href="GetMoviesByType?type=漫威">漫威</a>
-                                <a href="GetMoviesByType?type=DC">DC</a><a href="GetMoviesByType?type=迪士尼">迪士尼</a><a href="GetMoviesByType?type=紀錄片">紀錄</a>
+                                @foreach (var type in Model.tTypes)
+                                {
+                                    <a href="@Url.Action("GetMoviesByType", new { type = type.FNameCht })">@type.FNameCht</a>
+                                }
                             </div>
+
                             <div class="hotMoviePlaceLine">
                                 <ul class="hotMoviePlaceLineMenu">
                                     <li style="font-size: 26px;">分類檢索： </li>
