@@ -20,6 +20,7 @@
 
         .tdText td {
             text-align: center;
+            font-size:24px
         }
 
         .tdWidth td {
@@ -27,7 +28,7 @@
         }
 
         .borderWidth {
-            width: 400px;
+            width: 700px;
             margin: auto;
             border-collapse: collapse;
         }
@@ -144,7 +145,8 @@
                                     <label id="OrderBook" for="tab1">未取票</label>
                                     <div class="tab_content overflowXHidden overflowYHidden">
                                         <div class="orderLa" id="divBook">
-                                            
+                                            <p class="noBookOrderParagraph">尚無未取票訂單，有想看的電影嗎 ?</p>
+                                            @Html.ActionLink("點我看現正熱映電影","MovieIndex","MovieFront",null,new{@class="toMovieIndexLink"})
                                         </div>
                                     </div>
                                     <!-- TAB1 打包區塊 end -->
@@ -340,7 +342,6 @@
                 result += `<td>${item["ticketClassName"]}</td></tr>`;
                 i++;
             })
-            console.log(result);
 
             return result;
         }
