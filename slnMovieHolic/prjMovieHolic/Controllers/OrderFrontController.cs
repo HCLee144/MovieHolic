@@ -414,7 +414,7 @@ namespace prjMovieHolic.Controllers
             for (int i = 0; i < tickets.Length; i++)
             {
                 if (Convert.ToInt32(tickets[i]) > 0)
-                    selectedTickets = $"{ticketsNames[i]}:{tickets[i]}張,";
+                    selectedTickets += $"{ticketsNames[i]}:{tickets[i]}張,";
             }
             if (selectedTickets.Trim().Substring(selectedTickets.Trim().Length - 1, 1) == ",")
                 selectedTickets = selectedTickets.Trim().Substring(0, selectedTickets.Trim().Length - 1);

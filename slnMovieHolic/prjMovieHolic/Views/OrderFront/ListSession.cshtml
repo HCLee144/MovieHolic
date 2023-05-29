@@ -13,9 +13,9 @@
             border: solid
         }
 
-        .ccc {
+    /*    .ccc {
             border: solid
-        }
+        }*/
 
         .chooseTime {
             border-bottom: 1px solid silver;
@@ -87,7 +87,7 @@
 
 
             /*title css樣式*/
-        li[title]:hover::after {
+/*        li[title]:hover::after {
             content: attr(title);
             background-color: #000;
             color: #fff;
@@ -97,6 +97,26 @@
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
+        }*/
+
+        li[title]:hover::after {
+            content: attr(title);
+            background-color: rgb(16,165,214);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            position: absolute;
+            top: 100%;
+            
+            transform: translateX(-50%);
+            width: 380px;
+            height:30px
+            left: 50%;
+            text-align:right;
+        }
+
+        li[title] {
+            position: relative;
         }
     </style>
 }
@@ -232,7 +252,7 @@
                     let sessionID = item.split("##")[0];
                     let sessionTime = item.split("##")[1];
                     let leftSeats=  item.split("##")[2];
-                    result += `<li name="${sessionID}" title="剩餘座位：${leftSeats}個" class="ccc" " onclick="chooseSession(event)">${sessionTime}</li>`;
+                    result += `<li name="${sessionID}" class="ccc" title="剩餘座位：${leftSeats}個" " onclick="chooseSession(event)">${sessionTime}</li>`;
                 })
 
                 result += `</ul>`
@@ -272,6 +292,17 @@
             }
             
          })
+
+
+         //移除原先title樣式
+        document.addEventListener('DOMContentLoaded', function () {
+            var listItems = document.querySelectorAll('ccc');
+            listItems.forEach(function (item) {
+                item.addEventListener('mouseenter', function () {
+                    this.removeAttribute('title');
+                });
+            });
+        });
 
     </script>
 }
