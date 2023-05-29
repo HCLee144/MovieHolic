@@ -8,12 +8,20 @@
       integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 <!-- Bootstrap ICONS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/myStyle.css">
+<style>
+    .left {
+        margin-top: 80px;
+    }
 
-<h1>移除短評</h1>
+    .container {
+        width: 880px;
+    }
 
-<h3>確定要移除這則評論嗎？</h3>
+</style>
 <div>
-    <h4>TShortCmt</h4>
+    <h4>移除短評</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -62,7 +70,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="FCmtid" />
-        <input type="submit" value="刪除" class="btn btn-outline-danger" /> |
-        <button type="button" cleass=" btn bnt-outline-primary">取消</button>
+        <input type="submit" value="刪除" class="btn btn-outline-danger" /> 
+        <button type="button" class=" btn bnt-outline-primary" onclick='location.href="/ShortCmts/edit/@Model.FCmtid"'>取消</button>
     </form>
 </div>

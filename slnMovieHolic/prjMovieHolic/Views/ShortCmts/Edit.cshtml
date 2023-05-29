@@ -8,15 +8,16 @@
       integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 <!-- Bootstrap ICONS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-<link rel="stylesheet" href="~/css/star-rating.css"/>
-
+<link rel="stylesheet" href="~/css/star-rating.css" />
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/myStyle.css">
 <style>
     .left {
         margin-top: 80px;
     }
 
     .container {
-        width:880px;
+        width: 880px;
     }
 
 </style>
@@ -30,8 +31,10 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FCmtid" />
-            <input type="hidden" asp-for="FMovieId"/>
-            <input type="hidden" asp-for="FMemberId"/>
+            <input type="hidden" asp-for="FMovieId" />
+            <input type="hidden" asp-for="FMemberId" />
+            <input type="hidden" asp-for="FCreatedTime" />
+            <input type="hidden" asp-for="FVisible" />
             <div class="form-group">
                 <label>電影名稱：@ViewData["FMovieName"]</label>
             </div>
@@ -72,22 +75,100 @@
             <div class="form-group">
                 <input type="submit" value="儲存" class="btn btn-outline-primary" />
                 <button type="button" class="btn btn-outline-primary" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>回電影介紹</button>
-                <button type="button" class="btn btn-outline-danger" onclick='location.href="/ShortCmts/delete/@Model.FCmtid"'>刪除</button>
+                @*<button type="button" class="btn btn-outline-danger" onclick='location.href="/ShortCmts/delete/@Model.FCmtid"'>刪除</button>*@
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal">刪除</button>
             </div>
         </form>
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="ConfirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">移除短評</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                確定要移除這則短評？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmBtn">確定</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--ModalDeleteSuccess-->
+<div class="modal fade" id="deleteSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">移除短評</h5>
+            </div>
+            <div class="modal-body">
+                移除成功！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>確定</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="~/js/star-rating.js"></script>
     <script>
+        //星星評分控制項
         // var destroyed = false;
         var starratingPrebuilt = new StarRating('.FRate', {
             prebuilt: true,
             clearable: false,
             maxStars: 5,
         });
-        </script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    </script>
+    <script>
+        //刪除對話窗
+        //const deleteConfirmed = document.getElementById("deleteConfirmed");
+        const ConfirmDeleteModal = document.getElementById("ConfirmDeleteModal")
+        const confirmBtn = ConfirmDeleteModal.querySelector('#confirmBtn');
+        const deleteSuccess = document.getElementById("deleteSuccess");
+       
+        confirmBtn.addEventListener("click", function () {
+            console.log("deleteCmt(@Model.FCmtid)");
+            
+            deleteCmt(@Model.FCmtid);
+        });
+        function deleteCmt(id){
+            $.ajax({
+                url: '/shortCmts/remove',
+                type: 'POST',
+                data: {id:id},
+                success: function (response) {
+                    console.log(response)
+                    if (response.success == true) {
+                        $('#ConfirmDeleteModal').modal('hide');
+                        alert("移除成功！");
+                        window.location.href="/moviefront/moviedetails/@Model.FMovieId";
+                    }
+                    else {
+                        alert(response.error)
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤的程式碼
+                    alert('error')
+                }
+            });
+        
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
