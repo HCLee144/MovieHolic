@@ -27,7 +27,7 @@
 <h4>編輯短評</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FCmtid" />
@@ -65,14 +65,14 @@
             <div class="myBr"></div>
             <div class="form-group">
                 <label class="control-label">評論內容：</label>
-                <input asp-for="FTitle" class="form-control" />
+                <input asp-for="FTitle" class="form-control col-10" />
                 <span asp-validation-for="FTitle" class="text-danger"></span>
             </div>
             <div class="myBr"></div>
             <div class="form-group">
                 <input type="submit" value="儲存" class="btn btn-outline-primary" />
-                <button type="button" class="btn btn-outline-primary" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>返回電影介紹</button>
-                <button type="button" class="btn btn-outline-danger" onclick='location.href="/ShortCmts/delete/@Model.FCmtid"'>刪除這則短評</button>
+                <button type="button" class="btn btn-outline-primary" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>回電影介紹</button>
+                <button type="button" class="btn btn-outline-danger" onclick='location.href="/ShortCmts/delete/@Model.FCmtid"'>刪除</button>
             </div>
         </form>
     </div>
