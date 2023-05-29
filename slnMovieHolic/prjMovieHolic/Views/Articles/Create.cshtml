@@ -2,9 +2,25 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_ArticleLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<!-- Bootstrap ICONS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/myStyle.css">
+<style>
+    .left {
+        margin-top: 80px;
+    }
+    .container {
+        width: 880px;
+    }
+</style>
+}
 <h1>Create</h1>
 
 <h4>TArticle</h4>
@@ -20,6 +36,11 @@
             <div class="form-group">
                 <label asp-for="FMovieId" class="control-label"></label>
                 <select asp-for="FMovieId" class ="form-control" asp-items="ViewBag.FMovieId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FScore" class="control-label"></label>
+                <input asp-for="FScore" class="form-control" />
+                <span asp-validation-for="FScore" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FTitle" class="control-label"></label>
