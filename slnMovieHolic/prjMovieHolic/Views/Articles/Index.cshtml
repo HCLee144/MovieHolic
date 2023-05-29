@@ -1,0 +1,78 @@
+﻿@model IEnumerable<prjMovieHolic.Models.TArticle>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FTimeCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FTimeEdited)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FBlockJson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FIsPublic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FMember)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FMovie)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FTimeCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FTimeEdited)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FBlockJson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FIsPublic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FMember.FMemberId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FMovie.FId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FArticleId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FArticleId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FArticleId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
