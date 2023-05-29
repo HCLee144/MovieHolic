@@ -4,41 +4,72 @@
     ViewData["Title"] = "MovieHolic 新增短評";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
       integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 <!-- Bootstrap ICONS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/star-rating.css" />
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/myStyle.css">
+<style>
+    .left {
+        margin-top: 80px;
+    }
 
-<h1>新增短評</h1>
+    .container {
+        width: 880px;
+    }
 
-
+</style>
+}
+<div class="myBr"></div>
+<h4>新增短評</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FMovieId" class="control-label"></label>
-                <input asp-for="FMovieId" type="hidden" class ="form-control" asp-items="ViewBag.FMovieId"/>
+                @*<input asp-for="FMovieId"  class="form-control" asp-items="@ViewData["FMovieId"]" />
+                <input asp-for="FMemberId"  class="form-control" asp-items="@ViewData["FMemberId"]" />*@
+                <input type="hidden" asp-for="FMovieId" value="@ViewData["FMovieId"]" />
+                <input type="hidden" asp-for="FMemberId" value="@ViewData["FMemberId"]" />
             </div>
             <div class="form-group">
-                <label asp-for="FMemberId" class="control-label"></label>
-                <input asp-for="FMemberId" class ="form-control" asp-items="ViewBag.FMemberId"/>
+                <label style="font-size:20px;">電影名稱：@ViewData["FMovieName"]</label>
             </div>
+            <div class="myBr"></div>
             <div class="form-group">
-                <label asp-for="FTitle" class="control-label"></label>
+                <label>評分：</label>
+                <span class="gl-star-rating gl-star-rating--ltr" data-star-rating="">
+                    <select id="glsr-ltr" class="FRate" name="FRate" required>
+                        <option value="">請選擇</option>
+                        @{
+                            for (int i = 5; i > 0; i--)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        }
+                    </select><span class="gl-star-rating--stars s0" role="tooltip" data-rating="0"
+                                   aria-label="Select a Rating">
+                        <span data-index="0" data-value="1"></span><span data-index="1" data-value="2"></span><span data-index="2" data-value="3"></span><span data-index="3"
+                                                                                                                                                data-value="4"></span><span data-index="4" data-value="5"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="myBr"></div>
+            <div class="form-group">
+                <label class="control-label">評論內容：</label>
                 <input asp-for="FTitle" class="form-control" />
                 <span asp-validation-for="FTitle" class="text-danger"></span>
             </div>
+            <div class="myBr"></div>
             <div class="form-group">
-                <label asp-for="FRate" class="control-label"></label>
-                <input asp-for="FRate" class="form-control" />
-                <span asp-validation-for="FRate" class="text-danger"></span>
+                <input type="submit" value="發送" class="ourButton" style="height:30px;line-height:30px;" />
+                <button type="button" class="ourButton" style="margin-left:10px;width:140px;height:30px;line-height:30px;" onclick='location.href="/movieFront/movieDetails/@ViewData["FMovieId"]"'>回電影介紹</button>
             </div>
-            <div class="form-group">
-                <input type="submit" value="發送" class="btn btn-outline-primary" />
-                <button type="button" class="btn btn-outline-primary" onclick="history.back()" >取消</button>
-            </div>
+            <div class="myBr"></div>
         </form>
     </div>
 </div>
@@ -46,5 +77,16 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/star-rating.js"></script>
+    <script>
+        // var destroyed = false;
+        var starratingPrebuilt = new StarRating('.FRate', {
+            prebuilt: true,
+            clearable: false,
+            maxStars: 5,
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -9,23 +9,23 @@ using prjMovieHolic.Models;
 
 namespace prjMovieHolic.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticlesController : Controller
     {
         private readonly MovieContext _context;
 
-        public ArticleController(MovieContext context)
+        public ArticlesController(MovieContext context)
         {
             _context = context;
         }
 
-        // GET: Article
+        // GET: Articles
         public async Task<IActionResult> Index()
         {
             var movieContext = _context.TArticles.Include(t => t.FMember).Include(t => t.FMovie);
             return View(await movieContext.ToListAsync());
         }
 
-        // GET: Article/Details/5
+        // GET: Articles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.TArticles == null)
@@ -45,7 +45,7 @@ namespace prjMovieHolic.Controllers
             return View(tArticle);
         }
 
-        // GET: Article/Create
+        // GET: Articles/Create
         public IActionResult Create()
         {
             ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId");
@@ -53,12 +53,12 @@ namespace prjMovieHolic.Controllers
             return View();
         }
 
-        // POST: Article/Create
+        // POST: Articles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FArticleId,FMemberId,FMovieId,FTitle,FTimeCreated,FTimeEdited,FBlockJson,FIsPublic")] TArticle tArticle)
+        public async Task<IActionResult> Create([Bind("FArticleId,FMemberId,FMovieId,FScore,FTitle,FTimeCreated,FTimeEdited,FBlockJson,FIsPublic")] TArticle tArticle)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace prjMovieHolic.Controllers
             return View(tArticle);
         }
 
-        // GET: Article/Edit/5
+        // GET: Articles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.TArticles == null)
@@ -89,12 +89,12 @@ namespace prjMovieHolic.Controllers
             return View(tArticle);
         }
 
-        // POST: Article/Edit/5
+        // POST: Articles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FArticleId,FMemberId,FMovieId,FTitle,FTimeCreated,FTimeEdited,FBlockJson,FIsPublic")] TArticle tArticle)
+        public async Task<IActionResult> Edit(int id, [Bind("FArticleId,FMemberId,FMovieId,FScore,FTitle,FTimeCreated,FTimeEdited,FBlockJson,FIsPublic")] TArticle tArticle)
         {
             if (id != tArticle.FArticleId)
             {
@@ -126,7 +126,7 @@ namespace prjMovieHolic.Controllers
             return View(tArticle);
         }
 
-        // GET: Article/Delete/5
+        // GET: Articles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.TArticles == null)
@@ -146,7 +146,7 @@ namespace prjMovieHolic.Controllers
             return View(tArticle);
         }
 
-        // POST: Article/Delete/5
+        // POST: Articles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
