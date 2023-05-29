@@ -83,22 +83,31 @@ namespace prjMovieHolic.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult memberSignUp(TMember member)
         {
-            var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
-            if (accountCheck == false)
+            try
             {
-                _movieContext.TMembers.Add(member);
-                _movieContext.SaveChanges();
-                TCouponList couponList = new TCouponList();
-                couponList.FCouponTypeId = (int)DateTime.Now.Month;
-                couponList.FMemberId = member.FMemberId;
-                couponList.FIsUsed = false;
-                couponList.FReceiveDate = DateTime.Now;
-                couponList.FOrderId = null;
-                _movieContext.TCouponLists.Add(couponList);
-                _movieContext.SaveChanges();
-                return Json(new { success = true, message = "註冊成功。" });
+                var accountCheck = _movieContext.TMembers.Any(t => t.FPhone == member.FPhone);
+                if (accountCheck == false)
+                {
+                    _movieContext.TMembers.Add(member);
+                    //_movieContext.SaveChanges();
+                    //TCouponList couponList = new TCouponList();
+                    //couponList.FCouponTypeId = (int)DateTime.Now.Month;
+                    //couponList.FMemberId = member.FMemberId;
+                    //couponList.FIsUsed = false;
+                    //couponList.FReceiveDate = DateTime.Now;
+                    //couponList.FOrderId = null;
+                    //_movieContext.TCouponLists.Add(couponList);
+                    _movieContext.SaveChanges();
+                    return Content("註冊成功");
+                }
+                return Content("註冊失敗");
             }
-            return Json(new { success = false, message = "註冊失敗，請重新註冊。" });
+            catch(Exception ex)
+            {
+                return Content(null);
+            }
+            
+         
         }
         //註冊：驗證帳號是否已存在
         public IActionResult accountCheck(string FPhone)

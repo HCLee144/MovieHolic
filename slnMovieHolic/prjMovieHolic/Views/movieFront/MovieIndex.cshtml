@@ -15,7 +15,7 @@
 
 
 
-            <!--這是旁邊快速訂票浮動視窗-->
+           @* <!--這是旁邊快速訂票浮動視窗-->
 
             <div class="position">
                 <p>快速訂票</p>
@@ -38,7 +38,7 @@
                         </ul>
                     </li>
                 </ul>
-            </div>
+            </div>*@
 
 
 
@@ -83,7 +83,7 @@
                                     <div class="likeAndBuy">
                                         @{
                                             //05-25 Stanley
-                                            if (movie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                            if (movie.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date).Any())
                                             {
                                                 <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
                                             }
@@ -166,7 +166,7 @@
                                     <div class="likeAndBuy">
                                         @{
                                             //05-25 Stanley
-                                            if (movie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                            if (movie.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date).Any())
                                             {
                                                 <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
                                             }
@@ -184,7 +184,7 @@
                                                 else
                                                 {
                                                     bool flag = false;
-                                                    foreach (var item in Model.isFavotiteComing)
+                                                    foreach (var item in Model.isFavoriteComing)
                                                     {
                                                         if (item.FMovieId == movie.FId)
                                                         {

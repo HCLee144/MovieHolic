@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/BackLayout.cshtml";
 }
 
+
+
 <div class="card">
     <div class="card-body">
         <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
@@ -15,25 +17,7 @@
         <div id="chartArea"></div>
         <input type="hidden" id="selectedSessionTheaterName" value="" />
         <input type="hidden" id="selectedSessionStartString" value="" />
-        <div id="errorMessage">
-            @{
-                switch (ViewBag.error)
-                {
-                    case 1:
-                        @:<div class="alert alert-danger" role="alert">該場次與其他場次重疊！</div>
-                        break;
-                    case 2:
-                        @:<div class="alert alert-primary" role="alert">場次新增完成</div>
-                        break;
-                    case 3:
-                        @:<div class="alert alert-primary" role="alert">場次刪除完成</div>
-                        break;
-                    case 4:
-                        @:<div class="alert alert-danger" role="alert">資料輸入異常，請重新嘗試！</div>
-                        break;
-                }
-            }
-        </div>
+
         <div id="sessionDisplay" style="display:flex" hidden>
             <img src="" width=200 id="moviePoster">
             <div>
@@ -43,21 +27,22 @@
                 <div><label>場次結束：</label><label id="sessionEnd"></label></div>
             </div>
         </div>
+        <div id="noDelete">
+        </div>
 
 
-        @using (Html.BeginForm("delete", "SessionBack", FormMethod.Post))
-        {
+        <form asp-action="delete" id="deleteFormData">
             <div>
                 <input type="hidden" name="SessionID" value=0 id="sessionID">
                 <input type="hidden" name="deleteDate" value=0 id="deleteDate">
-                <input type="submit" value="刪除場次" class="btn btn-danger m-1" id="deleteButton" onclick="return confirm('確認要刪除場次？')" hidden />
+                <input type="submit" value="刪除場次" class="btn btn-danger m-1" id="deleteButton" hidden />
             </div>
-        }
+        </form>
 
 
         <div class="row" id="createForm" hidden>
             <div class="col-md-4">
-                <form asp-action="Create">
+                <form asp-action="Create" id="createFormData">
                     <div class="form-group">
                         <label>選擇上映影廳</label>
                         <select id="selectTheater" class="form-select" name="TheaterID" required></select>
@@ -78,7 +63,7 @@
                         <input type="time" id="selectEnd" class="form-select" readonly>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="新增" class="btn btn-primary" onclick="return confirm('確認要新增場次？')" />
+                        <input type="submit" value="新增" class="btn btn-primary" id="createFormButton" />
                     </div>
                 </form>
             </div>
@@ -87,6 +72,31 @@
 </div>
 
 
+<dialog id="normalDialog" style="width: 500px; margin:auto;" class="card-body alert alert-info">
+    <p style="text-align:center; font-size:24px" id="normalMessage">場次新增完成</p>
+    <div style="display:flex; justify-content:center">
+        <form method="dialog">
+            <button class="btn btn-primary">確定</button>
+        </form>
+    </div>
+</dialog>
+
+<dialog id="errorDialog" style="width: 500px; margin:auto;" class="card-body alert alert-danger">
+    <p style="text-align:center; font-size:18px" id="errorMessage">場次新增完成</p>
+    <div style="display:flex; justify-content:center">
+        <form method="dialog">
+            <button class="btn btn-danger">確定</button>
+        </form>
+    </div>
+</dialog>
+
+<dialog id="confirmDialog" style="width: 500px; margin:auto;" class="card-body alert alert-secondary">
+    <p style="text-align:center; font-size:18px" id="confirmMessage">確認要新增</p>
+    <div style="display:flex; justify-content:center">
+        <button class="btn btn-dark" id="confirmDialogOK">確定</button>
+        <button class="btn btn-light" id="confirmDialogCancel">取消</button>
+    </div>
+</dialog>
 
 
 
@@ -102,7 +112,6 @@
 
         const selectDate = document.querySelector('#selectDate');
         const chartArea = document.querySelector('#chartArea');
-        const errorMessage = document.querySelector('#errorMessage');
         const selectedSessionTheaterName = document.querySelector('#selectedSessionTheaterName');
         const selectedSessionStartString = document.querySelector('#selectedSessionStartString');
         const sessionDisplay = document.querySelector('#sessionDisplay');
@@ -114,12 +123,15 @@
         const sessionStart = document.querySelector('#sessionStart');
         const sessionEnd = document.querySelector('#sessionEnd');
 
+        const noDelete = document.querySelector('#noDelete')
         const deleteDate = document.querySelector('#deleteDate')
 
         const createDate = document.querySelector('#createDate');
         const selectMovie = document.querySelector('#selectMovie');
         const selectStart = document.querySelector('#selectStart');
         const selectEnd = document.querySelector('#selectEnd');
+
+        const createFormButton = document.querySelector('#createFormButton')
 
         const sessionID = document.querySelectorAll('#sessionID');
 
@@ -133,16 +145,7 @@
         const NowDate = new Date().getDate();
         var date = `${NowYear}-${NowMonth}-${NowDate}`;
 
-
-
-        @{
-            if (ViewBag.date != null)
-            {
-                @:date= "@ViewBag.date";
-            }
-        }
-
-            createDate.value=date;
+        createDate.value = date;
         deleteDate.value = date;
 
         CreateChart(date);
@@ -152,14 +155,7 @@
             var newDate = new Date(Now + i * 1000 * 60 * 60 * 24)
             date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
             let dateString = `<option value="${date}">${date}</option>`;
-        @{
-            if (ViewBag.date != null)
-            {
-                @:if (date == "@ViewBag.date")
-                @:dateString = `<option value="${date}" selected>${date}</option>`
-            }
-        }
-                selectDate.innerHTML += dateString;
+            selectDate.innerHTML += dateString;
         }
 
         //list在選擇後可以收到選擇日期的session list
@@ -205,14 +201,15 @@
                             const response = await fetch(`@Url.Content("~/SessionBack/getSessionByTheaterAndStart")?selectedSessionTheaterName=${theater}&selectedSessionStartString=${start}`);
                             let session = await response.json();
                             if (session.sessionID == null) {
-                                alert("查無場次，請重新整理");
+                                errorMessage.innerHTML = '查無場次，請重新整理';
+                                errorDialog.showModal();
                                 return;
                             }
                             sessionID.forEach(i => {
                                 i.value = session.sessionID
                             })
                             if (session.hasOrder == true) {
-                                errorMessage.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法修改</div>';
+                                noDelete.innerHTML += '<div class="alert alert-primary" role = "alert" >該場次已有訂票，無法刪除</div>';
                             } else {
                                 deleteButton.removeAttribute("hidden");
                             }
@@ -223,12 +220,12 @@
                             sessionStart.innerHTML = session.startTime.split("T")[1];
                             sessionEnd.innerHTML = session.endTime.toString().split("T")[1];
                         },
-                    toolbar:{
-                        show:false
-                    },
-                    zoom:{
-                        enabled:false
-                    }
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        }
                     }
                 },
                 plotOptions: {
@@ -265,7 +262,7 @@
         }
 
         function reset() {
-            errorMessage.innerHTML = "";
+            noDelete.innerHTML = "";
             sessionDisplay.setAttribute("hidden", true);
             deleteButton.setAttribute("hidden", true);
             selectStart.value = "";
@@ -290,7 +287,7 @@
             document.querySelector('#selectMovie').innerHTML = null;
             document.querySelector('#movieLengthHidden').innerHTML = null;
             datas.forEach(i => {
-                selectMovie.innerHTML += `<option value="${i.fId}">${i.fNameCht}</option>`;
+                selectMovie.innerHTML += `<option value="${i.fId}">${i.fNameCht} ( ${i.fShowLength} 分鐘)</option>`;
                 document.querySelector('#movieLengthHidden').innerHTML += `<input type="hidden" id="movie${i.fId}" value=${i.fShowLength}>`
             })
         }
@@ -322,6 +319,81 @@
                     hour = "0" + hour;
                 }
                 selectEnd.value = hour + ":" + minute;
+            }
+        }
+
+        const normalDialog = document.querySelector('#normalDialog');
+        const normalMessage = document.querySelector('#normalMessage');
+        const errorDialog = document.querySelector('#errorDialog');
+        const errorMessage = document.querySelector('#errorMessage');
+        const confirmDialog = document.querySelector('#confirmDialog');
+        const confirmMessage = document.querySelector('#confirmMessage');
+        const confrimDialogOK = document.querySelector('#confrimDialogOK');
+        const confrimDialogCancel = document.querySelector('#confrimDialogCancel');
+
+
+        //DeleteButton
+        deleteButton.addEventListener('click', function () {
+            event.preventDefault();
+            showConfirmDialog('確認要刪除場次？', 'deleteSession');
+
+        })
+
+        //CreateButton
+        createFormButton.addEventListener('click', function () {
+            event.preventDefault();
+            showConfirmDialog('確認要新增場次？', 'createSession');
+        })
+
+        //ConfirmDialog
+        confirmDialogCancel.addEventListener('click', function () {
+            confirmDialog.close();
+        })
+
+        function showConfirmDialog(text, event) {
+            confirmDialogOK.removeEventListener('click', deleteSession);   //要先刪除事件，必須指定事件的名稱
+            confirmDialogOK.removeEventListener('click', createSession);
+            confirmMessage.innerHTML = text;
+            if (event == "deleteSession") {
+                confirmDialogOK.addEventListener('click', deleteSession)     //因刪除事件必須指定事件名稱，故不可使用匿名方法
+            } else if (event == "createSession") {
+                confirmDialogOK.addEventListener('click', createSession)
+            }
+            confirmDialog.showModal();
+        }
+
+
+        //create
+        async function createSession() {
+            confirmDialog.close();
+            var formData = new FormData(document.querySelector('#createFormData'))
+            const response = await fetch(`@Url.Content("~/SessionBack/create")`, { method: 'POST', body: formData })
+            const datas = await response.json();
+            if (datas.isError) {
+                errorMessage.innerHTML = datas.message;
+                errorDialog.showModal();
+            } else {
+                normalMessage.innerHTML = datas.message;
+                normalDialog.showModal();
+                reset();
+                CreateChart(deleteDate.value);
+            }
+        }
+
+        //delete
+        async function deleteSession() {
+            confirmDialog.close();
+            var formData = new FormData(document.querySelector('#deleteFormData'))
+            const response = await fetch(`@Url.Content("~/SessionBack/delete")`, { method: 'POST', body: formData })
+            const datas = await response.json();
+            if (datas.isError) {
+                errorMessage.innerHTML = datas.message;
+                errorDialog.showModal();
+            } else {
+                normalMessage.innerHTML = datas.message;
+                normalDialog.showModal();
+                reset();
+                CreateChart(deleteDate.value);
             }
         }
     </script>

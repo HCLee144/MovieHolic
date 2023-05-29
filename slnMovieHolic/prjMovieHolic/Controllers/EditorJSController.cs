@@ -2,7 +2,7 @@
 
 namespace prjMovieHolic.Controllers
 {
-    public class EditorJSController : Controller
+    public class EditorJSController : SuperFrontController
     {
         public IActionResult Index()
         {
@@ -10,6 +10,7 @@ namespace prjMovieHolic.Controllers
         }
         public IActionResult Create() 
         {
+            sessionCheck();
             return View();
         }
     }

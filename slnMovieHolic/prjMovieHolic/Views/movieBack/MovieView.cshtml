@@ -25,30 +25,7 @@
                     </div>
                     <div>
                         <select class="form-control" id="recentMovies">
-                            <option value="-1">請選擇電影</option>
                         </select>
-                    </div>
-                    <div id="message">
-                        @{
-                            switch (ViewBag.MessageCode)
-                            {
-                                case 1:
-                                    @:<div class="alert alert-primary" role="alert">電影新增完成</div>
-                                    break;
-                                case 2:
-                                    @:<div class="alert alert-primary" role="alert">電影修改完成</div>
-                                    break;
-                                case 3:
-                                    @:<div class="alert alert-primary" role="alert">電影刪除完成</div>
-                                    break;
-                                case 4:
-                                    @:<div class="alert alert-danger" role="alert">資料輸入異常，請重新嘗試！</div>
-                                    break;
-                                case 5:
-                                    @:<div class="alert alert-danger" role="alert">查無電影或電影有場次無法刪除！</div>
-                                    break;
-                            }
-                        }
                     </div>
                 </div>
             </div>
@@ -65,7 +42,7 @@
                 </div>
                 <div>
                     @*========修改電影========*@
-                    <form asp-action="Edit" enctype="multipart/form-data">
+                    <form asp-action="Edit" enctype="multipart/form-data" id="editFormData">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="FId" id="eFId" />
                         @*                            <input type="hidden" asp-for="FSeriesId" />*@
@@ -147,13 +124,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="修改" class="btn btn-primary" onclick="return confirm('確認要修改電影？')" />
+                            <input type="submit" value="修改" class="btn btn-primary" id="editButton" />
                         </div>
                     </form>
-                    <form asp-action="Delete">
+                    <form asp-action="Delete" id="deleteFormData">
                         <input type="hidden" name="FId" id="dFId" />
                         <div class="form-group">
-                            <input type="submit" value="刪除" class="btn btn-danger" onclick="return confirm('確認要刪除電影？')" />
+                            <input type="submit" value="刪除" class="btn btn-danger" id="deleteButton" />
                         </div>
                     </form>
                 </div>
@@ -171,7 +148,7 @@
                 </div>
                 <div>
                     @*========新增電影========*@
-                    <form asp-action="Create" enctype="multipart/form-data">
+                    <form asp-action="Create" enctype="multipart/form-data" id="createFormData">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
                             <div class="col-lg-6">
@@ -245,7 +222,7 @@
                         </div>
                         <div class="d-flex">
                             <div class="form-group">
-                                <input type="submit" value="新增" class="btn btn-primary" onclick="createMovie(event)" />
+                                <input type="submit" value="新增" class="btn btn-primary" id="createFormButton" />
                             </div>
                             <div class="form-group">
                                 <input type="reset" value="清除" class="btn btn-primary" />
@@ -259,11 +236,51 @@
     </div>
 </div>
 
+<dialog id="normalDialog" style="width: 500px; margin:auto;" class="card-body alert alert-info">
+    <p style="text-align:center; font-size:24px" id="normalMessage">場次新增完成</p>
+    <div style="display:flex; justify-content:center">
+        <form method="dialog">
+            <button class="btn btn-primary">確定</button>
+        </form>
+    </div>
+</dialog>
+
+<dialog id="errorDialog" style="width: 500px; margin:auto;" class="card-body alert alert-danger">
+    <p style="text-align:center; font-size:18px" id="errorMessage">場次新增完成</p>
+    <div style="display:flex; justify-content:center">
+        <form method="dialog">
+            <button class="btn btn-danger">確定</button>
+        </form>
+    </div>
+</dialog>
+
+<dialog id="confirmDialog" style="width: 500px; margin:auto;" class="card-body alert alert-secondary">
+    <p style="text-align:center; font-size:18px" id="confirmMessage">確認要新增</p>
+    <div style="display:flex; justify-content:center">
+        <button class="btn btn-dark" id="confirmDialogOK">確定</button>
+        <button class="btn btn-light" id="confirmDialogCancel">取消</button>
+    </div>
+</dialog>
+
+
+
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+        const normalDialog = document.querySelector('#normalDialog');
+        const normalMessage = document.querySelector('#normalMessage');
+        const errorDialog = document.querySelector('#errorDialog');
+        const errorMessage = document.querySelector('#errorMessage');
+        const confirmDialog = document.querySelector('#confirmDialog');
+        const confirmMessage = document.querySelector('#confirmMessage');
+        const confrimDialogOK = document.querySelector('#confrimDialogOK');
+        const confrimDialogCancel = document.querySelector('#confrimDialogCancel');
+
+
         //查詢電影資料 (點查詢電影時，清除alarm、隱藏新增電影)
         document.querySelector('#btnQuery').addEventListener('click', () => {
             let movieName = document.querySelector('#textQuery').value;
@@ -271,7 +288,6 @@
         });
 
         async function queryMovieByName(movieName) {
-            document.querySelector('#message').innerHTML = "";
             document.querySelector('#formCreate').setAttribute("hidden", true);
             const response = await fetch('@Url.Content("~/movieBack/queryMovieByName")?movieName=' + movieName, { method: 'POST' });
             const movie = await response.json();
@@ -279,7 +295,8 @@
                 loadMovie(movie);
                 document.querySelector('#formEdit').removeAttribute("hidden");
             } else {
-                document.querySelector('#message').innerHTML = '<div class="alert alert-danger" role="alert">查無電影，請重新再試！</div>'
+                errorMessage.innerHTML = "查無電影，請重新輸入";
+                errorDialog.showModal();
             }
         }
 
@@ -290,9 +307,15 @@
         async function loadResentMovies() {
             var response = await fetch('@Url.Content("~/movieBack/loadRecentMovies")');
             var datas = await response.json();
-            datas.forEach(function (item) {
-                recentMovies.innerHTML += `<option value="${item}">${item}</option>`
-            })
+            if (datas != null) {
+                recentMovies.innerHTML = ' <option value="-1">請選擇電影</option>';
+                datas.forEach(function (item) {
+                    recentMovies.innerHTML += `<option value="${item}">${item}</option>`;
+                })
+            } else {
+                errorMessage.innerHTML = "近期電影清單載入失敗";
+                errorDialog.showModal();
+            }
         }
 
         loadResentMovies();
@@ -336,35 +359,39 @@
 
         //(點新增電影按鈕時，清除alarm、隱藏編輯電影)
         document.querySelector('#btnCreate').addEventListener('click', function () {
-            document.querySelector('#message').innerHTML = "";
             document.querySelector('#formEdit').setAttribute("hidden", true);
             reset();
             document.querySelector('#formCreate').removeAttribute("hidden");
         })
 
         function reset() {
-            document.querySelector('#eFId').value = '';
-            document.querySelector('#eFNameCht').value = '';
-            document.querySelector('#eFNameEng').value = '';
-            document.querySelector('#eFScheduleStart').value = '';
-            document.querySelector('#eFScheduleEnd').value = '';
-            document.querySelector('#eFShowLength').value = '';
-            document.querySelector('#eFInteroduce').value = '';
-            document.querySelector('#eFTrailerLink').value = '';
-            document.querySelector('#eFPrice').value = '';
-            document.querySelector('#eRating').value = -1;
+            //document.querySelector('#eFId').value = '';
+            //document.querySelector('#eFNameCht').value = '';
+            //document.querySelector('#eFNameEng').value = '';
+            //document.querySelector('#eFScheduleStart').value = '';
+            //document.querySelector('#eFScheduleEnd').value = '';
+            //document.querySelector('#eFShowLength').value = '';
+            //document.querySelector('#eFInteroduce').value = '';
+            //document.querySelector('#eFTrailerLink').value = '';
+            //document.querySelector('#eFPrice').value = '';
+            //document.querySelector('#eRating').value = -1;
             document.querySelector('#eImage').src = '';
+            document.querySelector('#NewEImage').src = '';
+            document.querySelector('#editFormData').reset();
 
-            document.querySelector('#cFNameCht').value = '';
-            document.querySelector('#cFNameEng').value = '';
-            document.querySelector('#cFScheduleStart').value = '';
-            document.querySelector('#cFScheduleEnd').value = '';
-            document.querySelector('#cFShowLength').value = '';
-            document.querySelector('#cFInteroduce').value = '';
-            document.querySelector('#cFTrailerLink').value = '';
-            document.querySelector('#cFPrice').value = '';
-            document.querySelector('#cRating').value = -1;
+            //document.querySelector('#cFNameCht').value = '';
+            //document.querySelector('#cFNameEng').value = '';
+            //document.querySelector('#cFScheduleStart').value = '';
+            //document.querySelector('#cFScheduleEnd').value = '';
+            //document.querySelector('#cFShowLength').value = '';
+            //document.querySelector('#cFInteroduce').value = '';
+            //document.querySelector('#cFTrailerLink').value = '';
+            //document.querySelector('#cFPrice').value = '';
+            //document.querySelector('#cRating').value = -1;
             document.querySelector('#cImage').src = '';
+            document.querySelector('#createFormData').reset();
+
+            document.querySelector('#deleteFormData').reset();
 
         }
 
@@ -381,13 +408,105 @@
             document.querySelector('#cImage').src = '';
         }
 
-        //(編輯)上傳圖片的同時顯示圖片
+        //(新增)上傳圖片的同時顯示圖片
         //URL.createObjectURL
         function loadCImage(event) {
             var cImage = document.getElementById('cImage');
             cImage.src = URL.createObjectURL(event.target.files[0]);
             cImage.onload = function () {
                 URL.revokeObjectURL(cImage.src) // free memory
+            }
+        }
+
+
+
+        //DeleteButton
+        deleteButton.addEventListener('click', function () {
+            event.preventDefault();
+            showConfirmDialog('確認要刪除電影？', 'deleteMovie');
+
+        })
+
+        //CreateButton
+        createFormButton.addEventListener('click', function () {
+            event.preventDefault();
+            showConfirmDialog('確認要新增電影？', 'createMovie');
+        })
+
+        //editButton
+        editButton.addEventListener('click', function () {
+            event.preventDefault();
+            showConfirmDialog('確認要編輯電影？', 'editMovie');
+        })
+
+        //ConfirmDialog
+        confirmDialogCancel.addEventListener('click', function () {
+            confirmDialog.close();
+        })
+
+        function showConfirmDialog(text, event) {
+            confirmDialogOK.removeEventListener('click', deleteMovie);   //要先刪除事件，必須指定事件的名稱
+            confirmDialogOK.removeEventListener('click', createMovie);
+            confirmDialogOK.removeEventListener('click', editMovie);
+            confirmMessage.innerHTML = text;
+            if (event == "deleteMovie") {
+                confirmDialogOK.addEventListener('click', deleteMovie)     //因刪除事件必須指定事件名稱，故不可使用匿名方法
+            } else if (event == "createMovie") {
+                confirmDialogOK.addEventListener('click', createMovie)
+            } else if (event = "editMovie") {
+                confirmDialogOK.addEventListener('click', editMovie)
+            }
+            confirmDialog.showModal();
+        }
+
+        //create
+        async function createMovie() {
+            confirmDialog.close();
+            var formData = new FormData(document.querySelector('#createFormData'))
+            const response = await fetch(`@Url.Content("~/movieBack/Create")`, { method: 'POST', body: formData })
+            const datas = await response.json();
+            if (datas.isError) {
+                errorMessage.innerHTML = datas.message;
+                errorDialog.showModal();
+            } else {
+                normalMessage.innerHTML = datas.message;
+                normalDialog.showModal();
+                reset();
+                loadResentMovies();
+            }
+        }
+
+        //delete
+        async function deleteMovie() {
+            confirmDialog.close();
+            var formData = new FormData(document.querySelector('#deleteFormData'))
+            const response = await fetch(`@Url.Content("~/movieBack/Delete")`, { method: 'POST', body: formData })
+            const datas = await response.json();
+            if (datas.isError) {
+                errorMessage.innerHTML = datas.message;
+                errorDialog.showModal();
+            } else {
+                normalMessage.innerHTML = datas.message;
+                normalDialog.showModal();
+                reset();
+                loadResentMovies();
+            }
+        }
+
+        //editMovie
+        async function editMovie() {
+            confirmDialog.close();
+            var formData = new FormData(document.querySelector('#editFormData'))
+            const response = await fetch(`@Url.Content("~/movieBack/Edit")`, { method: 'POST', body: formData })
+            const datas = await response.json();
+            if (datas.isError) {
+                errorMessage.innerHTML = datas.message;
+                errorDialog.showModal();
+            } else {
+                normalMessage.innerHTML = datas.message;
+                normalDialog.showModal();
+                reset();
+                loadResentMovies();
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿@model prjMovieHolic.ViewModels.CMemberAndOtherViewModel
 @{
-    ViewData["Title"] = "memberIndex";
+    ViewData["Title"] = "MovieHolic 會員專區";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -51,10 +51,22 @@
 
                         <div class="memberIndexButtonPlace">
 
-                            <button><div><a href="@Url.Action("memberList", "memberFront",new{id=Model.Member.FMemberId})">會員資料</a> </div></button>
-                            <button><div><a href="@Url.Action("orderList", "memberFront",new{id=Model.Member.FMemberId})">未取票訂單</a></div></button>
-                            <button><div><a href="@Url.Action("favoriteList", "memberFront",new{id=Model.Member.FMemberId})">我的收藏<br>@Model.MemberActionNow.Count 部熱映中</a></div></button>
-                            <button><div><a href="@Url.Action("couponList", "memberFront",new{id=Model.Member.FMemberId})">我的優惠券<br>可用 @Model.CouponList.Count 張</a></div></button>
+                            <a href="@Url.Action("memberList", "memberFront",new{id=Model.Member.FMemberId})"><button><div>會員資料
+                                    </div>
+                                </button>
+                            </a>
+                            <a href="@Url.Action("orderList", "memberFront",new{id=Model.Member.FMemberId})"><button><div>未取票訂單
+                                    </div>
+                                </button>
+                            </a>
+                            <a href="@Url.Action("favoriteList", "memberFront",new{id=Model.Member.FMemberId})"><button><div>我的收藏<br>@Model.MemberActionNow.Count 部熱映中
+                                    </div>
+                                </button>
+                            </a>
+                            <a href="@Url.Action("couponList", "memberFront",new{id=Model.Member.FMemberId})"><button><div>我的優惠券<br>可用 @Model.CouponList.Count 張
+                                    </div>
+                                </button>
+                            </a>
                         </div>
                         <div class="myBr"></div>
                         <div class="addBorder"></div>

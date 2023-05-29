@@ -1,0 +1,195 @@
+﻿@model prjMovieHolic.ViewModels.CMovieFrontViewModel
+@*@model IEnumerable<prjMovieHolic.Models.TMovie>*@
+
+@{
+    ViewData["Title"] = "GetMoviesByType";
+}
+
+<div id="page2">
+    <div id="page2">
+        <div class="body1">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="line1 wrapper">
+                            <!--熱門電影分隔線-->
+                            <div class="myBr"></div>
+
+                            <div class="movieType">
+                                @foreach (var type in Model.tTypes)
+                                {
+                                    <a href="@Url.Action("GetMoviesByType", new { type = type.FNameCht })">@type.FNameCht</a>
+                                }
+                            </div>
+
+                            <div class="hotMoviePlaceLine">
+                                <ul class="hotMoviePlaceLineMenu">
+                                    <li style="font-size: 26px;">分類檢索： </li>
+                                    <li><a href="" style="color: #13c5ff;"></a></li>
+                                </ul>
+                            </div>
+                            <!-- content -->
+                            <!-- 熱門電影區塊-->
+                            <section id="">
+                                <div class="line1">
+                                    <div class="line2 wrapper">
+                                        <div class="movieWallMovies2">
+
+                                            @foreach (var movie in Model.tMovies)
+                                            {
+                                                <!-- 熱門電影1-->
+                                                <div class="movieCardBig">
+                                                    <article class="movieCard">
+                                                        <a href="/MovieFront/MovieDetails?id=@movie.FId">
+                                                            <br>
+                                                            <figure>
+                                                                <img src="~/@movie.FPosterPath" alt="">
+                                                                <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
+                                                            </figure>
+                                                            <div>
+                                                                <h3>@movie.FNameCht</h3>
+                                                                <ul>
+                                                                    <li class="movieEnglishName">(@movie.FNameEng)</li>
+                                                                    <hr>
+                                                                    <li>上映日期：@movie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                                    <li>片長：@movie.FShowLength 分鐘</li>
+                                                                </ul>
+                                                            </div>
+                                                        </a>
+                                                    </article>
+                                                    <div class="likeAndBuy">
+                                                        @{
+                                                            //05-25 Stanley
+                                                            if (movie.TSessions.Where(s => s.FStartTime.Date >= DateTime.Now.Date).Any())
+                                                            {
+                                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId" style="visibility:hidden">Buy Now</a></div>
+                                                            }
+                                                        }
+                                                        <div>
+                                                            @{
+                                                                if (ViewBag.Login == false)
+                                                                {
+                                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    bool flag = false;
+                                                                    foreach (var item in Model.isFavoriteAll)
+                                                                    {
+                                                                        if (item.FMovieId == movie.FId)
+                                                                        {
+                                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                                            flag = true;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if (!flag)
+                                                                    {
+                                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="myBr"></div>
+                           
+                            
+                        </div>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<dialog id="IamDialog" class="IamDialog">
+    <p>請先登入會員！</p>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogFavorite" class="IamDialog">
+    <p>收藏電影成功！</p>
+    <button id="closeDialogFavorite" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogCancel" class="IamDialog">
+    <p>取消收藏成功！</p>
+    <button id="closeDialogCancel" class="closeDialog">確定</button>
+</dialog>
+@section Scripts{
+    <script>
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const formdialogFavorite = document.getElementById('IamDialogFavorite');
+        const btnCloseDialogFavorite = document.getElementById('closeDialogFavorite');
+        const formdialogCancel = document.getElementById('IamDialogCancel');
+        const btnCloseDialogCancel = document.getElementById('closeDialogCancel');
+
+
+
+        //先判斷是否有登入
+        function checkLoginAndToggleFavorite(userId, movieId) {
+            console.log(userId);
+            console.log(movieId);
+            if (typeof userId === "undefined" || userId === '') {
+                login();
+            } else {
+
+                favoriteChange(userId, movieId);
+            }
+        }
+        function login() {
+            console.log('Login executed');
+            formdialog.showModal();
+            btnCloseDialog.addEventListener('click', () => {
+                formdialog.close();
+                window.location.href = "/memberFront/memberLogin";
+            });
+        }
+
+        function favoriteChange(userId, movieId) {
+            var heartIcon = document.getElementById(`heart ${movieId}`);
+            console.log("Run")
+            $.ajax({
+                url: '/Home/favoriteChange',
+                type: 'POST',
+                data: { FMemberId: userId, FMovieId: movieId },
+                success: function (response) {
+                    console.log(response)
+                    if (response == "新加入收藏" || response == "取消後加入收藏") {
+                        formdialogFavorite.showModal();
+                        btnCloseDialogFavorite.addEventListener('click', () => {
+                            formdialogFavorite.close();
+                        });
+                        heartIcon.style.color = 'red';
+                    }
+                    else {
+                        formdialogCancel.showModal();
+                        btnCloseDialogCancel.addEventListener('click', () => {
+                            formdialogCancel.close();
+                        });
+                        heartIcon.style.color = '#eaeaea';
+                    }
+                    // 成功處理回應的程式碼
+                    // 例如，重新載入喜愛清單
+
+
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤的程式碼
+                    alert('失敗')
+                }
+            });
+        }
+
+
+    </script>
+}

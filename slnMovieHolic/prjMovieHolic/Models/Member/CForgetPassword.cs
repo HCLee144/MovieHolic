@@ -27,7 +27,7 @@ namespace prjMovieHolic.Models.Member
 
 
             string mailContent = $"<p>親愛的 {member.FName}：<br><br>我們已於{DateTime.Now}收到提出密碼重設的申請！<br>" +
-                $"您的新密碼為 :   {newPassword}  ，請重新登入並重設您的密碼。" +
+                $"您的新密碼為：{newPassword}，請重新登入並重設您的密碼。" +
                 $"如有任何疑問或需要進一步協助，請隨時與我們的客服部門聯繫，他們將樂意為您提供幫助。<br><br>" +
                 $"※本郵件為系統自動發出，請勿直接回覆本信件。<br>" +
                 $"※提醒您小心處理及保管本信件。</p>";
