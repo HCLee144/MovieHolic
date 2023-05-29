@@ -1,15 +1,16 @@
 ﻿@model prjMovieHolic.ViewModels.COrderAndMemberViewModel
 @{
-    ViewData["Title"] = "orderList";
+    ViewData["Title"] = "MovieHolic會員專區";
 }
 
 @section Styles{
     <style>
         .h3Text {
-            text-align: center;
+            text-align: left;
             font-size:36px;
             margin:10px;
             margin-bottom:20px;
+            margin-left:70px
         }
 
         .headText {
@@ -55,6 +56,7 @@
             height: 400px;
             border-radius: 15px;
             margin: 250px auto;
+            padding:30px
         }
 
             .IamDialog p {
@@ -134,6 +136,14 @@
                 color: black;
                 margin-top: 20px;
                 margin-bottom: 20px
+            }
+
+            .dialogDiv h4 {
+                font-size: 26px;
+                text-align: left;
+                color: black;
+                margin-top: 10px;
+                margin-bottom: 10px
             }
     </style>
 }
@@ -235,17 +245,22 @@
         <h3>退票費用</h3>
         根據我們的退票政策，可能會收取一定的退票費用或手續費。請確認您的退票費用及相關政策。
         <br />
-        票券狀態：請注意，只有未使用過的票券才能辦理退票。如果您已經使用了票券進場觀影，將無法退還票款。
+        <h4>票券狀態</h4>
+        請注意，只有未使用過的票券才能辦理退票。如果您已經使用了票券進場觀影，將無法退還票款。
         <br />
-        退款處理時間：一旦您成功提交退票申請，我們將在 3天 內進行退款處理。請耐心等待，退款款項將原路返回到您使用的付款方式上。
+        <h4>退款處理時間</h4>
+        一旦您成功提交退票申請，我們將在 3天 內進行退款處理。請耐心等待，退款款項將原路返回到您使用的付款方式上。
         <br />
-        退票方式：您可以選擇在線退票或聯繫客服進行退票申請。請按照指示提供相關信息和完成退票程序。
+        <h4>退票方式</h4>
+        您可以選擇在線退票或聯繫客服進行退票申請。請按照指示提供相關信息和完成退票程序。
         <br />
-        退票確認：一旦您成功提交退票申請，請保留相關退票確認資訊作為您的記錄。我們也會通過郵件或其他方式向您發送退票確認。
+        <h4>退票確認</h4>
+        一旦您成功提交退票申請，請保留相關退票確認資訊作為您的記錄。我們也會通過郵件或其他方式向您發送退票確認。
         <br />
-        退票聯繫：如果您在退票過程中遇到困難或有任何疑問，請隨時聯繫我們的客服部門，我們的團隊將樂意為您提供支援和協助。
-        <br />
-        確定要退票嗎？
+        <h4>退票聯繫</h4>
+        如果您在退票過程中遇到困難或有任何疑問，請隨時聯繫我們的客服部門，我們的團隊將樂意為您提供支援和協助。
+        <br /><br />
+        <h4>確定要退票嗎？</h4>
     </div>
     <button id="confirmDialog" class="closeDialog">確定</button>
     <button id="closeCancelDialog" class="closeDialog">取消</button>
