@@ -9,8 +9,7 @@
 <!-- Bootstrap ICONS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link rel="stylesheet" href="~/css/star-rating.css"/>
-<link rel="stylesheet" href="~/css/style.css">
-<link rel="stylesheet" href="~/css/myStyle.css">
+
 <style>
     .left {
         margin-top: 80px;
@@ -33,8 +32,9 @@
             <input type="hidden" asp-for="FCmtid" />
             <input type="hidden" asp-for="FMovieId"/>
             <input type="hidden" asp-for="FMemberId"/>
-            <label>電影名稱：@ViewData["FMovieName"]</label>
-            
+            <div class="form-group">
+                <label>電影名稱：@ViewData["FMovieName"]</label>
+            </div>
             <div class="myBr"></div>
             <div class="form-group">
                 <label>評分：</label>
