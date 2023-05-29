@@ -37,7 +37,7 @@
             <input type="hidden" asp-for="FCreatedTime" />
             <input type="hidden" asp-for="FVisible" />
             <div class="form-group">
-                <label>電影名稱：@ViewData["FMovieName"]</label>
+                <label style="font-size:20px;">電影名稱：@ViewData["FMovieName"]</label>
             </div>
             <div class="myBr"></div>
             <div class="form-group">
@@ -74,12 +74,13 @@
             </div>
             <div class="myBr"></div>
             <div class="form-group">
-                <input type="submit" value="儲存" class="btn btn-outline-primary" />
-                <button type="button" class="btn btn-outline-primary" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>回電影介紹</button>
+                <input type="submit" value="儲存" class="ourButton" style="height:30px;line-height:30px;" />
+                <button type="button" class="ourButton" style="width:140px;margin-left:10px;height:30px;line-height:30px;" onclick='location.href="/movieFront/movieDetails/@Model.FMovieId"'>回電影介紹</button>
                 @*<button type="button" class="btn btn-outline-danger" onclick='location.href="/ShortCmts/delete/@Model.FCmtid"'>刪除</button>*@
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal">刪除</button>
+                <button type="button" class="ourButton" style="background-color:brown;margin-left:10px;height:30px;line-height:30px;" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal">刪除</button>
             </div>
+            <div class="myBr"></div>
         </form>
     </div>
 </div>

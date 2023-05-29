@@ -37,7 +37,7 @@
                 <input type="hidden" asp-for="FMemberId" value="@ViewData["FMemberId"]" />
             </div>
             <div class="form-group">
-                <label>電影名稱：@ViewData["FMovieName"]</label>
+                <label style="font-size:20px;">電影名稱：@ViewData["FMovieName"]</label>
             </div>
             <div class="myBr"></div>
             <div class="form-group">
@@ -66,9 +66,10 @@
             </div>
             <div class="myBr"></div>
             <div class="form-group">
-                <input type="submit" value="發送" class="btn btn-outline-primary" />
-                <button type="button" class="btn btn-outline-primary" onclick='location.href="/movieFront/movieDetails/@ViewData["FMovieId"]"'>回電影介紹</button>
+                <input type="submit" value="發送" class="ourButton" style="height:30px;line-height:30px;" />
+                <button type="button" class="ourButton" style="margin-left:10px;width:140px;height:30px;line-height:30px;" onclick='location.href="/movieFront/movieDetails/@ViewData["FMovieId"]"'>回電影介紹</button>
             </div>
+            <div class="myBr"></div>
         </form>
     </div>
 </div>
