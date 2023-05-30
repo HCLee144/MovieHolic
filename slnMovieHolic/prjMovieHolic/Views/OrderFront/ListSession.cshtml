@@ -117,7 +117,8 @@
                                 <div>
                                     <figure>
                                         <input type="hidden" id="movieID" value="@Model.MovieID" />
-                                        <img class="orderMovieImage" src="../@Model.tMovie.FPosterPath" alt="">
+                                       @* <img class="orderMovieImage" src="../@Model.tMovie.FPosterPath" alt="">*@
+                                        <img class="orderMovieImage" src="@Url.Content($"~/{Model.tMovie.FPosterPath}")" alt="">
                                         <ul>                                      
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">片長</span>  @Model.tMovie.FShowLength 分鐘</li>
                                             <li style="font-size:20px;padding-top:3px"><span style="font-weight:bold">類型</span>@Model.TypeListNames</li>
