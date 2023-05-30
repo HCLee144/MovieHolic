@@ -26,7 +26,8 @@
 
 
 <div class="container">
-    <h6>電影評論 / <a href="/moviefront/moviedetails/@Model.FMovieId">@Model.FMovie.FNameCht</a></h6>
+    <h6 >電影評論 / <a href="/moviefront/moviedetails/@Model.FMovieId">@Model.FMovie.FNameCht</a></h6>
+
     <div class="myBr"></div>
     <h3>@Html.DisplayFor(model => model.FTitle)</h3>
     <div class="row" style=" display:flex">
@@ -34,6 +35,7 @@
         <h6 class="col-md-6">電影評分：@Html.DisplayFor(model => model.FScore)</h6>
     </div>
     <h6 style="color:gray">發表於：@Html.DisplayFor(model => model.FTimeCreated)</h6>
+    <a onclick="copyUrl(window.location.href)"><i class="bi bi-share">分享</i></a>
 </div>
 <hr />
 <div class="editorJS">
@@ -70,6 +72,12 @@
         });
 
 
+    </script>
+    <script>
+        function copyUrl(url){
+            navigator.clipboard.writeText(url);
+            alert("已將網址：" +url+"複製到剪貼簿！")
+        }
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
