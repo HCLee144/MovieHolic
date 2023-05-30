@@ -154,7 +154,8 @@
                             <div class="orderBox">
                                 <div>
                                     <figure>
-                                        <img class="orderMovieImage" src="../@Model.selectedMoviePoster" alt="">
+                                        @*<img class="orderMovieImage" src="../@Model.selectedMoviePoster" alt="">*@
+                                        <img class="orderMovieImage" src="@Url.Content($"~/{Model.selectedMoviePoster}")" alt="">
                                     </figure>
                                 </div>
                                 <div class="pick">
