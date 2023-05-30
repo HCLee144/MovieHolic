@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting.Internal;
+using prjMovieHolic.Models;
 using System;
 using System.Net;
 using System.Security.Policy;
@@ -32,12 +33,14 @@ namespace prjMovieHolic.Controllers
             return Ok(new { success = 1, file = new { url } });
         }
         [HttpPost("fetchURL")]
-        public async Task<IActionResult> fetchURL(string imgurl)
+        public async Task<IActionResult> fetchURL([FromBody]CImgUpload url)
         {
-         
+            string imgUrl=string.Empty;
+            if (url != null)
+                imgUrl = url.url;
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(imgurl);
+                HttpResponseMessage response = await client.GetAsync(imgUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     byte[] data = await response.Content.ReadAsByteArrayAsync();
@@ -47,8 +50,8 @@ namespace prjMovieHolic.Controllers
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await fileStream.WriteAsync(data, 0, data.Length);
-                       string url = "https://" + this.Request.Host.Value.ToString() + "/images/uploads/" + fileName;
-                        return Ok(new { success = 1, File = new { url } });
+                        string responseUrl = "https://" + this.Request.Host.Value.ToString() + "/images/uploads/" + fileName;
+                        return Ok(new { success = 1, File = new { url=responseUrl } });
                     }
                 }
             }
