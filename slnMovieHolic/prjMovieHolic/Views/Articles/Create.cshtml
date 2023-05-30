@@ -24,14 +24,14 @@
     </style>
 }
 
-<h4>發表評論</h4>
+<h4>發表電影評論</h4>
 <hr />
 <div class="conatiner">
     <div class="col-md-12">
         <form asp-action="Create" id="new-article">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="FMemberId" class="form-control" type="hidden" asp-items="ViewBag.MemberID" />
+                <input asp-for="FMemberId" class="form-control" type="hidden" value="@ViewBag.MemberID" />
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="control-label">評分</label>
-                    <input asp-for="FScore" class="form-control" placeholder="0~100之間的評分" />
+                    <input asp-for="FScore" class="form-control" placeholder="0~100之間的評分" min="0" max="100" />
                     <span asp-validation-for="FScore" class="text-danger"></span>
                 </div>
             </div>

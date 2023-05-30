@@ -81,7 +81,7 @@ namespace prjMovieHolic.Controllers
             await _context.SaveChangesAsync();
             var myLatest = getMyLatestArtID();
             if (myLatest != null)
-                return RedirectToAction("Detail", "Articles", new { id = myLatest });
+                return RedirectToAction("Details", "Articles", new { id = myLatest });
             
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FNameCht");
             ViewBag.FMemberId = (int)userId;
@@ -94,7 +94,7 @@ namespace prjMovieHolic.Controllers
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
             if (userId == null)
                 return null;
-            var q = _context.TArticles.Where(t => t.FMemberId == userId).LastOrDefault();
+            var q = _context.TArticles.Where(t => t.FMemberId == userId).OrderBy(t=>t.FArticleId).LastOrDefault();
             if (q == null)
                 return null;
             return q.FArticleId;
