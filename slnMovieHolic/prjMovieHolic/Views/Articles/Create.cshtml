@@ -6,63 +6,103 @@
 }
 @section Styles{
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-<!-- Bootstrap ICONS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-<link rel="stylesheet" href="~/css/style.css">
-<link rel="stylesheet" href="~/css/myStyle.css">
-<style>
-    .left {
-        margin-top: 80px;
-    }
-    .container {
-        width: 880px;
-    }
-</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <!-- Bootstrap ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/myStyle.css">
+    <link href="~/css/EditorJS/editorJS.css" rel="stylesheet" />
+    <style>
+        .left {
+            margin-top: 80px;
+        }
+
+        .container {
+            width: 880px;
+        }
+    </style>
 }
 
 <h4>發表評論</h4>
 <hr />
-<div class="row">
+<div class="conatiner">
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="FMemberId" class ="form-control" type="hidden" asp-items="ViewBag.FMemberId"/>
+                <input asp-for="FMemberId" class="form-control" type="hidden" asp-items="ViewBag.FMemberId" />
             </div>
-            <div class="form-group">
-                <label class="control-label">電影名稱</label>
-                <select asp-for="FMovieId" class ="form-control" asp-items="ViewBag.FMovieId"></select>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label">電影名稱</label>
+                    <select asp-for="FMovieId" class="form-control" asp-items="ViewBag.FMovieId"></select>
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label">評分</label>
+                    <input asp-for="FScore" class="form-control" placeholder="0~100之間的評分" />
+                    <span asp-validation-for="FScore" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FScore" class="control-label"></label>
-                <input asp-for="FScore" class="form-control" />
-                <span asp-validation-for="FScore" class="text-danger"></span>
-            </div>
+            <div class="myBr"></div>
             <div class="form-group">
                 <label class="control-label">評論標題</label>
                 <input asp-for="FTitle" class="form-control" />
                 <span asp-validation-for="FTitle" class="text-danger"></span>
             </div>
-            
+            <div class="myBr"></div>
             <div class="form-group">
                 <label class="control-label">評論文章內容</label>
-                <input asp-for="FBlockJson" class="form-control" type="hidden" />
+                <div class="editorJS">
+                    <div id="editorjs"></div>
+                </div>
+                <input asp-for="FBlockJson" class="form-control" type="hidden" id="output" />
                 <span asp-validation-for="FBlockJson" class="text-danger"></span>
             </div>
-            
-            <div class="form-group">
-                <input type="button" value="發文" class="btn btn-primary" />
+            <div class="myBr"></div>
+            <div class="form-group text-center">
+                <input type="button" value="發文" class="ourButton" id="save-button" style="height:30px;line-height:30px;" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/editorjs@@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/image@@2.3.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/header@@latest"></script>
+    <script>
+        const editor = new EditorJS({
+            autofocus: true,
+            tools: {
+                header: {
+                    class: Header,
+                    inlineToolbar: true
+                },
+                image: {
+                    class: ImageTool,
+                    config: {
+                        endpoints: {
+                            byFile: '../api/ImageUploader/upload-image', // Your backend file uploader endpoint
+                            byUrl: '../api/ImageUploader/fetchUrl', // Your endpoint that provides uploading by Url
+                        }
+                    }
+                }
+            }
+        });
+
+        const saveButton = document.getElementById('save-button');
+        const output = document.getElementById('output');
+
+        saveButton.addEventListener('click', () => {
+            editor.save().then(savedData => {
+                output.value = JSON.stringify(savedData, null, 4);
+            })
+        })
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
