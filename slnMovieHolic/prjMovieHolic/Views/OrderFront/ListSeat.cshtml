@@ -200,7 +200,7 @@
             else {
 
                 if (getComputedStyle(evt.target).backgroundColor === 'rgb(105, 105, 105)') 
-                    showLeftSeats.innerHTML = '位置已被選走囉，下次請早:))))';
+                    showLeftSeats.innerHTML = '位置已被選走囉，下次請早:)';
 
                 else {
                     const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=0');
@@ -232,7 +232,10 @@
                 showSeat+=item+'  ';
                 i++;
             })
-            seatNames.innerHTML = showSeat;
+            if(showSeat=="")
+                seatNames.innerHTML="尚未選擇";
+            else
+                seatNames.innerHTML = showSeat;
         }
 
         nextStep.addEventListener('click', () => {
