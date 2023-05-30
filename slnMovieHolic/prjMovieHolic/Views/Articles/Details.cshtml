@@ -50,11 +50,28 @@
     <script src="https://cdn.jsdelivr.net/npm/@@editorjs/image@@2.3.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@editorjs/header@@latest"></script>
     <script>
-        var blockContent = @Html.Raw(Model.FBlockJson)
+        var blockContent = @Html.Raw(Model.FBlockJson);
+        console.log(blockContent);
         const editor = new EditorJS({
-            readOnly: true,
+            //readOnly: true,
             data:  blockContent,
+            tools: {
+                header: {
+                    class: Header,
+                    inlineToolbar: true
+                },
+                image: {
+                    class: ImageTool,
+                    config: {
+                        endpoints: {
+                            byFile: '../api/ImageUploader/upload-image', // Your backend file uploader endpoint
+                            byUrl: '../api/ImageUploader/fetchUrl', // Your endpoint that provides uploading by Url
+                        }
+                    }
+                }
+            }
         });
+        
                
     </script>
     @{
