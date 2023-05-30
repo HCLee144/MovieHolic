@@ -9,7 +9,11 @@ namespace prjMovieHolic.Models.Member
     public class CForgetPassword
     {
 
-        MovieContext _movieContext = new MovieContext();
+        private readonly MovieContext _movieContext;
+        public CForgetPassword(MovieContext context)
+        {
+            _movieContext = context;
+        }
         public void getNewPasswordEmail(string email)
         {
 

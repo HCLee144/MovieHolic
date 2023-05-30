@@ -161,7 +161,7 @@ namespace prjMovieHolic.Controllers
             }
             else
             { 
-                CForgetPassword CforgetPassword = new CForgetPassword();
+                CForgetPassword CforgetPassword = new CForgetPassword(_movieContext);
                 CforgetPassword.getNewPasswordEmail(email);
                 return RedirectToAction("memberLogin");
             }
