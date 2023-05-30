@@ -28,31 +28,30 @@
 <div class="container">
     <h6>電影評論 / <a href="/moviefront/moviedetails/@Model.FMovieId">@Model.FMovie.FNameCht</a></h6>
     <div class="myBr"></div>
-    <h4>@Html.DisplayFor(model => model.FTitle)</h4>
-    <h6>作者：@Html.DisplayFor(model=>model.FMember.FName)</h6>
-    <h6>發表於：@Html.DisplayFor(model => model.FTimeCreated)</h6>
-    <hr />
-    <dl class="row">
-        <dd class="col-sm-4">
-            評分：@Html.DisplayFor(model => model.FScore)
-        </dd>
-    </dl>
-    <div class="editorJS">
-        <div id="editorjs"></div>
+    <h3>@Html.DisplayFor(model => model.FTitle)</h3>
+    <div class="row" style=" display:flex">
+        <h6 class="col-md-6">作者：@Html.DisplayFor(model=>model.FMember.FName)</h6>
+        <h6 class="col-md-6">電影評分：@Html.DisplayFor(model => model.FScore)</h6>
     </div>
+    <h6 style="color:gray">發表於：@Html.DisplayFor(model => model.FTimeCreated)</h6>
+</div>
+<hr />
+<div class="editorJS">
+    <div id="editorjs"></div>
 </div>
 
 
+
 @section Scripts {
-    <script src="~/js/editorjs-2.6.0.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/image@@2.3.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/editorjs@@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/image@@2.6.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@editorjs/header@@latest"></script>
     <script>
         var blockContent = @Html.Raw(Model.FBlockJson);
         console.log(blockContent);
         const editor = new EditorJS({
-            //readOnly: true,
-            data:  blockContent,
+            readOnly: true,
+            data: blockContent,
             tools: {
                 header: {
                     class: Header,
@@ -69,8 +68,8 @@
                 }
             }
         });
-        
-               
+
+
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
