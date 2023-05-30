@@ -21,6 +21,7 @@ namespace prjMovieHolic.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
+            sessionCheck();
             var movieContext = _context.TArticles.Include(t => t.FMember).Include(t => t.FMovie);
             return View(await movieContext.ToListAsync());
         }
@@ -41,15 +42,22 @@ namespace prjMovieHolic.Controllers
             {
                 return NotFound();
             }
-
+            sessionCheck();
             return View(tArticle);
         }
 
         // GET: Articles/Create
         public IActionResult Create()
         {
-            ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId");
-            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId");
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            if (userId == null)
+            {
+                return RedirectToAction("memberLogin", "MemberFront", null);
+            }
+            //ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId");
+            sessionCheck();
+            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FNameCht");
+            ViewBag.MemberID = (int)userId;
             return View();
         }
 
@@ -60,15 +68,36 @@ namespace prjMovieHolic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FArticleId,FMemberId,FMovieId,FScore,FTitle,FTimeCreated,FTimeEdited,FBlockJson,FIsPublic")] TArticle tArticle)
         {
-            if (ModelState.IsValid)
+            sessionCheck();
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            if (userId == null || userId != tArticle.FMemberId)
             {
-                _context.Add(tArticle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("memberLogin", "MemberFront", null);
             }
-            ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId", tArticle.FMemberId);
-            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tArticle.FMovieId);
+
+            tArticle.FMemberId = (int)userId;
+            tArticle.FTimeCreated = DateTime.Now;
+            _context.Add(tArticle);
+            await _context.SaveChangesAsync();
+            var myLatest = getMyLatestArtID();
+            if (myLatest != null)
+                return RedirectToAction("Details", "Articles", new { id = myLatest });
+            
+            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FNameCht");
+            ViewBag.FMemberId = (int)userId;
+            ViewBag.Readonly = true;
             return View(tArticle);
+        }
+
+        private int? getMyLatestArtID()
+        {
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            if (userId == null)
+                return null;
+            var q = _context.TArticles.Where(t => t.FMemberId == userId).OrderBy(t=>t.FArticleId).LastOrDefault();
+            if (q == null)
+                return null;
+            return q.FArticleId;
         }
 
         // GET: Articles/Edit/5
@@ -86,6 +115,7 @@ namespace prjMovieHolic.Controllers
             }
             ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId", tArticle.FMemberId);
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tArticle.FMovieId);
+            sessionCheck();
             return View(tArticle);
         }
 
@@ -121,6 +151,7 @@ namespace prjMovieHolic.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            sessionCheck();
             ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId", tArticle.FMemberId);
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tArticle.FMovieId);
             return View(tArticle);
@@ -142,7 +173,7 @@ namespace prjMovieHolic.Controllers
             {
                 return NotFound();
             }
-
+            sessionCheck();
             return View(tArticle);
         }
 
@@ -160,14 +191,25 @@ namespace prjMovieHolic.Controllers
             {
                 _context.TArticles.Remove(tArticle);
             }
-            
+
             await _context.SaveChangesAsync();
+            sessionCheck();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TArticleExists(int id)
         {
-          return (_context.TArticles?.Any(e => e.FArticleId == id)).GetValueOrDefault();
+            return (_context.TArticles?.Any(e => e.FArticleId == id)).GetValueOrDefault();
+        }
+        private bool sessionCheck()
+        {
+            var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
+            var userName = HttpContext.Session.GetString(CDictionary.SK_LOGIN_USER_NAME);
+            bool isUserLoggedIn = userId != null;
+            ViewBag.Login = isUserLoggedIn;
+            ViewBag.UserId = userId;
+            ViewBag.userName = userName;
+            return isUserLoggedIn;
         }
     }
 }
