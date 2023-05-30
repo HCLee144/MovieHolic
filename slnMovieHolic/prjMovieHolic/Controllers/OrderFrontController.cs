@@ -24,361 +24,433 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListSession(int? movieID)
         {
-            ClearAllSession();
-            //先判斷是否有場次
-            var session = movieContext.TSessions.Where(s => s.FMovieId == movieID).
-                Where(s => s.FStartTime.Date > DateTime.Now.Date).ToList();
-            if (session.Count == 0)
-                return RedirectToAction("Index", "Home");
-
-
-            //判斷會員登入或會員中心
-            bool verify_checkLogIn = sessionCheck();
-
-            if (movieID == null)
-                return RedirectToAction("Index", "Home");
-            var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m => m.TTypeLists).
-                ThenInclude(t => t.FType).Include(m => m.TDirectorLists).ThenInclude(t => t.FDirector).
-                Include(m => m.TActorLists).ThenInclude(t => t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
-
-            if (movie == null)
-                return RedirectToAction("Index", "Home");
-
-
-            CListSessionViewModel vm = new CListSessionViewModel();
-            vm.tMovie = movie;
-            vm.MovieID = (int)movieID;
-            vm.MovieName = movie.FNameCht;
-
-            vm.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t => t.FType.FNameCht).ToArray();
-            vm.TypeListNames = getNames(vm.tTypeListNames);
-
-            vm.tDirectorListNames = movie.TDirectorLists.Where(t => t.FMovieId == movieID).Select(t => t.FDirector.FNameCht).ToArray();
-            vm.DirectorListNames = getNames(vm.tDirectorListNames);
-
-            vm.tActorListNames = movie.TActorLists.Where(t => t.FMovieId == movieID).Select(t => t.FActor.FNameCht).ToArray();
-            vm.ActorListNames = getNames(vm.tActorListNames);
-
-            string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
-
-            //將session時間取出星期幾(原先英文，轉數字)
-            int selectDays = Convert.ToInt32(movie.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date).Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
-
-            //將星期幾跟陣列對應，轉中文，連續取七天
-            List<string> wholeWeekDays = new List<string>();
-
-            while (wholeWeekDays.Count < 7)
+            try
             {
-                wholeWeekDays.Add(days[selectDays++]);
-                if (selectDays > 6)
-                    selectDays = 0;
+                ClearAllSession();
+                //先判斷是否有場次
+                var session = movieContext.TSessions.Where(s => s.FMovieId == movieID).
+                    Where(s => s.FStartTime.Date > DateTime.Now.Date).ToList();
+                if (session.Count == 0)
+                    return RedirectToAction("Index", "Home");
+
+
+                //判斷會員登入或會員中心
+                bool verify_checkLogIn = sessionCheck();
+
+                if (movieID == null)
+                    return RedirectToAction("Index", "Home");
+                var movie = movieContext.TMovies.Include(m => m.TSessions).Include(m => m.TTypeLists).
+                    ThenInclude(t => t.FType).Include(m => m.TDirectorLists).ThenInclude(t => t.FDirector).
+                    Include(m => m.TActorLists).ThenInclude(t => t.FActor).Where(m => m.FId == movieID).FirstOrDefault();
+
+                if (movie == null)
+                    return RedirectToAction("Index", "Home");
+
+
+                CListSessionViewModel vm = new CListSessionViewModel();
+                vm.tMovie = movie;
+                vm.MovieID = (int)movieID;
+                vm.MovieName = movie.FNameCht;
+
+                vm.tTypeListNames = movie.TTypeLists.Where(t => t.FMovieId == movieID).Select(t => t.FType.FNameCht).ToArray();
+                vm.TypeListNames = getNames(vm.tTypeListNames);
+
+                vm.tDirectorListNames = movie.TDirectorLists.Where(t => t.FMovieId == movieID).Select(t => t.FDirector.FNameCht).ToArray();
+                vm.DirectorListNames = getNames(vm.tDirectorListNames);
+
+                vm.tActorListNames = movie.TActorLists.Where(t => t.FMovieId == movieID).Select(t => t.FActor.FNameCht).ToArray();
+                vm.ActorListNames = getNames(vm.tActorListNames);
+
+                string[] days = new string[7] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+
+                //將session時間取出星期幾(原先英文，轉數字)
+                int selectDays = Convert.ToInt32(movie.TSessions.Where(s => s.FStartTime.Date > DateTime.Now.Date).Select(s => s.FStartTime.DayOfWeek).FirstOrDefault());
+
+                //將星期幾跟陣列對應，轉中文，連續取七天
+                List<string> wholeWeekDays = new List<string>();
+
+                while (wholeWeekDays.Count < 7)
+                {
+                    wholeWeekDays.Add(days[selectDays++]);
+                    if (selectDays > 6)
+                        selectDays = 0;
+                }
+
+                vm.weekDays = wholeWeekDays.ToArray();
+                return View(vm);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
             }
 
-            vm.weekDays = wholeWeekDays.ToArray();
-            return View(vm);
         }
 
         public IActionResult queryByDate(string date, int movieID)
         {
-            //依據點選到的日期出現場次
-            string realDate = date.Substring(0, 5);
-            var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().
-                OrderBy(s => s.FTheaterId).
-                Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
-
-            List<CShowSession> showSessions = new List<CShowSession>();
-            foreach (var sessionItem in sessions)
+            try
             {
-                bool verify = false;
-                foreach (var item in showSessions)
+                //依據點選到的日期出現場次
+                string realDate = date.Substring(0, 5);
+                var sessions = movieContext.TSessions.Include(s => s.FTheater).AsEnumerable().
+                    OrderBy(s => s.FTheaterId).
+                    Where(s => s.FStartTime.Date.ToString("MM/dd") == realDate && s.FMovieId == movieID);
+
+                List<CShowSession> showSessions = new List<CShowSession>();
+                foreach (var sessionItem in sessions)
                 {
-                    if (item.theaterName == sessionItem.FTheater.FTheater)
+                    bool verify = false;
+                    foreach (var item in showSessions)
                     {
-                        item.sessionIDandTimeandLeftSeats += $",{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
+                        if (item.theaterName == sessionItem.FTheater.FTheater)
+                        {
+                            item.sessionIDandTimeandLeftSeats += $",{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
+                            int leftSeats = showLeftSeats(sessionItem.FSessionId);
+                            item.sessionIDandTimeandLeftSeats += $"##{leftSeats}";
+                            verify = true;
+                            break;
+                        }
+                    }
+                    if (!verify)
+                    {
+                        CShowSession showSession = new CShowSession();
+                        showSession.theaterName = sessionItem.FTheater.FTheater;
+                        showSession.sessionIDandTimeandLeftSeats = $"{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
                         int leftSeats = showLeftSeats(sessionItem.FSessionId);
-                        item.sessionIDandTimeandLeftSeats += $"##{leftSeats}";
-                        verify = true;
-                        break;
+                        showSession.sessionIDandTimeandLeftSeats += $"##{leftSeats}";
+                        showSessions.Add(showSession);
                     }
                 }
-                if (!verify)
-                {
-                    CShowSession showSession = new CShowSession();
-                    showSession.theaterName = sessionItem.FTheater.FTheater;
-                    showSession.sessionIDandTimeandLeftSeats = $"{sessionItem.FSessionId}##{sessionItem.FStartTime.ToString("HH:mm")}";
-                    int leftSeats = showLeftSeats(sessionItem.FSessionId);
-                    showSession.sessionIDandTimeandLeftSeats += $"##{leftSeats}";
-                    showSessions.Add(showSession);
-                }
+                return Json(showSessions);
             }
-            return Json(showSessions);
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public int showLeftSeats(int sessionID)
         {
-            var theater=movieContext.TSessions.Include(t=>t.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater;
-            //var seatCount = 400-movieContext.TSeats.Where(s => s.FTheaterId == theater.FTheaterId).Where(s=>s.FSeatStatusId!=2).Count();
-            var seatCount =  movieContext.TSeats.Where(s => s.FTheaterId == theater.FTheaterId).Where(s => s.FSeatStatusId != 2).ToList();
-            var seats = seatCount.Count();
-            var soldSeats=movieContext.TOrderDetails.Where(o => o.FOrder.FSessionId == sessionID).Count();
-            int leftSeats = seats - soldSeats;
-            return leftSeats;
+            try
+            {
+                var theater = movieContext.TSessions.Include(t => t.FTheater).FirstOrDefault(s => s.FSessionId == sessionID).FTheater;
+                //var seatCount = 400-movieContext.TSeats.Where(s => s.FTheaterId == theater.FTheaterId).Where(s=>s.FSeatStatusId!=2).Count();
+                var seatCount = movieContext.TSeats.Where(s => s.FTheaterId == theater.FTheaterId).Where(s => s.FSeatStatusId != 2).ToList();
+                var seats = seatCount.Count();
+                var soldSeats = movieContext.TOrderDetails.Where(o => o.FOrder.FSessionId == sessionID).Count();
+                int leftSeats = seats - soldSeats;
+                return leftSeats;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public IActionResult SaveSelectedSessionID(int sessionID)
         {
-            HttpContext.Session.SetInt32(CDictionary.SelectedSessionID, sessionID);
-            return Content("Success");
+            try
+            {
+                HttpContext.Session.SetInt32(CDictionary.SelectedSessionID, sessionID);
+                return Content("Success");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
         public IActionResult checkSessionSelected()
         {
-            if (HttpContext.Session.Keys.Contains(CDictionary.SelectedSessionID))
-                return Content("有選到場次");
-            else
-                return Content("沒有選到場次");
+            try
+            {
+                if (HttpContext.Session.Keys.Contains(CDictionary.SelectedSessionID))
+                    return Content("有選到場次");
+                else
+                    return Content("沒有選到場次");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult ListTicketClass()
         {
-            //判斷會員登入或會員中心
-            bool verify_checkLogIn = sessionCheck();
+            try
+            {
+                //判斷會員登入或會員中心
+                bool verify_checkLogIn = sessionCheck();
 
-            //顯示剛剛選的場次
-            CListTicketViewModel vm = new CListTicketViewModel();
-            int sessionID = getSessionID();
-            vm.selectedSessionID = sessionID;
+                //顯示剛剛選的場次
+                CListTicketViewModel vm = new CListTicketViewModel();
+                int sessionID = getSessionID();
+                vm.selectedSessionID = sessionID;
 
-            vm.selectedSessionDate = getSessionDate(sessionID);
-            vm.selectedSessionTime = getSessionTime(sessionID);
-            var selectedSessionHour = getSessionHour(sessionID);
+                vm.selectedSessionDate = getSessionDate(sessionID);
+                vm.selectedSessionTime = getSessionTime(sessionID);
+                var selectedSessionHour = getSessionHour(sessionID);
 
-            var theater = getTheater(sessionID);
-            vm.selectedTheater = theater.FTheater;
+                var theater = getTheater(sessionID);
+                vm.selectedTheater = theater.FTheater;
 
-            var movie = getSessionMovie(sessionID);
-            vm.selectedMovieID = movie.FId;
-            vm.selectedMovieName = movie.FNameCht;
-            vm.selectedMovieEngName = movie.FNameEng;
-            vm.selectedMoviePoster = movie.FPosterPath;
+                var movie = getSessionMovie(sessionID);
+                vm.selectedMovieID = movie.FId;
+                vm.selectedMovieName = movie.FNameCht;
+                vm.selectedMovieEngName = movie.FNameEng;
+                vm.selectedMoviePoster = movie.FPosterPath;
 
-            //顯示選的票種價錢
-            decimal moviePrice = (decimal)movie.FPrice;
-            decimal 早場優惠 = 1;
-            if (int.Parse(selectedSessionHour) <= 11)
-                早場優惠 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-            decimal 廳加價 = 1;
-            if (theater.FTheaterId == 1)
-                廳加價 = movieContext.TTheaterClasses.FirstOrDefault(tc => tc.FTheaterClassId == 2).FPriceRate;
-            decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
-            vm.oneNormalPrice = Convert.ToInt32(moviePrice * 一般價 * 早場優惠 * 廳加價);
-            decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
-            vm.oneStudentPrice = Convert.ToInt32(moviePrice * 學生價 * 早場優惠 * 廳加價);
-            decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-            vm.oneSoldierPrice = Convert.ToInt32(moviePrice * 軍警價 * 早場優惠 * 廳加價);
+                //顯示選的票種價錢
+                decimal moviePrice = (decimal)movie.FPrice;
+                decimal 早場優惠 = 1;
+                if (int.Parse(selectedSessionHour) <= 11)
+                    早場優惠 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
+                decimal 廳加價 = 1;
+                if (theater.FTheaterId == 1)
+                    廳加價 = movieContext.TTheaterClasses.FirstOrDefault(tc => tc.FTheaterClassId == 2).FPriceRate;
+                decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
+                vm.oneNormalPrice = Convert.ToInt32(moviePrice * 一般價 * 早場優惠 * 廳加價);
+                decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
+                vm.oneStudentPrice = Convert.ToInt32(moviePrice * 學生價 * 早場優惠 * 廳加價);
+                decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
+                vm.oneSoldierPrice = Convert.ToInt32(moviePrice * 軍警價 * 早場優惠 * 廳加價);
 
-            return View(vm);
+                return View(vm);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult ListSeat(CListSeatViewModel vm)
         {
-            //判斷會員登入或會員中心
-            bool verify_checkLogIn = sessionCheck();
-
-            int n = vm.sessionID_seat;
-            int x = vm.normalCount_seat;
-            int y = vm.studentCount_seat;
-            int z = vm.soldierCount_seat;
-
-            //將選的票種數量存進session
-            string tickets = $"{x},{y},{z}";
-            HttpContext.Session.SetString(CDictionary.SelectedTicketClass, tickets);
-
-            //選到的電影
-            vm.movieName = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == n).FMovie.FNameCht;
-            //選到的日期
-            vm.sessionDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("MM/dd");
-            //選到的時間
-            vm.sessionTime = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("HH:mm");
-            //全部票數
-            vm.totalTickets = (x + y + z).ToString();
-            string s = vm.totalTickets;
-
-            //選到的廳
-            var theaterID = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FTheaterId;
-            vm.theaterID = theaterID.ToString();
-            vm.theaterName = movieContext.TTheaters.FirstOrDefault(t => t.FTheaterId == theaterID).FTheater;
-
-
-            //所有這個場次的seat
-            var seats = movieContext.TSessions.Include(s => s.FTheater).ThenInclude(t => t.TSeats).FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats;
-
-            //非座位區的所有ID
-            var nonSeats = seats.Where(s => s.FSeatStatusId == 2).Select(s => s.FSeatId);
-
-            //愛心座位的所有ID
-            var diabledSeats = seats.Where(s => s.FSeatStatusId == 3).Select(s => s.FSeatId);
-
-            //已被選走的座位
-            var selectedSeats = movieContext.TOrderDetails.Include(od => od.FOrder).Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
-            var selectedSeats1 = movieContext.TOrderDetails.Include(od => od.FOrder).Where(od => od.FOrder.FSessionId == n).ToList();
-
-
-            var orders = movieContext.TOrders.ToList();
-            var od = movieContext.TOrderDetails.ToList();
-            int[] seat = new int[400];
-            //假設數字1預設為未售，2為非座位，3為愛心座位，4為被選走座位
-            foreach (var item in nonSeats)
+            try
             {
-                int changedSeatID = item - 400 * (theaterID - 1);
-                seat[changedSeatID - 1] = 2;
-            }
-            foreach (var item in diabledSeats)
-            {
-                int changedSeatID = item - 400 * (theaterID - 1);
-                seat[changedSeatID - 1] = 3;
-            }
-            foreach (var item in selectedSeats)
-            {
+                //判斷會員登入或會員中心
+                bool verify_checkLogIn = sessionCheck();
+
+                int n = vm.sessionID_seat;
+                int x = vm.normalCount_seat;
+                int y = vm.studentCount_seat;
+                int z = vm.soldierCount_seat;
+
+                //將選的票種數量存進session
+                string tickets = $"{x},{y},{z}";
+                HttpContext.Session.SetString(CDictionary.SelectedTicketClass, tickets);
+
+                //選到的電影
+                vm.movieName = movieContext.TSessions.Include(s => s.FMovie).FirstOrDefault(s => s.FSessionId == n).FMovie.FNameCht;
+                //選到的日期
+                vm.sessionDate = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("MM/dd");
+                //選到的時間
+                vm.sessionTime = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FStartTime.ToString("HH:mm");
+                //全部票數
+                vm.totalTickets = (x + y + z).ToString();
+                string s = vm.totalTickets;
+
+                //選到的廳
+                var theaterID = movieContext.TSessions.FirstOrDefault(s => s.FSessionId == n).FTheaterId;
+                vm.theaterID = theaterID.ToString();
+                vm.theaterName = movieContext.TTheaters.FirstOrDefault(t => t.FTheaterId == theaterID).FTheater;
+
+
+                //所有這個場次的seat
+                var seats = movieContext.TSessions.Include(s => s.FTheater).ThenInclude(t => t.TSeats).FirstOrDefault(s => s.FSessionId == n).FTheater.TSeats;
+
+                //非座位區的所有ID
+                var nonSeats = seats.Where(s => s.FSeatStatusId == 2).Select(s => s.FSeatId);
+
+                //愛心座位的所有ID
+                var diabledSeats = seats.Where(s => s.FSeatStatusId == 3).Select(s => s.FSeatId);
+
+                //已被選走的座位
+                var selectedSeats = movieContext.TOrderDetails.Include(od => od.FOrder).Where(od => od.FOrder.FSessionId == n).Select(od => od.FSeatId);
+                var selectedSeats1 = movieContext.TOrderDetails.Include(od => od.FOrder).Where(od => od.FOrder.FSessionId == n).ToList();
+
+
+                var orders = movieContext.TOrders.ToList();
+                var od = movieContext.TOrderDetails.ToList();
+                int[] seat = new int[400];
+                //假設數字1預設為未售，2為非座位，3為愛心座位，4為被選走座位
+                foreach (var item in nonSeats)
                 {
                     int changedSeatID = item - 400 * (theaterID - 1);
-                    seat[changedSeatID - 1] = 4;
+                    seat[changedSeatID - 1] = 2;
                 }
-            }
-            for (int i = 0; i < seat.Length; i++)
-            {
-                if (seat[i] == 0)
-                    seat[i] = 1;
-            }
-            vm.seatStatus = seat;
+                foreach (var item in diabledSeats)
+                {
+                    int changedSeatID = item - 400 * (theaterID - 1);
+                    seat[changedSeatID - 1] = 3;
+                }
+                foreach (var item in selectedSeats)
+                {
+                    {
+                        int changedSeatID = item - 400 * (theaterID - 1);
+                        seat[changedSeatID - 1] = 4;
+                    }
+                }
+                for (int i = 0; i < seat.Length; i++)
+                {
+                    if (seat[i] == 0)
+                        seat[i] = 1;
+                }
+                vm.seatStatus = seat;
 
-            return View(vm);
+                return View(vm);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult ListProduct()
         {
-            //判斷會員登入或會員中心
-            bool verify_checkLogIn = sessionCheck();
-
-            var product = movieContext.TProducts.ToList();
-
-            //將產品分門別類
-            CListProductViewModel vm = new CListProductViewModel();
-            List<CTProductWrap> drinks = new List<CTProductWrap>();
-            List<CTProductWrap> popcorns = new List<CTProductWrap>();
-            List<CTProductWrap> desserts = new List<CTProductWrap>();
-            foreach (var item in product)
+            try
             {
-                if (item.FCategoryId == 1)
+                //判斷會員登入或會員中心
+                bool verify_checkLogIn = sessionCheck();
+
+                var product = movieContext.TProducts.ToList();
+
+                //將產品分門別類
+                CListProductViewModel vm = new CListProductViewModel();
+                List<CTProductWrap> drinks = new List<CTProductWrap>();
+                List<CTProductWrap> popcorns = new List<CTProductWrap>();
+                List<CTProductWrap> desserts = new List<CTProductWrap>();
+                foreach (var item in product)
                 {
-                    CTProductWrap productWrap = new CTProductWrap();
-                    productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
-                    productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
-                    productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
-                    productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
-                    productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
-                    drinks.Add(productWrap);
+                    if (item.FCategoryId == 1)
+                    {
+                        CTProductWrap productWrap = new CTProductWrap();
+                        productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
+                        productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
+                        productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                        productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
+                        productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
+                        drinks.Add(productWrap);
+                    }
+                    if (item.FCategoryId == 2)
+                    {
+                        CTProductWrap productWrap = new CTProductWrap();
+                        productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
+                        productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
+                        productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                        productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
+                        productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
+                        popcorns.Add(productWrap);
+                    }
+                    if (item.FCategoryId == 3)
+                    {
+                        CTProductWrap productWrap = new CTProductWrap();
+                        productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
+                        productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
+                        productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                        productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
+                        productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
+                        desserts.Add(productWrap);
+                    }
                 }
-                if (item.FCategoryId == 2)
-                {
-                    CTProductWrap productWrap = new CTProductWrap();
-                    productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
-                    productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
-                    productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
-                    productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
-                    productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
-                    popcorns.Add(productWrap);
-                }
-                if (item.FCategoryId == 3)
-                {
-                    CTProductWrap productWrap = new CTProductWrap();
-                    productWrap.product = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId);
-                    productWrap.FProductId = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductId;
-                    productWrap.FProductName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
-                    productWrap.FProductPrice = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductPrice;
-                    productWrap.FImage = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FImage;
-                    desserts.Add(productWrap);
-                }
+
+                vm.drinkCategory = drinks;
+                vm.popcornCategory = popcorns;
+                vm.dessertCategory = desserts;
+
+                //抓電影名字
+                int sessionID = getSessionID();
+                vm.selectedSessionID = sessionID;
+                var movie = getSessionMovie(sessionID);
+                vm.selectedMovieName = movie.FNameCht;
+
+                //抓時間
+                vm.selectedSessionDate = getSessionDate(sessionID);
+                vm.selectedSessionTime = getSessionTime(sessionID);
+
+                //抓影廳
+                var theater = getTheater(sessionID);
+                vm.selectedTheaterID = theater.FTheaterId;
+                vm.selectedTheaterName = theater.FTheater;
+
+                //抓人數
+                string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
+                string[] tickets = json_tickets.Split(",");
+
+                int totalCount = 0;
+                foreach (var item in tickets)
+                    totalCount += Convert.ToInt32(item);
+                vm.ticketCounts = totalCount.ToString();
+
+
+                //抓座位
+                List<string> showSeats = getSeatNames(theater.FTheaterId);
+                vm.selectedSeats = showSeats;
+
+                return View(vm);
             }
-
-            vm.drinkCategory = drinks;
-            vm.popcornCategory = popcorns;
-            vm.dessertCategory = desserts;
-
-            //抓電影名字
-            int sessionID = getSessionID();
-            vm.selectedSessionID = sessionID;
-            var movie = getSessionMovie(sessionID);
-            vm.selectedMovieName = movie.FNameCht;
-
-            //抓時間
-            vm.selectedSessionDate = getSessionDate(sessionID);
-            vm.selectedSessionTime = getSessionTime(sessionID);
-
-            //抓影廳
-            var theater = getTheater(sessionID);
-            vm.selectedTheaterID = theater.FTheaterId;
-            vm.selectedTheaterName = theater.FTheater;
-
-            //抓人數
-            string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
-            string[] tickets = json_tickets.Split(",");
-
-            int totalCount = 0;
-            foreach (var item in tickets)
-                totalCount += Convert.ToInt32(item);
-            vm.ticketCounts = totalCount.ToString();
-
-
-            //抓座位
-            List<string> showSeats = getSeatNames(theater.FTheaterId);
-            vm.selectedSeats = showSeats;
-
-            return View(vm);
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
         }
 
         public IActionResult saveSeatIDinSession(int correctSeatID, int totalTickets, string selected)
         {
-            //先call出之前的session
-            List<int> selectedSeats;
-            string json;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SelectedSeatID))
+            try
             {
-                json = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
-                selectedSeats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json);
-            }
-            else
-                selectedSeats = new List<int>();
-
-            //判斷是否有被選擇過
-            if (selected == "1")
-            {
-                selectedSeats.Remove(correctSeatID);
-                json = System.Text.Json.JsonSerializer.Serialize(selectedSeats);
-                HttpContext.Session.SetString(CDictionary.SelectedSeatID, json);
-                int seatCount = totalTickets - selectedSeats.Count();
-                return Content("尚可選座位：" + seatCount);
-            }
-            else
-            {
-                if (selectedSeats.Count() < totalTickets)
+                //先call出之前的session
+                List<int> selectedSeats;
+                string json;
+                if (HttpContext.Session.Keys.Contains(CDictionary.SelectedSeatID))
                 {
-                    selectedSeats.Add(correctSeatID);
+                    json = HttpContext.Session.GetString(CDictionary.SelectedSeatID);
+                    selectedSeats = System.Text.Json.JsonSerializer.Deserialize<List<int>>(json);
+                }
+                else
+                    selectedSeats = new List<int>();
+
+                //判斷是否有被選擇過
+                if (selected == "1")
+                {
+                    selectedSeats.Remove(correctSeatID);
                     json = System.Text.Json.JsonSerializer.Serialize(selectedSeats);
                     HttpContext.Session.SetString(CDictionary.SelectedSeatID, json);
                     int seatCount = totalTickets - selectedSeats.Count();
                     return Content("尚可選座位：" + seatCount);
                 }
                 else
-                    return Content("座位人數已滿");
+                {
+                    if (selectedSeats.Count() < totalTickets)
+                    {
+                        selectedSeats.Add(correctSeatID);
+                        json = System.Text.Json.JsonSerializer.Serialize(selectedSeats);
+                        HttpContext.Session.SetString(CDictionary.SelectedSeatID, json);
+                        int seatCount = totalTickets - selectedSeats.Count();
+                        return Content("尚可選座位：" + seatCount);
+                    }
+                    else
+                        return Content("座位人數已滿");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public IActionResult showSelectedSeat()
         {
-            List<string> seatNames = getSeatNames(getTheater(getSessionID()).FTheaterId);
-            return Json(seatNames);
+            try
+            {
+                List<string> seatNames = getSeatNames(getTheater(getSessionID()).FTheaterId);
+                return Json(seatNames);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public void saveProductCount(List<CProductInfo> productInfos)
@@ -391,123 +463,130 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListOrderDetails(List<CProductInfo> products)
         {
-            if (products.Count != 0)
-                saveProductCount(products);
-
-            //確認有沒有登入會員，if沒有，先登入會員
-            string controller = "OrderFront";
-            string view = "ListOrderDetails";
-            HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
-            HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
-            bool verify_checkLogIn = sessionCheck();
-            if (!verify_checkLogIn)
-                return RedirectToAction("memberLogIn", "memberFront");
-
-
-            CListOrderDetailsViewModel vm = new CListOrderDetailsViewModel();
-
-            //選擇到的票種張數
-            string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
-            string[] tickets = json_tickets.Split(",");
-            string[] ticketsNames = new string[] { "一般票", "學生票", "軍警票" };
-            string selectedTickets = "";
-            for (int i = 0; i < tickets.Length; i++)
+            try
             {
-                if (Convert.ToInt32(tickets[i]) > 0)
-                    selectedTickets += $"{ticketsNames[i]}:{tickets[i]}張,";
-            }
-            if (selectedTickets.Trim().Substring(selectedTickets.Trim().Length - 1, 1) == ",")
-                selectedTickets = selectedTickets.Trim().Substring(0, selectedTickets.Trim().Length - 1);
-            vm.tickets = selectedTickets;
+                if (products.Count != 0)
+                    saveProductCount(products);
 
-            //選擇到的電影名稱、日期時間
-            int sessionID = getSessionID();
-            var movie = getSessionMovie(sessionID);
-            vm.selectedMovieName = movie.FNameCht;
-            vm.selectedMoviEngeName = movie.FNameEng;
-            vm.selectedMoviePoster = movie.FPosterPath;
-            vm.selectedMovieID = movie.FId;
-            var selectedSessionHour = getSessionHour(sessionID);
-            vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);
+                //確認有沒有登入會員，if沒有，先登入會員
+                string controller = "OrderFront";
+                string view = "ListOrderDetails";
+                HttpContext.Session.SetString(CDictionary.SK_CONTROLLER, controller);
+                HttpContext.Session.SetString(CDictionary.SK_VIEW, view);
+                bool verify_checkLogIn = sessionCheck();
+                if (!verify_checkLogIn)
+                    return RedirectToAction("memberLogIn", "memberFront");
 
-            //選擇到的廳院
-            var theater = getTheater(sessionID);
-            string selectedTheater = theater.FTheater;
-            vm.theaterName = selectedTheater;
-            int theaterID = theater.FTheaterId;
 
-            //選擇到的座位(correctSeatID)
-            List<string> showSeats = getSeatNames(theaterID);
-            vm.seats = showSeats;
+                CListOrderDetailsViewModel vm = new CListOrderDetailsViewModel();
 
-            //選擇到的餐點
-            List<CProductInfo> productCounts = getProductCounts();
-            List<string> showProducts = new List<string>();
-            foreach (var item in productCounts)
-            {
-                if (int.Parse(item.productCount) > 0)
+                //選擇到的票種張數
+                string json_tickets = HttpContext.Session.GetString(CDictionary.SelectedTicketClass);
+                string[] tickets = json_tickets.Split(",");
+                string[] ticketsNames = new string[] { "一般票", "學生票", "軍警票" };
+                string selectedTickets = "";
+                for (int i = 0; i < tickets.Length; i++)
                 {
-                    var selectedProduct = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.productID);
-                    string productName = "";
-                    if (selectedProduct.FCategoryId == 2)
-                        productName = selectedProduct.FProductName + "爆米花";
-                    else
-                        productName = selectedProduct.FProductName;
-                    string thisProduct = $"{productName}X{item.productCount}";
-                    showProducts.Add(thisProduct);
+                    if (Convert.ToInt32(tickets[i]) > 0)
+                        selectedTickets += $"{ticketsNames[i]}:{tickets[i]}張,";
                 }
+                if (selectedTickets.Trim().Substring(selectedTickets.Trim().Length - 1, 1) == ",")
+                    selectedTickets = selectedTickets.Trim().Substring(0, selectedTickets.Trim().Length - 1);
+                vm.tickets = selectedTickets;
+
+                //選擇到的電影名稱、日期時間
+                int sessionID = getSessionID();
+                var movie = getSessionMovie(sessionID);
+                vm.selectedMovieName = movie.FNameCht;
+                vm.selectedMoviEngeName = movie.FNameEng;
+                vm.selectedMoviePoster = movie.FPosterPath;
+                vm.selectedMovieID = movie.FId;
+                var selectedSessionHour = getSessionHour(sessionID);
+                vm.selecteDate = getSessionDate(sessionID) + getSessionTime(sessionID);
+
+                //選擇到的廳院
+                var theater = getTheater(sessionID);
+                string selectedTheater = theater.FTheater;
+                vm.theaterName = selectedTheater;
+                int theaterID = theater.FTheaterId;
+
+                //選擇到的座位(correctSeatID)
+                List<string> showSeats = getSeatNames(theaterID);
+                vm.seats = showSeats;
+
+                //選擇到的餐點
+                List<CProductInfo> productCounts = getProductCounts();
+                List<string> showProducts = new List<string>();
+                foreach (var item in productCounts)
+                {
+                    if (int.Parse(item.productCount) > 0)
+                    {
+                        var selectedProduct = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.productID);
+                        string productName = "";
+                        if (selectedProduct.FCategoryId == 2)
+                            productName = selectedProduct.FProductName + "爆米花";
+                        else
+                            productName = selectedProduct.FProductName;
+                        string thisProduct = $"{productName}X{item.productCount}";
+                        showProducts.Add(thisProduct);
+                    }
+                }
+                vm.set = showProducts;
+
+                //擁有的優惠券
+                int memID = getMemberID();
+                var couponList = movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == memID
+                    & c.FCouponType.FCouponDueDate.Month == DateTime.Now.Month & c.FIsUsed == false)
+                    .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
+                vm.CouponList = couponList;
+
+                //總價
+                int ticketFee = 0;
+                decimal 電影基本價 = (decimal)movie.FPrice;
+                int 一般票張數 = Convert.ToInt32(tickets[0]);
+                int 學生票張數 = Convert.ToInt32(tickets[1]);
+                int 軍警票張數 = Convert.ToInt32(tickets[2]);
+                decimal 早場優惠 = 1;
+                if (int.Parse(selectedSessionHour) <= 11)
+                    早場優惠 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
+                decimal 廳加價 = 1;
+                if (theater.FTheaterId == 1)
+                    廳加價 = movieContext.TTheaterClasses.FirstOrDefault(tc => tc.FTheaterClassId == 2).FPriceRate;
+                decimal 會員優惠 = (decimal)movieContext.TMembers.Include(m => m.FMembership).FirstOrDefault(m => m.FMemberId == memID).FMembership.FPriceRate;
+
+                if (一般票張數 > 0)
+                {
+                    decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
+                    ticketFee += Convert.ToInt32(電影基本價 * 一般價 * 早場優惠 * 廳加價 * 一般票張數 * 會員優惠);
+                }
+                if (學生票張數 > 0)
+                {
+                    decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
+                    ticketFee += Convert.ToInt32(電影基本價 * 學生價 * 早場優惠 * 廳加價 * 學生票張數 * 會員優惠);
+                }
+                if (軍警票張數 > 0)
+                {
+                    decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
+                    ticketFee += Convert.ToInt32(電影基本價 * 軍警價 * 早場優惠 * 廳加價 * 學生票張數 * 會員優惠);
+                }
+
+                //產品總價
+                int productFee = 0;
+                for (int i = 0; i < productCounts.Count; i++)
+                {
+                    var selectedProduct = movieContext.TProducts.
+                        FirstOrDefault(p => p.FProductId == productCounts[i].productID);
+                    productFee += selectedProduct.FProductPrice * Convert.ToInt32(productCounts[i].productCount);
+                }
+
+                vm.totalPrice = (ticketFee + productFee).ToString();
+
+                return View(vm);
             }
-            vm.set = showProducts;
-
-            //擁有的優惠券
-            int memID = getMemberID();
-            var couponList = movieContext.TCouponLists.Include(c => c.FCouponType).Where(c => c.FMemberId == memID
-                & c.FCouponType.FCouponDueDate.Month == DateTime.Now.Month & c.FIsUsed == false)
-                .OrderByDescending(c => c.FCouponType.FCouponDueDate).ToList();
-            vm.CouponList = couponList;
-
-            //總價
-            int ticketFee = 0;
-            decimal 電影基本價 = (decimal)movie.FPrice;
-            int 一般票張數 = Convert.ToInt32(tickets[0]);
-            int 學生票張數 = Convert.ToInt32(tickets[1]);
-            int 軍警票張數 = Convert.ToInt32(tickets[2]);
-            decimal 早場優惠 = 1;
-            if (int.Parse(selectedSessionHour) <= 11)
-                早場優惠 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-            decimal 廳加價 = 1;
-            if (theater.FTheaterId == 1)
-                廳加價 = movieContext.TTheaterClasses.FirstOrDefault(tc => tc.FTheaterClassId == 2).FPriceRate;
-            decimal 會員優惠 = (decimal)movieContext.TMembers.Include(m => m.FMembership).FirstOrDefault(m => m.FMemberId == memID).FMembership.FPriceRate;
-
-            if (一般票張數 > 0)
+            catch
             {
-                decimal 一般價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 1).FPriceRate;
-                ticketFee += Convert.ToInt32(電影基本價 * 一般價 * 早場優惠 * 廳加價 * 一般票張數 * 會員優惠);
+                return RedirectToAction("Index", "Home");
             }
-            if (學生票張數 > 0)
-            {
-                decimal 學生價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 2).FPriceRate;
-                ticketFee += Convert.ToInt32(電影基本價 * 學生價 * 早場優惠 * 廳加價 * 學生票張數 * 會員優惠);
-            }
-            if (軍警票張數 > 0)
-            {
-                decimal 軍警價 = movieContext.TTicketClasses.FirstOrDefault(t => t.FTicketClassId == 5).FPriceRate;
-                ticketFee += Convert.ToInt32(電影基本價 * 軍警價 * 早場優惠 * 廳加價 * 學生票張數 * 會員優惠);
-            }
-
-            //產品總價
-            int productFee = 0;
-            for (int i = 0; i < productCounts.Count; i++)
-            {
-                var selectedProduct = movieContext.TProducts.
-                    FirstOrDefault(p => p.FProductId == productCounts[i].productID);
-                productFee += selectedProduct.FProductPrice * Convert.ToInt32(productCounts[i].productCount);
-            }
-
-            vm.totalPrice = (ticketFee + productFee).ToString();
-
-            return View(vm);
         }
 
         public IActionResult SaveOrdertoDBandSendEmail(int totalPrice, int? couponID, string paymentType)
@@ -639,122 +718,158 @@ namespace prjMovieHolic.Controllers
 
         public IActionResult ListOrderBook(string orderStatusDescribe)
         {
-            int memberID = getMemberID();
-
-            var orderStatus_取票狀態 = movieContext.TOrderStatuses.Where(od => od.FOrderStatus == orderStatusDescribe).
-                OrderByDescending(o=>o.FOrderStatusId).
-                Select(od => od.FOrderStatusId).ToList();
-            List<TOrderStatusLog> order_取票狀態 = new List<TOrderStatusLog>();
-            foreach (var item in orderStatus_取票狀態)
-                order_取票狀態.Add(movieContext.TOrderStatusLogs.
-                    FirstOrDefault(osl => osl.FOrderStatusId == item));
-            List<TOrder> this會員的取票 = new List<TOrder>();
-            foreach (var item in order_取票狀態)
+            try
             {
-                var mightNull取票狀態 = movieContext.TOrders.Include(o => o.FSession).
-                    ThenInclude(s => s.FTheater).
-                    Include(o => o.FSession).ThenInclude(s => s.FMovie).
-                    FirstOrDefault(o => o.FMemberId == memberID & o.FOrderId == item.FOrderId);
-                if (mightNull取票狀態 != null)
-                    this會員的取票.Add(mightNull取票狀態);
-            }
+                int memberID = getMemberID();
 
-            List<CticketData> ticketDatas = new List<CticketData>();
-            foreach (var item in this會員的取票)
+                var orderStatus_取票狀態 = movieContext.TOrderStatuses.Where(od => od.FOrderStatus == orderStatusDescribe).
+                    OrderByDescending(o => o.FOrderStatusId).
+                    Select(od => od.FOrderStatusId).ToList();
+                List<TOrderStatusLog> order_取票狀態 = new List<TOrderStatusLog>();
+                foreach (var item in orderStatus_取票狀態)
+                    order_取票狀態.Add(movieContext.TOrderStatusLogs.
+                        FirstOrDefault(osl => osl.FOrderStatusId == item));
+                List<TOrder> this會員的取票 = new List<TOrder>();
+                foreach (var item in order_取票狀態)
+                {
+                    var mightNull取票狀態 = movieContext.TOrders.Include(o => o.FSession).
+                        ThenInclude(s => s.FTheater).
+                        Include(o => o.FSession).ThenInclude(s => s.FMovie).
+                        FirstOrDefault(o => o.FMemberId == memberID & o.FOrderId == item.FOrderId);
+                    if (mightNull取票狀態 != null)
+                        this會員的取票.Add(mightNull取票狀態);
+                }
+
+                List<CticketData> ticketDatas = new List<CticketData>();
+                foreach (var item in this會員的取票)
+                {
+                    CticketData data = new CticketData();
+                    data.orderID = item.FOrderId;
+                    data.theaterName = item.FSession.FTheater.FTheater;
+                    data.movieName = item.FSession.FMovie.FNameCht;
+                    data.sessionStartTime = item.FSession.FStartTime.ToString("MM/dd HH:mm");
+                    data.totalPrice = (int)item.FTotalPrice;
+                    ticketDatas.Add(data);
+                }
+
+                return Json(ticketDatas);
+            }
+            catch
             {
-                CticketData data = new CticketData();
-                data.orderID = item.FOrderId;
-                data.theaterName = item.FSession.FTheater.FTheater;
-                data.movieName = item.FSession.FMovie.FNameCht;
-                data.sessionStartTime = item.FSession.FStartTime.ToString("MM/dd HH:mm");
-                data.totalPrice = (int)item.FTotalPrice;
-                ticketDatas.Add(data);
+                return RedirectToAction("Index", "Home");
             }
-
-            return Json(ticketDatas);
         }
 
         public IActionResult ShowOrderDetails(int orderID)
         {
-            var orderDetails = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID).Select(od => new { od.FSeatId, od.FTicketClass.FTicketClass }).ToList();
-            int theaterID = movieContext.TOrders.Include(o => o.FSession).FirstOrDefault(o => o.FOrderId == orderID).FSession.FTheaterId;
-
-            List<string> listSeatNames = new List<string>();
-            foreach (var item in orderDetails)
+            try
             {
-                int row;
-                int col;
-                int seatIDinTheater = item.FSeatId - (theaterID - 1) * 400;
-                if ((seatIDinTheater) % 20 != 0)
-                {
-                    row = (seatIDinTheater) / 20 + 1;
-                    col = (seatIDinTheater) % 20;
-                }
-                else
-                {
-                    row = (seatIDinTheater) / 20;
-                    col = 20;
-                }
-                listSeatNames.Add($"{row}排{col}");
-            }
+                var orderDetails = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID).Select(od => new { od.FSeatId, od.FTicketClass.FTicketClass }).ToList();
+                int theaterID = movieContext.TOrders.Include(o => o.FSession).FirstOrDefault(o => o.FOrderId == orderID).FSession.FTheaterId;
 
-            List<COrderDetailData> showOrderDetail = new List<COrderDetailData>();
-            for (int i = 0; i < listSeatNames.Count; i++)
-            {
-                COrderDetailData data = new COrderDetailData();
-                data.seatName = listSeatNames[i];
-                data.ticketClassName = orderDetails[i].FTicketClass;
-                showOrderDetail.Add(data);
+                List<string> listSeatNames = new List<string>();
+                foreach (var item in orderDetails)
+                {
+                    int row;
+                    int col;
+                    int seatIDinTheater = item.FSeatId - (theaterID - 1) * 400;
+                    if ((seatIDinTheater) % 20 != 0)
+                    {
+                        row = (seatIDinTheater) / 20 + 1;
+                        col = (seatIDinTheater) % 20;
+                    }
+                    else
+                    {
+                        row = (seatIDinTheater) / 20;
+                        col = 20;
+                    }
+                    listSeatNames.Add($"{row}排{col}");
+                }
+
+                List<COrderDetailData> showOrderDetail = new List<COrderDetailData>();
+                for (int i = 0; i < listSeatNames.Count; i++)
+                {
+                    COrderDetailData data = new COrderDetailData();
+                    data.seatName = listSeatNames[i];
+                    data.ticketClassName = orderDetails[i].FTicketClass;
+                    showOrderDetail.Add(data);
+                }
+                return Json(showOrderDetail);
             }
-            return Json(showOrderDetail);
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult ShowReceiptDetails(int orderID)
         {
-            var receipt = movieContext.TReceipts.FirstOrDefault(r => r.FOrderId == orderID);
-            List<TReceiptDetail> receiptDetails = new List<TReceiptDetail>();
-            if (receipt != null)
+            try
             {
-                int receiptID = receipt.FReceiptId;
-                receiptDetails = movieContext.TReceiptDetails.Include(rd=>rd.FProduct).
-                    Where(rd => rd.FReceiptId == receiptID).ToList();
+                var receipt = movieContext.TReceipts.FirstOrDefault(r => r.FOrderId == orderID);
+                List<TReceiptDetail> receiptDetails = new List<TReceiptDetail>();
+                if (receipt != null)
+                {
+                    int receiptID = receipt.FReceiptId;
+                    receiptDetails = movieContext.TReceiptDetails.Include(rd => rd.FProduct).
+                        Where(rd => rd.FReceiptId == receiptID).ToList();
+                }
+
+                List<CReceiptDetailData> list = new List<CReceiptDetailData>();
+                foreach (var item in receiptDetails)
+                {
+                    CReceiptDetailData receiptDetailData = new CReceiptDetailData();
+                    if (item.FProduct.FCategoryId == 2)
+                        receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName + "爆米花";
+                    else
+                        receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
+                    receiptDetailData.productCount = item.FQty.ToString();
+                    list.Add(receiptDetailData);
+                }
+                return Json(list);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
             }
 
-            List<CReceiptDetailData> list = new List<CReceiptDetailData>();
-            foreach (var item in receiptDetails)
-            {
-                CReceiptDetailData receiptDetailData = new CReceiptDetailData();
-                if (item.FProduct.FCategoryId == 2)
-                    receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName + "爆米花";
-                else
-                    receiptDetailData.productName = movieContext.TProducts.FirstOrDefault(p => p.FProductId == item.FProductId).FProductName;
-                receiptDetailData.productCount = item.FQty.ToString();
-                list.Add(receiptDetailData);
-            }
-            return Json(list);
         }
         public IActionResult deleteOrder(int orderID)
         {
-            var deleted = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID);
-            foreach (var item in deleted)
-                movieContext.TOrderDetails.Remove(item);
+            try
+            {
+                var deleted = movieContext.TOrderDetails.Where(od => od.FOrderId == orderID);
+                foreach (var item in deleted)
+                    movieContext.TOrderDetails.Remove(item);
 
-            var orderStatusLog = movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
-            var orderStatus = movieContext.TOrderStatuses.FirstOrDefault(os => os.FOrderStatusId == orderStatusLog.FOrderStatusId);
-            orderStatus.FOrderStatus = "已取消";
+                var orderStatusLog = movieContext.TOrderStatusLogs.FirstOrDefault(osl => osl.FOrderId == orderID);
+                var orderStatus = movieContext.TOrderStatuses.FirstOrDefault(os => os.FOrderStatusId == orderStatusLog.FOrderStatusId);
+                orderStatus.FOrderStatus = "已取消";
 
-            movieContext.SaveChanges();
-            return Content("Success");
+                movieContext.SaveChanges();
+                return Content("Success");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult SearchMovieKeyword(string keyword)
         {
-            var result = movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
-                Where(s => s.FStartTime.Date > DateTime.Now.Date).
-                Where(s => s.FMovie.FNameCht.Contains(keyword)).
-                DistinctBy(s => s.FMovieId).ToList();
+            try
+            {
+                var result = movieContext.TSessions.Include(s => s.FMovie).AsEnumerable().
+               Where(s => s.FStartTime.Date > DateTime.Now.Date).
+               Where(s => s.FMovie.FNameCht.Contains(keyword)).
+               DistinctBy(s => s.FMovieId).ToList();
 
-            return Json(result);
+                return Json(result);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [NonAction]
