@@ -53,9 +53,9 @@ namespace prjMovieHolic.Controllers
             {
                 return RedirectToAction("memberLogin", "MemberFront", null);
             }
-            ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId");
+            //ViewData["FMemberId"] = new SelectList(_context.TMembers, "FMemberId", "FMemberId");
             ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FNameCht");
-            ViewBag.MemberID=(int)userId;
+            ViewBag.MemberID = (int)userId;
             return View();
         }
 
@@ -67,21 +67,20 @@ namespace prjMovieHolic.Controllers
         public async Task<IActionResult> Create([Bind("FArticleId,FMemberId,FMovieId,FScore,FTitle,FTimeCreated,FTimeEdited,FBlockJson,FIsPublic")] TArticle tArticle)
         {
             var userId = HttpContext.Session.GetInt32(CDictionary.SK_LOGIN_USER);
-            if (userId == null)
+            if (userId == null || userId != tArticle.FMemberId)
             {
                 return RedirectToAction("memberLogin", "MemberFront", null);
             }
-            if (ModelState.IsValid)
-            {
-                tArticle.FMemberId = (int)userId;
-                tArticle.FTimeCreated = DateTime.Now;
-                _context.Add(tArticle);
-                await _context.SaveChangesAsync();
-                var myLatest = getMyLatestArtID();
-                if (myLatest != null)
-                    return RedirectToAction("Detail", "Articles", new { id = myLatest });
-            }
-            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FId", tArticle.FMovieId);
+
+            tArticle.FMemberId = (int)userId;
+            tArticle.FTimeCreated = DateTime.Now;
+            _context.Add(tArticle);
+            await _context.SaveChangesAsync();
+            var myLatest = getMyLatestArtID();
+            if (myLatest != null)
+                return RedirectToAction("Detail", "Articles", new { id = myLatest });
+
+            ViewData["FMovieId"] = new SelectList(_context.TMovies, "FId", "FNameCht");
             ViewBag.FMemberId = (int)userId;
             ViewBag.Readonly = true;
             return View(tArticle);

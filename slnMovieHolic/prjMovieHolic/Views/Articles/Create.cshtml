@@ -1,7 +1,7 @@
 ﻿@model prjMovieHolic.Models.TArticle
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "MovieHolic 發表評論";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
@@ -28,10 +28,10 @@
 <hr />
 <div class="conatiner">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Create" id="new-article">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="FMemberId" class="form-control" type="hidden" asp-items="ViewBag.FMemberId" />
+                <input asp-for="FMemberId" class="form-control" type="hidden" asp-items="ViewBag.MemberID" />
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -95,11 +95,13 @@
 
         const saveButton = document.getElementById('save-button');
         const output = document.getElementById('output');
-
+        const form= document.getElementById('new-article');
         saveButton.addEventListener('click', () => {
             editor.save().then(savedData => {
                 output.value = JSON.stringify(savedData, null, 4);
+                form.submit();
             })
+            
         })
     </script>
     @{
