@@ -50,7 +50,7 @@
                                                                     <button><a href="@Url.Action("memberIndex", "memberFront",new{ id=ViewBag.userId})" style="color:black; width:60px">會員中心</a></button>
                                                                 </li>
                                                                 <li>
-                                                                    <button><a href="@Url.Action("memberLogout", "memberFront")" style="color:black; width:60px">登出</a></button>
+                                                                    <button><a href="@Url.Action("memberLogout", "memberFront")" style="color:black; width:60px" onclick="return confirm('確定要登出嗎？')">登出</a></button>
                                                                 </li>
 
                                                             </ul>
