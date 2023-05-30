@@ -25,15 +25,14 @@
 <h4>發表評論</h4>
 <hr />
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FMemberId" class="control-label"></label>
-                <select asp-for="FMemberId" class ="form-control" asp-items="ViewBag.FMemberId"></select>
+                <input asp-for="FMemberId" class ="form-control" type="hidden" asp-items="ViewBag.FMemberId"/>
             </div>
             <div class="form-group">
-                <label asp-for="FMovieId" class="control-label"></label>
+                <label class="control-label">電影名稱</label>
                 <select asp-for="FMovieId" class ="form-control" asp-items="ViewBag.FMovieId"></select>
             </div>
             <div class="form-group">
@@ -42,32 +41,19 @@
                 <span asp-validation-for="FScore" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FTitle" class="control-label"></label>
+                <label class="control-label">評論標題</label>
                 <input asp-for="FTitle" class="form-control" />
                 <span asp-validation-for="FTitle" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
-                <label asp-for="FTimeCreated" class="control-label"></label>
-                <input asp-for="FTimeCreated" class="form-control" />
-                <span asp-validation-for="FTimeCreated" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FTimeEdited" class="control-label"></label>
-                <input asp-for="FTimeEdited" class="form-control" />
-                <span asp-validation-for="FTimeEdited" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FBlockJson" class="control-label"></label>
-                <input asp-for="FBlockJson" class="form-control" />
+                <label class="control-label">評論文章內容</label>
+                <input asp-for="FBlockJson" class="form-control" type="hidden" />
                 <span asp-validation-for="FBlockJson" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FIsPublic" /> @Html.DisplayNameFor(model => model.FIsPublic)
-                </label>
-            </div>
+            
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="button" value="發文" class="btn btn-primary" />
             </div>
         </form>
     </div>
